@@ -17,6 +17,7 @@ test-output/
 *.out
 *.log
 HBC_Pagliares.java
+HBC.java
  
 # Package Files #
 *.jar
