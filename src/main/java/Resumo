@@ -1,0 +1,25 @@
+Teste da modelagem no groupsim do HBC
+
+- Se criarmos uma activity generate, devemos colocar a fila correspondente. Caso contrario o software
+está dando nullpointerexception
+
+Para gerar o programa java a partir da linha de comando:
+
+- cd /Users/pagliares/Dropbox/projetosEclipse/workspaceHirata/GroupSim_1_2_Pagliares/src
+- java Stylizer ../xacdml_models/xacdml.xsl ../xacdml_models/HBC_Pagliares.xacdml  > HBC_Pagliares.java
+   - HBC_Pagliares.java gerado no pacote default do projeto (src)
+   - o Arquivo é gerado corretamente, mas no nome da classe main precisa ser renomeado 
+   - ao compilar o arquivo gerado dentro do eclipse, nenhum erro e dois arquivos gerados:
+   		- Automatically_generated_xacdml.out 
+   		- simxxxxxxx.log
+   - Para que o arquivo out tenha valores, precisamos configurar observadores antes no groupsim antes
+     de gerar o xacdml
+
+     
+ WindowBuilder
+ - Nome oficial (SWT designer)
+ - Help -> Install new software
+ 	- http://download.eclipse.org/windowbuilder/WB/release/R201506241200-1/4.5/
+ 	
+Geracao automatica de classes a partir de um dtd
+ - xjc -dtd xacdml.dtd
