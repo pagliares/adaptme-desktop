@@ -30,15 +30,15 @@ public class DefineProjectResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableWorkProduct;
-	private JPanel panel_2;
+//	private JPanel panel_2;
 
 	public DefineProjectResourcesPanel() {
 		panel = new JPanel();		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
 		
-		panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+//		panel_2 = new JPanel();
+//		panel_2.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
@@ -48,50 +48,50 @@ public class DefineProjectResourcesPanel {
 				tableWorkProduct = new JTable();
 				scrollPane.setViewportView(tableWorkProduct);
 		
-				panel_2.setLayout(new BorderLayout(0, 0));
+//				panel_2.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
-		panel_2.add(scrollPane_1, BorderLayout.CENTER);
+//		panel_2.add(scrollPane_1, BorderLayout.CENTER);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-					.addGap(27)
-					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-					.addGap(6))
-		);
-		
 //		gl_panel.setHorizontalGroup(
-//				gl_panel.createParallelGroup(Alignment.LEADING)
-//					.addGroup(gl_panel.createSequentialGroup()
-//						.addGap(6)
-//						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-//						.addGap(27)
-//						
-//						.addGap(6))
-//			);
+//			gl_panel.createParallelGroup(Alignment.LEADING)
+//				.addGroup(gl_panel.createSequentialGroup()
+//					.addGap(6)
+//					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+//					.addGap(27)
+//					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+//					.addGap(6))
+//		);
+		
+		gl_panel.setHorizontalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createSequentialGroup()
+						.addGap(6)
+						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+						.addGap(27)
+						
+						.addGap(6))
+			);
 		// trecho abaixo igual ao superior sem .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
 
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
-					.addGap(6))
-		);
-		// trecho abaixo igual ao superior sem .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
 //		gl_panel.setVerticalGroup(
-//				gl_panel.createParallelGroup(Alignment.LEADING)
-//					.addGroup(gl_panel.createSequentialGroup()
-//						.addGap(6)
-//						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-//							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE).addGap(6))));
+//			gl_panel.createParallelGroup(Alignment.LEADING)
+//				.addGroup(gl_panel.createSequentialGroup()
+//					.addGap(6)
+//					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+//						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+//						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+//					.addGap(6))
+//		);
+		// trecho abaixo igual ao superior sem .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+		gl_panel.setVerticalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createSequentialGroup()
+						.addGap(6)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE).addGap(6))));
 		panel.setLayout(gl_panel);
 	}
 
