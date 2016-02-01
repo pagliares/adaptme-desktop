@@ -583,11 +583,24 @@ public class AlternativeOfProcessPanel {
 		DefineProjectResourcesPanel defineProjectResourcesPanel = new DefineProjectResourcesPanel();
 		defineProjectResourcesPanel.setComboBoxRole(persistProcess.getRolesList());
 		defineProjectResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());
-		tabbedPane.addTab("3.2. Define project resources parameters for the simulation model", defineProjectResourcesPanel.getPanel());
+		
+		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML generate activities and queues", defineProjectResourcesPanel.getPanel());
 		GenerateSimulationModel generateSimulationModel = new GenerateSimulationModel();
-		tabbedPane.addTab("3.3. Generate simulation model in XACDML format", generateSimulationModel.getPanel());
+		
+		 // teste linhas abaixo
+		DefineProjectResourcesPanel defineProjectResourcesPanel2 = new DefineProjectResourcesPanel();
+		defineProjectResourcesPanel2.setComboBoxRole(persistProcess.getRolesList());
+		defineProjectResourcesPanel2.setModelComboBoxWorkProduct(persistProcess.getWordProductList());
+		
+		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", defineProjectResourcesPanel2.getPanel());
+		
+//		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", generateSimulationModel.getPanel());
+//		GenerateSimulationModel generateSimulationModel2 = new GenerateSimulationModel();
+
+		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
 		tabbedPane.addTab("3.4. Run simulation model", runSimulationPanel.getPanel());
+		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2);
 	}
