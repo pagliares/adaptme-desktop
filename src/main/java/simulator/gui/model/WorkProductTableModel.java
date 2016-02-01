@@ -9,7 +9,8 @@ import simulator.base.WorkProduct;
 public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
-	String[] headers = new String[] { "Work product", "Demand Work Product", "Quantity" };
+	String[] headers = new String[] { "Work product", "Demand Work Product", "Quantity", "Queue name", "Capacity", "Policy", 
+			                          "Observer queue length name", "Observer queue lenght time name"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
 		this.workProducts = workProducts;
@@ -22,7 +23,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 3;
+		return headers.length;
 	}
 
 	@Override
@@ -65,6 +66,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return Boolean.class;
 		case 2:
 			return Integer.class;
+		case 3:
+			return String.class;
+		case 4:
+			return String.class;
+		case 5:
+			return String.class;
+		case 6:
+			return String.class;
+		case 7:
+			return String.class;
 		default:
 			return null;
 		}
