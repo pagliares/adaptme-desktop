@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE acd PUBLIC "acd description//EN" "xacdml.dtd">
+<acd id="MODEL_OMEGA">
+<dead id="R1_0_In0" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<dead id="R1_0_In1" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<dead id="R1_1_In0" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<dead id="R1_1_In1" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<dead id="R2_0_In0" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<act id="R1_0_Out0">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R1_0_W0"  next="R2_0_In0"/>
+</act>
+
+<dead id="R2_1_In0" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<act id="R1_0_Out1">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R1_0_W0"  next="R2_1_In0"/>
+</act>
+
+<dead id="R2_0_In1" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<act id="R1_1_Out0">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R1_1_W0"  next="R2_0_In1"/>
+</act>
+
+<dead id="R2_1_In1" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+</dead>
+
+<act id="R1_1_Out1">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R1_1_W0"  next="R2_1_In1"/>
+</act>
+
+<act id="R2_0_Out0">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R2_0_W0"  next="W1"/>
+</act>
+
+<act id="R2_0_Out1">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R2_0_W0"  next="W2"/>
+</act>
+
+<act id="R2_1_Out0">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R2_1_W0"  next="W3"/>
+</act>
+
+<act id="R2_1_Out1">
+ <stat type="CONST" parm1="0"/>
+ <entity_class prev="R2_1_W0"  next="W4"/>
+</act>
+
+
+<dead id="R1_0_W0">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R1_0_W0_OBS"/>
+</dead>
+
+<dead id="R1_0_W1">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R1_0_W1_OBS"/>
+</dead>
+
+<dead id="R1_0_RW0">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<dead id="R1_0_RW1">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<router id="R1_0_RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R1_0_RW0" next="R1_0_RW0"/>
+ <whennext cond="A .LE. 2">
+   <entity prev="R1_0_IN0" next="R1_0_W0"/>
+  </whennext>
+ <whennext cond="A .GT. 2">
+   <entity prev="R1_0_IN0" next="R1_0_W1"/>
+  </whennext>
+</router>
+
+<router id="R1_0_RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R1_0_RW1" next="R1_0_RW1"/>
+ <whennext cond="A .LE. 2">
+   <entity prev="R1_0_IN1" next="R1_0_W0"/>
+  </whennext>
+ <whennext cond="A .GT. 2">
+   <entity prev="R1_0_IN1" next="R1_0_W1"/>
+  </whennext>
+</router>
+
+
+<dead id="R1_1_W0">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R1_1_W0_OBS"/>
+</dead>
+
+<dead id="R1_1_W1">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R1_1_W1_OBS"/>
+</dead>
+
+<dead id="R1_1_RW0">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<dead id="R1_1_RW1">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<router id="R1_1_RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R1_1_RW0" next="R1_1_RW0"/>
+ <whennext cond="A .LE. 2">
+   <entity prev="R1_1_IN0" next="R1_1_W0"/>
+  </whennext>
+ <whennext cond="A .GT. 2">
+   <entity prev="R1_1_IN0" next="R1_1_W1"/>
+  </whennext>
+</router>
+
+<router id="R1_1_RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R1_1_RW1" next="R1_1_RW1"/>
+ <whennext cond="A .LE. 2">
+   <entity prev="R1_1_IN1" next="R1_1_W0"/>
+  </whennext>
+ <whennext cond="A .GT. 2">
+   <entity prev="R1_1_IN1" next="R1_1_W1"/>
+  </whennext>
+</router>
+
+
+<dead id="R2_0_W0">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R2_0_W0_OBS"/>
+</dead>
+
+<dead id="R2_0_W1">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R2_0_W1_OBS"/>
+</dead>
+
+<dead id="R2_0_RW0">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<dead id="R2_0_RW1">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<router id="R2_0_RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R2_0_RW0" next="R2_0_RW0"/>
+ <whennext cond="A =1|A =3">
+   <entity prev="R2_0_IN0" next="R2_0_W0"/>
+  </whennext>
+ <whennext cond="A =2|A =4">
+   <entity prev="R2_0_IN0" next="R2_0_W1"/>
+  </whennext>
+</router>
+
+<router id="R2_0_RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R2_0_RW0" next="R2_0_RW0"/>
+ <whennext cond="A =1|A =3">
+   <entity prev="R2_0_IN1" next="R2_0_W0"/>
+  </whennext>
+ <whennext cond="A =2|A =4">
+   <entity prev="R2_0_IN1" next="R2_0_W1"/>
+  </whennext>
+</router>
+
+
+<dead id="R2_1_W0">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R2_1_W0_OBS"/>
+</dead>
+
+<dead id="R2_1_W1">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="R2_1_W1_OBS"/>
+</dead>
+
+<dead id="R2_1_RW0">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<dead id="R2_1_RW1">
+ <type struct="QUEUE" size="1" init="1"/>
+</dead>
+
+<router id="R2_1_RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R2_1_RW0" next="R2_1_RW0"/>
+ <whennext cond="A =1|A =3">
+   <entity prev="R2_1_IN0" next="R2_1_W0"/>
+  </whennext>
+ <whennext cond="A =2|A =4">
+   <entity prev="R2_1_IN0" next="R2_1_W1"/>
+  </whennext>
+</router>
+
+<router id="R2_1_RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity prev="R2_1_RW0" next="R2_1_RW0"/>
+ <whennext cond="A =1|A =3">
+   <entity prev="R2_1_IN1" next="R2_1_W0"/>
+  </whennext>
+ <whennext cond="A =2|A =4">
+   <entity prev="R2_1_IN1" next="R2_1_W1"/>
+  </whennext>
+</router>
+
+<generate id="CPU1" class="MESSAGE">
+ <stat type="NORMAL" parm1="4" parm2="1"/>
+ <next dead="R1_0_In0"/>
+</generate>
+
+<generate id="CPU2" class="MESSAGE">
+ <stat type="NORMAL" parm1="4" parm2="1"/>
+ <next dead="R1_0_In1"/>
+</generate>
+
+<generate id="CPU3" class="MESSAGE">
+ <stat type="NORMAL" parm1="4" parm2="1"/>
+ <next dead="R1_1_In0"/>
+</generate>
+
+<generate id="CPU4" class="MESSAGE">
+ <stat type="NORMAL" parm1="4" parm2="1"/>
+ <next dead="R1_1_In1"/>
+</generate>
+
+<dead id="W1" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="W1_OBS"/>
+</dead>
+
+<dead id="W2" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="W2_OBS"/>
+</dead>
+
+<dead id="W3" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="W3_OBS"/>
+</dead>
+
+<dead id="W4" class="MESSAGE">
+ <type struct="QUEUE" size="10" init="0"/>
+ <observer type="LENGTH" name="W4_OBS"/>
+</dead>
+
+<destroy id="MEM1" class="MESSAGE">
+ <prev dead="W1"/>
+</destroy>
+
+<destroy id="MEM2" class="MESSAGE">
+ <prev dead="W2"/>
+</destroy>
+
+<destroy id="MEM3" class="MESSAGE">
+ <prev dead="W3"/>
+</destroy>
+
+<destroy id="MEM4" class="MESSAGE">
+ <prev dead="W4"/>
+</destroy>
+
+</acd>

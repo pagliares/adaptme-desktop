@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<!DOCTYPE acd PUBLIC  "-//acd description//EN" "xacdml.dtd">
+<acd id="OMEGA">
+<class id="MESSAGE" attribute="A" type="INT"/>
+<class id="SERVER"/>
+<instance model="R1[0]"/>
+<instance model="R1[1]"/>
+<instance model="R2[0]"/>
+<instance model="R2[1]"/>
+<connect generate="CPU1" submodel.in="R1[0].In0"/>
+<connect generate="CPU2" submodel.in="R1[0].In1"/>
+<connect generate="CPU3" submodel.in="R1[1].In0"/>
+<connect generate="CPU4" submodel.in="R1[1].In1"/>
+<connect submodel.out="R1[0].Out0" submodel.in="R2[0].In0"/>
+<connect submodel.out="R1[0].Out1" submodel.in="R2[1].In0"/>
+<connect submodel.out="R1[1].Out0" submodel.in="R2[0].In1"/>
+<connect submodel.out="R1[1].Out1" submodel.in="R2[1].In1"/>
+<connect submodel.out="R2[0].Out0" dead="W1"/>
+<connect submodel.out="R2[0].Out1" dead="W2"/>
+<connect submodel.out="R2[1].Out0" dead="W3"/>
+<connect submodel.out="R2[1].Out1" dead="W4"/>
+<generate id="CPU1" class="MESSAGE">
+<stat type="NORMAL"   parm1="4"   parm2="1"/>
+<next dead="R1[0].In0"/>
+</generate>
+<generate id="CPU2" class="MESSAGE">
+<stat type="NORMAL"   parm1="4"   parm2="1"/>
+<next dead="R1[0].In1"/>
+</generate>
+<generate id="CPU3" class="MESSAGE">
+<stat type="NORMAL"   parm1="4"   parm2="1"/>
+<next dead="R1[1].In0"/>
+</generate>
+<generate id="CPU4" class="MESSAGE">
+<stat type="NORMAL"   parm1="4"   parm2="1"/>
+<next dead="R1[1].In1"/>
+</generate>
+<dead id="W1" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W1_OBS"/>
+</dead>
+<dead id="W2" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W2_OBS"/>
+</dead>
+<dead id="W3" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W3_OBS"/>
+</dead>
+<dead id="W4" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W4_OBS"/>
+</dead>
+<destroy id="MEM1" class="MESSAGE">
+   <prev dead="W1"/>
+</destroy>
+<destroy id="MEM2" class="MESSAGE">
+   <prev dead="W2"/>
+</destroy>
+<destroy id="MEM3" class="MESSAGE">
+    <prev dead="W3"/>
+</destroy>
+<destroy id="MEM4" class="MESSAGE">
+    <prev dead="W4"/>
+</destroy>
+<submodel id="R1">
+<interface>
+  <in id="In0" class="MESSAGE"/>
+  <in id="In1" class="MESSAGE"/>
+ <out id="Out0">
+   <prev dead="W0" class="MESSAGE"/>
+ </out> 
+<out id="Out1">
+   <prev dead="W1" class="MESSAGE"/>
+ </out> 
+</interface>
+<dead id="W0" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W0_OBS"/>
+</dead>
+<dead id="W1" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W1_OBS"/>
+</dead>
+<dead id="RW0" class="SERVER">
+<type struct="QUEUE"
+      size="1"
+      init="1"/>
+</dead>
+<dead id="RW1" class="SERVER">
+<type struct="QUEUE"
+      size="1"
+      init="1"/>
+</dead>
+<router id="RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity_class prev="RW0" next="RW0"/>
+ <whennext cond="A .LE. 2">
+  <entity_class prev="IN0" next="W0"/>
+ </whennext>
+ <whennext cond="A .GT. 2">
+  <entity_class prev="IN0" next="W1"/>
+ </whennext>
+</router>
+<router id="RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity_class prev="RW1" next="RW1"/>
+ <whennext cond="A .LE. 2">
+  <entity_class prev="IN1" next="W0"/>
+ </whennext>
+ <whennext cond="A .GT. 2">
+  <entity_class prev="IN1" next="W1"/>
+ </whennext>
+</router>
+</submodel>
+<submodel id="R2">
+<interface>
+  <in id="In0" class="MESSAGE"/>
+  <in id="In1" class="MESSAGE"/>
+ <out id="Out0">
+   <prev dead="W0" class="MESSAGE"/>
+ </out> 
+<out id="Out1">
+   <prev dead="W1" class="MESSAGE"/>
+ </out> 
+</interface>
+<dead id="W0" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W0_OBS"/>
+</dead>
+<dead id="W1" class="MESSAGE">
+<type struct="QUEUE"
+      size="10"
+      init="0"/>
+<observer type="LENGTH" name="W1_OBS"/>
+</dead>
+<dead id="RW0" class="SERVER">
+<type struct="QUEUE"
+      size="1"
+      init="1"/>
+</dead>
+<dead id="RW1" class="SERVER">
+<type struct="QUEUE"
+      size="1"
+      init="1"/>
+</dead>
+<router id="RT0">
+ <stat type="CONST" parm1="1"/>
+ <entity_class prev="RW0" next="RW0"/>
+ <whennext cond="A =1|A =3">
+  <entity_class prev="IN0" next="W0"/>
+ </whennext>
+ <whennext cond="A =2|A =4">
+  <entity_class prev="IN0" next="W1"/>
+ </whennext>
+</router>
+<router id="RT1">
+ <stat type="CONST" parm1="1"/>
+ <entity_class prev="RW0" next="RW0"/>
+ <whennext cond="A =1|A =3">
+  <entity_class prev="IN1" next="W0"/>
+ </whennext>
+ <whennext cond="A =2|A =4">
+  <entity_class prev="IN1" next="W1"/>
+ </whennext>
+</router>
+
+</submodel>
+</acd>
+

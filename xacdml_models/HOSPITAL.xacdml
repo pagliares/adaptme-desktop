@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE acd PUBLIC  "acd description//EN" "xacdml.dtd">
+<acd id="HOSPITAL">
+<simtime time="2000"/>
+<class id="PATIENT" />
+<class id="EMERGENCY"/>
+<class id="DOCTOR"/>
+<generate id="ARRIVAL_P" class="PATIENT">
+<stat type="POISSON" parm1="10"/>
+<next dead="PW"/>
+</generate>
+<generate id="ARRIVAL_E" class="EMERGENCY">
+<stat type="POISSON" parm1="15"/>
+<next dead="EW"/>
+</generate>
+<dead id="PW"  class="PATIENT">
+<type struct="QUEUE" size="10" init="0"/>
+</dead>
+<dead id="EW"  class="EMERGENCY">
+<type struct="QUEUE" size="10" init="0"/>
+</dead>
+<act id="SERVICE_E">
+<stat type="UNIFORM" parm1="10" parm2="40"/>
+<entity_class prev="EW" next="EA"/>
+<entity_class prev="DR" next="DR"/>
+<interrupting act="SERVICE_P"/>
+</act>
+<act id="SERVICE_P">
+<stat type="UNIFORM" parm1="5" parm2="30"/>
+<entity_class prev="PW" next="PA"/>
+<entity_class prev="DR" next="DR"/>
+<interrupted action="RESTART"/>
+</act>
+<dead id="EA" class="EMERGENCY">
+<type struct="QUEUE" size="10" init="0"/>
+</dead>
+<dead id="DR" class="DOCTOR">
+<type struct="QUEUE" size="3" init="3"/>
+</dead>
+<dead id="PA" class="PATIENT">
+<type struct="QUEUE" size="10" init="0"/>
+</dead>
+<destroy id="DEST_P" class="PATIENT">
+<prev dead="PA"/>
+</destroy>
+<destroy id="DEST_E" class="PATIENT">
+<prev dead="EA"/>
+</destroy>
+</acd>
+

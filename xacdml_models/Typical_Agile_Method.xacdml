@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE acd PUBLIC  "acd description//EN" "xacdml.dtd">
+<acd id="AUTOMATICALLY_GENERATED_XACDML">
+<class id="Create_List_Work_Items" />
+<act id="Prioritize_Work_Items" class="null">
+<stat type="UNIFORM" parm1="0.0" parm2="10.0"/>
+<graphic type="BOX" x="481" y="324"/>
+</act>
+<generate id="Create_List_Work_Items" class="Create_List_Work_Items">
+<stat type="UNIFORM" parm1="0.0" parm2="10.0"/>
+<graphic type="BOX" x="138" y="296"/>
+<next dead="List_of_Work_Items"/>
+</generate>
+<dead id="List_of_Work_Items" class="Create_List_Work_Items">
+<type struct="QUEUE" size="10" init="0"/>
+<graphic type="CIRCLE" x="304" y="308"/>
+<observer type="LENGTH" name="Queue_Lenght_Observer"/>
+</dead>
+</acd>
