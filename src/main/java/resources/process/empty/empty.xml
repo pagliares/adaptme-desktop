@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uma:MethodLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uma="http://www.eclipse.org/epf/uma/1.0.6" name="Library3" briefDescription="" id="_csfYII8LEeWgCKc8yp4cbg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" tool="epf=1.5.0">
+  <MethodElementProperty name="library_synFree" value="true"/>
+  <MethodPlugin name="plug-in" briefDescription="" id="_dfs9wI8LEeWgCKc8yp4cbg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" supporting="false" userChangeable="true">
+    <MethodElementProperty name="plugin_synFree" value="true"/>
+    <MethodPackage xsi:type="uma:ContentCategoryPackage" name="ContentCategories" id="_l70OcI8LEeWgCKc8yp4cbg"/>
+    <MethodPackage xsi:type="uma:ContentPackage" name="new_content_package" briefDescription="" id="_ejrjQI8LEeWgCKc8yp4cbg" orderingGuide="" presentationName="" suppressed="false" global="false">
+      <MethodElementProperty name="pkg_loadCheck" value="true"/>
+    </MethodPackage>
+  </MethodPlugin>
+</uma:MethodLibrary>

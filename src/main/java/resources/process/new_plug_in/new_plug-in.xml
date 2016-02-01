@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uma:MethodLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uma="http://www.eclipse.org/epf/uma/1.0.6" name="Library1" briefDescription="" id="_Hx5roFaDEeWSQKzIHBnYPA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" tool="epf=1.5.0">
+  <MethodElementProperty name="library_synFree" value="true"/>
+  <MethodPlugin name="plug-in" briefDescription="" id="_FK8bAFaEEeWSQKzIHBnYPA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" supporting="false" userChangeable="true">
+    <MethodElementProperty name="plugin_synFree" value="true"/>
+    <MethodPackage xsi:type="uma:ContentCategoryPackage" name="ContentCategories" id="_cOPvYGDIEeWLFpbWI_qDHw"/>
+    <MethodPackage xsi:type="uma:ContentPackage" name="new_content_package" briefDescription="" id="_n8_EUFaJEeWSQKzIHBnYPA" orderingGuide="" presentationName="" suppressed="false" global="false">
+      <MethodElementProperty name="pkg_loadCheck" value="true"/>
+      <ContentElement xsi:type="uma:Artifact" name="Epic input" briefDescription="" id="_vckFwGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Epic input" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="Epic output" briefDescription="" id="_0GQNsGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Epic output" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Role" name="Customer" briefDescription="" id="_1-W-0GDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Customer" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="User Story" briefDescription="" id="_4Sx4gGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="User Story" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Role" name="Developer" briefDescription="" id="_-pfi8GDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Developer" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="Bug" briefDescription="" id="_ErFR8GDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Bug" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="Prioritizing user stories" briefDescription="" id="_IcYZUGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Prioritizing user stories" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+        <PerformedBy>_1-W-0GDFEeWLFpbWI_qDHw</PerformedBy>
+        <MandatoryInput>_4Sx4gGDFEeWLFpbWI_qDHw</MandatoryInput>
+        <Output>_4Sx4gGDFEeWLFpbWI_qDHw</Output>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="Splitting user stories" briefDescription="" id="_LGkHoGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Splitting user stories" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+        <PerformedBy>_-pfi8GDFEeWLFpbWI_qDHw</PerformedBy>
+        <MandatoryInput>_4Sx4gGDFEeWLFpbWI_qDHw</MandatoryInput>
+        <Output>_4Sx4gGDFEeWLFpbWI_qDHw</Output>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="Estimating user stories" briefDescription="" id="_OKUzkGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Estimating user stories" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+        <PerformedBy>_-pfi8GDFEeWLFpbWI_qDHw</PerformedBy>
+        <MandatoryInput>_4Sx4gGDFEeWLFpbWI_qDHw</MandatoryInput>
+        <Output>_4Sx4gGDFEeWLFpbWI_qDHw</Output>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="Epic" briefDescription="" id="_evDKIGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Epic" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="Problem report user story" briefDescription="" id="_c9HdAGDHEeWLFpbWI_qDHw" orderingGuide="" presentationName="Problem report user story" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="me_edited" value="true"/>
+      </ContentElement>
+    </MethodPackage>
+    <MethodPackage xsi:type="uma:ProcessComponent" name="CoyoteAgileProcess" briefDescription="" id="_ayxzwGDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="" suppressed="false" global="false" authors="" changeDescription="" version="">
+      <MethodElementProperty name="pkg_loadCheck" value="true"/>
+      <MethodElementProperty name="me_edited" value="true"/>
+      <Process xsi:type="uma:DeliveryProcess" name="CoyoteAgileProcess" briefDescription="" id="_ayxzwWDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="Coyote Agile Process" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+        <Presentation xsi:type="uma:DeliveryProcessDescription" name="CoyoteAgileProcess,_ayxzwWDEEeWLFpbWI_qDHw" briefDescription="" id="-GVZAb_jsHa1pXxXZkrcazQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" externalId="" usageGuidance="">
+          <MainDescription></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <HowToStaff></HowToStaff>
+          <Purpose></Purpose>
+          <Scope></Scope>
+          <UsageNotes></UsageNotes>
+          <Scale></Scale>
+          <ProjectCharacteristics></ProjectCharacteristics>
+          <RiskLevel></RiskLevel>
+          <EstimatingTechnique></EstimatingTechnique>
+          <ProjectMemberExpertise></ProjectMemberExpertise>
+          <TypeOfContract></TypeOfContract>
+        </Presentation>
+        <BreakdownElement xsi:type="uma:Iteration" name="Release [1..n]" briefDescription="" id="_hKJlgWDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="Release [1..n]" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="true" variabilityType="na">
+          <SuperActivity>_ayxzwWDEEeWLFpbWI_qDHw</SuperActivity>
+          <BreakdownElement xsi:type="uma:Activity" name="Iteration [1..n]" briefDescription="" id="_mmLJUWDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="Iteration [1..n]" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_hKJlgWDEEeWLFpbWI_qDHw</SuperActivity>
+            <BreakdownElement xsi:type="uma:Activity" name="Sprint planning" briefDescription="" id="_1Bs-wWDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="Sprint planning" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+              <SuperActivity>_mmLJUWDEEeWLFpbWI_qDHw</SuperActivity>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Prioritizing user stories" briefDescription="" id="_Qz1McGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Prioritizing user stories" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="true">
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Task>_IcYZUGDGEeWLFpbWI_qDHw</Task>
+                <MandatoryInput>_mQKLJGDGEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_mQKLJGDGEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_mQKLIWDGEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Estimating user stories" briefDescription="" id="_QlDwoGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Estimating user stories" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_mQKLJGDGEeWLFpbWI_qDHw/mandatoryInput"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Task>_OKUzkGDGEeWLFpbWI_qDHw</Task>
+                <MandatoryInput>_mQKLJGDGEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_mQKLJGDGEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>__nIacWDGEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Splitting user stories" briefDescription="" id="_REUfgGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Splitting user stories" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="true">
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Task>_LGkHoGDGEeWLFpbWI_qDHw</Task>
+                <MandatoryInput>_mQKLJGDGEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_mQKLJGDGEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>__nIacWDGEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:RoleDescriptor" name="Customer" briefDescription="" id="_mQKLIWDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Customer" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Role>_1-W-0GDFEeWLFpbWI_qDHw</Role>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:WorkProductDescriptor" name="User Story" briefDescription="" id="_mQKLJGDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="User Story" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true" activityEntryState="" activityExitState="">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <WorkProduct>_4Sx4gGDFEeWLFpbWI_qDHw</WorkProduct>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:RoleDescriptor" name="Developer" briefDescription="" id="__nIacWDGEeWLFpbWI_qDHw" orderingGuide="" presentationName="Developer" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <MethodElementProperty name="me_references" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?>&lt;me_references udtList=&quot;&quot;/>"/>
+                <SuperActivity>_1Bs-wWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Role>_-pfi8GDFEeWLFpbWI_qDHw</Role>
+              </BreakdownElement>
+            </BreakdownElement>
+            <BreakdownElement xsi:type="uma:Activity" name="Development" briefDescription="" id="_3FKrUWDEEeWLFpbWI_qDHw" orderingGuide="" presentationName="Development" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+              <SuperActivity>_mmLJUWDEEeWLFpbWI_qDHw</SuperActivity>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Solo programming with test first" briefDescription="" id="_XX06YGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Solo programming with test first" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy/_FIDFUGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output/_Gf0wkGDHEeWLFpbWI_qDHw/output"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_FIDFUGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <Output>_Gf0wkGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Solo programming with test after" briefDescription="" id="_aOF84GDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Solo programming with test after" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy/_FIDFUGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output/_Gf0wkGDHEeWLFpbWI_qDHw/output"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_FIDFUGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <Output>_Gf0wkGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Pair programming with test first" briefDescription="" id="_cKv20GDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Pair programming with test first" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy/_FIDFUGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output/_Gf0wkGDHEeWLFpbWI_qDHw/output"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_FIDFUGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <Output>_Gf0wkGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Pair programming with test after" briefDescription="" id="_gi-bUGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Pair programming with test after" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy/_FIDFUGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output/_Gf0wkGDHEeWLFpbWI_qDHw/output"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_FIDFUGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <Output>_Gf0wkGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Debugging" briefDescription="" id="_iUHo0GDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Debugging" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy/_qWFpQGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_qWFpQGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:TaskDescriptor" name="Refactoring" briefDescription="" id="_kw50UGDFEeWLFpbWI_qDHw" orderingGuide="" presentationName="Refactoring" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" isSynchronizedWithSource="false">
+                <MethodElementProperty name="descriptor_localUsingInfo" value="_FIDFUGDHEeWLFpbWI_qDHw/mandatoryInput/_FIDFUGDHEeWLFpbWI_qDHw/output/_EQz7UGDHEeWLFpbWI_qDHw/performedPrimarilyBy"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <MandatoryInput>_FIDFUGDHEeWLFpbWI_qDHw</MandatoryInput>
+                <Output>_FIDFUGDHEeWLFpbWI_qDHw</Output>
+                <PerformedPrimarilyBy>_EQz7UGDHEeWLFpbWI_qDHw</PerformedPrimarilyBy>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:RoleDescriptor" name="Developer" briefDescription="" id="_EQz7UGDHEeWLFpbWI_qDHw" orderingGuide="" presentationName="Developer" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <Role>_-pfi8GDFEeWLFpbWI_qDHw</Role>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:WorkProductDescriptor" name="User Story" briefDescription="" id="_FIDFUGDHEeWLFpbWI_qDHw" orderingGuide="" presentationName="User Story" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true" activityEntryState="" activityExitState="">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <WorkProduct>_4Sx4gGDFEeWLFpbWI_qDHw</WorkProduct>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:WorkProductDescriptor" name="Bug" briefDescription="" id="_Gf0wkGDHEeWLFpbWI_qDHw" orderingGuide="" presentationName="Bug" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true" activityEntryState="" activityExitState="">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <WorkProduct>_ErFR8GDGEeWLFpbWI_qDHw</WorkProduct>
+              </BreakdownElement>
+              <BreakdownElement xsi:type="uma:WorkProductDescriptor" name="Problem report user story" briefDescription="" id="_qWFpQGDHEeWLFpbWI_qDHw" orderingGuide="" presentationName="Problem report user story" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="false" prefix="" isSynchronizedWithSource="true" activityEntryState="" activityExitState="">
+                <MethodElementProperty name="descriptor_createdByReference" value="true"/>
+                <SuperActivity>_3FKrUWDEEeWLFpbWI_qDHw</SuperActivity>
+                <WorkProduct>_c9HdAGDHEeWLFpbWI_qDHw</WorkProduct>
+              </BreakdownElement>
+            </BreakdownElement>
+          </BreakdownElement>
+        </BreakdownElement>
+      </Process>
+    </MethodPackage>
+  </MethodPlugin>
+</uma:MethodLibrary>

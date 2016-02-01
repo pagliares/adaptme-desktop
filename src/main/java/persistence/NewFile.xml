@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<process name="Coyote agile process" chosen="false">
+    <processContentRepository name="Release [1..n]" type="ACTIVITY">
+        <processContentRepository name="Iteration [1..n]" type="ITERATION">
+            <processContentRepository name="Sprint planning" type="ACTIVITY">
+                <processContentRepository name="Prioritizing user stories" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>Epic</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Epic</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Customer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Spliting user stories" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>Epic</name>
+                    </methodContentRepository>
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <mainRole type="ROLE">
+                        <name>Customer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Estimating user stories" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Customer</name>
+                    </mainRole>
+                </processContentRepository>
+            </processContentRepository>
+            <processContentRepository name="Development" type="ACTIVITY">
+                <processContentRepository name="Solo programming with test first" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </outputMethodContentsRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Solo programming with test after" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </outputMethodContentsRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Pair programming with test first" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </outputMethodContentsRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Pair programming with test after" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>User Story</name>
+                    </outputMethodContentsRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Debugging" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Code</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+                <processContentRepository name="Refactoring" type="TASK">
+                    <methodContentRepository type="ARTIFACT">
+                        <name>Bug</name>
+                    </methodContentRepository>
+                    <outputMethodContentsRepository type="ARTIFACT">
+                        <name>Code</name>
+                    </outputMethodContentsRepository>
+                    <mainRole type="ROLE">
+                        <name>Developer</name>
+                    </mainRole>
+                </processContentRepository>
+            </processContentRepository>
+        </processContentRepository>
+    </processContentRepository>
+    <processContentRepository name="Iteration [1..n]" type="ITERATION">
+        <processContentRepository name="Sprint planning" type="ACTIVITY">
+            <processContentRepository name="Prioritizing user stories" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>Epic</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Epic</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Customer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Spliting user stories" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>Epic</name>
+                </methodContentRepository>
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <mainRole type="ROLE">
+                    <name>Customer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Estimating user stories" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Customer</name>
+                </mainRole>
+            </processContentRepository>
+        </processContentRepository>
+        <processContentRepository name="Development" type="ACTIVITY">
+            <processContentRepository name="Solo programming with test first" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </outputMethodContentsRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Solo programming with test after" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </outputMethodContentsRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Pair programming with test first" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </outputMethodContentsRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Pair programming with test after" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>User Story</name>
+                </outputMethodContentsRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Debugging" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Code</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+            <processContentRepository name="Refactoring" type="TASK">
+                <methodContentRepository type="ARTIFACT">
+                    <name>Bug</name>
+                </methodContentRepository>
+                <outputMethodContentsRepository type="ARTIFACT">
+                    <name>Code</name>
+                </outputMethodContentsRepository>
+                <mainRole type="ROLE">
+                    <name>Developer</name>
+                </mainRole>
+            </processContentRepository>
+        </processContentRepository>
+    </processContentRepository>
+    <processContentRepository name="Sprint planning" type="ACTIVITY">
+        <processContentRepository name="Prioritizing user stories" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>Epic</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Epic</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Customer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Spliting user stories" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>Epic</name>
+            </methodContentRepository>
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <mainRole type="ROLE">
+                <name>Customer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Estimating user stories" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>User Story</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Customer</name>
+            </mainRole>
+        </processContentRepository>
+    </processContentRepository>
+    <processContentRepository name="Development" type="ACTIVITY">
+        <processContentRepository name="Solo programming with test first" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>User Story</name>
+            </outputMethodContentsRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Bug</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Solo programming with test after" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>User Story</name>
+            </outputMethodContentsRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Bug</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Pair programming with test first" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>User Story</name>
+            </outputMethodContentsRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Bug</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Pair programming with test after" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>User Story</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>User Story</name>
+            </outputMethodContentsRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Bug</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Debugging" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>Bug</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Code</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+        <processContentRepository name="Refactoring" type="TASK">
+            <methodContentRepository type="ARTIFACT">
+                <name>Bug</name>
+            </methodContentRepository>
+            <outputMethodContentsRepository type="ARTIFACT">
+                <name>Code</name>
+            </outputMethodContentsRepository>
+            <mainRole type="ROLE">
+                <name>Developer</name>
+            </mainRole>
+        </processContentRepository>
+    </processContentRepository>
+    <processContentRepository name="Prioritizing user stories" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>Epic</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Epic</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Customer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Spliting user stories" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>Epic</name>
+        </methodContentRepository>
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <mainRole type="ROLE">
+            <name>Customer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Estimating user stories" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>User Story</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Customer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Solo programming with test first" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>User Story</name>
+        </outputMethodContentsRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Bug</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Solo programming with test after" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>User Story</name>
+        </outputMethodContentsRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Bug</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Pair programming with test first" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>User Story</name>
+        </outputMethodContentsRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Bug</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Pair programming with test after" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>User Story</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>User Story</name>
+        </outputMethodContentsRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Bug</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Debugging" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>Bug</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Code</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+    <processContentRepository name="Refactoring" type="TASK">
+        <methodContentRepository type="ARTIFACT">
+            <name>Bug</name>
+        </methodContentRepository>
+        <outputMethodContentsRepository type="ARTIFACT">
+            <name>Code</name>
+        </outputMethodContentsRepository>
+        <mainRole type="ROLE">
+            <name>Developer</name>
+        </mainRole>
+    </processContentRepository>
+</process>

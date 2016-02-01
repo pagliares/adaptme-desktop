@@ -1,0 +1,16 @@
+{
+	"macroUserStoryCoefficient":2,
+	"prioritiesProbabilityArray":[0.34,0.33,0.33],
+	"learningCoefficientSolo":0.00001875,
+	"learningCoefficientPair":0.00002025,
+	"problemReportsRate":0,
+	"maximumProbabilityOfRefactoringSession":0.3,
+	"maximumDaysWithoutRefactoring":50,
+	"refactoringModelCoefficient":1000,
+	"minimumDefectInjectionRate":0,
+	"maximumDefectInjectionRate":0,
+	"probabilityToFixDefectWithTDD":0,
+	"probabilityToFixDefectWithoutTDD":0,
+	"testFistInfluence":-0.14,
+	"pairProgrammingInfluence":0.40
+}

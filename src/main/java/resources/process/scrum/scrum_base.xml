@@ -1,0 +1,1293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uma:MethodLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uma="http://www.eclipse.org/epf/uma/1.0.6" name="Scrum" briefDescription="" id="_rnsX4OF4Edyp34pwdTOSVQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" tool="epf=1.5.0">
+  <MethodPlugin name="Scrum" briefDescription="Scrum Plug-In" id="_6Ab_EOF4Edyp34pwdTOSVQ" orderingGuide="" presentationName="" suppressed="false" authors="Mike Cohn, Ken Clyne, Claude Aubry et al" changeDate="2008-07-30T02:49:30" changeDescription="" version="" supporting="false" userChangeable="true">
+    <Copyright>_Ybm6AFp4Ed2BQt1093tw4A</Copyright>
+    <MethodPackage xsi:type="uma:ContentCategoryPackage" name="ContentCategories" id="_MklnMN0kEeSFiZ6z1OiBPg">
+      <ContentCategory xsi:type="uma:CustomCategory" name="scrum_overview" briefDescription="" id="_Om8IAOGEEdyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Overview" suppressed="false" isAbstract="false" variabilityType="na">
+        <MethodElementProperty name="PUBLISH_CATEGORY" value="true"/>
+        <Presentation name="new_custom_category,_Om8IAOGEEdyp34pwdTOSVQ" briefDescription="" id="-OUAVEKu-MpijImO-oy53Rg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-19T12:15:02" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<br />
+<p>
+    <img src="http://wahoo.atsva.com/wiki/download/attachments/20578927/Scrum.png" align="absmiddle" border="0" />
+</p>
+<p>
+    Scrum projects make progress in a series of "sprints". Sprint are analogous to iterations. The typical duration of a
+    sprint is 2-4 weeks.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+        <CategorizedElement>_lC260PVhEdyMdecrgpMbRg</CategorizedElement>
+        <CategorizedElement>_hUIKcOGFEdyp34pwdTOSVQ</CategorizedElement>
+        <CategorizedElement>_IAabwOGLEdyp34pwdTOSVQ</CategorizedElement>
+        <CategorizedElement>_4tsR4OGFEdyp34pwdTOSVQ</CategorizedElement>
+        <CategorizedElement>_CWWNMOGREdyp34pwdTOSVQ</CategorizedElement>
+      </ContentCategory>
+      <ContentCategory xsi:type="uma:CustomCategory" name="scrum_guidance" briefDescription="" id="_CWWNMOGREdyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Guidance" suppressed="false" isAbstract="false" variabilityType="na">
+        <CategorizedElement>_SCv2oOF7Edyp34pwdTOSVQ</CategorizedElement>
+        <CategorizedElement>_L1t78F5nEd22Gu98eFOlrQ</CategorizedElement>
+        <CategorizedElement>_PmtE0F5oEd22Gu98eFOlrQ</CategorizedElement>
+        <CategorizedElement>_8PMFQF5hEd22Gu98eFOlrQ</CategorizedElement>
+        <CategorizedElement>_28Gp8F6AEd22Gu98eFOlrQ</CategorizedElement>
+      </ContentCategory>
+      <ContentCategory xsi:type="uma:Discipline" name="scrum_activities" briefDescription="" id="_4tsR4OGFEdyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Activities" suppressed="false" isAbstract="false" variabilityType="na">
+        <Task>_4gCKAOF9Edyp34pwdTOSVQ</Task>
+        <Task>_sKJ9AOF-Edyp34pwdTOSVQ</Task>
+        <Task>_i_fkQOF-Edyp34pwdTOSVQ</Task>
+        <Task>_oSM0AOF-Edyp34pwdTOSVQ</Task>
+        <Task>_lesG8F53Ed22Gu98eFOlrQ</Task>
+        <Task>_btIuEF8LEd22Gu98eFOlrQ</Task>
+        <Task>_RunHEF8ZEd22Gu98eFOlrQ</Task>
+      </ContentCategory>
+      <ContentCategory xsi:type="uma:RoleSet" name="scrum_roles" briefDescription="" id="_hUIKcOGFEdyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Roles" suppressed="false" isAbstract="false" variabilityType="na">
+        <Role>_QcnRMOF5Edyp34pwdTOSVQ</Role>
+        <Role>_Bw-twOF6Edyp34pwdTOSVQ</Role>
+        <Role>_O65KUOF6Edyp34pwdTOSVQ</Role>
+      </ContentCategory>
+      <ContentCategory xsi:type="uma:WorkProductType" name="scrum_work_products" briefDescription="" id="_IAabwOGLEdyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Work Products" suppressed="false" isAbstract="false" variabilityType="na">
+        <WorkProduct>__uNYkPVgEdyMdecrgpMbRg</WorkProduct>
+        <WorkProduct>_OZIPIOF8Edyp34pwdTOSVQ</WorkProduct>
+        <WorkProduct>_tFw9IPVoEdyJbYuqG3X5Ag</WorkProduct>
+        <WorkProduct>_Q5Ki8OF8Edyp34pwdTOSVQ</WorkProduct>
+        <WorkProduct>_YzmSIF8sEd22Gu98eFOlrQ</WorkProduct>
+        <WorkProduct>_rU4H4F8fEd22Gu98eFOlrQ</WorkProduct>
+      </ContentCategory>
+    </MethodPackage>
+    <MethodPackage xsi:type="uma:ContentPackage" name="Scrum" briefDescription="Scrum" id="_Arzq4OF5Edyp34pwdTOSVQ" orderingGuide="" presentationName="" suppressed="false" global="false">
+      <ContentElement xsi:type="uma:Role" name="product_owner" briefDescription="The Product Owner represents the interests of all stakeholders, defines the features of the product and prioritizes the Product Backlog." id="_QcnRMOF5Edyp34pwdTOSVQ" orderingGuide="" presentationName="Product Owner" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:RoleDescription" name="Product Owner,_QcnRMOF5Edyp34pwdTOSVQ" briefDescription="" id="--OmeeCdOSH1ki1_i9TN0kg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-11T06:32:26" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The Product Owner has the following responsibilities:
+</p>
+<ul class="noindent">
+    <li>
+        Define the features of the product;
+    </li>
+    <li>
+        Decide on release date and content;
+    </li>
+    <li>
+        Be responsible for the profitability of the product (ROI);
+    </li>
+    <li>
+        Prioritize features according to market value;
+    </li>
+    <li>
+        Adjust features and priority every 30 days, as needed; and
+    </li>
+    <li>
+        Accept or reject work results.
+    </li>
+</ul>
+<p>
+    The product owner is responsible for the first of the three Scrum ceremonies&nbsp;:&nbsp;Sprint Planning
+</p>
+<p>
+    The Scrum Team looks at the prioritized Product Backlog and slices off the top priority items and commits to completing
+    them during a sprint. These items become the Sprint Backlog.
+</p>
+<p>
+    In return for the Scrum team's commitment to completing the selected tasks, the Product Owner commits that he or she
+    will not throw new requirements at the team during the sprint. Requirements are allowed to change but only outside the
+    sprint. Once the team starts on a sprint it remains maniacally focused on the goal of that sprint.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <AssignmentApproaches>&lt;ul>&#xD;
+    &lt;li>&#xD;
+        A single person dedicated the the project - must be available to answer the team's questions&#xD;
+    &lt;/li>&#xD;
+    &lt;li>&#xD;
+        An extended member of the team that participates in sprint planning and sprint review&amp;nbsp;meetings&#xD;
+    &lt;/li>&#xD;
+    &lt;li>&#xD;
+        Typically someone from a Marketing role or a key user in internal development&#xD;
+    &lt;/li>&#xD;
+    &lt;li>&#xD;
+        Can be a&amp;nbsp;customer representative or a customer proxy&#xD;
+    &lt;/li>&#xD;
+&lt;/ul></AssignmentApproaches>
+          <Skills></Skills>
+          <Synonyms></Synonyms>
+        </Presentation>
+        <ResponsibleFor>_OZIPIOF8Edyp34pwdTOSVQ</ResponsibleFor>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Role" name="scrummaster" briefDescription="The ScrumMaster is responsible for making sure a Scrum team lives by the values and practices of Scrum. The ScrumMaster protects the team by making sure they do not overcommit themselves to what they can achieve during a sprint. &#xD;&#xA;&#xD;&#xA;The ScrumMaster facilitates the daily scrum and becomes responsible for removing any obstacles that are brought up by the team during those meetings. " id="_Bw-twOF6Edyp34pwdTOSVQ" orderingGuide="" presentationName="ScrumMaster" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:RoleDescription" name="ScrumMaster,_Bw-twOF6Edyp34pwdTOSVQ" briefDescription="" id="-yuXxE_O0V_WcpgWeUmX8fQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-11T05:41:25" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The ScrumMaster:
+</p>
+<ul>
+    <li>
+        Represents management to the project (liaison);
+    </li>
+    <li>
+        Is responsible for enacting Scrum values and practices;
+    </li>
+    <li>
+        Runs The Daily Scrum meetings;
+    </li>
+    <li>
+        Removes impediments;
+    </li>
+    <li>
+        Shields the team from external interferences;
+    </li>
+    <li>
+        Ensures that the team is fully functional and productive; and&nbsp;
+    </li>
+    <li>
+        Enables close cooperation across all roles and functions.
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations><![CDATA[<p>
+    The ScrumMaster:
+</p>
+<ul class="noindent">
+    <li>
+        is not the project manager but a facilitative team leader and Scrum process manager&nbsp;
+    </li>
+    <li>
+        monitors sprint tasks to ensure sprint success but does not create/assign tasks (the team creates/assigns tasks)
+    </li>
+    <li>
+        is part of the team: he shares responsibility with the other team members
+    </li>
+    <li>
+        must regularly, physically meet the other team members
+    </li>
+</ul>]]></KeyConsiderations>
+          <AssignmentApproaches>The ScrumMaster role is typically filled by a project manager or a technical team leader but can be anyone.</AssignmentApproaches>
+          <Skills></Skills>
+          <Synonyms></Synonyms>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Role" name="scrum_team" briefDescription="The Scrum Team builds the product that the customer is going to consume: the software or website, for example. The team in Scrum is &quot;cross-functional&quot; - it includes all the expertise necessary to deliver the potentially shippable product each Sprint - and it is &quot;self-organizing&quot;, with a very high degree of autonomy and accountability." id="_O65KUOF6Edyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum Team" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:RoleDescription" name="new_role,_O65KUOF6Edyp34pwdTOSVQ" briefDescription="" id="-u_0D0nwGoZhpANLeqrq14A" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-06T08:46:48" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The Team:
+</p>
+<ul>
+    <li>
+        Is cross-functional, with seven (plus/minus two) members;
+    </li>
+    <li>
+        Selects the Sprint goal and specifies work results;
+    </li>
+    <li>
+        Has the right to do everything within the boundaries of the project guidelines to reach the Sprint goal;
+    </li>
+    <li>
+        Organizes itself and its work; and
+    </li>
+    <li>
+        Demos work results to the Product Owner.
+    </li>
+</ul>
+<p>
+    Scrum teams do not include any of the traditional software engineering roles such as programmer, designer, tester, or
+    architect. Everyone on the project works together to complete the set of work they have collectively committed to
+    complete within a sprint. Scrum teams develop a deep form of camaraderie and a feeling that "we're all in this
+    together."
+</p>
+<p>
+    A&nbsp;typical Scrum team&nbsp;is 5-9 people but can be scaled using a Scrum of Scrums.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <AssignmentApproaches>&lt;p>&#xD;
+    Members should be full-time but there may be exceptions (e.g. database administrator)&#xD;
+&lt;/p>&#xD;
+&lt;p>&#xD;
+    Members should change only between sprints&#xD;
+&lt;/p></AssignmentApproaches>
+          <Skills></Skills>
+          <Synonyms></Synonyms>
+        </Presentation>
+        <ResponsibleFor>__uNYkPVgEdyMdecrgpMbRg</ResponsibleFor>
+        <ResponsibleFor>_tFw9IPVoEdyJbYuqG3X5Ag</ResponsibleFor>
+        <ResponsibleFor>_Q5Ki8OF8Edyp34pwdTOSVQ</ResponsibleFor>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Guideline" name="scrum_of_scrums" briefDescription="" id="_SCv2oOF7Edyp34pwdTOSVQ" orderingGuide="" presentationName="Scrum of Scrums" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_guideline,_SCv2oOF7Edyp34pwdTOSVQ" briefDescription="" id="-e9FxENZuCFr7WkungxFv0Q" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-02-22T04:21:10" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The primary way of scaling Scrum to work with large teams is to coordinate a "Scrum of Scrums." With this approach each
+    Scrum team proceeds as normal but each team also contributes one person who attends Scrum of Scrum meetings to
+    coordinate the work of multiple Scrum teams. These meetings are analogous to the Daily Scrum Meeting, but do not
+    necessarily happen every day. In many organizations, having a Scrum of Scrums meeting two or three times a week is
+    sufficient.
+</p>
+<p>
+    The illustration below shows how a Scrum of Scrums approach allows Scrum to scale up (in this case to 243 people). Each
+    cell represents one person on a Scrum team. The bottom of this illustration shows teams with nine developers on them.
+    One person from each team (the differently colored cell) also participates in a Scrum of Scrum to coordinate work above
+    that team. Then from those nine-person teams another person is selected (this time shown with diagonal lines) to
+    participate in what might be called a Scrum of Scrums of Scrums.
+</p><img height="242" alt="Scrum of scrums" src="http://www.mountaingoatsoftware.com/images/scrumofscrums.gif"
+width="400" />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="product_backlog" briefDescription="The Product Backlog is the master list of all functionality desired in the product. " id="_OZIPIOF8Edyp34pwdTOSVQ" orderingGuide="" presentationName="Product Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="new_artifact,_OZIPIOF8Edyp34pwdTOSVQ" briefDescription="" id="-v5-z0Dm_JF0P2xtKd0FDrA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-18T09:39:19" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    When a project is initiated there is no comprehensive, time-consuming effort to write down all foreseeable tasks or
+    requirements. Typically, a project writes down everything obvious, which is almost always more than enough for a first
+    sprint. The Product Backlog is then allowed to grow and change as more is learned about the product and its customers.
+</p>
+<p>
+    During the <a class="elementLink" href="./../../Scrum/tasks/sprint_planning_meeting_9F0B8F28.html"
+    guid="_4gCKAOF9Edyp34pwdTOSVQ">Sprint Planning Meeting</a> the <a class="elementLink"
+    href="./../../Scrum/roles/product_owner_10E7BD3.html" guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a> prioritizes the
+    items in the Product Backlog and describes them to the team. The team then determines which items they can complete
+    during the coming Sprint. The team then moves items from the Product Backlog to the <a class="elementLink"
+    href="./../../Scrum/workproducts/sprint_backlog_7A5B8A37.html" guid="_Q5Ki8OF8Edyp34pwdTOSVQ">Sprint Backlog</a>. In
+    doing they expand each Product Backlog item into one or more Sprint Backlog tasks so they can more effectively share
+    work during the Sprint. Conceptually, the team starts at the top of the prioritized Product Backlog list and draws a
+    line after the lowest of the high priority items they feel they can complete. In practice it is not unusual to see a
+    team select, for example, the top five items and then two items from lower on the list but that are associated with the
+    initial five.
+</p>
+<p>
+    Product backlog items can be technical tasks ("Refactor the Login class to throw an exception") or more user-centric
+    ("Allow undo on the setup screen"). A very interesting prospect is expressing Scrum backlog items in the form of
+    Extreme Programming's User Stories.
+</p>
+<p>
+    The Product Backlog can be maintained in an Excel spreadsheet. An example from a real project is shown below. This
+    Excel spreadsheet shows each product backlog item assigned a general priority (Very High, High, etc.) by the Product
+    Owner. Estimates have been developed by the developers but it is understood that they are very imprecise and are useful
+    only for rough assignments of tasks into the various sprints.
+</p><img height="482" alt="" src="Scrum/workproducts/resources/productbacklog.jpg" width="500" />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions></RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+        <Example>_t2djoPVPEdyMdecrgpMbRg</Example>
+        <Template>_OO6A0F8rEd22Gu98eFOlrQ</Template>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="sprint_backlog" briefDescription="The sprint backlog is the list of tasks that the Scrum team is committing that they will complete in the current sprint. " id="_Q5Ki8OF8Edyp34pwdTOSVQ" orderingGuide="" presentationName="Sprint Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="sprint_backlog,_Q5Ki8OF8Edyp34pwdTOSVQ" briefDescription="" id="-N_A3a4KFML6T529HCXOO8w" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T03:20:08" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    Items on the sprint backlog are drawn from the <a class="elementLink"
+    href="./../../Scrum/workproducts/product_backlog_68345C16.html" guid="_OZIPIOF8Edyp34pwdTOSVQ">Product Backlog</a>, by
+    the team based on the priorities set by the <a class="elementLink"
+    href="./../../Scrum/roles/product_owner_10E7BD3.html" guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a> and the team's
+    perception of the time it will take to complete the various features.
+</p>
+<p>
+    It is critical that the team selects the items and size of the sprint backlog. Because they are the ones committing to
+    completing the tasks they must be the ones to choose what they are committing to.
+</p>
+<div id="content">
+    <p>
+        The sprint backlog is very commonly maintained as an Excel spreadsheet but it is also possible to use your defect
+        tracking system or any of a number of software products designed specifically for Scrum or agile. An example of the
+        Sprint Backlog in Excel looks like this:
+    </p><img height="188" alt="Sprint backlog" src="Scrum/workproducts/resources/sprintbacklog.gif" width="400" /> 
+    <p>
+        During the Sprint the <a class="elementLink" href="./../../Scrum/roles/scrummaster_357FCB70.html"
+        guid="_Bw-twOF6Edyp34pwdTOSVQ">ScrumMaster</a> maintains the sprint backlog by updating it to reflect which tasks
+        are completed and how long the team thinks it will take to complete those that are not yet done. The estimated work
+        remaining in the sprint is calculated daily and graphed, resulting in a <a class="elementLink"
+        href="./../../Scrum/workproducts/sprint_burndown_chart_F647C347.html" guid="_YzmSIF8sEd22Gu98eFOlrQ">Sprint
+        Burndown Chart</a>
+    </p>
+</div>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions></RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+        <Template>_OO6A0F8rEd22Gu98eFOlrQ</Template>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="sprint_planning_meeting" briefDescription="The Sprint Planning Meeting is where the Scrum Team and Product owner determine which features and tasks will be attempted in the upcoming sprint" id="_4gCKAOF9Edyp34pwdTOSVQ" orderingGuide="" presentationName="Sprint Planning Meeting" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name="sprint_planning_meeting,_4gCKAOF9Edyp34pwdTOSVQ" briefDescription="" id="-2Wj3V9GSZ2lAtr6E5xISGQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-09T03:31:57" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The Sprint Planning Meeting is attended by the Product Owner, Scrum Master, the entire Scrum Team, and any interested
+    and appropriate management or customer representatives.<br />
+    <br />
+    During the sprint planning meeting the product owner describes the highest priority features to the team. The team asks
+    enough questions during this meeting so that they can go off after the meeting and determine which tasks they will move
+    from the product backlog to the sprint backlog.<br />
+    <br />
+    Collectively, the Scrum team and the product owner define a sprint goal, which is a short description of what the
+    sprint will attempt to achieve. The success of the sprint will later be assessed during the Sprint Review Meeting
+    against the sprint goal, rather than against each specific item selected from the product backlog.<br />
+    <br />
+    After the sprint planning meeting, the Scrum team meets separately to discuss what they heard and decide how much they
+    can commit to during the coming sprint. In some cases there will be negotiation with the product owner but it will
+    always be up to the team to determine how much they can commit to completing.
+</p>]]></MainDescription>
+          <KeyConsiderations><![CDATA[The product owner doesn't have to describe every item being tracked on the product backlog. Depending on the size of the
+backlog and the speed of the team it may be sufficient to describe only the high priority items, saving the discussion of
+lower priority items for the next sprint planning meeting. Typically, the Scrum team will provide guidance when they start
+to get further into the backlog list than they know could be done in the next sprint.]]></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose></Purpose>
+        </Presentation>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <MandatoryInput>_OZIPIOF8Edyp34pwdTOSVQ</MandatoryInput>
+        <Output>_Q5Ki8OF8Edyp34pwdTOSVQ</Output>
+        <AdditionallyPerformedBy>_QcnRMOF5Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+        <AdditionallyPerformedBy>_Bw-twOF6Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="sprint_review_meeting" briefDescription="Each sprint concludes with a Sprint Review where the team demonstrates a potentially shippable product increment." id="_i_fkQOF-Edyp34pwdTOSVQ" orderingGuide="" presentationName="Sprint Review Meeting" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name="sprint_review_meeting,_i_fkQOF-Edyp34pwdTOSVQ" briefDescription="" id="-pG2ESbyFiJiYPp8g3_H-Ow" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[At the end of each sprint a sprint review meeting is held. During this meeting the Scrum team shows what they accomplished
+during the sprint. Typically this takes the form of a demo of the new features.<br />
+<br />
+Participants in the sprint review typically include the Product Owner, the Scrum team, the ScrumMaster, management,
+customers, and engineers from other projects.<br />
+<br />
+During the sprint review the project is assessed against the sprint goal determined during the Sprint planning meeting.
+Ideally the team has completed each product backlog item brought into the sprint, but it is more important that they
+achieve the overall goal of the sprint.]]></MainDescription>
+          <KeyConsiderations><![CDATA[The sprint review meeting is intentionally kept very informal, typically with rules forbidding the use of PowerPoint slides
+and allowing no more than two hours of preparation time for the meeting. A sprint review meeting should not become a
+distraction or significant detour for the team; rather, it should be a natural result of the sprint.<br />]]></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose></Purpose>
+        </Presentation>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <MandatoryInput>_Q5Ki8OF8Edyp34pwdTOSVQ</MandatoryInput>
+        <Output>_tFw9IPVoEdyJbYuqG3X5Ag</Output>
+        <Output>_rU4H4F8fEd22Gu98eFOlrQ</Output>
+        <AdditionallyPerformedBy>_QcnRMOF5Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+        <AdditionallyPerformedBy>_Bw-twOF6Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="the_daily_scrum" briefDescription="The Daily Scrum is a quick meeting comprised of all members of the Scrum Team and the Scrum Master." id="_oSM0AOF-Edyp34pwdTOSVQ" orderingGuide="" presentationName="The Daily Scrum" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name="the_daily_scrum,_oSM0AOF-Edyp34pwdTOSVQ" briefDescription="" id="-bGl4WDpeag1duq9jSWKwLg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T02:18:31" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[On each day of a sprint, the team holds daily meetings (“the daily scrum”). Meetings are typically held in the same
+location and at the same time each day. Ideally the daily scrums are held in the morning as they help set the context for
+the coming day's work.<br />
+<br />
+All team members are required to attend the daily scrum. Anyone else (for example, a departmental VP, a salesperson, or a
+developer from another project) is allowed to attend but is there only to listen. This makes the daily scrums an excellent
+way for a Scrum team to disseminate status information--if you're interested in hearing where things are at, attend that
+day's meeting.<br />
+<br />
+The daily scrum is not used as a problem-solving or issue resolution meeting. Issues that are raised are taken offline and
+usually dealt with by the relevant sub-group immediately after the daily scrum. During the daily scrum each team member
+provides answers to the following three questions:<br />
+<br />
+1. What did you do yesterday?<br />
+2. What will you do today?<br />
+3. Are there any impediments in your way?<br />
+<br />
+By focusing on what each person accomplished yesterday and will accomplish today the team gains an excellent understanding
+of what work has been done and what work remains. The daily scrum is not a status update meeting in which a boss is
+collecting information about who is behind schedule. Rather, it is a meeting in which team members make commitments to each
+other. If a programmer stands up and says "Today I will finish the data storage module" everyone knows that in tomorrow's
+meeting he will say whether or not he did finish. This has the wonderful effect of helping a team realize the significance
+of these commitments and that their commitments are to each other, not to some far-off customer or salesman.<br />
+<br />
+In cases where the ScrumMaster cannot remove these impediments directly himself (e.g., usually the more technical issues)
+he still takes responsibility for making sure someone on the team does quickly resolve the issue.]]></MainDescription>
+          <KeyConsiderations><![CDATA[<p>
+    There is an old joke in which a chicken and a pig are talking and the chicken says, "Let's start a restaurant." The pig
+    replies, "Good idea, but what should we call it?" "How about 'Ham and Eggs'" says the chicken. "No thanks," says the
+    pig, "I'd be committed, you'd only be involved." The joke is meant to point out the difference between those who are
+    committed on a project and those who are only involved. Scrum affords special status to those who are committed and
+    many teams enforce a rule in which only those who are committed are allowed to talk during the daily scrum.
+</p>
+<p>
+    Any impediments that are raised become the ScrumMaster's responsibility to resolve as quickly as possible. Typical
+    impediments are:<br />
+    <br />
+    * My ____ broke and I need a new one today.<br />
+    * I still haven't got the software I ordered a month ago.<br />
+    * I need help debugging a problem with ______.<br />
+    * I'm struggling to learn ______ and would like to pair with someone on it.<br />
+    * I can't get the vendor's tech support group to call me back.<br />
+    * Our new contractor can't start because no one is here to sign her contract.<br />
+    * I can't get the ____ group to give me any time and I need to meet with them.<br />
+    * The department VP has asked me to work on something else "for a day or two."
+</p>]]></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose></Purpose>
+        </Presentation>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <MandatoryInput>_rU4H4F8fEd22Gu98eFOlrQ</MandatoryInput>
+        <Output>_rU4H4F8fEd22Gu98eFOlrQ</Output>
+        <Output>_Q5Ki8OF8Edyp34pwdTOSVQ</Output>
+        <Output>_YzmSIF8sEd22Gu98eFOlrQ</Output>
+        <AdditionallyPerformedBy>_Bw-twOF6Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="sprint_retrospective" briefDescription="Following the Sprint Review, the team gets together for the Sprint Retrospective." id="_sKJ9AOF-Edyp34pwdTOSVQ" orderingGuide="" presentationName="Sprint Retrospective" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name="sprint_retrospective,_sKJ9AOF-Edyp34pwdTOSVQ" briefDescription="" id="-xohW6akCXeAm21kFxbyPgA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-18T10:32:11" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    The Sprint Retrospective is an opportunity for the team to discuss what's working and what's not working, and agree on
+    changes to try.&nbsp; One approach taken is that the whole team gathers and discusses what they’d like to
+</p>
+<ul>
+    <li>
+        Start doing
+    </li>
+    <li>
+        Stop doing
+    </li>
+    <li>
+        Continue doing
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations><![CDATA[<p>
+    The <a class="elementLink" href="./../../Scrum/roles/scrum_team_8D8F2B3.html" guid="_O65KUOF6Edyp34pwdTOSVQ">Scrum
+    Team</a>, the <a class="elementLink" href="./../../Scrum/roles/product_owner_10E7BD3.html"
+    guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a>, and the <a class="elementLink"
+    href="./../../Scrum/roles/scrummaster_357FCB70.html" guid="_Bw-twOF6Edyp34pwdTOSVQ">ScrumMaster</a> will all attend,
+    and a neutral outsider will facilitate the meeting.
+</p>]]></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose><![CDATA[The Sprint Retrospective is the main mechanism for taking the visibility that Scrum provides into areas of potential
+improvement, and turning it into results.]]></Purpose>
+        </Presentation>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <AdditionallyPerformedBy>_QcnRMOF5Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+        <AdditionallyPerformedBy>_Bw-twOF6Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+      </ContentElement>
+      <ContentElement xsi:type="uma:SupportingMaterial" name="scrum_copyright" briefDescription="" id="_4kVeYOGBEdyp34pwdTOSVQ" orderingGuide="" presentationName="Copyright" suppressed="false" isAbstract="false" variabilityBasedOnElement="_Ybm6AFp4Ed2BQt1093tw4A" variabilityType="extendsReplaces">
+        <Presentation name="scrum_copyright,_4kVeYOGBEdyp34pwdTOSVQ" briefDescription="" id="-_aNvcFLkG6dHmKhaz93BwA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-25T03:37:38" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    This program and the accompanying materials are made available under the<br />
+    <a href="http://www.eclipse.org/org/documents/epl-v10.php" target="_blank">Eclipse Public License v1.0</a> which
+    accompanies this distribution.
+</p>
+<p>
+    Copyright &copy; 1998--2008 Mountain Goat Software. All rights reserved.<br />
+    Copyright &copy; 2008 ATSC. All rights reserved.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Example" name="example_product_backlog" briefDescription="" id="_t2djoPVPEdyMdecrgpMbRg" orderingGuide="" presentationName="Example Product Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:GuidanceDescription" name="example_product_backlog,_t2djoPVPEdyMdecrgpMbRg" briefDescription="" id="-rfXDg30uLSggSmzHYCYVlg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-18T10:01:50" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<img height="482" alt="Example product backlog" src="Scrum/guidances/examples/resources/productbacklog.jpg" width="500" align="middle" />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Attachment></Attachment>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="potentially_shippable_product_incremement" briefDescription="The outcome of every sprint is a potentially shippable product increment." id="__uNYkPVgEdyMdecrgpMbRg" orderingGuide="" presentationName="Potentially Shippable Product Incremement" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="new_artifact,__uNYkPVgEdyMdecrgpMbRg" briefDescription="" id="-r4CP_1w3uk0ClgSnUrm80w" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T03:57:59" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    Scrum requires that each sprint deliver a potentially shippable product increment.&nbsp; The increment must consist of
+    thoroughly tested code that has been built into an executable, and the user operation of the functionality is
+    documeneted&nbsp;either in Help files or user documentation.
+</p>]]></MainDescription>
+          <KeyConsiderations><![CDATA[<p>
+    There is much debate&nbsp;about the difference between "potentially shippable (done)" and&nbsp;"shippable".
+</p>
+<p>
+    Mike Cohn states:
+</p>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+    <p>
+        .. "potentially shippable" and "shippable" are not the same thing. Some large or complex projects will require the
+        use of "release sprint" or "hardening sprint" at the end of a release cycle (say 6 two-week sprints then a 2-week
+        release sprint). The release sprint is not a dumping ground for sloppy work; rather it is a place where some
+        hardening of the system can occur.
+    </p>
+</blockquote>
+<p>
+    One thing is clear Scrum teams&nbsp;need to agree&nbsp;on their definition of "potentially shippable"
+    and&nbsp;"shippable" and to&nbsp;come to a shared&nbsp;understanding with the Product Owner.
+</p>]]></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions></RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:SupportingMaterial" name="scrum_overview" briefDescription="Scrum is an empirical Agile project management framework used to deliver increments of high value to the customer iteratively. Scrum relies on self organizing, empowered teams to deliver the product increments. It also relies on a customer, or Product Owner, to provide a team with a list of desired features using business value as the priority mechanism." id="_lC260PVhEdyMdecrgpMbRg" orderingGuide="" presentationName="Scrum Overview" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_supporting_material,_lC260PVhEdyMdecrgpMbRg" briefDescription="" id="-B-d2Wl0Vyk_-I-RwtKzhKQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-19T12:08:42" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    With Scrum, projects progress via a series of month-long iterations called <em>sprints</em>.
+</p>
+<p>
+    Scrum is ideally suited for projects with rapidly changing or highly emergent requirements. The work to be done on a
+    Scrum project is listed in the Product Backlog, which is a list of all desired changes to the product. At the start of
+    each sprint a Sprint Planning Meeting is held during which the Product Owner prioritizes the Product Backlog and the
+    Scrum Team selects the tasks they can complete during the coming Sprint. These tasks are then moved from the Product
+    Backlog to the Sprint Backlog.
+</p>
+<p>
+    Each day during the sprint conducts a brief daily meeting called the Daily Scrum, which helps the team stay on track.
+</p>
+<p>
+    At the end of each sprint the team demonstrates the completed functionality at a Sprint Review Meeting.
+</p>
+<p>
+    Graphically, Scrum looks something like this:<a class="elementLink"
+    href="./../../../Scrum/tasks/the_daily_scrum_C8FB7908.html" guid="_oSM0AOF-Edyp34pwdTOSVQ">The Daily Scrum</a>
+</p>
+<p>
+    <img height="371" alt="Scrum Overview" src="Scrum/guidances/supportingmaterials/resources/ScrumLargeLabelled.png" width="799" usemap="#map" /> <map
+    id="Map" name="Map">
+        <area shape="rect" coords="62,96,168,174" href="./../../../Scrum/workproducts/product_backlog_68345C16.html"
+        guid="_OZIPIOF8Edyp34pwdTOSVQ" />
+        <area shape="rect" coords="212,95,319,175" href="./../../../Scrum/workproducts/sprint_backlog_7A5B8A37.html"
+        guid="_Q5Ki8OF8Edyp34pwdTOSVQ" />
+        <area shape="rect" coords="234,-2,362,69" href="./../../../Scrum/tasks/the_daily_scrum_C8FB7908.html"
+        guid="_oSM0AOF-Edyp34pwdTOSVQ" />
+        <area shape="rect" coords="607,73,756,196"
+        href="./../../../Scrum/workproducts/potentially_shippable_product_incremement_69E6418C.html"
+        guid="__uNYkPVgEdyMdecrgpMbRg" />
+    </map>
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="release_burndown_chart" briefDescription="The release burndown chart tracks a team's progress against its release plant. " id="_tFw9IPVoEdyJbYuqG3X5Ag" orderingGuide="" presentationName="Release Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="release_burndown_chart,_tFw9IPVoEdyJbYuqG3X5Ag" briefDescription="" id="-f7PDqWbPWJ4XP9HiP8IVKQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-03-19T01:00:22" changeDescription="" version="" externalId="">
+          <Copyright>_4kVeYOGBEdyp34pwdTOSVQ</Copyright>
+          <MainDescription><![CDATA[<p>
+    On a Scrum project, the team tracks its progress against a release plan by updating a release burndown chart at the end
+    of each sprint. The horizontal axis of the release burndown chart shows the sprints; the vertical axis shows the amount
+    of work remaining at the start of each sprint. Work remaining can be shown in whatever unit the team prefers--story
+    points, ideal days, team days, and so on.&nbsp;
+</p>
+<p>
+    <img height="358" alt="" src="Scrum/workproducts/resources/releaseburndown.png" width="298" />
+</p>
+<p>
+    On this burndown chart, the team started a project that was planned to be eleven two-week sprints. They began with 200
+    story points of work. The first sprint went well and from the chart you can infer that they had around 180 story points
+    of work remaining after the first sprint. During the second sprint, however, the estimated work remaining actually
+    burned up. This could have been because work was added to the project or because the team changed some estimates of the
+    remaining work. From there the project continued well. Progress slowed during sprint 7 but then quickly resumed.
+</p>
+<p>
+    This type of release burndown chart works very well in many situations and in many teams. However, on projects with
+    lots of changing requirements you may want to look at an <a class="elementLink"
+    href="./../../Scrum/guidances/examples/alternative_release_burndown_chart_565346BF.html"
+    guid="_zUZ0MPVpEdyJbYuqG3X5Ag">Alternative Release Burndown Chart</a>.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions></RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+        <Example>_zUZ0MPVpEdyJbYuqG3X5Ag</Example>
+        <Template>_OO6A0F8rEd22Gu98eFOlrQ</Template>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Example" name="alternative_release_burndown_chart" briefDescription="" id="_zUZ0MPVpEdyJbYuqG3X5Ag" orderingGuide="" presentationName="Alternative Release Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:GuidanceDescription" name=",_zUZ0MPVpEdyJbYuqG3X5Ag" briefDescription="" id="-KkrHQnR4XqgdNpWEvfFEtw" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-08-19T06:32:51" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The typical Scrum&nbsp;<a class="elementLink" href="./../../../Scrum/workproducts/release_burndown_chart_7E6A4A45.html"
+    guid="_tFw9IPVoEdyJbYuqG3X5Ag">Release Burndown Chart</a>shows a single value--the net change in the amount of work
+    remaining. In some cases the simplicity of this is wonderful. However, it can also mask what may be going on in a
+    project. For example, suppose a team had expected to make progress of 40 (hours, points, whatever) last sprint but the
+    burndown chart only shows net progress of 10. Was the team slower than expected or was more work added to the release?
+    It's important to know the answer to this question because we cannot really predict when the release will be done
+    without it. With this in mind, I've introduced the following type of burndown chart:
+</p>
+<p>
+    <img height="300" alt="" src="Scrum/guidances/examples/resources/altrelburndown1.gif" width="400" />
+</p>
+<p>
+    On this burndown chart, the height of each bar represents the amount of work remaining in the release. I prefer to
+    estimate <a class="elementLink" href="./../../../Scrum/workproducts/product_backlog_68345C16.html"
+    guid="_OZIPIOF8Edyp34pwdTOSVQ">Product Backlog</a>, items in "story points" so this figure shows a release with 175
+    story points planned in it as of sprint 1. The team finished 25 points in sprint 1, leaving 150 to go as of the start
+    of sprint 2. There were 120 as of the start of sprint 3. So, the top of the bar is reduced by the amount of work the
+    team finishes in a given sprint. Before the start of sprint 4, the <a class="elementLink"
+    href="./../../../Scrum/roles/product_owner_10E7BD3.html" guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a> added work to
+    the project. This additional work is shown at the bottom of the bar for the fourth sprint. You can see that the
+    vertical height of sprint 4 goes from about -40 to about 95, or 135 points of work remaining. Fourty of those 135
+    points are from new work.
+</p>
+<p>
+    Prior to the start of sprint 6 work was removed by the <a class="elementLink"
+    href="./../../../Scrum/roles/product_owner_10E7BD3.html" guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a>. As with an
+    increase in scope, a decrease in scope comes off the bottom. This is true whether the work removed is work that was
+    initially planned or work that was added during the project.
+</p>
+<p>
+    One way to predict how many sprints a project will take is to draw a trend line through the bars and extend the
+    baseline. For example:
+</p>
+<p>
+    <img height="300" alt="" src="Scrum/guidances/examples/resources/altrelburndown2.gif" width="400" />
+</p>
+<p>
+    A problem with this is that predicting the end date as above does not include the rate of change to the scope of the
+    project. You can anticipate the number of sprints needed by also drawing a trend line through the changes occurring at
+    the bottom of the bars as shown below:
+</p>
+<p>
+    <img height="300" alt="" src="Scrum/guidances/examples/resources/altrelburndown3.gif" width="400" />&nbsp;
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Attachment></Attachment>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:SupportingMaterial" name="eclipse_copyright" briefDescription="" id="_Ybm6AFp4Ed2BQt1093tw4A" orderingGuide="" presentationName="Copyright" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="eclipse_copyright,_Ybm6AFp4Ed2BQt1093tw4A" briefDescription="" id="-JNLDOZ4BSGnyspLdCslHEA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    This program and the accompanying materials are made available under the<br />
+    <a href="http://www.eclipse.org/org/documents/epl-v10.php" target="_blank">Eclipse Public License v1.0</a> which
+    accompanies this distribution.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="burndown_chart" briefDescription="" id="_veyn0F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_X5rREILYEduLd8CaF_IcMA" briefDescription="" id="-DbU1fL11htQSZHU3Epp8DQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:07:14" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[<p>
+    Graphical representation of the remaining work to do represented as a function of time remaining.&nbsp; Work remaining
+    is the Y axis and time is the X axis. Two types of burndown chart are:
+</p>
+<ul>
+    <li>
+        <a class="elementLink" href="./../../../Scrum/guidances/termdefinitions/sprint_burndown_chart_43F98B6B.html"
+        guid="_veyn215UEd22Gu98eFOlrQ">Sprint Burndown Chart</a>
+    </li>
+    <li>
+        <a class="elementLink" href="./../../../Scrum/guidances/termdefinitions/product_burndown_chart_5EC47E18.html"
+        guid="_7frQsF5dEd22Gu98eFOlrQ">Product Burndown Chart</a><a class="elementLink"
+        href="./../../../Scrum/guidances/termdefinitions/product_burndown_chart_5EC47E18.html"
+        guid="_7frQsF5dEd22Gu98eFOlrQ">Product Burndown Chart</a>
+    </li>
+    <li>
+        <a class="elementLink" href="./../../../Scrum/guidances/termdefinitions/release_burndown_chart_6CFAC6EC.html"
+        guid="_YCtMUF5eEd22Gu98eFOlrQ">Release Burndown Chart</a>
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="daily_standup" briefDescription="" id="_veyn0V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Daily Standup" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_2kViUESNEdyDx7cbCULuLg" briefDescription="" id="-dInqFen82Gwj3TVpo4x-cg" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T01:55:41" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[<p>
+    See <a class="elementLink" href="./../../../Scrum/guidances/termdefinitions/daily_scrum_3599F65C.html"
+    guid="_wzGykF5YEd22Gu98eFOlrQ">Daily Scrum</a>.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="impediments" briefDescription="" id="_veyn0l5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Impediments" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_VqapgESOEdyDx7cbCULuLg" briefDescription="" id="-thr-EbJ0MVoSOjB07oOFhg" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:02:09" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[<p>
+    Impediments are any hurdles or problems that the team encounters that hampers their ability to work through their
+    sprint tasks.&nbsp; Impediments are uncovered during teh Daily Scrum meeting.&nbsp; The ScrumMaster is responsible
+    for&nbsp;ensuring impediments get resolved.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="product _backlog_effort" briefDescription="" id="_veyn015UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Product Backlog Effort" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_Tlr8MESPEdyDx7cbCULuLg" briefDescription="" id="-ZheRa5V_fOtaDb9_tJXPiQ" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-06T11:40:12" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[A Product backlog Item has an amount of effort associated with it.&nbsp; This represents a team estimation as to the
+        complexity of the item and is usually expressed in "Ideal Days" or "Story Points".<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="product_backlog" briefDescription="" id="_veyn1F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Product Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_qNOmQESOEdyDx7cbCULuLg" briefDescription="" id="-bCkVJ-SAp9NAYXzU082xAw" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:02:40" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Product Backlog is a prioritized list of features desired in the product.]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="product_backlog_item" briefDescription="" id="_veyn1V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Product Backlog Item" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_ADwNoESPEdyDx7cbCULuLg" briefDescription="" id="-wYUGztUXJo-IFJmZFHndZA" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:20:41" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[<p>
+    A&nbsp;product backlog item is a unit of work small enough to be completed by a team in one Sprint iteration. Backlog
+    items are decomposed into one or more tasks.<br />
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="product_owner" briefDescription="" id="_veyn1l5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Product Owner" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_lV7DoESPEdyDx7cbCULuLg" briefDescription="" id="-h9Xx7G_42VKrAJeiPoEXhA" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-06T11:42:00" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Product Owner is the role in charge of the product that is being built by the team.&nbsp; The Product Owner decides the
+        priority of the Product Backlog, and also when the product should be released.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="release" briefDescription="" id="_veyn115UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Release" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="Release,_AIB9gIHrEduFs9jH8xc4xw" briefDescription="" id="-p9KrleiUF9SffJPa0uU1dA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:30:24" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[<p>
+    A Release is the&nbsp;transition of an increment of potentially shippable product from the development team into
+    routine use by customers.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="scrum_master" briefDescription="" id="_veyn2F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="ScrumMaster" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_4G094ESPEdyDx7cbCULuLg" briefDescription="" id="-xuoAc3dllNfz3v23Uo9T3Q" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:31:45" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[<p>
+    The ScrumMaster is responsible for making sure a Scrum team lives by the values and practices of Scrum. The ScrumMaster
+    protects the team by making sure they do not overcommit themselves to what they can achieve during a sprint.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint" briefDescription="" id="_veyn2V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_kftWoIHqEduFs9jH8xc4xw" briefDescription="" id="-HIv84TcqJsq4hsPh7HjCYw" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:33:13" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[<p>
+    A time-boxed sequence of work activities during which an increment of product functionality is implemented..
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_backlog" briefDescription="" id="_veyn2l5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_UJZQwESQEdyDx7cbCULuLg" briefDescription="" id="-d3HBqQdxKSpDApXqiQo9Iw" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-10T12:54:16" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Sprint Backlog contains the work that the team has committed to for the Sprint, including all of the tasks that need to
+be completed to implement the Product Backlog Items.&nbsp; The Sprint backlog is owned by the team.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_burndown_chart" briefDescription="" id="_veyn215UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_mJqYQESQEdyDx7cbCULuLg" briefDescription="" id="-7-9C-kYSzQHQc_uQkYm-_g" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-06T11:51:28" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Sprint Burndown Chart is a graphical representation of the work remaining over the duration of the Sprint.&nbsp; The
+        Vertical axis displays the hours of effort remaining for the Sprint.&nbsp; The horizontal axis displays the days of the
+        Sprint.&nbsp; The burndown is supposed to be shown by the line of descent from the start of the Sprint with the starting
+        hours, down to the end of the Sprint with no hours remaining.&nbsp; The Burndown chart is used by the team to gauge how
+        well the Sprint is going.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_goals" briefDescription="" id="_veyn3F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Goals" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_KKPDgESREdyDx7cbCULuLg" briefDescription="" id="-vYDEjOsyiDLCq28_kSwqLg" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:45:50" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[<p>
+    The Product Owner and Team will identify some scope for the Sprint to provide some indications of the expectations for
+    the Sprint and provide some measure of success.&nbsp; Sprint goals help provide focus on Team design and implementation
+    decisions.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_planning_meeting" briefDescription="" id="_veyn3V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Planning Meeting" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_d24NQESREdyDx7cbCULuLg" briefDescription="" id="-sn7UkWq_5c2tFfkZq7XYRw" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2008-07-30T02:46:50" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The start of a Sprint is marked by a planning meeting where the Product Owner will go through the highest priority Product
+Backlog items, and based on that information the team will select the Product Backlog Items they will implement during the
+next Sprint.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_retrospective_meeting" briefDescription="" id="_veyn3l5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Retrospective Meeting" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_15X88ESREdyDx7cbCULuLg" briefDescription="" id="-f9YylbaBfAK7kFZ0wCySMg" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-06T11:58:49" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[At the end of the Sprint the Team will meet at a retrospective to discuss the things that worked and did not work during
+        the Sprint.&nbsp; This provides the feedback and adapt opportunity for the process and allows the process to evolve and fit
+        the team.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_review_meeting" briefDescription="" id="_veyn315UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Review Meeting" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_wZySUESSEdyDx7cbCULuLg" briefDescription="" id="-hbgtBeEVvgklEJEe87Vp4g" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2007-08-07T12:09:31" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[At the end of the Sprint, the Team will show the progress made during the Sprint to the Product owner and key
+        stakeholders.&nbsp; Only Product Backlog Items that were completely done are shown at the review meeting.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="sprint_task" briefDescription="" id="_veyn4F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Task" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name=",_OG9iUESSEdyDx7cbCULuLg" briefDescription="" id="-zpO7ZtcagvtTA67EJ_m4rg" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-07T12:02:49" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Sprint Backlog is made up of a list of tasks that the team needs to work through to complete the Product Backlog Items
+        that they committed to at the start of the Sprint.&nbsp; The Sprint tasks have attributes to show the point person, the
+        state of the task (i.e. not started, in progress, impeded or done) and the amount of time left to complete the task.<br />
+        <br />
+        Sprint tasks are the smallest level of work represented in either of the backlogs and refer to work that is usually up to
+        16 hours of work.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="story_point" briefDescription="" id="_veyn4V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Story Point" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="story_point_def,_CI6VAO6oEduaarO4hBWeSg" briefDescription="" id="-TiV3gmeEcaJC9fHWazqHLA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2007-04-20T03:56:28" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[Story points are a measurement employed to indicate the effort required to implement a user story, or product backlog
+        feature.<br />
+         <br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="team" briefDescription="" id="_veyn4l5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Team" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_vZ3Q8ESTEdyDx7cbCULuLg" briefDescription="" id="-EqhbZ-SkHp61Y2vSUUoCOQ" orderingGuide="" presentationName="" suppressed="false" authors="Lyndon Washington" changeDate="2007-08-07T12:13:21" changeDescription="Initial revision" version="0.1" externalId="">
+          <MainDescription><![CDATA[The Team is a cross-functional group of 5-9 people who commit to delivering high value increments of product functionality
+        to the customers each Sprint.&nbsp; The Team is in charge of their own destiny since they are empowered to organize
+        themselves to make sure that all of the work is completed.<br />]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="theme" briefDescription="" id="_veyn415UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Theme" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_aeYKoIKlEduQgtHqedKdMA" briefDescription="" id="-3pNlw9WCCt2_yQj7AdMFOQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2006-12-03T06:09:30" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[A theme defines a functional group of requirements.]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="timebox" briefDescription="" id="_veyn5F5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Timebox" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_3qdXkILXEduLd8CaF_IcMA" briefDescription="" id="-Pqj9AAvbOheabK1S1iNR7w" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2006-12-03T12:11:12" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[A period of time with a fixed and unmovable end date even if all objectives aren't reached.]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="Velocity" briefDescription="" id="_veyn5V5UEd22Gu98eFOlrQ" orderingGuide="" presentationName="Velocity" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_HQEP8ILXEduLd8CaF_IcMA" briefDescription="" id="-_YSdL-PCrHetsPuFPMuZvA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2007-08-09T09:21:56" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[Velocity is a metric that shows the rate of delivery for a team.&nbsp; A teams velocity shows how many story points they
+are able to convert into increments of potentially shippable product each sprint.]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="daily_scrum" briefDescription="" id="_wzGykF5YEd22Gu98eFOlrQ" orderingGuide="" presentationName="Daily Scrum" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_wzGykF5YEd22Gu98eFOlrQ" briefDescription="" id="-qw1zzcdgS16heKCPSMtXNA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:00:08" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The Daily&nbsp;Scrum (also known as the Daily Stand-up)&nbsp;is a short&nbsp;meeting (15-30 minutes) attended by all
+    members of the Scrum Team and facilitated by the Scrum Master.&nbsp; The Daily Scrum is not a status meeting it is a
+    commitment in front of peers. During the Daily Scrum each team member provides answers to the following three
+    questions:
+</p>
+<ol>
+    <li>
+        What did you do yesterday?
+    </li>
+    <li>
+        What will you do today?
+    </li>
+    <li>
+        Are there any impediments in your way?
+    </li>
+</ol>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="product_burndown_chart" briefDescription="" id="_7frQsF5dEd22Gu98eFOlrQ" orderingGuide="" presentationName="Product Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_7frQsF5dEd22Gu98eFOlrQ" briefDescription="" id="-sKs1c_RcKx_VoP3H4546-w" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:37:02" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The product burndown chart is a "big picture" view of a team's progress. It shows how much work remains&nbsp;at the
+    beginning of each sprint. The scope of this chart spans releases; however, a release burndown chart is limited to a
+    single release.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:TermDefinition" name="release_burndown_chart" briefDescription="" id="_YCtMUF5eEd22Gu98eFOlrQ" orderingGuide="" presentationName="Release Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_term_definition,_YCtMUF5eEd22Gu98eFOlrQ" briefDescription="" id="-5ZwUAb_042ViuoKsGdsWmw" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T02:40:15" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    On a Scrum project, the team tracks its progress against a release plan by updating a release burndown chart at the end
+    of each sprint. The horizontal axis of the release burndown chart shows the sprints; the vertical axis shows the amount
+    of work remaining at the start of each sprint.
+</p>
+<p>
+    The scope of this chart is a single release; however, a product burndown chart spans all releases.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:SupportingMaterial" name="scrum_references" briefDescription="" id="_8PMFQF5hEd22Gu98eFOlrQ" orderingGuide="" presentationName="References" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="Scrum referencesl,_PTGe4IRvEduo75chJsIcXg" briefDescription="" id="-TMAqqwL18VXjxXqVxv9bbA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T01:58:50" changeDescription="" version="1.0.0" externalId="">
+          <MainDescription><![CDATA[<h4>
+    Books
+</h4>
+<ul>
+    <li>
+        <a href="http://softpro.stores.yahoo.net/0-7356-1993-x.html" target="_blank">Agile Project Management with
+        Scrum</a>&nbsp; by Ken Schwaber
+    </li>
+    <li>
+        <a href="http://softpro.stores.yahoo.net/0-7356-2337-6.html" target="_blank">The Enterprise and Scrum</a>&nbsp; by
+        Ken Schwaber
+    </li>
+    <li>
+        <a href="http://www.mountaingoatsoftware.com/book/1-agile-estimating-and-planning" target="_blank">Agile Estimating
+        and Planning</a> by Mike Cohn
+    </li>
+    <li>
+        <a href="http://www.mountaingoatsoftware.com/book/2-user-stories-applied" target="_blank">User Stories Applied For
+        Agile Software Development</a> by Mike Cohn
+    </li>
+</ul>
+<h4>
+    Websites
+</h4>
+<ul>
+    <li>
+        <a href="http://www.scrumalliance.org/" target="_blank">Scrum Alliance</a>
+    </li>
+    <li>
+        <a href="http://www.mountaingoatsoftware.com/index" target="_blank">Mountain Goat Software</a>
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Guideline" name="estimation_techniques" briefDescription="As items are added to the product backlog the size of those items are estimated by the team." id="_L1t78F5nEd22Gu98eFOlrQ" orderingGuide="" presentationName="Estimation Techniques" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="estimating_the_backlog,_L1t78F5nEd22Gu98eFOlrQ" briefDescription="" id="-eyjJa_TnruHlbgFfOCM5Jg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T10:25:11" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    Scrum does not prescribe specific estimation&nbsp;techniques.&nbsp;
+</p>
+<p>
+    Estimation by analogy is one&nbsp;technique used by Scrum teams.&nbsp; The mechanism is very simple and consists of
+    comparing backlog items to similar backlog&nbsp;items that were previously implemented.&nbsp; Lack of
+    available&nbsp;data points will&nbsp;limit the effectiveness of this technique.&nbsp;
+</p>
+<p>
+    Planning Poker is a popular iterative approach to estimating.&nbsp; Here are the steps:
+</p>
+<ul>
+    <li>
+        Each estimator is given a deck of cards, each card has a valid estimate written on it
+    </li>
+    <li>
+        The Product owner reads a story and it’s discussed briefly
+    </li>
+    <li>
+        Each estimator selects a card representing&nbsp;his or her estimate
+    </li>
+    <li>
+        The cards are turned over so all can see them
+    </li>
+    <li>
+        Discuss differences (especially outliers)
+    </li>
+    <li>
+        Re-estimate until estimates converge
+    </li>
+</ul><br />
+<p>
+    Planning poker cards and an <a href="http://www.planningpoker.com/">online version of Planning Poker</a> are available
+    from <a href="http://www.mountaingoatsoftware.com//">Mountain Goat Software</a>
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Guideline" name="prioritizing_the_backlog" briefDescription="Techniques for prioritizing teh Product Backlog." id="_PmtE0F5oEd22Gu98eFOlrQ" orderingGuide="" presentationName="Prioritizing the Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="prioritizing_the_backlog,_PmtE0F5oEd22Gu98eFOlrQ" briefDescription="" id="-zKwBZtjJMczpeWxduDoL4A" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T12:47:45" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    Scrum does not prescribe how the Product Backlog is prioritized.&nbsp; Some techniques are:
+</p>
+<ul>
+    <li>
+        Kano Analysis
+    </li>
+    <li>
+        Theme Screening
+    </li>
+    <li>
+        Theme Scoring
+    </li>
+    <li>
+        Relative Weighting
+    </li>
+</ul>
+<p>
+    For more information see <a
+    href="http://www.mountaingoatsoftware.com/system/presentation/file/78/Cohn_PrioritizingYourBacklog.pdf"
+    target="_blank">Prioritizing the Product Backlog</a>&nbsp;by Mike Cohn.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="estimating_the_backlog" briefDescription="Periodically the Scrum Team will estimate the size of each item on the Product Backlog." id="_lesG8F53Ed22Gu98eFOlrQ" orderingGuide="" presentationName="Estimating the Product Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name=",_lesG8F53Ed22Gu98eFOlrQ" briefDescription="" id="-cfGxn29uR-ajTuxloxCwVQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-30T06:24:25" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    Prior to release planning and periodically as the product backlog evolves and the team gains insight through experience
+    the Scrum Team will estimate the size of items on the Product Backlog.&nbsp;&nbsp; This is key information to help
+    the&nbsp;Product Owner make prioritization decisions (some items may become less of a priority if the&nbsp;Product
+    Owner learns that major effort will be required to deliver them).
+</p>
+<p>
+    Estimations are relative and&nbsp;are measured in “points” rather than real-world units of effort.&nbsp; To the
+    uninitiated this may&nbsp;seem unpredicatable but after the first few sprints Scrum teams can empirically derive&nbsp;a
+    velocity&nbsp;that allows them to&nbsp;accurately predict delivery capability.&nbsp;<br />
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose><![CDATA[Enables the&nbsp;Product Owner to make prioritization decisions]]></Purpose>
+        </Presentation>
+        <Concept>_28Gp8F6AEd22Gu98eFOlrQ</Concept>
+        <Guideline>_L1t78F5nEd22Gu98eFOlrQ</Guideline>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <MandatoryInput>_OZIPIOF8Edyp34pwdTOSVQ</MandatoryInput>
+        <Output>_OZIPIOF8Edyp34pwdTOSVQ</Output>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Concept" name="story_points" briefDescription="A story point is a relative estimate of the &quot;size&quot; of the work compared to other work on the project." id="_28Gp8F6AEd22Gu98eFOlrQ" orderingGuide="" presentationName="Story Points" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation name="new_concept,_28Gp8F6AEd22Gu98eFOlrQ" briefDescription="" id="-ILQMonu5qLiOKjvMlGtDPg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T09:47:49" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    Story points are probably the most commonly used estimating unit among agile teams today.&nbsp; The name&nbsp;is
+    derived from agile teams commonly expressing requirements as “user stories”.&nbsp;&nbsp;A story point is a relative
+    estimate of the "size" of the work compared to other work on the project.&nbsp;So,&nbsp;a 10-point user story is
+    expected to take twice as long as a 5-point user story.
+</p>
+<p>
+    Estimates are not quantified but implicitly&nbsp;include&nbsp;the&nbsp;team's collective&nbsp;understanding of the
+    complexity, risk and time for&nbsp;the work being estimated.&nbsp; A story point is unique to the team and cannot be
+    compared with a story point on another team.&nbsp;&nbsp;It can be counter productive to map&nbsp;story points to
+    their&nbsp;absolute time equivalent and the accepted technique&nbsp;for predicting time to completion is the team's
+    velocity.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="prioritizing_the_backlog" briefDescription="The items in the Product Backlog are prioritized by the Product Owner prior to release and sprint planning." id="_btIuEF8LEd22Gu98eFOlrQ" orderingGuide="" presentationName="Prioritizing the Backlog" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name=",_btIuEF8LEd22Gu98eFOlrQ" briefDescription="" id="-_17L09AWhCtpcfaV1O_oIA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T11:34:21" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The Product Backlog is a prioritized list of work to be completed by the team.&nbsp; It is continuously updated by the
+    Product Owner&nbsp;based on&nbsp;feedback from the end-user (as they are exposed to new product increments) and
+    also&nbsp;in response to&nbsp;the&nbsp;evolving technical and business landscape.
+</p>
+<p>
+    It is important that the&nbsp;team provides the Product Owner with sizing estimates&nbsp;for the&nbsp;Product Backlog
+    items to enable the&nbsp;Product Owner to balance&nbsp;business need with&nbsp;the estimated cost of implementation.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <Purpose><![CDATA[<p>
+    To ensure that the team builds the right product.
+</p>]]></Purpose>
+        </Presentation>
+        <Guideline>_PmtE0F5oEd22Gu98eFOlrQ</Guideline>
+        <MandatoryInput>_OZIPIOF8Edyp34pwdTOSVQ</MandatoryInput>
+        <Output>_OZIPIOF8Edyp34pwdTOSVQ</Output>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Task" name="release_planning" briefDescription="At the beginning of a project the team will create a high-level release plan" id="_RunHEF8ZEd22Gu98eFOlrQ" orderingGuide="" presentationName="Release Planning" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:TaskDescription" name=",_RunHEF8ZEd22Gu98eFOlrQ" briefDescription="" id="-NrSTjiuzDnfEiZxA7N_tFA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T01:05:05" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    At the beginning of a project the team will create a&nbsp;high-level release plan.&nbsp; The team cannot possibly know
+    everything up front so a detailed plan is not necessary.&nbsp; The&nbsp;release plan should&nbsp;address:
+</p>
+<ul>
+    <li>
+        The number and duration of the sprints
+    </li>
+    <li>
+        How many people or teams should be on this project
+    </li>
+    <li>
+        The number of releases
+    </li>
+    <li>
+        The value delivered in&nbsp;each release
+    </li>
+    <li>
+        The ship date for the releases
+    </li>
+</ul>
+<p>
+    Key inputs to release planning are:
+</p>
+<ul>
+    <li>
+        The prioritized Product Backlong
+    </li>
+    <li>
+        The&nbsp;estimated velocity
+    </li>
+    <li>
+        Any hard and fast&nbsp;to-market dates the Product Owner must satisfy
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Section name="Teste" briefDescription="" id="_esao4EgvEeSGeo4SOSry9g" orderingGuide="" presentationName="" suppressed="false" sectionName="" variabilityType="na">
+            <Description></Description>
+          </Section>
+          <Section name="Teste 2" briefDescription="" id="_f29wcEgvEeSGeo4SOSry9g" orderingGuide="" presentationName="" suppressed="false" sectionName="" variabilityType="na">
+            <Description></Description>
+          </Section>
+          <Alternatives></Alternatives>
+          <Purpose><![CDATA[To level-set expectations (internal and external) and to proactively uncover needs and dependencies]]></Purpose>
+        </Presentation>
+        <PerformedBy>_O65KUOF6Edyp34pwdTOSVQ</PerformedBy>
+        <MandatoryInput>_OZIPIOF8Edyp34pwdTOSVQ</MandatoryInput>
+        <AdditionallyPerformedBy>_QcnRMOF5Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+        <AdditionallyPerformedBy>_Bw-twOF6Edyp34pwdTOSVQ</AdditionallyPerformedBy>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="taskboard" briefDescription="The task board shows all the work the team is doing during a sprint" id="_rU4H4F8fEd22Gu98eFOlrQ" orderingGuide="" presentationName="Task Board" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="new_artifact,_rU4H4F8fEd22Gu98eFOlrQ" briefDescription="" id="-JGaSKq8Cd3WrAqkPLTUUGg" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T01:44:26" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The task board shows all the work the team is&nbsp;doing during a sprint. It is updated&nbsp;continuously throughout
+    the sprint–if someone thinks of a new task they&nbsp;write a new card and puts it on the board. Either during or
+    before&nbsp;<a class="elementLink" href="./../../Scrum/tasks/the_daily_scrum_C8FB7908.html"
+    guid="_oSM0AOF-Edyp34pwdTOSVQ">The Daily Scrum</a>, estimates are changed (up or down) and cards are moved around the
+    board.
+</p>
+<p>
+    The task board might look like this:
+</p>
+<p>
+    <span class="articleImage"><img style="WIDTH: 461px; HEIGHT: 336px" height="447" alt=""
+    src="Scrum/workproducts/resources/MockedTaskBoard.jpg" width="600" /><a
+    href="http://www.mountaingoatsoftware.com/system/hidden_asset/file/29/MockedTaskBoard.jpg"><u><font
+    color="#0000ff">&nbsp;</font></u></a></span>
+</p>
+<p>
+    <span class="articleImage"><br />
+    &nbsp;</span>
+</p>
+<p>
+    Each row on the task board is a product backlog item (in this&nbsp; particular example stories). During the <a
+    class="elementLinkWithUserText" href="./../../Scrum/tasks/sprint_planning_meeting_9F0B8F28.html"
+    guid="_4gCKAOF9Edyp34pwdTOSVQ">sprint planning meeting</a> the team selects the product backlog items they can complete
+    during the coming sprint. Each product backlog item is turned into multiple <a class="elementLinkWithUserText"
+    href="./../../Scrum/workproducts/sprint_backlog_7A5B8A37.html" guid="_Q5Ki8OF8Edyp34pwdTOSVQ">sprint backlog</a> items.
+    Each of these is represented by one task card that is placed on the task board. Each task card starts on the task board
+    in the “To Do” column. The columns are:
+</p>
+<ul>
+    <li>
+        <b>Story</b>–The story description (“As a user I want to…”) shown on that row.
+    </li>
+    <li>
+        <b>To Do</b>–This holds all the cards that are not done or in process.
+    </li>
+    <li>
+        <b>Work In Process</b>–Any card being worked on goes here. The programmer who chooses to work on it moves it over
+        when she’s ready to start the task. Often this happens during the Daily Scrum when someone says, “I’m going to work
+        on the boojum today.”
+    </li>
+    <li>
+        <b>To Verify</b>–A lot of tasks have corresponding test task cards. So, if there’s a “Code the boojum class” card
+        there is likely one or more task cards related to testing: “Test the boojum”, “Write FitNesse tests for the
+        boojum,” “Write FitNesse fixture for the boojum,” etc. Some task cards don’t often get corresponding test cards
+        (“Fix Bug #321 in Bugzilla”) so those are placed in the “To Verify” column.
+    </li>
+    <li>
+        <b>Done</b>–Cards pile up over here when they’re done. They’re removed at the end of the sprint.
+    </li>
+</ul>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose><![CDATA[Tangibly communicates progress&nbsp;across team members and stakeholders.]]></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions>There are many different ways to implement a task board.&amp;nbsp; Co-located teams may use a wall.&amp;nbsp; Distributed teams&#xD;
+will use some kind of tool.</RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Template" name="burndown_chart" briefDescription="These Excel spreadsheets provide useful capabilities for creating burndown charts." id="_OO6A0F8rEd22Gu98eFOlrQ" orderingGuide="" presentationName="Burndown Chart" suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:GuidanceDescription" name="new_template,_OO6A0F8rEd22Gu98eFOlrQ" briefDescription="" id="-3AgWsgStwa4K2S5b_pS3jA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-08-14T02:46:44" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    If you are considering using a&nbsp;spreadsheet to track your project's backlog and burndown consider these two
+    templates&nbsp;kindly provided by Clay Ver Valen and Petri Heiramo.&nbsp; Both templates are excellent and one is sure
+    to be appeal to your project. Petri's template uses macros which provide a richer functionality but may be an
+    impediment to some.&nbsp; Petris' template is pre-loaded with sample data while Clay provides a separate sample for his
+    template.
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Attachment>Scrum/guidances/templates/resources/Burndown_Template_Clay.xls|Scrum/guidances/templates/resources/Burndown_Template_Petri.xls|Scrum/guidances/templates/resources/Burndown_Sample_Clay.xls</Attachment>
+        </Presentation>
+      </ContentElement>
+      <ContentElement xsi:type="uma:Artifact" name="sprint_burndown_chart" briefDescription="The Sprint Burndown Chart is a graphical representation of the work remaining over the duration of the Sprint." id="_YzmSIF8sEd22Gu98eFOlrQ" orderingGuide="" presentationName="Sprint Burndown Chart " suppressed="false" isAbstract="false" variabilityType="na">
+        <Presentation xsi:type="uma:ArtifactDescription" name="sprint_burndown_chart,_YzmSIF8sEd22Gu98eFOlrQ" briefDescription="" id="-EQ9gGoEO7QfWA_0iXzILuA" orderingGuide="" presentationName="" suppressed="false" authors="" changeDate="2008-07-31T03:13:47" changeDescription="" version="" externalId="">
+          <MainDescription><![CDATA[<p>
+    The estimated work remaining in the sprint is calculated daily and graphed, resulting in a <a class="elementLink"
+    href="./../../Scrum/workproducts/sprint_burndown_chart_F647C347.html" guid="_YzmSIF8sEd22Gu98eFOlrQ">Sprint Burndown
+    Chart</a> The vertical axis displays the hours of effort remaining for the Sprint.&nbsp; The horizontal axis displays
+    the days of the Sprint.&nbsp; The burndown is supposed to be shown by the line of descent from the start of the Sprint
+    with the starting hours, down to the end of the Sprint with no hours remaining.&nbsp;
+</p>
+<p>
+    <img height="300" alt="" src="Scrum/workproducts/resources/sprintburndown.jpg" width="400" />
+</p>
+<p>
+    The team does its best to pull the right amount of work into the sprint but sometimes too much or too little work is
+    pulled in during the <a class="elementLink" href="./../../Scrum/tasks/sprint_planning_meeting_9F0B8F28.html"
+    guid="_4gCKAOF9Edyp34pwdTOSVQ">Sprint Planning Meeting</a> in this case the team needs to add or remove tasks. In the
+    above sprint burndown chart you can see that the team had pulled in too much work initially and still had nearly 600
+    hours to go on 5/16/02. In this case the <a class="elementLink" href="./../../Scrum/roles/product_owner_10E7BD3.html"
+    guid="_QcnRMOF5Edyp34pwdTOSVQ">Product Owner</a> was consulted and it was agreed to remove some work from the sprint,
+    which resulted in the big drop on the chart between 5/16/02 (619 hours) and 5/17/02. From there the team made good
+    consistent progress and finished the sprint successfully.
+</p>
+<p>
+    <br />
+    &nbsp;
+</p>]]></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <ImpactOfNotHaving></ImpactOfNotHaving>
+          <Purpose><![CDATA[Used by the team to gauge how well the Sprint is going.]]></Purpose>
+          <ReasonsForNotNeeding></ReasonsForNotNeeding>
+          <BriefOutline></BriefOutline>
+          <RepresentationOptions></RepresentationOptions>
+          <Representation></Representation>
+          <Notation></Notation>
+        </Presentation>
+        <Template>_OO6A0F8rEd22Gu98eFOlrQ</Template>
+      </ContentElement>
+    </MethodPackage>
+    <MethodPackage xsi:type="uma:ProcessComponent" name="scrum_base" briefDescription="" id="_eU4EcEikEeSpeutM0nTGHg" orderingGuide="" presentationName="" suppressed="false" global="false" authors="" changeDescription="" version="">
+      <MethodElementProperty name="pkg_loadCheck" value="true"/>
+      <MethodElementProperty name="me_edited" value="true"/>
+      <Process xsi:type="uma:DeliveryProcess" name="scrum_base" briefDescription="" id="_eU4EcUikEeSpeutM0nTGHg" orderingGuide="" presentationName="ScrumDomainModel" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+        <Presentation xsi:type="uma:DeliveryProcessDescription" name="ScrumDomainModel,_eU4EcUikEeSpeutM0nTGHg" briefDescription="" id="-aREFPb-uyfv8GbfR3XC1Fw" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="" externalId="" usageGuidance="">
+          <MainDescription></MainDescription>
+          <KeyConsiderations></KeyConsiderations>
+          <Alternatives></Alternatives>
+          <HowToStaff></HowToStaff>
+          <Purpose></Purpose>
+          <Scope></Scope>
+          <UsageNotes></UsageNotes>
+          <Scale></Scale>
+          <ProjectCharacteristics></ProjectCharacteristics>
+          <RiskLevel></RiskLevel>
+          <EstimatingTechnique></EstimatingTechnique>
+          <ProjectMemberExpertise></ProjectMemberExpertise>
+          <TypeOfContract></TypeOfContract>
+        </Presentation>
+        <BreakdownElement xsi:type="uma:Iteration" name="Sprint" briefDescription="" id="_jvFqYUikEeSpeutM0nTGHg" orderingGuide="" presentationName="Sprint" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="true" variabilityType="na">
+          <SuperActivity>_eU4EcUikEeSpeutM0nTGHg</SuperActivity>
+          <BreakdownElement xsi:type="uma:Activity" name="Sprint Planning Meeting" briefDescription="" id="_p9qFcUikEeSpeutM0nTGHg" orderingGuide="" presentationName="Sprint Planning Meeting" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_jvFqYUikEeSpeutM0nTGHg</SuperActivity>
+          </BreakdownElement>
+          <BreakdownElement xsi:type="uma:Activity" name="The Daily Scrum" briefDescription="" id="_vaBncVMsEeS64MMYK_GLqw" orderingGuide="" presentationName="The Daily Scrum" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_jvFqYUikEeSpeutM0nTGHg</SuperActivity>
+          </BreakdownElement>
+          <BreakdownElement xsi:type="uma:Activity" name="Development Session" briefDescription="" id="_y0zsUUikEeSpeutM0nTGHg" orderingGuide="" presentationName="Development Session" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_jvFqYUikEeSpeutM0nTGHg</SuperActivity>
+          </BreakdownElement>
+          <BreakdownElement xsi:type="uma:Activity" name="Sprint Review Meeting" briefDescription="" id="_upzEcEikEeSpeutM0nTGHg" orderingGuide="" presentationName="Sprint Review Meeting" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_jvFqYUikEeSpeutM0nTGHg</SuperActivity>
+          </BreakdownElement>
+          <BreakdownElement xsi:type="uma:Activity" name="Sprint Retrospective" briefDescription="" id="_wk_l0UikEeSpeutM0nTGHg" orderingGuide="" presentationName="Sprint Retrospective" suppressed="false" isAbstract="false" hasMultipleOccurrences="false" isOptional="false" isPlanned="true" prefix="" isEventDriven="false" isOngoing="false" isRepeatable="false" variabilityType="na">
+            <SuperActivity>_jvFqYUikEeSpeutM0nTGHg</SuperActivity>
+          </BreakdownElement>
+        </BreakdownElement>
+      </Process>
+    </MethodPackage>
+  </MethodPlugin>
+  <MethodConfiguration name="Scrum Overview" briefDescription="" id="_ZVQ80OGNEdyp34pwdTOSVQ" orderingGuide="" presentationName="" suppressed="false" authors="" changeDescription="" version="">
+    <MethodPluginSelection>_6Ab_EOF4Edyp34pwdTOSVQ</MethodPluginSelection>
+    <MethodPackageSelection>_Arzq4OF5Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_HeF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_HuF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_HOF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_EeF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_MklnMN0kEeSFiZ6z1OiBPg</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_EuF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_H-F4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_GOF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_6Ab_GuF4Edyp34pwdTOSVQ</MethodPackageSelection>
+    <MethodPackageSelection>_eU4EcEikEeSpeutM0nTGHg</MethodPackageSelection>
+    <MethodPackageSelection>_0V46EdzMEeScxItSDnuGog</MethodPackageSelection>
+    <MethodPackageSelection>_0V46EtzMEeScxItSDnuGog</MethodPackageSelection>
+    <MethodPackageSelection>_0V5hINzMEeScxItSDnuGog</MethodPackageSelection>
+    <MethodPackageSelection>_0V5hIdzMEeScxItSDnuGog</MethodPackageSelection>
+    <MethodPackageSelection>_0V5hItzMEeScxItSDnuGog</MethodPackageSelection>
+    <MethodPackageSelection>_0V5hI9zMEeScxItSDnuGog</MethodPackageSelection>
+    <ProcessView>_Om8IAOGEEdyp34pwdTOSVQ</ProcessView>
+  </MethodConfiguration>
+</uma:MethodLibrary>
