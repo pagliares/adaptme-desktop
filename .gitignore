@@ -14,6 +14,8 @@ test-output/
 .DS_Store
  
 *.class
+*.out
+*.log
  
 # Package Files #
 *.jar
