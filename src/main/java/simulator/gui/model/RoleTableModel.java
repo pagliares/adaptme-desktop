@@ -4,9 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import simulator.base.Developer;
 import simulator.base.Role;
-import simulator.base.WorkProduct;
 
 public class RoleTableModel extends AbstractTableModel {
 
@@ -54,12 +52,11 @@ public class RoleTableModel extends AbstractTableModel {
 			role.setName((String) aValue);
 			break;
 		case 1:
-			role.setIntialQuantity((String) aValue);
+			role.setIntialQuantity((int) aValue);
 			break;
 		case 2:
 			role.setObserveStationaryTime((boolean) aValue);
 			break;
-
 		}
 	}
 
@@ -69,7 +66,7 @@ public class RoleTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return String.class;
+			return Integer.class;
 		case 2:
 			return Boolean.class;
 
@@ -78,18 +75,14 @@ public class RoleTableModel extends AbstractTableModel {
 		}
 	}
 	
-
 	@Override
 	public String getColumnName(int col) {
 		return headersRole[col];
 	}
 	 
-
 	public Role getRoleAt(int row) {
 		return roles.get(row);
 	}
-
-	 
 
 	public void removeRoleAt(int row) {
 		roles.remove(row);
@@ -108,5 +101,4 @@ public class RoleTableModel extends AbstractTableModel {
 		return roles.size();
 	}
 
-	 
 }

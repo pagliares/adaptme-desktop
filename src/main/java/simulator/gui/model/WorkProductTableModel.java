@@ -8,6 +8,8 @@ import simulator.base.WorkProduct;
 
 public class WorkProductTableModel extends AbstractTableModel {
 
+	private static final long serialVersionUID = 1L;
+
 	private List<WorkProduct> workProducts;
 	
 	String[] headers = new String[] { "Work product", "Demand Work Product", "Quantity", "Queue name", "Capacity", "Policy", 
@@ -139,7 +141,4 @@ public class WorkProductTableModel extends AbstractTableModel {
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
 	}
-
-	 
-
 }

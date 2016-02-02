@@ -36,8 +36,8 @@ public class PanelDeveloperEditor extends JPanel {
 	    model.removeDeveloperAt(row);
 	    table.updateUI();
 	});
-//	DeveloperEditorTableModel model = new DeveloperEditorTableModel(developers);
-//	table = new JTable(model);
+	DeveloperEditorTableModel model = new DeveloperEditorTableModel(developers);
+	table = new JTable(model);
 	JScrollPane scrollPane = new JScrollPane();
 	scrollPane.setViewportView(table);
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

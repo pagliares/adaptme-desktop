@@ -2,7 +2,7 @@ package simulator.base;
 
 public class Role {
 	private String name;
-	private String intialQuantity;
+	private int intialQuantity;
 	private boolean observeStationaryTime;
 	
 	public String getName() {
@@ -11,10 +11,10 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getIntialQuantity() {
+	public int getIntialQuantity() {
 		return intialQuantity;
 	}
-	public void setIntialQuantity(String intialQuantity) {
+	public void setIntialQuantity(int intialQuantity) {
 		this.intialQuantity = intialQuantity;
 	}
 	public boolean isObserveStationaryTime() {
