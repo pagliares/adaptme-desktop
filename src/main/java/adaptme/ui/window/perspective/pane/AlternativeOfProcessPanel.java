@@ -80,6 +80,7 @@ import adaptme.ui.panel.base.workproduct.deliverable.TabbedPanelDeliverable;
 import adaptme.ui.panel.base.workproduct.outcome.TabbedPanelOutcome;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.DefineProjectResourcesPanel;
+import adaptme.ui.window.perspective.DefineXACDMLTextAreaPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
@@ -597,9 +598,11 @@ public class AlternativeOfProcessPanel {
 //		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", generateSimulationModel.getPanel());
 //		GenerateSimulationModel generateSimulationModel2 = new GenerateSimulationModel();
 
+		DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel();
+		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
-		tabbedPane.addTab("3.4. Run simulation model", runSimulationPanel.getPanel());
+		tabbedPane.addTab("3.5. Run simulation model", runSimulationPanel.getPanel());
 		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2);
