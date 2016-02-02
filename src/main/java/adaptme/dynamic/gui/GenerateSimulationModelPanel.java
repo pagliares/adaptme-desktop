@@ -7,10 +7,10 @@ import java.awt.Component;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-public class GenerateSimulationModel {
+public class GenerateSimulationModelPanel {
 	private JPanel panel;
 	
-	public GenerateSimulationModel() {
+	public GenerateSimulationModelPanel() {
 		panel = new JPanel();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

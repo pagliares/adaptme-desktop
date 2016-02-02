@@ -22,7 +22,7 @@ public class SimulationPanel {
 	tabbedPane.addTab("3.1. Adjust process parameters for the simulation model",
 		adjustProjectParametersPanel.getPanel());
 	
-	DefineProjectResourcesPanel defineProjectResourcesPanel = new DefineProjectResourcesPanel();
+	WorkProductResourcesPanel defineProjectResourcesPanel = new WorkProductResourcesPanel();
 	tabbedPane.addTab("3.2. Define project resources parameters for the simulation model",
 		defineProjectResourcesPanel.getPanel());
 	

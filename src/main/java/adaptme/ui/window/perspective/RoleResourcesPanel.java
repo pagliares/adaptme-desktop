@@ -40,7 +40,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DefineProjectResourcesPanel {
+public class RoleResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableWorkProduct;
@@ -48,19 +48,19 @@ public class DefineProjectResourcesPanel {
 	private JComboBox policyJComboBox;
 	private TableColumnModel modeloColuna;
 	private List<WorkProduct> workProducts = new ArrayList<>();
-	
+
 	private XACDMLBuilderFacade xACDMLBuilderFacade = new XACDMLBuilderFacade();
 	private JButton generateXACDMLButton;
 
-	public DefineProjectResourcesPanel() {
-		
+	public RoleResourcesPanel() {
+
 		policyJComboBox = new JComboBox();
 		policyJComboBox.addItem("FIFO");
 		policyJComboBox.addItem("STACK");
 
 		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
+		panel_1.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(59, 59, 59)));
 
 		// panel_2 = new JPanel();
@@ -74,8 +74,6 @@ public class DefineProjectResourcesPanel {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		
-		
 
 		scrollPane.setViewportView(tableWorkProduct);
 
@@ -126,7 +124,7 @@ public class DefineProjectResourcesPanel {
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
-		
+
 		generateXACDMLButton = new JButton("Generate XACDML");
 		generateXACDMLButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,55 +140,89 @@ public class DefineProjectResourcesPanel {
 	}
 
 	public void setModelComboBoxWorkProduct(Set<String> list) {
+
 		String[] names = list.toArray(new String[list.size()]);
-//		List<WorkProduct> workProducts = new ArrayList<>();
+
 		for (int i = 0; i < names.length; i++) {
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(names[i]);
 			workProducts.add(workProduct);
 		}
+
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
 		modeloColuna = tableWorkProduct.getColumnModel();
 		TableColumn colunaPolicy = modeloColuna.getColumn(5);
- 		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
- 		
- 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
-//		tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); // centraliza todas colunas com String.class
-		
+		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
 
-		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
-	    .setHorizontalAlignment(JLabel.CENTER);
-		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+		// tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); //
+		// centraliza todas colunas com String.class
+
+		((DefaultTableCellRenderer) tableWorkProduct.getTableHeader().getDefaultRenderer())
+				.setHorizontalAlignment(JLabel.CENTER);
+
 		tableWorkProduct.getColumnModel().getColumn(1).setPreferredWidth(23);
 		tableWorkProduct.getColumnModel().getColumn(2).setPreferredWidth(9);
 		tableWorkProduct.getColumnModel().getColumn(3).setPreferredWidth(14);
 		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
 		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
-		
-	//	xACDMLBuilderFacade.buildEntities(null, workProducts);
+
+		// xACDMLBuilderFacade.buildEntities(null, workProducts);
 	}
 
 	public void setComboBoxRole(Set<String> list) {
 		// DefaultTreeModel model = new DefaultTreeModel(list.toArray(new
 		// String[list.size()]));
 		// tableWorkProduct.setModel(model);
+		String[] names = list.toArray(new String[list.size()]);
+
+		for (int i = 0; i < names.length; i++) {
+			WorkProduct workProduct = new WorkProduct();
+			workProduct.setName(names[i]);
+			workProducts.add(workProduct);
+		}
+
+		WorkProductTableModel model = new WorkProductTableModel(workProducts);
+		tableWorkProduct.setModel(model);
+		modeloColuna = tableWorkProduct.getColumnModel();
+		TableColumn colunaPolicy = modeloColuna.getColumn(5);
+		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+		// tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); //
+		// centraliza todas colunas com String.class
+
+		((DefaultTableCellRenderer) tableWorkProduct.getTableHeader().getDefaultRenderer())
+				.setHorizontalAlignment(JLabel.CENTER);
+
+		tableWorkProduct.getColumnModel().getColumn(1).setPreferredWidth(23);
+		tableWorkProduct.getColumnModel().getColumn(2).setPreferredWidth(9);
+		tableWorkProduct.getColumnModel().getColumn(3).setPreferredWidth(14);
+		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
+		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
+		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
+
+		// xACDMLBuilderFacade.buildEntities(null, workProducts);
 	}
 
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
 	}
-
-	 
-
-	 
 
 }
