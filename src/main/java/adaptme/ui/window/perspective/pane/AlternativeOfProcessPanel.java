@@ -81,6 +81,7 @@ import adaptme.ui.panel.base.workproduct.outcome.TabbedPanelOutcome;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.DefineProjectResourcesPanel;
 import adaptme.ui.window.perspective.DefineXACDMLTextAreaPanel;
+import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
@@ -585,7 +586,7 @@ public class AlternativeOfProcessPanel {
 		defineProjectResourcesPanel.setComboBoxRole(persistProcess.getRolesList());
 		defineProjectResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());
 		
-		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML generate activities and queues", defineProjectResourcesPanel.getPanel());
+		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML", defineProjectResourcesPanel.getPanel());
 		GenerateSimulationModel generateSimulationModel = new GenerateSimulationModel();
 		
 		 // teste linhas abaixo
@@ -593,7 +594,7 @@ public class AlternativeOfProcessPanel {
 		defineProjectResourcesPanel2.setComboBoxRole(persistProcess.getRolesList());
 		defineProjectResourcesPanel2.setModelComboBoxWorkProduct(persistProcess.getWordProductList());
 		
-		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", defineProjectResourcesPanel2.getPanel());
+		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", defineProjectResourcesPanel2.getPanel());
 		
 //		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", generateSimulationModel.getPanel());
 //		GenerateSimulationModel generateSimulationModel2 = new GenerateSimulationModel();
@@ -601,8 +602,11 @@ public class AlternativeOfProcessPanel {
 		DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel();
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
+		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel();
+		tabbedPane.addTab("3.5. Java program", javaProgramTextAreaPanel.getPanel());
+		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
-		tabbedPane.addTab("3.5. Run simulation model", runSimulationPanel.getPanel());
+		tabbedPane.addTab("3.6. Run simulation model", runSimulationPanel.getPanel());
 		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2);
