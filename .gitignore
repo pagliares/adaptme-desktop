@@ -9,6 +9,7 @@ TreePhaseExecutive/
 doc/
 msp/
 test-output/
+output/
  
 # OS Files #
 .DS_Store
