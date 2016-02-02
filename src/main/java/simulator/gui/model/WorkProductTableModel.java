@@ -36,6 +36,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return workProduct.isDemandWorkProduct();
 		case 2:
 			return workProduct.getSize();
+		case 3:
+			return "Queue name";
+		case 4:
+			return 0;
+		case 5:
+			return "FIFO";
+		case 6:
+			return "Queue name";
+		case 7:
+			return 0;
 		default:
 			return null;
 		}
@@ -54,6 +64,21 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 2:
 			workProduct.setSize((int) aValue);
 			break;
+		case 3:
+			 
+			break;
+		case 4:
+			 
+			break;
+		case 5:
+			 
+			break;
+		case 6:
+			 
+			break;
+		case 7:
+			 
+			break;
 		}
 	}
 
@@ -71,7 +96,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 4:
 			return String.class;
 		case 5:
-			return String.class;
+			return String.class;  // nao se e isso para combobox
 		case 6:
 			return String.class;
 		case 7:

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -21,78 +22,98 @@ import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.border.LineBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 
 public class DefineProjectResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableWorkProduct;
-//	private JPanel panel_2;
+	// private JPanel panel_2;
+	private JComboBox policyJComboBox;
+	private TableColumnModel modeloColuna;
 
 	public DefineProjectResourcesPanel() {
-		panel = new JPanel();		
+
+		policyJComboBox = new JComboBox();
+		policyJComboBox.addItem("FIFO");
+		policyJComboBox.addItem("STACK");
+
+		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
-		
-//		panel_2 = new JPanel();
-//		panel_2.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		
+		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(59, 59, 59)));
+
+		// panel_2 = new JPanel();
+		// panel_2.setBorder(new TitledBorder(null, "Role resources",
+		// TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
-				scrollPane = new JScrollPane();
-				scrollPane.setViewportBorder(null);
-				panel_1.add(scrollPane, BorderLayout.CENTER);
-				tableWorkProduct = new JTable();
-				scrollPane.setViewportView(tableWorkProduct);
-		
-//				panel_2.setLayout(new BorderLayout(0, 0));
-		
+
+		scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
+		panel_1.add(scrollPane, BorderLayout.CENTER);
+		tableWorkProduct = new JTable();
+		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+
+		scrollPane.setViewportView(tableWorkProduct);
+
+		// panel_2.setLayout(new BorderLayout(0, 0));
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
-//		panel_2.add(scrollPane_1, BorderLayout.CENTER);
+		// panel_2.add(scrollPane_1, BorderLayout.CENTER);
 		GroupLayout gl_panel = new GroupLayout(panel);
-		
-//		gl_panel.setHorizontalGroup(
-//			gl_panel.createParallelGroup(Alignment.LEADING)
-//				.addGroup(gl_panel.createSequentialGroup()
-//					.addGap(6)
-//					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-//					.addGap(27)
-//					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-//					.addGap(6))
-//		);
-		
-		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(6)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-						.addGap(27)
-						
-						.addGap(6))
-			);
-		// trecho abaixo igual ao superior sem .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
 
-//		gl_panel.setVerticalGroup(
-//			gl_panel.createParallelGroup(Alignment.LEADING)
-//				.addGroup(gl_panel.createSequentialGroup()
-//					.addGap(6)
-//					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-//						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-//						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
-//					.addGap(6))
-//		);
-		// trecho abaixo igual ao superior sem .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+		// gl_panel.setHorizontalGroup(
+		// gl_panel.createParallelGroup(Alignment.LEADING)
+		// .addGroup(gl_panel.createSequentialGroup()
+		// .addGap(6)
+		// .addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248,
+		// Short.MAX_VALUE)
+		// .addGap(27)
+		// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 248,
+		// Short.MAX_VALUE)
+		// .addGap(6))
+		// );
+
+		gl_panel.setHorizontalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(6)
+						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE).addGap(27)
+
+						.addGap(6)));
+						// trecho abaixo igual ao superior sem
+						// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413,
+						// Short.MAX_VALUE))
+
+		// gl_panel.setVerticalGroup(
+		// gl_panel.createParallelGroup(Alignment.LEADING)
+		// .addGroup(gl_panel.createSequentialGroup()
+		// .addGap(6)
+		// .addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+		// .addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413,
+		// Short.MAX_VALUE)
+		// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413,
+		// Short.MAX_VALUE))
+		// .addGap(6))
+		// );
+		// trecho abaixo igual ao superior sem .addComponent(panel_2,
+		// GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
 		gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(6)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE).addGap(6))));
+						.addGroup(gl_panel.createSequentialGroup().addGap(6)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+										.addGap(6))));
 		panel.setLayout(gl_panel);
+
 	}
 
 	public JPanel getPanel() {
@@ -109,11 +130,15 @@ public class DefineProjectResourcesPanel {
 		}
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
+		modeloColuna = tableWorkProduct.getColumnModel();
+		TableColumn colunaPolicy = modeloColuna.getColumn(5);
+ 		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
 	}
 
 	public void setComboBoxRole(Set<String> list) {
-//		DefaultTreeModel model = new DefaultTreeModel(list.toArray(new String[list.size()]));
-//		tableWorkProduct.setModel(model);
+		// DefaultTreeModel model = new DefaultTreeModel(list.toArray(new
+		// String[list.size()]));
+		// tableWorkProduct.setModel(model);
 	}
 
 }
