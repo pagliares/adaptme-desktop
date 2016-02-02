@@ -22,6 +22,8 @@ import javax.swing.SwingConstants;
 import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
+import xacdml.model.XACDMLBuilderFacade;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -35,6 +37,8 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DefineProjectResourcesPanel {
 	private JPanel panel;
@@ -43,9 +47,13 @@ public class DefineProjectResourcesPanel {
 	// private JPanel panel_2;
 	private JComboBox policyJComboBox;
 	private TableColumnModel modeloColuna;
+	private List<WorkProduct> workProducts = new ArrayList<>();
+	
+	private XACDMLBuilderFacade xACDMLBuilderFacade = new XACDMLBuilderFacade();
+	private JButton generateXACDMLButton;
 
 	public DefineProjectResourcesPanel() {
-
+		
 		policyJComboBox = new JComboBox();
 		policyJComboBox.addItem("FIFO");
 		policyJComboBox.addItem("STACK");
@@ -118,6 +126,13 @@ public class DefineProjectResourcesPanel {
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
+		
+		generateXACDMLButton = new JButton("Generate XACDML");
+		generateXACDMLButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_1.add(generateXACDMLButton, BorderLayout.SOUTH);
 		panel.setLayout(gl_panel);
 
 	}
@@ -128,7 +143,7 @@ public class DefineProjectResourcesPanel {
 
 	public void setModelComboBoxWorkProduct(Set<String> list) {
 		String[] names = list.toArray(new String[list.size()]);
-		List<WorkProduct> workProducts = new ArrayList<>();
+//		List<WorkProduct> workProducts = new ArrayList<>();
 		for (int i = 0; i < names.length; i++) {
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(names[i]);
@@ -160,6 +175,8 @@ public class DefineProjectResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
 		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
+		
+	//	xACDMLBuilderFacade.buildEntities(null, workProducts);
 	}
 
 	public void setComboBoxRole(Set<String> list) {
@@ -167,5 +184,13 @@ public class DefineProjectResourcesPanel {
 		// String[list.size()]));
 		// tableWorkProduct.setModel(model);
 	}
+
+	public List<WorkProduct> getWorkProducts() {
+		return workProducts;
+	}
+
+	 
+
+	 
 
 }

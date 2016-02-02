@@ -9,6 +9,7 @@ import simulator.base.WorkProduct;
 public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
+	
 	String[] headers = new String[] { "Work product", "Demand Work Product", "Quantity", "Queue name", "Capacity", "Policy", 
 			                          "Observer queue length name", "Observer queue lenght time name"};
 
@@ -37,15 +38,15 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 2:
 			return workProduct.getSize();
 		case 3:
-			return "Queue name";
+			return workProduct.getQueueName();
 		case 4:
-			return 0;
+			return workProduct.getCapacity();
 		case 5:
-			return "FIFO";
+			return workProduct.getPolicy();
 		case 6:
-			return "Queue name";
+			return workProduct.getObserverQueueLenghtName();
 		case 7:
-			return 0;
+			return workProduct.getObserverQueueLenghtTimeName();
 		default:
 			return null;
 		}
@@ -134,5 +135,11 @@ public class WorkProductTableModel extends AbstractTableModel {
 	public int getNumberOfDevelopers() {
 		return workProducts.size();
 	}
+
+	public List<WorkProduct> getWorkProducts() {
+		return workProducts;
+	}
+
+	 
 
 }

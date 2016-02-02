@@ -7,6 +7,13 @@ public class WorkProduct {
     private boolean demandWorkProduct;
     private boolean lock;
     private String status;
+    
+    private int quantity;
+    private String queueName = "Queue name";
+    private int capacity;
+    private Policy policy = Policy.FIFO;
+    private String observerQueueLenghtName = "Queue name";
+    private String observerQueueLenghtTimeName = "0";
 
     public String getName() {
 	return name;
@@ -63,6 +70,54 @@ public class WorkProduct {
 
 	public void setDemandWorkProduct(boolean demandWorkProduct) {
 		this.demandWorkProduct = demandWorkProduct;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getQueueName() {
+		return queueName;
+	}
+
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	public Policy getPolicy() {
+		return policy;
+	}
+
+	public void setPolicy(Policy policy) {
+		this.policy = policy;
+	}
+
+	public String getObserverQueueLenghtName() {
+		return observerQueueLenghtName;
+	}
+
+	public void setObserverQueueLenghtName(String observerQueueLenghtName) {
+		this.observerQueueLenghtName = observerQueueLenghtName;
+	}
+
+	public String getObserverQueueLenghtTimeName() {
+		return observerQueueLenghtTimeName;
+	}
+
+	public void setObserverQueueLenghtTimeName(String observerQueueLenghtTimeName) {
+		this.observerQueueLenghtTimeName = observerQueueLenghtTimeName;
 	}
 
 }

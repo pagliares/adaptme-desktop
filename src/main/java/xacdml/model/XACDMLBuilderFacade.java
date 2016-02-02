@@ -3,6 +3,7 @@ package xacdml.model;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,6 +24,8 @@ import xacdml.model.generated.Prev;
 import xacdml.model.generated.QueueObserver;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
+
+import simulator.base.WorkProduct;
 
 public class XACDMLBuilderFacade {
 
@@ -78,6 +81,24 @@ public class XACDMLBuilderFacade {
 		acd.getClazz().add(caller);
 		return acd;
 	}
+	
+	public Acd buildEntities(Acd acd, List<WorkProduct> workProducts) {
+		ObjectFactory factory = new ObjectFactory();
+		Class inquirer = factory.createClass();
+		inquirer.setId("INQUIRER");
+		acd.getClazz().add(inquirer);
+
+		Class idle = factory.createClass();
+		idle.setId("IDLE");
+		acd.getClazz().add(idle);
+
+		Class caller = factory.createClass();
+		caller.setId("CALLER");
+		acd.getClazz().add(caller);
+		return acd;
+	}
+	
+	
 
 	private Acd buildDeadStates(Acd acd) {
 

@@ -127,6 +127,8 @@ public class AlternativeOfProcessPanel {
 
 	private JTabbedPane leftTreeTabbedPane;
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
+	
+	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
 			MethodLibraryWrapper methodLibraryWrapper) {
@@ -563,6 +565,10 @@ public class AlternativeOfProcessPanel {
 	public JPanel getPanel() {
 		return panel;
 	}
+	
+	public DefineXACDMLTextAreaPanel getDefineXACDMLTextAreaPanel() {
+		return defineXACDMLTextAreaPanel;
+	}
 
 	public void openProcessToSimulate(Process process, MethodLibraryHash methodLibraryHash) {
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -599,8 +605,10 @@ public class AlternativeOfProcessPanel {
 //		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML Resources queues", generateSimulationModel.getPanel());
 //		GenerateSimulationModel generateSimulationModel2 = new GenerateSimulationModel();
 
-		DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel();
+		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel();
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
+		
+		defineXACDMLTextAreaPanel.setWorkProducts(defineProjectResourcesPanel.getWorkProducts());
 		
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel();
 		tabbedPane.addTab("3.5. Java program", javaProgramTextAreaPanel.getPanel());
