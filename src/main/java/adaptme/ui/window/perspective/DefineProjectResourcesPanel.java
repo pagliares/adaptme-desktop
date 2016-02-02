@@ -22,6 +22,7 @@ import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
@@ -62,6 +63,8 @@ public class DefineProjectResourcesPanel {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		
+		
 
 		scrollPane.setViewportView(tableWorkProduct);
 
@@ -133,6 +136,16 @@ public class DefineProjectResourcesPanel {
 		modeloColuna = tableWorkProduct.getColumnModel();
 		TableColumn colunaPolicy = modeloColuna.getColumn(5);
  		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
+ 		
+ 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
+		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
+		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer( centerRenderer );
+		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
+//		tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); // centraliza todas colunas com String.class
 	}
 
 	public void setComboBoxRole(Set<String> list) {
