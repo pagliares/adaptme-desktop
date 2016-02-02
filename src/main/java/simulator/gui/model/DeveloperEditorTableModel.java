@@ -5,14 +5,21 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.base.Developer;
+import simulator.base.Role;
+import simulator.base.WorkProduct;
 
 public class DeveloperEditorTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -4739793782253876825L;
+    
+    
 
     private List<Developer> developers;
+ 
     String[] headers = new String[] { "Name", "Skill", "Max Skill", "Experience", "Initial Velocity" };
-
+ 
+    
+    
     public DeveloperEditorTableModel(List<Developer> developers) {
 	this.developers = developers;
     }
@@ -26,7 +33,8 @@ public class DeveloperEditorTableModel extends AbstractTableModel {
     public int getColumnCount() {
 	return 5;
     }
-
+    
+    
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 	Developer developer = developers.get(rowIndex);
@@ -45,6 +53,9 @@ public class DeveloperEditorTableModel extends AbstractTableModel {
 	    return null;
 	}
     }
+    
+     
+
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -68,6 +79,8 @@ public class DeveloperEditorTableModel extends AbstractTableModel {
 	}
     }
 
+    
+    
     @Override
     public Class<?> getColumnClass(int columnIndex) {
 	switch (columnIndex) {
@@ -86,11 +99,14 @@ public class DeveloperEditorTableModel extends AbstractTableModel {
 	}
     }
 
+   
     @Override
     public String getColumnName(int col) {
 	return headers[col];
     }
 
+    
+    
     public Developer getDeveloperAt(int row) {
 	return developers.get(row);
     }
@@ -111,4 +127,6 @@ public class DeveloperEditorTableModel extends AbstractTableModel {
     public int getNumberOfDevelopers() {
 	return developers.size();
     }
+    
+   
 }

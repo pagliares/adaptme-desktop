@@ -1,6 +1,7 @@
 package simulator.base;
 
 public class WorkProduct {
+	
     private String name;
     private int size;
     private int done;
