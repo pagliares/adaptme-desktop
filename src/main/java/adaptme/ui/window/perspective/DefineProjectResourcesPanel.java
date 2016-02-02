@@ -17,12 +17,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
@@ -146,6 +149,17 @@ public class DefineProjectResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer( centerRenderer );
 		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
 //		tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); // centraliza todas colunas com String.class
+		
+
+		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
+	    .setHorizontalAlignment(JLabel.CENTER);
+		
+		tableWorkProduct.getColumnModel().getColumn(1).setPreferredWidth(23);
+		tableWorkProduct.getColumnModel().getColumn(2).setPreferredWidth(9);
+		tableWorkProduct.getColumnModel().getColumn(3).setPreferredWidth(14);
+		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
+		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
+		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
 	}
 
 	public void setComboBoxRole(Set<String> list) {
