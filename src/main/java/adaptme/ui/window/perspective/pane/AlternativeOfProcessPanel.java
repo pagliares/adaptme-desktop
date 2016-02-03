@@ -47,7 +47,6 @@ import adaptme.base.MethodLibraryHash;
 import adaptme.base.MethodLibraryWrapper;
 import adaptme.base.TreeNodeFactory;
 import adaptme.base.persist.PersistProcess;
-import adaptme.dynamic.gui.GenerateSimulationModelPanel;
 import adaptme.dynamic.gui.MainPanel;
 import adaptme.dynamic.gui.NumberCompontent;
 import adaptme.dynamic.gui.NumberTreeNode;
@@ -79,11 +78,11 @@ import adaptme.ui.panel.base.workproduct.artifact.TabbedPanelArtifact;
 import adaptme.ui.panel.base.workproduct.deliverable.TabbedPanelDeliverable;
 import adaptme.ui.panel.base.workproduct.outcome.TabbedPanelOutcome;
 import adaptme.ui.window.AdaptMeUI;
-import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import adaptme.ui.window.perspective.DefineXACDMLTextAreaPanel;
 import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
+import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
 import model.spem.ProcessContentRepository;
@@ -587,7 +586,6 @@ public class AlternativeOfProcessPanel {
 		
 		tabbedPane.addTab("3.1. Adjust process parameters for the simulation model", mainPanel.getPanel());
 		
-		
 		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
 		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
 		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
@@ -597,22 +595,20 @@ public class AlternativeOfProcessPanel {
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
 		
-		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel();
+		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
-		defineXACDMLTextAreaPanel.setWorkProducts(workProductResourcesPanel.getWorkProducts());
-		
+	
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel();
 		tabbedPane.addTab("3.5. Java program", javaProgramTextAreaPanel.getPanel());
 		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
 		tabbedPane.addTab("3.6. Run simulation model", runSimulationPanel.getPanel());
 		
-	//	GenerateSimulationModelPanel generateSimulationModelPanel = new GenerateSimulationModelPanel();
-
-		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
-		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2);
+		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2); // exibe as subtabs da tab 3, deixando a 3.1 selecionada por default
+																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
+																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
 	}
 
 	private int count = 0;

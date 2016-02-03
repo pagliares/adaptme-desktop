@@ -14,20 +14,20 @@ public class OpenToSimulatorAction extends AbstractAction {
     private static final long serialVersionUID = 1L;
 
     private Process process;
-    private AlternativeOfProcessPanel spemManagementPanel;
+    private AlternativeOfProcessPanel alternativeOfProcessPanel;
 
 	private MethodLibraryHash methodLibraryHash;
 
-    public OpenToSimulatorAction(String title, AlternativeOfProcessPanel spemManagementPanel) {
-	super(title);
-	this.spemManagementPanel = spemManagementPanel;
+    public OpenToSimulatorAction(String title, AlternativeOfProcessPanel alternativeOfProcessPanel) {
+    	super(title);
+    	this.alternativeOfProcessPanel = alternativeOfProcessPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (process != null) {
-	    spemManagementPanel.openProcessToSimulate(process, methodLibraryHash);
-	}
+    	if (process != null) {
+    		alternativeOfProcessPanel.openProcessToSimulate(process, methodLibraryHash);
+    	}
     }
 
     public void setProcess(Process process) {

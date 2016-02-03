@@ -30,15 +30,10 @@ public class RoleResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableRole;
-	// private JPanel panel_2;
-	private JComboBox policyJComboBox;
+ 	private JComboBox policyJComboBox;
 	private TableColumnModel modeloColuna;
 	
-	private List<WorkProduct> workProducts = new ArrayList<>();
-	private List<Role> roles = new ArrayList<>();
-
-//	private XACDMLBuilderFacade xACDMLBuilderFacade = new XACDMLBuilderFacade();
-	private JButton generateXACDMLButton;
+ 	private List<Role> roles = new ArrayList<>();
 
 	public RoleResourcesPanel() {
 
@@ -74,14 +69,6 @@ public class RoleResourcesPanel {
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
-
-		generateXACDMLButton = new JButton("Generate XACDML");
-		generateXACDMLButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		panel_1.add(generateXACDMLButton, BorderLayout.SOUTH);
 		panel.setLayout(gl_panel);
 	}
 
@@ -116,13 +103,11 @@ public class RoleResourcesPanel {
 		tableRole.getColumnModel().getColumn(1).setPreferredWidth(15);
 		tableRole.getColumnModel().getColumn(1).setPreferredWidth(23);
 		tableRole.getColumnModel().getColumn(2).setPreferredWidth(9);
- 
 
-		// xACDMLBuilderFacade.buildEntities(null, workProducts);
-	}
+ 	}
 
-	public List<WorkProduct> getWorkProducts() {
-		return workProducts;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
 }

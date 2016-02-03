@@ -44,14 +44,11 @@ public class WorkProductResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableWorkProduct;
-	// private JPanel panel_2;
 	private JComboBox policyJComboBox;
 	private TableColumnModel modeloColuna;
 	private List<WorkProduct> workProducts = new ArrayList<>();
 	
-	private XACDMLBuilderFacade xACDMLBuilderFacade = new XACDMLBuilderFacade();
-	private JButton generateXACDMLButton;
-
+ 
 	public WorkProductResourcesPanel() {
 		
 		policyJComboBox = new JComboBox();
@@ -126,13 +123,6 @@ public class WorkProductResourcesPanel {
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
-		
-		generateXACDMLButton = new JButton("Generate XACDML");
-		generateXACDMLButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_1.add(generateXACDMLButton, BorderLayout.SOUTH);
 		panel.setLayout(gl_panel);
 
 	}
@@ -178,14 +168,7 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
 		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
 		
-	//	xACDMLBuilderFacade.buildEntities(null, workProducts);
-	}
-
-	public void setComboBoxRole(Set<String> list) {
-		// DefaultTreeModel model = new DefaultTreeModel(list.toArray(new
-		// String[list.size()]));
-		// tableWorkProduct.setModel(model);
-	}
+ 	}
 
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
