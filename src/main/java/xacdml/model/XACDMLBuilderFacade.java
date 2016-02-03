@@ -202,10 +202,6 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-
-	
-
-	
 	public Acd buildActivities(Acd acd, List<Task> tasks) {
 		ObjectFactory factory = new ObjectFactory();
 		// ---------------------------- Begin Activity Talk
@@ -387,126 +383,36 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 
-	private Acd buildGenerateActivities(Acd acd) {
-
-		ObjectFactory factory = new ObjectFactory();
-
-		// ---------------------------- Begin CallGenerate
-		Generate callGenerate = factory.createGenerate();
-		callGenerate.setId("CALL");
-
-		// Class clazz = factory.createClass(); // new
-		// clazz.setId("CALL"); // new
-		//
-		//
-//		callGenerate.setClazz((Class) acd.getClazz().get(0)); // new
-
-		Stat negExp = factory.createStat();
-		negExp.setType("NEGEXP");
-		negExp.setParm1("7.0");
-
-		Graphic box = factory.createGraphic();
-		box.setType("BOX");
-		box.setX("73");
-		box.setY("101");
-
-		ActObserver actObserver = factory.createActObserver();
-		actObserver.setType("ACTIVE");
-		actObserver.setName("CALL_OBS");
-
-		Next nextDead = factory.createNext();
-		// nextDead.setDead(dead);
-		callGenerate.getActObserver().add(actObserver);
-		callGenerate.setGraphic(box);
-		callGenerate.setStat(negExp);
-		callGenerate.getNext().add(nextDead);
-
-		acd.getGenerate().add(callGenerate);
-
-		// ------------------------------END CallGenerate
-
-		// ---------------------------- Begin Generate Activity ARRIVAL
-
-		Generate arrivalGenerate = factory.createGenerate();
-		arrivalGenerate.setId("ARRIVAL");
-
-		Stat negExp2 = factory.createStat();
-		negExp2.setParm1("5.0");
-		negExp2.setType("NEGEXP");
-
-		Graphic box6 = factory.createGraphic();
-		box6.setType("BOX");
-		box6.setX("90");
-		box6.setY("353");
-
-		ActObserver arrivalActObserver = factory.createActObserver();
-		arrivalActObserver.setType("ACTIVE");
-		arrivalActObserver.setName("CUSTOMER_OBS");
-
-		Next nextDead2 = factory.createNext();
-		// nextDead.setDead(dead);
-		arrivalGenerate.getNext().add(nextDead2);
-
-		arrivalGenerate.setGraphic(box6);
-		arrivalGenerate.setStat(negExp2);
-		arrivalGenerate.getActObserver().add(arrivalActObserver);
-		acd.getGenerate().add(arrivalGenerate);
-
-		// ---------------------------- END Generate Activity ARRIVAL
-		return acd;
-	}
+	
 
 	public Acd buildDestroyActivities(Acd acd, List<WorkProduct> workProducts) {
+		
 		ObjectFactory factory = new ObjectFactory();
-		// ---------------------------- Begin Destroy Activity DEP0
-
 		Destroy destroyDep0 = factory.createDestroy();
-		destroyDep0.setId("DEP0");
+		for (WorkProduct workProduct: workProducts) {
+			
+			destroyDep0.setId("Destroy : " + workProduct.getName());
 
-		Stat uniform2 = factory.createStat();
-		uniform2.setType("UNIFORM");
-		uniform2.setParm1("0.0");
-		uniform2.setParm2("10.0");
+			Stat uniform2 = factory.createStat();
+			uniform2.setType("UNIFORM");
+			uniform2.setParm1("0.0");
+			uniform2.setParm2("10.0");
 
-		Graphic box3 = factory.createGraphic();
-		box3.setType("BOX");
-		box3.setX("602");
-		box3.setY("108");
+			Graphic box3 = factory.createGraphic();
+			box3.setType("BOX");
+			box3.setX("602");
+			box3.setY("108");
 
-		Prev previous = factory.createPrev();
-		// previous.setDead(dead);
-		destroyDep0.getPrev().add(previous);
-		destroyDep0.setGraphic(box3);
-		// esta faltando destroy.setStat no codigo
-		acd.getDestroy().add(destroyDep0);
-
-		// ---------------------------- END Destroy Activity DEP0
-
-		// ---------------------------- Begin Destroy Activity DEP1
-		Destroy destroyDep1 = factory.createDestroy();
-		destroyDep1.setId("DEP1");
-
-		Stat uniform3 = factory.createStat();
-		uniform3.setType("UNIFORM");
-		uniform3.setParm1("0.0");
-		uniform3.setParm2("10.0");
-
-		Graphic box7 = factory.createGraphic();
-		box7.setType("BOX");
-		box7.setX("600");
-		box7.setY("354");
-
-		Prev previousDeadB1 = factory.createPrev();
-		// previousDeadB1.setDead(dead);
-		destroyDep1.getPrev().add(previousDeadB1);
-		destroyDep1.setGraphic(box7);
-
-		acd.getDestroy().add(destroyDep1);
-
-		// ---------------------------- Begin Destroy Activity DEP1
+			Prev previous = factory.createPrev();
+			// previous.setDead(dead);
+			destroyDep0.getPrev().add(previous);
+			destroyDep0.setGraphic(box3);
+			// esta faltando destroy.setStat no codigo
+			acd.getDestroy().add(destroyDep0);
+			destroyDep0 = factory.createDestroy();
+		}
 
 		return acd;
-
 	}
 	
 	
@@ -571,7 +477,7 @@ public class XACDMLBuilderFacade {
 
 		acd = buildEntities(acd);
 	//	acd = buildDeadStates(acd);
-		acd = buildGenerateActivities(acd);
+//		acd = buildGenerateActivities(acd);
 
 		acd = buildActivities(acd);
 		acd = buildDestroyActivities(acd);
