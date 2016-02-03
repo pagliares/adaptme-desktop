@@ -46,7 +46,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 			
 			public void actionPerformed(ActionEvent e) {	
 				Acd acd = xACDMLBuilderFacade.buildEntities(roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
-				acd = xACDMLBuilderFacade.buildDeadStates(acd, workProdutResourcesPanel.getWorkProducts());
+				acd = xACDMLBuilderFacade.buildDeadStates(acd, roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
 				acd = xACDMLBuilderFacade.buildGenerateActivities(acd, workProdutResourcesPanel.getWorkProducts());
 				acd = xACDMLBuilderFacade.buildActivities(acd, null);
 				acd = xACDMLBuilderFacade.buildDestroyActivities(acd, workProdutResourcesPanel.getWorkProducts());

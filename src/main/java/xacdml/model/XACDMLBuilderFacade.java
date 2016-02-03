@@ -139,129 +139,65 @@ public class XACDMLBuilderFacade {
 	}
 	
 	
-	public Acd buildDeadStates(Acd acd, List<WorkProduct> workProducts) {
+	public Acd buildDeadStates(Acd acd, List<Role> roles, List<WorkProduct> workProducts) {
 
 		ObjectFactory factory = new ObjectFactory();
-
-		// ---------------------------- Begin Dead State WAIT0
-
 		Dead dead = factory.createDead();
-		dead.setId("WAIT0");
-		// dead.setClazz(inquirer);
+		
+		for (WorkProduct workProduct: workProducts) {
+			dead.setId(workProduct.getQueueName());
+			// dead.setClazz(inquirer);
+			
+			Type queue = factory.createType();
+			queue.setStruct("QUEUE");
+			queue.setSize(Integer.toString(workProduct.getQuantity()));
+			queue.setInit("0"); // conferir
+			dead.setType(queue);
+			
+			// Verificar a necessidade de colocar Graphic
+			Graphic circle = factory.createGraphic();
+			circle.setType("CIRCLE");
+			circle.setX("198");
+			circle.setY("349");
+			dead.setGraphic(circle);
+			
+			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+			QueueObserver queueObserver = factory.createQueueObserver();
+			queueObserver.setType("LENGTH");
+			queueObserver.setName("SERVICE_OBS");
+			dead.getQueueObserver().add(queueObserver);
 
-		Type queue = factory.createType();
-		queue.setStruct("QUEUE");
-		queue.setSize("10");
-		queue.setInit("0");
-		dead.setType(queue);
+			acd.getDead().add(dead);
+			dead = factory.createDead();
+		}
+		
+		
+		for (Role role: roles) {
+			dead.setId("Resource queue: " + role.getName());
+			// dead.setClazz(inquirer);
+			
+			Type queue = factory.createType();
+			queue.setStruct("QUEUE");
+			queue.setSize(Integer.toString(role.getIntialQuantity()));
+			queue.setInit("0"); // conferir
+			dead.setType(queue);
+			
+			// Verificar a necessidade de colocar Graphic
+			Graphic circle = factory.createGraphic();
+			circle.setType("CIRCLE");
+			circle.setX("198");
+			circle.setY("349");
+			dead.setGraphic(circle);
+			
+			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+			QueueObserver queueObserver = factory.createQueueObserver();
+			queueObserver.setType("LENGTH");
+			queueObserver.setName("SERVICE_OBS");
+			dead.getQueueObserver().add(queueObserver);
 
-		Graphic circle = factory.createGraphic();
-		circle.setType("CIRCLE");
-		circle.setX("198");
-		circle.setY("349");
-		dead.setGraphic(circle);
-
-		QueueObserver queueObserver = factory.createQueueObserver();
-		queueObserver.setType("LENGTH");
-		queueObserver.setName("SERVICE_OBS");
-		dead.getQueueObserver().add(queueObserver);
-
-		acd.getDead().add(dead);
-
-		// ---------------------------- END Dead State WAIT0
-
-		// ---------------------------- Begin Dead State WAIT1
-
-		Dead dead1 = factory.createDead();
-		dead1.setId("WAIT1");
-		// // wait1.setClazz(caller);
-
-		Type queue1 = factory.createType();
-		queue1.setStruct("QUEUE");
-		queue1.setSize("10");
-		queue1.setInit("0");
-		dead1.setType(queue1);
-
-		Graphic circle3 = factory.createGraphic();
-		circle3.setType("CIRCLE");
-		circle3.setX("197");
-		circle3.setY("107");
-		dead1.setGraphic(circle3);
-
-		QueueObserver queueObserver1 = factory.createQueueObserver();
-		queueObserver1.setType("LENGTH");
-		queueObserver1.setName("TALK_OBS");
-		dead1.getQueueObserver().add(queueObserver1);
-
-		acd.getDead().add(dead1);
-
-		// ---------------------------- END Dead State WAIT1
-
-		// ------------------------------START Dead state B0
-
-		Dead deadB0 = factory.createDead();
-		deadB0.setId("B0");
-		// deadB0.setClazz(idle);
-
-		Type queue5 = factory.createType();
-		queue5.setStruct("QUEUE");
-		queue5.setSize("10");
-		queue5.setInit("0");
-		deadB0.setType(queue5);
-
-		Graphic circle5 = factory.createGraphic();
-		circle5.setType("CIRCLE");
-		circle5.setX("476");
-		circle5.setY("358");
-		deadB0.setGraphic(circle5);
-
-		acd.getDead().add(deadB0);
-
-		// ------------------------------END Dead state B0
-
-		// ------------------------------START Dead state B1
-
-		Dead deadB1 = factory.createDead();
-		deadB1.setId("B1");
-		// deadB1.setClazz(idle);
-
-		Type queue6 = factory.createType();
-		queue6.setStruct("QUEUE");
-		queue6.setSize("10");
-		queue6.setInit("0");
-		deadB1.setType(queue6);
-
-		Graphic circle6 = factory.createGraphic();
-		circle6.setType("CIRCLE");
-		circle6.setX("462");
-		circle6.setY("111");
-		deadB1.setGraphic(circle6);
-
-		acd.getDead().add(deadB1);
-
-		// ------------------------------END Dead state B0
-
-		// ------------------------------START Dead state IDLE
-
-		Dead deadIdle = factory.createDead();
-		deadIdle.setId("IDLE");
-		// deadIdle.setClazz(idle);
-
-		Type queue4 = factory.createType();
-		queue4.setStruct("QUEUE");
-		queue4.setSize("2");
-		queue4.setInit("2");
-		deadIdle.setType(queue4);
-
-		Graphic circle4 = factory.createGraphic();
-		circle4.setType("CIRCLE");
-		circle4.setX("334");
-		circle4.setY("222");
-		deadIdle.setGraphic(circle4);
-
-		acd.getDead().add(deadIdle);
-
-		// ------------------------------END Dead state IDLE
+			acd.getDead().add(dead);
+			dead = factory.createDead();
+		}
 
 		return acd;
 	}
