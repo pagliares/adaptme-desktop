@@ -65,6 +65,40 @@ public class XACDMLBuilderFacade {
 			e.printStackTrace();
 		}
 	}
+	
+	public String persistProcessInXMLWithJAXBOnlyString(Acd acd, String fileName) throws IOException {
+
+		try {
+			JAXBContext context = JAXBContext.newInstance(Acd.class);
+			Marshaller marshaller = context.createMarshaller();
+
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			// a linha abaixo elimina geracao automatica de <?xml
+			// version...standalone=true>
+			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+
+			StringWriter sw = new StringWriter();
+
+			// sw.write("<?xml version=\"1.0\"?>\n"); // without this line, the
+			// first line of xml contains standalone = true
+			// sw.write("<!DOCTYPE acd PUBLIC \"acd description//EN\"
+			// xacdml.dtd>\n");
+
+			sw.append("<?xml version=\"1.0\"?>\n"); // without this line, the
+													// first line of xml
+													// contains standalone =
+													// true
+			sw.append("<!DOCTYPE acd PUBLIC  \"acd description//EN\" \"xacdml.dtd\">\n");
+
+			marshaller.marshal(acd, sw);
+
+			return sw.toString();
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	private Acd buildEntities(Acd acd) {
 		ObjectFactory factory = new ObjectFactory();
@@ -82,19 +116,15 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-	public Acd buildEntities(Acd acd, List<WorkProduct> workProducts) {
+	public Acd buildEntities(List<WorkProduct> workProducts) {
+		Acd acd = new Acd();
 		ObjectFactory factory = new ObjectFactory();
-		Class inquirer = factory.createClass();
-		inquirer.setId("INQUIRER");
-		acd.getClazz().add(inquirer);
-
-		Class idle = factory.createClass();
-		idle.setId("IDLE");
-		acd.getClazz().add(idle);
-
-		Class caller = factory.createClass();
-		caller.setId("CALLER");
-		acd.getClazz().add(caller);
+		
+		for (WorkProduct workProduct: workProducts) {
+			Class clazz = factory.createClass();
+			clazz.setId(workProduct.getName());
+			acd.getClazz().add(clazz);
+		}
 		return acd;
 	}
 	
@@ -427,11 +457,11 @@ public class XACDMLBuilderFacade {
 		acd.setId(acdId);
 
 		acd = buildEntities(acd);
-		acd = buildDeadStates(acd);
-		acd = buildGenerateActivities(acd);
-
-		acd = buildActivities(acd);
-		acd = buildDestroyActivities(acd);
+//		acd = buildDeadStates(acd);
+//		acd = buildGenerateActivities(acd);
+//
+//		acd = buildActivities(acd);
+//		acd = buildDestroyActivities(acd);
 
 		return acd;
 
