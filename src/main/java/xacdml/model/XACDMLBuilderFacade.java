@@ -203,132 +203,7 @@ public class XACDMLBuilderFacade {
 	}
 	
 
-	private Acd buildDeadStates(Acd acd) {
-
-		ObjectFactory factory = new ObjectFactory();
-
-		// ---------------------------- Begin Dead State WAIT0
-
-		Dead dead = factory.createDead();
-		dead.setId("WAIT0");
-		// dead.setClazz(inquirer);
-
-		Type queue = factory.createType();
-		queue.setStruct("QUEUE");
-		queue.setSize("10");
-		queue.setInit("0");
-		dead.setType(queue);
-
-		Graphic circle = factory.createGraphic();
-		circle.setType("CIRCLE");
-		circle.setX("198");
-		circle.setY("349");
-		dead.setGraphic(circle);
-
-		QueueObserver queueObserver = factory.createQueueObserver();
-		queueObserver.setType("LENGTH");
-		queueObserver.setName("SERVICE_OBS");
-		dead.getQueueObserver().add(queueObserver);
-
-		acd.getDead().add(dead);
-
-		// ---------------------------- END Dead State WAIT0
-
-		// ---------------------------- Begin Dead State WAIT1
-
-		Dead dead1 = factory.createDead();
-		dead1.setId("WAIT1");
-		// // wait1.setClazz(caller);
-
-		Type queue1 = factory.createType();
-		queue1.setStruct("QUEUE");
-		queue1.setSize("10");
-		queue1.setInit("0");
-		dead1.setType(queue1);
-
-		Graphic circle3 = factory.createGraphic();
-		circle3.setType("CIRCLE");
-		circle3.setX("197");
-		circle3.setY("107");
-		dead1.setGraphic(circle3);
-
-		QueueObserver queueObserver1 = factory.createQueueObserver();
-		queueObserver1.setType("LENGTH");
-		queueObserver1.setName("TALK_OBS");
-		dead1.getQueueObserver().add(queueObserver1);
-
-		acd.getDead().add(dead1);
-
-		// ---------------------------- END Dead State WAIT1
-
-		// ------------------------------START Dead state B0
-
-		Dead deadB0 = factory.createDead();
-		deadB0.setId("B0");
-		// deadB0.setClazz(idle);
-
-		Type queue5 = factory.createType();
-		queue5.setStruct("QUEUE");
-		queue5.setSize("10");
-		queue5.setInit("0");
-		deadB0.setType(queue5);
-
-		Graphic circle5 = factory.createGraphic();
-		circle5.setType("CIRCLE");
-		circle5.setX("476");
-		circle5.setY("358");
-		deadB0.setGraphic(circle5);
-
-		acd.getDead().add(deadB0);
-
-		// ------------------------------END Dead state B0
-
-		// ------------------------------START Dead state B1
-
-		Dead deadB1 = factory.createDead();
-		deadB1.setId("B1");
-		// deadB1.setClazz(idle);
-
-		Type queue6 = factory.createType();
-		queue6.setStruct("QUEUE");
-		queue6.setSize("10");
-		queue6.setInit("0");
-		deadB1.setType(queue6);
-
-		Graphic circle6 = factory.createGraphic();
-		circle6.setType("CIRCLE");
-		circle6.setX("462");
-		circle6.setY("111");
-		deadB1.setGraphic(circle6);
-
-		acd.getDead().add(deadB1);
-
-		// ------------------------------END Dead state B0
-
-		// ------------------------------START Dead state IDLE
-
-		Dead deadIdle = factory.createDead();
-		deadIdle.setId("IDLE");
-		// deadIdle.setClazz(idle);
-
-		Type queue4 = factory.createType();
-		queue4.setStruct("QUEUE");
-		queue4.setSize("2");
-		queue4.setInit("2");
-		deadIdle.setType(queue4);
-
-		Graphic circle4 = factory.createGraphic();
-		circle4.setType("CIRCLE");
-		circle4.setX("334");
-		circle4.setY("222");
-		deadIdle.setGraphic(circle4);
-
-		acd.getDead().add(deadIdle);
-
-		// ------------------------------END Dead state IDLE
-
-		return acd;
-	}
+	
 
 	
 	public Acd buildActivities(Acd acd, List<Task> tasks) {
@@ -476,69 +351,39 @@ public class XACDMLBuilderFacade {
 	public Acd buildGenerateActivities(Acd acd, List<WorkProduct> workProducts) {
 
 		ObjectFactory factory = new ObjectFactory();
-
-		// ---------------------------- Begin CallGenerate
 		Generate callGenerate = factory.createGenerate();
-		callGenerate.setId("CALL");
+		
+		for (WorkProduct workProduct: workProducts) {
+			callGenerate.setId("Generate : " + workProduct.getName());
+			// Class clazz = factory.createClass(); // new
+			// clazz.setId("CALL"); // new
+            // callGenerate.setClazz((Class) acd.getClazz().get(0)); // new
+			
+			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
+			Stat negExp = factory.createStat();
+			negExp.setType("NEGEXP");
+			negExp.setParm1("7.0");
+			
+			Graphic box = factory.createGraphic();
+			box.setType("BOX");
+			box.setX("73");
+			box.setY("101");
+			
+			ActObserver actObserver = factory.createActObserver();
+			actObserver.setType("ACTIVE");
+			actObserver.setName("CALL_OBS");
+			
+			Next nextDead = factory.createNext();
+			// nextDead.setDead(dead);
+			callGenerate.getActObserver().add(actObserver);
+			callGenerate.setGraphic(box);
+			callGenerate.setStat(negExp);
+			callGenerate.getNext().add(nextDead);
 
-		// Class clazz = factory.createClass(); // new
-		// clazz.setId("CALL"); // new
-		//
-		//
-//		callGenerate.setClazz((Class) acd.getClazz().get(0)); // new
+			acd.getGenerate().add(callGenerate);
+			callGenerate = factory.createGenerate();
+		}
 
-		Stat negExp = factory.createStat();
-		negExp.setType("NEGEXP");
-		negExp.setParm1("7.0");
-
-		Graphic box = factory.createGraphic();
-		box.setType("BOX");
-		box.setX("73");
-		box.setY("101");
-
-		ActObserver actObserver = factory.createActObserver();
-		actObserver.setType("ACTIVE");
-		actObserver.setName("CALL_OBS");
-
-		Next nextDead = factory.createNext();
-		// nextDead.setDead(dead);
-		callGenerate.getActObserver().add(actObserver);
-		callGenerate.setGraphic(box);
-		callGenerate.setStat(negExp);
-		callGenerate.getNext().add(nextDead);
-
-		acd.getGenerate().add(callGenerate);
-
-		// ------------------------------END CallGenerate
-
-		// ---------------------------- Begin Generate Activity ARRIVAL
-
-		Generate arrivalGenerate = factory.createGenerate();
-		arrivalGenerate.setId("ARRIVAL");
-
-		Stat negExp2 = factory.createStat();
-		negExp2.setParm1("5.0");
-		negExp2.setType("NEGEXP");
-
-		Graphic box6 = factory.createGraphic();
-		box6.setType("BOX");
-		box6.setX("90");
-		box6.setY("353");
-
-		ActObserver arrivalActObserver = factory.createActObserver();
-		arrivalActObserver.setType("ACTIVE");
-		arrivalActObserver.setName("CUSTOMER_OBS");
-
-		Next nextDead2 = factory.createNext();
-		// nextDead.setDead(dead);
-		arrivalGenerate.getNext().add(nextDead2);
-
-		arrivalGenerate.setGraphic(box6);
-		arrivalGenerate.setStat(negExp2);
-		arrivalGenerate.getActObserver().add(arrivalActObserver);
-		acd.getGenerate().add(arrivalGenerate);
-
-		// ---------------------------- END Generate Activity ARRIVAL
 		return acd;
 	}
 
@@ -725,7 +570,7 @@ public class XACDMLBuilderFacade {
 		acd.setId(acdId);
 
 		acd = buildEntities(acd);
-		acd = buildDeadStates(acd);
+	//	acd = buildDeadStates(acd);
 		acd = buildGenerateActivities(acd);
 
 		acd = buildActivities(acd);
