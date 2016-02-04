@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.eclipse.epf.uma.Task;
-
+ 
 import xacdml.model.generated.Acd;
 import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
@@ -27,6 +27,7 @@ import xacdml.model.generated.QueueObserver;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
 import simulator.base.Role;
+import simulator.base.Task;
 import simulator.base.WorkProduct;
 
 public class XACDMLBuilderFacade {
@@ -202,7 +203,7 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-	public Acd buildActivities(Acd acd, List<Task> tasks) {
+	public Acd buildActivities(Acd acd, Set<String> tasks) {
 		ObjectFactory factory = new ObjectFactory();
 		// ---------------------------- Begin Activity Talk
 		Act talk = factory.createAct();

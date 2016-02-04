@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -87,7 +88,8 @@ import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
-
+import model.spem.util.ProcessContentType;
+ 
 public class AlternativeOfProcessPanel {
 
 	private JPanel alternativeOfProcessPanel;
@@ -128,6 +130,9 @@ public class AlternativeOfProcessPanel {
 	private JTabbedPane leftTreeTabbedPane;
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
 	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
+	
+	private ProcessRepository processRepository;
+//	private ProcessRepository processRepositoryTask;
 	
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
@@ -567,7 +572,10 @@ public class AlternativeOfProcessPanel {
 		JTabbedPane tabbedPane = new JTabbedPane();
 
 		PersistProcess persistProcess = new PersistProcess();
-		ProcessRepository processRepository = persistProcess.buildProcess(process, methodLibraryHash);
+		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
+		
+		// tentando criar um ProcessRepository apenas com tasks
+//		processRepositoryTask = persistProcess.buildProcessOnlyTasks(process, methodLibraryHash);
 		
 		DefaultMutableTreeNode treeNode = buildTreeNode(processRepository);
 		TreePanel treePanel = new TreePanel(new DefaultTreeModel(treeNode));
@@ -595,7 +603,11 @@ public class AlternativeOfProcessPanel {
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
 		
-		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, workProductResourcesPanel, roleResourcePanel);
+		Set<String> taskList = persistProcess.getTaskList();
+ 
+ 	    System.out.println(taskList);
+		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
+		
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 	
@@ -615,11 +627,11 @@ public class AlternativeOfProcessPanel {
 
 	private NumberTreeNode buildTreeNode(ProcessRepository processRepository) {
 		NumberTreeNode root = new NumberTreeNode(processRepository.getName(), "root");
-
+//		System.out.println(processRepository.getName());
 		for (ProcessContentRepository content : processRepository.getProcessContents()) {
 			root.add(buildChidren(content));
 		}
-
+ 
 		return root;
 	}
 
@@ -632,6 +644,8 @@ public class AlternativeOfProcessPanel {
 		}
 		return node;
 	}
+	
+	
 
 	public JMenu getFileMenu() {
 		return fileMenu;

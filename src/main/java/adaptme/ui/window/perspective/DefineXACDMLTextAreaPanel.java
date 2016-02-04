@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
+ 
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 
 import javax.swing.JScrollBar;
@@ -12,8 +13,10 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.awt.event.ActionEvent;
 
+import simulator.base.Task;
 import simulator.base.WorkProduct;
 import xacdml.model.XACDMLBuilderFacade;
 import xacdml.model.generated.Acd;
@@ -24,10 +27,12 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	private WorkProductResourcesPanel workProdutResourcesPanel;
 	private RoleResourcesPanel roleResourcePanel;
 	private XACDMLBuilderFacade xACDMLBuilderFacade;
+//	private List<Task> taskList;
+	private Set<String> taskList;
 	
-	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, WorkProductResourcesPanel workProdutResourcesPanel, 
+	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList, WorkProductResourcesPanel workProdutResourcesPanel, 
 			RoleResourcesPanel roleResourcePanel) {
-		
+		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		this.workProdutResourcesPanel = workProdutResourcesPanel;
 		this.roleResourcePanel = roleResourcePanel;
@@ -48,7 +53,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 				Acd acd = xACDMLBuilderFacade.buildEntities(roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
 				acd = xACDMLBuilderFacade.buildDeadStates(acd, roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
 				acd = xACDMLBuilderFacade.buildGenerateActivities(acd, workProdutResourcesPanel.getWorkProducts());
-				acd = xACDMLBuilderFacade.buildActivities(acd, null);
+				acd = xACDMLBuilderFacade.buildActivities(acd, taskList);
 				acd = xACDMLBuilderFacade.buildDestroyActivities(acd, workProdutResourcesPanel.getWorkProducts());
 				
 //				Acd acd = t.buildProcess("HBC_Pagliares");

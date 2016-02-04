@@ -21,12 +21,14 @@ import org.eclipse.epf.uma.MethodElement;
 import org.eclipse.epf.uma.Milestone;
 import org.eclipse.epf.uma.Phase;
 import org.eclipse.epf.uma.Process;
+import org.eclipse.epf.uma.Task;
 import org.eclipse.epf.uma.TaskDescriptor;
 import org.eclipse.epf.uma.VariabilityType;
 import org.eclipse.epf.uma.WorkBreakdownElement;
 import org.eclipse.epf.uma.WorkOrder;
 
 import adaptme.base.MethodLibraryHash;
+import adaptme.dynamic.gui.NumberTreeNode;
 import adaptme.dynamic.gui.RepositoryViewPanel;
 import adaptme.dynamic.gui.UpdatePanel;
 import adaptme.dynamic.gui.meeting.MeetingPanel;
@@ -48,8 +50,10 @@ public class PersistProcess {
 	private HashMap<String, ProcessContentRepository> processContentRepositoryHashMap;
 	private HashMap<String, MethodContentRepository> methodContentRepositoryHashMap;
 
+	// futuramente precisando de novos dados do processo exportado do EPF, alterar o tipo String para Role, WorkProduct and TaskDescriptor
 	private Set<String> rolesList;
 	private Set<String> wordProductList;
+	private Set<String> taskList;
 
 	private ProcessRepository root;
 	private MethodLibraryHash methodLibraryHash;
@@ -59,6 +63,7 @@ public class PersistProcess {
 		methodContentRepositoryHashMap = new HashMap<>();
 		rolesList = new HashSet<>();
 		wordProductList = new HashSet<>();
+		taskList = new HashSet<>();
 	}
 
 	public ProcessRepository buildProcess(Process process, MethodLibraryHash methodLibraryHash) {
@@ -70,6 +75,17 @@ public class PersistProcess {
 
 		return root;
 	}
+	
+	// criado para tentar pegar apenas as tasks
+//	public ProcessRepository buildProcessOnlyTasks(Process process, MethodLibraryHash methodLibraryHash) {
+//		this.methodLibraryHash = methodLibraryHash;
+//		root = new ProcessRepository();
+//		root.setName(process.getPresentationName());
+//
+//		buildChildrenTask(process, root, root, null);
+//
+//		return root;
+//	}
 
 	private void buildChildren(Activity process, ProcessRepository root, ProcessRepository processRepository,
 			ProcessContentRepository father) {
@@ -115,6 +131,7 @@ public class PersistProcess {
 				}
 				content.setProcessRepository(processRepository);
 				buildChildren(phase, null, processRepository, content);
+				
 			} else if (object instanceof TaskDescriptor) {
 				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
 				ProcessContentRepository content = createTask(taskDescriptor, hash);
@@ -125,6 +142,9 @@ public class PersistProcess {
 				if (root != null) {
 					processRepository.addProcessElement(content);
 				}
+				taskList.add(taskDescriptor.getName());  // importante para pegar o taskName se fosse precisar de outros dados, precisaria do objeto content
+														 // e o private Set<String> taskList seria private Set<ProcessContentRepository>
+				
 				content.setProcessRepository(processRepository);
 			} else if (object instanceof Activity) {
 				Activity activity = (Activity) object;
@@ -148,6 +168,30 @@ public class PersistProcess {
 			}
 		}
 	}
+	
+	// criado para tentar pegar apenas as tasks
+//	private void buildChildrenTask(Activity process, ProcessRepository root, ProcessRepository processRepository,
+//			ProcessContentRepository father) {
+//		Map<String, MethodElement> hash = new HashMap<>();
+//		buildHash(process, hash);
+//		Boolean isNew = new Boolean(false);
+//		for (Object object : process.getBreakdownElementOrRoadmap()) {
+//			 
+//			 if (object instanceof TaskDescriptor) {
+//				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
+//				ProcessContentRepository content = createTask(taskDescriptor, hash);
+//				content.setFather(father);
+//				if (father != null) {
+//					father.addChild(content);
+//				}
+//				if (root != null) {
+//					processRepository.addProcessElement(content);
+//				}
+//				content.setProcessRepository(processRepository);
+//			}  
+//		}
+//	}
+
 
 	private void buildHash(Activity process, Map<String, MethodElement> hash) {
 		for (Object object : process.getBreakdownElementOrRoadmap()) {
@@ -418,4 +462,14 @@ public class PersistProcess {
 	public Set<String> getWordProductList() {
 		return wordProductList;
 	}
+	
+	public Set<String> getTaskList() {
+		return taskList;
+	}
+	
+	
+	 
+	
+	
+	 
 }
