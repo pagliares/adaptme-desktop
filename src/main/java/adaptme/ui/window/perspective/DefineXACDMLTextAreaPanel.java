@@ -3,15 +3,29 @@ package adaptme.ui.window.perspective;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
- 
+import adaptme.ui.components.CustomFileChooser;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
+import adaptme.util.RestoreMe;
 
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Set;
 import java.awt.event.ActionEvent;
@@ -21,69 +35,114 @@ import simulator.base.Task;
 import simulator.base.WorkProduct;
 import xacdml.model.XACDMLBuilderFacade;
 import xacdml.model.generated.Acd;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
 
 public class DefineXACDMLTextAreaPanel extends JPanel {
-    
+
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private WorkProductResourcesPanel workProdutResourcesPanel;
 	private RoleResourcesPanel roleResourcePanel;
 	private XACDMLBuilderFacade xACDMLBuilderFacade;
-//	private List<Task> taskList;
+
 	private Set<String> taskList;
+	private JTextField acdIDTextField;
+	private JTextField fileNameTextField;
+	private JTextArea textArea;
 	
-	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList, WorkProductResourcesPanel workProdutResourcesPanel, 
-			RoleResourcesPanel roleResourcePanel) {
+	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
+			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
 		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		this.workProdutResourcesPanel = workProdutResourcesPanel;
 		this.roleResourcePanel = roleResourcePanel;
-		
-		xACDMLBuilderFacade = new XACDMLBuilderFacade();
 		setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.NORTH);
+		
+		JLabel label = new JLabel("ACD ID");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		panel.add(label);
+		
+		acdIDTextField = new JTextField();
+		acdIDTextField.setColumns(10);
+		panel.add(acdIDTextField);
+		
+		JLabel lblNewLabel = new JLabel("                 ");
+		panel.add(lblNewLabel);
+		
+		JButton btnGenerateXacdml = new JButton("Generate XACDML");
+		btnGenerateXacdml.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(acdIDTextField.getText().trim().isEmpty()){
+					JOptionPane.showMessageDialog(getPanel(), "The ACD Id is required");
+					return; 
+				}
+				List<Role> roles = roleResourcePanel.getRoles();
+				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
+
+				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList);
+				textArea.append(result);
+			}
+		});
+		panel.add(btnGenerateXacdml);
+		
+		JPanel panel_1 = new JPanel();
+		add(panel_1, BorderLayout.SOUTH);
+		
+		JLabel lblFileNamewithout = new JLabel("File name (no extension)");
+		panel_1.add(lblFileNamewithout);
+		
+		fileNameTextField = new JTextField();
+		fileNameTextField.setColumns(10);
+		panel_1.add(fileNameTextField);
+		
+		JButton saveXACDMLButton = new JButton("Save XACDML");
+		saveXACDMLButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fileContent = textArea.getText();
+				String fileName = fileNameTextField.getText();
+				saveXML(fileName, fileContent);
+				if(fileNameTextField.getText().trim().isEmpty()){
+					JOptionPane.showMessageDialog(getPanel(), "The file name is required");
+					return; 
+				}
+				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");
+
+			}
+		});
+		panel_1.add(saveXACDMLButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
 		
-		JTextArea textArea = new JTextArea();
+		 textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
-	
-		JButton btnGenerateXacdml = new JButton("Generate XACDML");
-		btnGenerateXacdml.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				String acdId = "Pegar acd id do panel";
-				List<Role> roles = roleResourcePanel.getRoles();
-				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
-				
-				String result = xACDMLBuilderFacade.buildProcess(acdId,roles, workProducts, taskList);
-				textArea.append(result);
-				
-//				Acd acd = xACDMLBuilderFacade.buildEntities(roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
-//				acd = xACDMLBuilderFacade.buildDeadStates(acd, roleResourcePanel.getRoles(), workProdutResourcesPanel.getWorkProducts());
-//				acd = xACDMLBuilderFacade.buildGenerateActivities(acd, workProdutResourcesPanel.getWorkProducts());
-//				acd = xACDMLBuilderFacade.buildActivities(acd, taskList);
-//				acd = xACDMLBuilderFacade.buildDestroyActivities(acd, workProdutResourcesPanel.getWorkProducts());
-//				
-//				Acd acd = t.buildProcess("HBC_Pagliares");
-//				try {
-//					String result = xACDMLBuilderFacade.persistProcessInXMLWithJAXBOnlyString(acd, "ACD");
-//					textArea.append(result);
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-				
-				
-			}
-		});
-		add(btnGenerateXacdml, BorderLayout.NORTH);
-		
-		JButton btnGenerateJavaProgram = new JButton("Generate Java Program");
-		add(btnGenerateJavaProgram, BorderLayout.SOUTH);
+
+		xACDMLBuilderFacade = new XACDMLBuilderFacade();
 	}
-	
+
 	public JPanel getPanel() {
 		return this;
 	}
 
+
+	public void saveXML(String fileName, String fileContent) {
+
+		File f = new File("./xacdml_models/" + fileName + ".xacdml");
+
+		try (FileWriter fw = new FileWriter(f)) {
+			
+			fw.write(fileContent.toString());
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

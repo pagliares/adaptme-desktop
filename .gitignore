@@ -10,6 +10,7 @@ doc/
 msp/
 test-output/
 output/
+xacdml_models/
  
 # OS Files #
 .DS_Store

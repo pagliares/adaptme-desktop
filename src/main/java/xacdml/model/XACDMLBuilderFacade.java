@@ -32,6 +32,8 @@ import simulator.base.WorkProduct;
 
 public class XACDMLBuilderFacade {
 
+	private Acd acd;
+	
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 
 		try {
@@ -103,8 +105,8 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	public Acd buildEntities(List<Role> roles, List<WorkProduct> workProducts) {
-		Acd acd = new Acd();
+	public Acd buildEntities(Acd acd, List<Role> roles, List<WorkProduct> workProducts) {
+		 
 		ObjectFactory factory = new ObjectFactory();
 		
 		for (Role role: roles) {
@@ -305,13 +307,14 @@ public class XACDMLBuilderFacade {
 		ObjectFactory factory = new ObjectFactory();
 		Acd acd = factory.createAcd();
 		acd.setId(acdId);
-
-		acd = buildEntities(roles, workProducts);
+		
+		acd = buildEntities(acd, roles, workProducts);
 		acd = buildDeadStates(acd, roles, workProducts);
 		acd = buildGenerateActivities(acd, workProducts);
 
 		acd = buildActivities(acd, tasks);
 		acd = buildDestroyActivities(acd, workProducts);
+		this.acd = acd;
 		String result = null;
 		try {
 			result = persistProcessInXMLWithJAXBOnlyString(acd);
@@ -321,5 +324,9 @@ public class XACDMLBuilderFacade {
 		} finally {
 			return result;
 		}
+	}
+
+	public Acd getAcd() {
+		return acd;
 	}
 }
