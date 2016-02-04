@@ -69,7 +69,7 @@ public class XACDMLBuilderFacade {
 		}
 	}
 	
-	public String persistProcessInXMLWithJAXBOnlyString(Acd acd, String fileName) throws IOException {
+	public String persistProcessInXMLWithJAXBOnlyString(Acd acd) throws IOException {
 
 		try {
 			JAXBContext context = JAXBContext.newInstance(Acd.class);
@@ -103,22 +103,6 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	private Acd buildEntities(Acd acd) {
-		ObjectFactory factory = new ObjectFactory();
-		Class inquirer = factory.createClass();
-		inquirer.setId("INQUIRER");
-		acd.getClazz().add(inquirer);
-
-		Class idle = factory.createClass();
-		idle.setId("IDLE");
-		acd.getClazz().add(idle);
-
-		Class caller = factory.createClass();
-		caller.setId("CALLER");
-		acd.getClazz().add(caller);
-		return acd;
-	}
-	
 	public Acd buildEntities(List<Role> roles, List<WorkProduct> workProducts) {
 		Acd acd = new Acd();
 		ObjectFactory factory = new ObjectFactory();
@@ -138,7 +122,6 @@ public class XACDMLBuilderFacade {
 		
 		return acd;
 	}
-	
 	
 	public Acd buildDeadStates(Acd acd, List<Role> roles, List<WorkProduct> workProducts) {
 
@@ -204,144 +187,47 @@ public class XACDMLBuilderFacade {
 	}
 	
 	public Acd buildActivities(Acd acd, Set<String> tasks) {
-		ObjectFactory factory = new ObjectFactory();
-		// ---------------------------- Begin Activity Talk
-		Act talk = factory.createAct();
-		talk.setId("TALK");
-
-		Stat uniform = factory.createStat();
-		uniform.setType("UNIFORM");
-		uniform.setParm1("1.0");
-		uniform.setParm2("5.0");
-
-		Graphic box = factory.createGraphic();
-		box.setType("BOX");
-		box.setX("319");
-		box.setY("110");
-
-		EntityClass ec1 = factory.createEntityClass();
-		Dead idle = factory.createDead();
-		idle.setId("IDLE");
-
-		// ec1.setPrev(idle);
-		// ec1.setNext(idle);
-		//
-
-		EntityClass ec2 = factory.createEntityClass();
-		Dead wait1 = factory.createDead();
-		// ec1.setPrev(wait1);
-		// ec1.setNext(b1);
-
-		talk.setStat(uniform);
-		talk.setGraphic(box);
-		talk.getEntityClass().add(ec1);
-		talk.getEntityClass().add(ec2);
-		acd.getAct().add(talk);
-		// ---------------------------- End Activity Talk
-
-		// ------------------------------START Activity SERVICE
-
-		Act actService = factory.createAct();
-		actService.setId("SERVICE");
-
-		Stat uniform5 = factory.createStat();
-		uniform5.setType("UNIFORM");
-		uniform5.setParm1("2.0");
-		uniform5.setParm2("6.0");
-
-		Graphic box5 = factory.createGraphic();
-		box5.setType("BOX");
-		box5.setX("331");
-		box5.setY("356");
-
-		EntityClass ec5 = factory.createEntityClass();
-		// ec1.setPrev(idle);
-		// ec1.setNext(idle);
-
-		EntityClass ec6 = factory.createEntityClass();
-		// ec1.setPrev(wait0);
-		// ec1.setNext(deadB0);
-
-		actService.setStat(uniform5);
-		actService.setGraphic(box5);
-		actService.getEntityClass().add(ec1);
-		actService.getEntityClass().add(ec2);
-		
-		acd.getAct().add(actService);
-
-		// ------------------------------END Activity SERVICE
-
-		return acd;
-	}
 	
-	private Acd buildActivities(Acd acd) {
 		ObjectFactory factory = new ObjectFactory();
-		// ---------------------------- Begin Activity Talk
-		Act talk = factory.createAct();
-		talk.setId("TALK");
-
-		Stat uniform = factory.createStat();
-		uniform.setType("UNIFORM");
-		uniform.setParm1("1.0");
-		uniform.setParm2("5.0");
-
-		Graphic box = factory.createGraphic();
-		box.setType("BOX");
-		box.setX("319");
-		box.setY("110");
-
-		EntityClass ec1 = factory.createEntityClass();
-		Dead idle = factory.createDead();
-		idle.setId("IDLE");
-
-		// ec1.setPrev(idle);
-		// ec1.setNext(idle);
-		//
-
-		EntityClass ec2 = factory.createEntityClass();
-		Dead wait1 = factory.createDead();
-		// ec1.setPrev(wait1);
-		// ec1.setNext(b1);
-
-		talk.setStat(uniform);
-		talk.setGraphic(box);
-		talk.getEntityClass().add(ec1);
-		talk.getEntityClass().add(ec2);
-		acd.getAct().add(talk);
-		// ---------------------------- End Activity Talk
-
-		// ------------------------------START Activity SERVICE
-
-		Act actService = factory.createAct();
-		actService.setId("SERVICE");
-
-		Stat uniform5 = factory.createStat();
-		uniform5.setType("UNIFORM");
-		uniform5.setParm1("2.0");
-		uniform5.setParm2("6.0");
-
-		Graphic box5 = factory.createGraphic();
-		box5.setType("BOX");
-		box5.setX("331");
-		box5.setY("356");
-
-		EntityClass ec5 = factory.createEntityClass();
-		// ec1.setPrev(idle);
-		// ec1.setNext(idle);
-
-		EntityClass ec6 = factory.createEntityClass();
-		// ec1.setPrev(wait0);
-		// ec1.setNext(deadB0);
-
-		actService.setStat(uniform5);
-		actService.setGraphic(box5);
-		actService.getEntityClass().add(ec1);
-		actService.getEntityClass().add(ec2);
+		Act regularActivity = factory.createAct();
 		
-		acd.getAct().add(actService);
+		for (String task: tasks){
+			
+			regularActivity.setId(task);
 
-		// ------------------------------END Activity SERVICE
+			Stat uniform = factory.createStat();
+			uniform.setType("UNIFORM");
+			uniform.setParm1("1.0");
+			uniform.setParm2("5.0");
 
+			Graphic box = factory.createGraphic();
+			box.setType("BOX");
+			box.setX("319");
+			box.setY("110");
+
+			EntityClass ec1 = factory.createEntityClass();
+			Dead idle = factory.createDead();
+			idle.setId("IDLE"); // pegar nome do panel 3.1
+
+			// ec1.setPrev(idle);
+			// ec1.setNext(idle);
+			//
+
+			EntityClass ec2 = factory.createEntityClass();
+			Dead wait1 = factory.createDead();
+			wait1.setId("IDLE"); // pegar nome do panel 3.1
+			// ec1.setPrev(wait1);
+			// ec1.setNext(b1);
+
+			regularActivity.setStat(uniform);
+			regularActivity.setGraphic(box);
+			regularActivity.getEntityClass().add(ec1);
+			regularActivity.getEntityClass().add(ec2);
+			
+			acd.getAct().add(regularActivity);	
+			regularActivity = factory.createAct();
+		}
+	
 		return acd;
 	}
 	
@@ -384,8 +270,6 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 
-	
-
 	public Acd buildDestroyActivities(Acd acd, List<WorkProduct> workProducts) {
 		
 		ObjectFactory factory = new ObjectFactory();
@@ -416,80 +300,26 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-	
-	private Acd buildDestroyActivities(Acd acd) {
-		ObjectFactory factory = new ObjectFactory();
-		// ---------------------------- Begin Destroy Activity DEP0
-
-		Destroy destroyDep0 = factory.createDestroy();
-		destroyDep0.setId("DEP0");
-
-		Stat uniform2 = factory.createStat();
-		uniform2.setType("UNIFORM");
-		uniform2.setParm1("0.0");
-		uniform2.setParm2("10.0");
-
-		Graphic box3 = factory.createGraphic();
-		box3.setType("BOX");
-		box3.setX("602");
-		box3.setY("108");
-
-		Prev previous = factory.createPrev();
-		// previous.setDead(dead);
-		destroyDep0.getPrev().add(previous);
-		destroyDep0.setGraphic(box3);
-		// esta faltando destroy.setStat no codigo
-		acd.getDestroy().add(destroyDep0);
-
-		// ---------------------------- END Destroy Activity DEP0
-
-		// ---------------------------- Begin Destroy Activity DEP1
-		Destroy destroyDep1 = factory.createDestroy();
-		destroyDep1.setId("DEP1");
-
-		Stat uniform3 = factory.createStat();
-		uniform3.setType("UNIFORM");
-		uniform3.setParm1("0.0");
-		uniform3.setParm2("10.0");
-
-		Graphic box7 = factory.createGraphic();
-		box7.setType("BOX");
-		box7.setX("600");
-		box7.setY("354");
-
-		Prev previousDeadB1 = factory.createPrev();
-		// previousDeadB1.setDead(dead);
-		destroyDep1.getPrev().add(previousDeadB1);
-		destroyDep1.setGraphic(box7);
-
-		acd.getDestroy().add(destroyDep1);
-
-		// ---------------------------- Begin Destroy Activity DEP1
-
-		return acd;
-
-	}
-
-	public Acd buildProcess(String acdId) {
+	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks) {
 
 		ObjectFactory factory = new ObjectFactory();
 		Acd acd = factory.createAcd();
 		acd.setId(acdId);
 
-		acd = buildEntities(acd);
-	//	acd = buildDeadStates(acd);
-//		acd = buildGenerateActivities(acd);
+		acd = buildEntities(roles, workProducts);
+		acd = buildDeadStates(acd, roles, workProducts);
+		acd = buildGenerateActivities(acd, workProducts);
 
-		acd = buildActivities(acd);
-		acd = buildDestroyActivities(acd);
-
-		return acd;
-
-	}
-
-	public static void main(String[] args) throws IOException {
-		XACDMLBuilderFacade t = new XACDMLBuilderFacade();
-		Acd acd = t.buildProcess("HBC_Pagliares");
-		t.persistProcessInXMLWithJAXB(acd, "ACD");
+		acd = buildActivities(acd, tasks);
+		acd = buildDestroyActivities(acd, workProducts);
+		String result = null;
+		try {
+			result = persistProcessInXMLWithJAXBOnlyString(acd);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			return result;
+		}
 	}
 }
