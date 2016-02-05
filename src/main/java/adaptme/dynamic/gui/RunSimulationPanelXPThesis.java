@@ -25,7 +25,7 @@ import simulator.simple.entity.Developer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-public class RunSimulationPanel {
+public class RunSimulationPanelXPThesis {
     private JPanel panel;
     private JLabel lblTeamAtributes;
     private JLabel lblTeamSize;
@@ -41,7 +41,7 @@ public class RunSimulationPanel {
     private ProcessRepository processRepository;
     private MainPanel mainPanel;
 
-    public RunSimulationPanel(ProcessRepository processRepository, MainPanel mainPanel) {
+    public RunSimulationPanelXPThesis(ProcessRepository processRepository, MainPanel mainPanel) {
 	this.processRepository = processRepository;
 	this.mainPanel = mainPanel;
 	panel = new JPanel();

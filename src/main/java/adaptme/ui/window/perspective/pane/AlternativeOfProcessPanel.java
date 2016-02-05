@@ -52,7 +52,7 @@ import adaptme.dynamic.gui.MainPanel;
 import adaptme.dynamic.gui.NumberCompontent;
 import adaptme.dynamic.gui.NumberTreeNode;
 import adaptme.dynamic.gui.RepositoryViewPanel;
-import adaptme.dynamic.gui.RunSimulationPanel;
+import adaptme.dynamic.gui.RunSimulationPanelXPThesis;
 import adaptme.dynamic.gui.TreePanel;
 import adaptme.dynamic.gui.UpdatePanel;
 import adaptme.ui.action.NewArtifactAction;
@@ -82,6 +82,7 @@ import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.DefineXACDMLTextAreaPanel;
 import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
+import adaptme.ui.window.perspective.RunSimulationPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import adaptme.util.EPFConstants;
@@ -614,7 +615,7 @@ public class AlternativeOfProcessPanel {
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
 		tabbedPane.addTab("3.5. Java program", javaProgramTextAreaPanel.getPanel());
 		
-		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
+		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
 		tabbedPane.addTab("3.6. Run simulation model", runSimulationPanel.getPanel());
 		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);

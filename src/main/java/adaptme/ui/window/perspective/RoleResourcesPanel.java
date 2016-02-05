@@ -21,7 +21,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import adaptme.dynamic.gui.RunSimulationPanel;
+import adaptme.dynamic.gui.RunSimulationPanelXPThesis;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import simulator.base.Role;
 import simulator.base.WorkProduct;

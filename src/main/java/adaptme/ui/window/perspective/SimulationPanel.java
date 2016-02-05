@@ -7,7 +7,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import adaptme.dynamic.gui.MainPanel;
-import adaptme.dynamic.gui.RunSimulationPanel;
+import adaptme.dynamic.gui.RunSimulationPanelXPThesis;
 import model.spem.ProcessRepository;
 
 public class SimulationPanel {
@@ -32,7 +32,7 @@ public class SimulationPanel {
 		defineProjectResourcesPanel.getPanel());
 	
 	
-	RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);
+	RunSimulationPanelXPThesis runSimulationPanel = new RunSimulationPanelXPThesis(processRepository, mainPanel);
 	tabbedPane.addTab("3.4. Run simulation", runSimulationPanel.getPanel());
 	
 	GroupLayout gl_panel = new GroupLayout(panel);

@@ -1,3 +1,8 @@
+Erro: xacdml_models/simula/manager/SimulationManager.java:2: error: unmappable character for encoding UTF8
+// Implementa��o das Classes do Sistema de Gerenciamento da Simula��o
+solucao:
+javac -encoding ISO-8859-1 -cp xacdml_models/ xacdml_models/mancu.java
+
 Teste da modelagem no groupsim do HBC
 
 - Se criarmos uma activity generate, devemos colocar a fila correspondente. Caso contrario o software
