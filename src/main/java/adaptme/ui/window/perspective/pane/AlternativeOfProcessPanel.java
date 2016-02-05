@@ -598,20 +598,20 @@ public class AlternativeOfProcessPanel {
 		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
 		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
 		
+		Set<String> taskList = persistProcess.getTaskList();
 		
 		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
 		
-		Set<String> taskList = persistProcess.getTaskList();
+		
  
- 	    System.out.println(taskList);
-		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
+ 		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
 		
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 	
-		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel();
+		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
 		tabbedPane.addTab("3.5. Java program", javaProgramTextAreaPanel.getPanel());
 		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(processRepository, mainPanel);

@@ -52,7 +52,6 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 
 	private Set<String> taskList;
 	private JTextField acdIDTextField;
-	private JTextField fileNameTextField;
 	private JTextArea textArea;
 	
 	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
@@ -96,23 +95,13 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		
-		JLabel lblFileNamewithout = new JLabel("File name (no extension)");
-		panel_1.add(lblFileNamewithout);
-		
-		fileNameTextField = new JTextField();
-		fileNameTextField.setColumns(10);
-		panel_1.add(fileNameTextField);
-		
 		JButton saveXACDMLButton = new JButton("Save XACDML");
 		saveXACDMLButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileContent = textArea.getText();
-				String fileName = fileNameTextField.getText();
+				String fileName = acdIDTextField.getText();
 				saveXML(fileName, fileContent);
-				if(fileNameTextField.getText().trim().isEmpty()){
-					JOptionPane.showMessageDialog(getPanel(), "The file name is required");
-					return; 
-				}
+				 
 				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");
 
 			}
@@ -144,5 +133,9 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public JTextField getAcdIDTextField() {
+		return acdIDTextField;
 	}
 }

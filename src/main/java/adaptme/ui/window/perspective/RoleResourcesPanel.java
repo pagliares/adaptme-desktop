@@ -21,6 +21,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import adaptme.dynamic.gui.RunSimulationPanel;
+import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import simulator.base.Role;
 import simulator.base.WorkProduct;
 import simulator.gui.model.RoleTableModel;
@@ -33,9 +35,21 @@ public class RoleResourcesPanel {
  	private JComboBox policyJComboBox;
 	private TableColumnModel modeloColuna;
 	
+	private AlternativeOfProcessPanel alternativeOfProcessPanel;
+	private WorkProductResourcesPanel workProdutResourcesPanel;
+	private RoleResourcesPanel roleResourcePanel;
+	private XACDMLBuilderFacade xACDMLBuilderFacade;
+
+	private Set<String> taskList;
+	
  	private List<Role> roles = new ArrayList<>();
 
 	public RoleResourcesPanel() {
+		
+		this.taskList = taskList;
+		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
+		this.workProdutResourcesPanel = workProdutResourcesPanel;
+		 
 
 		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
@@ -109,5 +123,4 @@ public class RoleResourcesPanel {
 	public List<Role> getRoles() {
 		return roles;
 	}
-
 }
