@@ -19,15 +19,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class JavaProgramTextAreaPanel extends JPanel {
-	
-	private JTextField classNameTextField;
 	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
-	private String xacdmlFile;
+    private String xacdmlFile;
 
 	public JavaProgramTextAreaPanel(DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel) {
 		
 		this.defineXACDMLTextAreaPanel = defineXACDMLTextAreaPanel;
-		this.xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
+		 
 		setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -38,34 +36,24 @@ public class JavaProgramTextAreaPanel extends JPanel {
 
 		JPanel northPanel = new JPanel();
 		scrollPane.setColumnHeaderView(northPanel);
-		
-		JLabel lblProgramName = new JLabel("Class name (no extension)");
-		northPanel.add(lblProgramName);
-		
-		classNameTextField = new JTextField();
-//		String javaFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
-//		System.out.println(xacdmlFile + "teste");
-		classNameTextField.setText(xacdmlFile+".java");
-//		classNameTextField.setEditable(false);
-		northPanel.add(classNameTextField);
-		classNameTextField.setColumns(10);
 			 
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 
-		JButton generateJavaProgramButton = new JButton("Generate");
+		JButton generateJavaProgramButton = new JButton("Generate Java program");
 		generateJavaProgramButton.addActionListener(new ActionListener() {
 		
 			public void actionPerformed(ActionEvent e) {
-				if(classNameTextField.getText().trim().isEmpty()){
-					JOptionPane.showMessageDialog(getPanel(), "The class name is required");
-					return; 
-				}
+//				if(classNameTextField.getText().trim().isEmpty()){
+//					JOptionPane.showMessageDialog(getPanel(), "The class name is required");
+//					return; 
+//				}
 				String s = null;
 				try {
 					
-			    xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
+				defineXACDMLTextAreaPanel.setAcdIDTextField(defineXACDMLTextAreaPanel.getAcdIDTextField());
+			    String xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
 				Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ Stylizer xacdml_models/xacdml.xsl xacdml_models/"+xacdmlFile+".xacdml");
 
 
@@ -101,7 +89,8 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		runJavaProgramButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileContent = textArea.getText();
-				String fileName = classNameTextField.getText();
+//				String fileName = classNameTextField.getText();
+				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
 				saveXML(fileName, fileContent);
 				 
 				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");

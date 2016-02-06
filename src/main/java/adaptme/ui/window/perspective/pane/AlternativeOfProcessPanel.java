@@ -130,7 +130,7 @@ public class AlternativeOfProcessPanel {
 
 	private JTabbedPane leftTreeTabbedPane;
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
-	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
+//	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
 	
 	private ProcessRepository processRepository;
 //	private ProcessRepository processRepositoryTask;
@@ -607,7 +607,7 @@ public class AlternativeOfProcessPanel {
 		
 		
  
- 		defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
+		DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
 		
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		

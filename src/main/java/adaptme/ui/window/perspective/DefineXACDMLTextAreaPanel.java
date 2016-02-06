@@ -98,6 +98,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 		JButton saveXACDMLButton = new JButton("Save XACDML");
 		saveXACDMLButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String fileContent = textArea.getText();
 				String fileName = acdIDTextField.getText();
 				saveXML(fileName, fileContent);
@@ -138,4 +139,9 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	public JTextField getAcdIDTextField() {
 		return acdIDTextField;
 	}
+	
+	public void setAcdIDTextField(JTextField acdIDTextField) {
+		this.acdIDTextField = acdIDTextField;
+	}
 }
+ 
