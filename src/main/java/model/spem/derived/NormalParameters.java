@@ -2,15 +2,15 @@ package model.spem.derived;
 
 public class NormalParameters extends Parameters {
 
-    private double mean;
+    private double average;
     private double standardDeviation;
 
     public double getMean() {
-	return mean;
+	return average;
     }
 
     public void setMean(double mean) {
-	this.mean = mean;
+	this.average = mean;
     }
 
     public double getStandardDeviation() {

@@ -126,7 +126,7 @@ public class Sample implements Serializable {
     // fit from a given dataset
     public boolean computeDistribution() {
 	if (Math.random() > 0.5) {
-	    distribution = BestFitDistribution.LOG_NORMAL;
+	    distribution = BestFitDistribution.NEGATIVE_EXPONENTIAL;
 	} else {
 	    distribution = BestFitDistribution.NORMAL;
 	}
