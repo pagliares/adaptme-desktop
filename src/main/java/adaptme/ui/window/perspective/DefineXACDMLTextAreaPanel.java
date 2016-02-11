@@ -19,6 +19,8 @@ import adaptme.util.RestoreMe;
 
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,6 +58,8 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	
 	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
 			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
+		
+	
 		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		this.workProdutResourcesPanel = workProdutResourcesPanel;
@@ -79,6 +83,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				if(acdIDTextField.getText().trim().isEmpty()){
 					JOptionPane.showMessageDialog(getPanel(), "The ACD Id is required");
 					return; 
@@ -86,7 +91,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList);
+				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList, roleResourcePanel);
 				textArea.append(result);
 			}
 		});

@@ -123,4 +123,8 @@ public class RoleResourcesPanel {
 	public List<Role> getRoles() {
 		return roles;
 	}
+
+	public JTable getTableRole() {
+		return tableRole;
+	}
 }

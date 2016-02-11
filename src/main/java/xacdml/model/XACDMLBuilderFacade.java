@@ -6,11 +6,12 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JTable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
- 
+import adaptme.ui.window.perspective.RoleResourcesPanel;
 import xacdml.model.generated.Acd;
 import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
@@ -34,6 +35,7 @@ import simulator.base.WorkProduct;
 public class XACDMLBuilderFacade {
 
 	private Acd acd;
+	 
 	
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 
@@ -303,12 +305,12 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks) {
-        String teste = buildXACDML(acdId, roles, workProducts, tasks);
+	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, RoleResourcesPanel roleResourcePanel) {
+        String teste = buildXACDML(acdId, roles, workProducts, tasks, roleResourcePanel);
         return teste;
 	}
 	
-	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks){
+	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, RoleResourcesPanel roleResourcePanel){
 		
 		ObjectFactory factory = new ObjectFactory();
 		
@@ -322,8 +324,10 @@ public class XACDMLBuilderFacade {
   		Dead deadPermanentEntity = factory.createDead();
 
  		// Creation of dead resource queues necessary to the creation of regular activities
- 		for (Role role: roles) {
-			
+  	    // nao uso for each pois preciso do indice para pegar a quantidade digitada na coluna
+  		for (int i = 0; i < roles.size(); i++) {  
+
+			Role role = roles.get(i);
  			Class permanentEntity = factory.createClass();
  			permanentEntity.setId(role.getName());
 			acd.getClazz().add(permanentEntity);
@@ -331,6 +335,12 @@ public class XACDMLBuilderFacade {
 			deadPermanentEntity.setId("Resource queue: " + role.getName());
 			deadPermanentEntity.setClazz(permanentEntity);
  			
+			 
+			JTable roleTable = roleResourcePanel.getTableRole();
+			Integer quantity = (Integer)roleTable.getModel().getValueAt(i, 1);
+            role.setIntialQuantity(quantity);
+            
+			
 			Type queue = factory.createType();
 			queue.setStruct("QUEUE");
 			queue.setSize(Integer.toString(role.getIntialQuantity()));
