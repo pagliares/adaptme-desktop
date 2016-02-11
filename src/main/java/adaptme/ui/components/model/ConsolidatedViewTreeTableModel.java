@@ -208,10 +208,6 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 	public Object getChild(Object parent, int index) {
 		if (parent instanceof TaskDescriptor) {
 			return getRootElements((TaskDescriptor) parent, index);
-		} else if (parent instanceof CapabilityPattern) {
-			return getRootElements((CapabilityPattern) parent, index);
-		} else if (parent instanceof Process) {
-			return ((Process) parent).getBreakdownElementOrRoadmap().get(index);
 		} else if (parent instanceof Activity) {
 			return getRootElements((Activity) parent, index);
 		}

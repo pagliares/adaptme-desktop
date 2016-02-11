@@ -194,11 +194,8 @@ public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableM
 
 	@Override
 	public Object getChild(Object parent, int index) {
-		if (parent instanceof CapabilityPattern) {
-			return getRootElements((CapabilityPattern) parent, index);
-		} else if (parent instanceof Process) {
-			return ((Process) parent).getBreakdownElementOrRoadmap().get(index);
-		} else if (parent instanceof Activity) {
+		 
+		if (parent instanceof Activity) {
 			return getRootElements((Activity) parent, index);
 		}
 		return "Erro";
