@@ -318,114 +318,140 @@ public class XACDMLBuilderFacade {
 		Simtime simulationTime = new Simtime();
 		simulationTime.setTime("500");
 		acd.setSimtime(simulationTime);
- 		
-		// build generate activities
 		
-		Generate callGenerate = factory.createGenerate();
-		
-		for (WorkProduct workProduct: workProducts) {
-			callGenerate.setId("Generate : " + workProduct.getName());
-			
-			Class caller = factory.createClass();
-			caller.setId(workProduct.getName());
-			acd.getClazz().add(caller);
-	 		callGenerate.setClazz(caller);   
+  		Dead deadPermanentEntity = factory.createDead();
 
+ 		// Creation of dead resource queues necessary to the creation of regular activities
+ 		for (Role role: roles) {
 			
-			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
-			Stat negExp = factory.createStat();
-			negExp.setType("NEGEXP");
-			negExp.setParm1("7.0");
+ 			Class permanentEntity = factory.createClass();
+ 			permanentEntity.setId(role.getName());
+			acd.getClazz().add(permanentEntity);
 			
-			Graphic box = factory.createGraphic();
-			box.setType("BOX");
-			box.setX("73");
-			box.setY("101");
-			
-			ActObserver actObserver = factory.createActObserver();
-			actObserver.setType("ACTIVE");
-			actObserver.setName("CALL_OBS");
-			
-			Dead dead = factory.createDead();
-			
-			dead.setId(workProduct.getQueueName());
-			dead.setClazz(caller);
-
-			Type queue = factory.createType();
-			queue.setStruct("QUEUE");
-			queue.setSize(Integer.toString(workProduct.getQuantity()));
-			queue.setInit("0"); // conferir
-			dead.setType(queue);
-
-			// Verificar a necessidade de colocar Graphic
-			Graphic circle = factory.createGraphic();
-			circle.setType("CIRCLE");
-			circle.setX("198");
-			circle.setY("349");
-			dead.setGraphic(circle);
-
-			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			QueueObserver queueObserver = factory.createQueueObserver();
-			queueObserver.setType("LENGTH");
-			queueObserver.setName("SERVICE_OBS");
-			dead.getQueueObserver().add(queueObserver);
-
-			acd.getDead().add(dead);
-			
-			 
-			Next nextDead = factory.createNext();
-			nextDead.setDead(dead);
-			
- 			callGenerate.getActObserver().add(actObserver);
-			callGenerate.setGraphic(box);
-			callGenerate.setStat(negExp);
-			callGenerate.getNext().add(nextDead);
-
-			acd.getGenerate().add(callGenerate);
-			callGenerate = factory.createGenerate();
-		}
-		
-		// end build generate activities
-		
-		// begin build dead states method - Resources. Dead states for temporal entities created above
- 		Dead dead = factory.createDead();
-		
-		for (Role role: roles) {
-			
- 			Class clerk = factory.createClass();
-			clerk.setId(role.getName());
-			acd.getClazz().add(clerk);
-			
-		
-			dead.setId("Resource queue: " + role.getName());
-			dead.setClazz(clerk);
+			deadPermanentEntity.setId("Resource queue: " + role.getName());
+			deadPermanentEntity.setClazz(permanentEntity);
  			
 			Type queue = factory.createType();
 			queue.setStruct("QUEUE");
 			queue.setSize(Integer.toString(role.getIntialQuantity()));
 			queue.setInit("0"); // conferir
-			dead.setType(queue);
+			deadPermanentEntity.setType(queue);
 			
 			// Verificar a necessidade de colocar Graphic
-			Graphic circle = factory.createGraphic();
-			circle.setType("CIRCLE");
-			circle.setX("198");
-			circle.setY("349");
-			dead.setGraphic(circle);
+			//Graphic circle = factory.createGraphic();
+			//circle.setType("CIRCLE");
+			//circle.setX("198");
+			//circle.setY("349");
+			//dead.setGraphic(circle);
 			
 			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
 			QueueObserver queueObserver = factory.createQueueObserver();
 			queueObserver.setType("LENGTH");
 			queueObserver.setName("SERVICE_OBS");
-			dead.getQueueObserver().add(queueObserver);
+			deadPermanentEntity.getQueueObserver().add(queueObserver);
 
-			acd.getDead().add(dead);
-			dead = factory.createDead();
+			acd.getDead().add(deadPermanentEntity);
+			deadPermanentEntity = factory.createDead();
 		}
+ 		
+		// build generate activities
 		
-		// end build dead states method
+		Generate generateActivity = factory.createGenerate();
 		
+		for (WorkProduct workProduct: workProducts) {
+			
+			generateActivity.setId("Generate : " + workProduct.getName());
+			
+			Class temporalEntity = factory.createClass();
+			temporalEntity.setId("Temporal entity " + workProduct.getName());
+			acd.getClazz().add(temporalEntity);
+	 		generateActivity.setClazz(temporalEntity);   
+
+			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
+			Stat negExp = factory.createStat();
+			negExp.setType("NEGEXP");
+			negExp.setParm1("7.0");
+			
+			//Graphic box = factory.createGraphic();
+			//box.setType("BOX");
+			//box.setX("73");
+			//box.setY("101");
+			
+			ActObserver actObserver = factory.createActObserver();
+			actObserver.setType("ACTIVE");
+			actObserver.setName("CALL_OBS");
+			
+			Dead deadTemporalEntity = factory.createDead();
+			
+			deadTemporalEntity.setId(workProduct.getQueueName());
+			deadTemporalEntity.setClazz(temporalEntity);
+
+			Type queue = factory.createType();
+			queue.setStruct("QUEUE");
+			queue.setSize(Integer.toString(workProduct.getQuantity()));
+			queue.setInit("0"); // conferir
+			deadTemporalEntity.setType(queue);
+
+			// Verificar a necessidade de colocar Graphic
+			//Graphic circle = factory.createGraphic();
+			//circle.setType("CIRCLE");
+			//circle.setX("198");
+			//circle.setY("349");
+			//deadTemporalEntity.setGraphic(circle);
+
+			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+			QueueObserver queueObserver = factory.createQueueObserver();
+			queueObserver.setType("LENGTH");
+			queueObserver.setName("SERVICE_OBS");
+			deadTemporalEntity.getQueueObserver().add(queueObserver);
+
+			acd.getDead().add(deadTemporalEntity);
+			
+			Next nextDead = factory.createNext();
+			nextDead.setDead(deadTemporalEntity);
+			
+ 			generateActivity.getActObserver().add(actObserver);
+//			callGenerate.setGraphic(box);
+			generateActivity.setStat(negExp);
+			generateActivity.getNext().add(nextDead);
+
+			acd.getGenerate().add(generateActivity);
+			
+		 
+		// end build generate activities
 		
+		// begin destroy
+			Destroy destroyDep0 = factory.createDestroy();
+
+			destroyDep0.setId("Destroy : " + workProduct.getName());
+//			destroyDep0.setClazz(temporalEntity);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
+
+			Stat uniform2 = factory.createStat();
+			uniform2.setType("UNIFORM");
+			uniform2.setParm1("0.0");
+			uniform2.setParm2("10.0");
+
+//			Graphic box3 = factory.createGraphic();
+//			box3.setType("BOX");
+//			box3.setX("602");
+//			box3.setY("108");
+
+			//Prev previous = factory.createPrev();
+			//previous.setDead(dead);
+			//destroyDep0.getPrev().add(previous);
+//			destroyDep0.setGraphic(box3);
+			// esta faltando destroy.setStat no codigo
+			
+			acd.getDestroy().add(destroyDep0);
+			
+			generateActivity = factory.createGenerate();
+			destroyDep0 = factory.createDestroy();
+		}
+			
+			// end destroy
+		
+		 
+ 		
 		// begin buildActivities
 		
          Act regularActivity = factory.createAct();
@@ -466,33 +492,7 @@ public class XACDMLBuilderFacade {
 		
 		// end buildActivities
 		
-		// begin destroy
-		Destroy destroyDep0 = factory.createDestroy();
-		for (WorkProduct workProduct: workProducts) {
-			
-			destroyDep0.setId("Destroy : " + workProduct.getName());
-//			destroyDep0.setClazz(caller);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
-
-			Stat uniform2 = factory.createStat();
-			uniform2.setType("UNIFORM");
-			uniform2.setParm1("0.0");
-			uniform2.setParm2("10.0");
-
-			Graphic box3 = factory.createGraphic();
-			box3.setType("BOX");
-			box3.setX("602");
-			box3.setY("108");
-
-//			Prev previous = factory.createPrev();
-//			previous.setDead(dead);
-//			destroyDep0.getPrev().add(previous);
-			destroyDep0.setGraphic(box3);
-			// esta faltando destroy.setStat no codigo
-			acd.getDestroy().add(destroyDep0);
-			destroyDep0 = factory.createDestroy();
-		}
 		
-		// end destroy
 		
 		this.acd = acd;
 		String result = null;
