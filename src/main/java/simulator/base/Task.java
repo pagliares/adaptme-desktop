@@ -1,5 +1,8 @@
 package simulator.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task {
 	private String name;
 	private String bestFitProbabilityDistribution;
@@ -9,6 +12,26 @@ public class Task {
 	private double durationMean;
 	private double durationStandardDeviation;
 	private int minimumNumberOfDevelopersNeeded;
+	
+	private Role mainPerformer;
+	private List<Role> additionalPerformers = new ArrayList<>();
+	
+	private List<WorkProduct> inputWorkProducts = new ArrayList<>();
+	private List<WorkProduct> outputWorkProducts = new ArrayList<>();
+	
+	public void addAdditionaPerformer(Role role) {
+		additionalPerformers.add(role);
+	}
+	
+	public void addInputWorkProduct(WorkProduct wp) {
+		inputWorkProducts.add(wp);
+	}
+	
+	public void addOutputWorkProduct(WorkProduct wp) {
+		outputWorkProducts.add(wp);
+	}
+	
+	
 	
 	public String getName() {
 		return name;
