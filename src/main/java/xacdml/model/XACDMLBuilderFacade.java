@@ -340,13 +340,20 @@ public class XACDMLBuilderFacade {
 			Integer quantity = (Integer)roleTable.getModel().getValueAt(i, 1);
             role.setIntialQuantity(quantity);
             
-			
-			Type queue = factory.createType();
+            
+            Type queue = factory.createType();
 			queue.setStruct("QUEUE");
 			queue.setSize(Integer.toString(role.getIntialQuantity()));
 			queue.setInit("0"); // conferir
 			deadPermanentEntity.setType(queue);
 			
+            Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 2);
+            if (isStationary) {
+            	QueueObserver queueObserver = factory.createQueueObserver();
+            	queueObserver.setType("STATIONARY");
+            	deadPermanentEntity.getQueueObserver().add(queueObserver);
+            }
+            
 			// Verificar a necessidade de colocar Graphic
 			//Graphic circle = factory.createGraphic();
 			//circle.setType("CIRCLE");
