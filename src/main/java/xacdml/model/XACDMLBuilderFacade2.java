@@ -10,10 +10,12 @@ import javax.xml.bind.Marshaller;
 import xacdml.model.PathToFile;
 import xacdml.model.generated.*;
 import xacdml.model.generated.Class;
+import xacdml.model.generated.Simtime;
   
 
 
 public class XACDMLBuilderFacade2 {
+	
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 		try {
 			JAXBContext context = JAXBContext.newInstance(Acd.class);
@@ -51,18 +53,19 @@ public class XACDMLBuilderFacade2 {
 
 	private Acd buildEntities(Acd acd) {
 		ObjectFactory factory = new ObjectFactory();
+		
 		Class inquirer = factory.createClass();
 		inquirer.setId("INQUIRER");
-		
+		acd.getClazz().add(inquirer);
 		
 
-//		Class idle = factory.createClass();
-//		idle.setId("IDLE");
-//		acd.getClazz().add(idle);
+		Class clerk = factory.createClass();
+		clerk.setId("CLERK");
+		acd.getClazz().add(clerk);
 
-//		Class caller = factory.createClass();
-//		caller.setId("CALLER");
-//		acd.getClazz().add(caller);
+		Class caller = factory.createClass();
+		caller.setId("CALLER");
+		acd.getClazz().add(caller);
 		return acd;
 	}
 
@@ -77,119 +80,117 @@ public class XACDMLBuilderFacade2 {
  		dead.setId("WAIT0");
 		dead.setClazz(acd.getClazz().get(0));
  
-//		Type queue = factory.createType();
-//		queue.setStruct("QUEUE");
-//		queue.setSize("10");
-//		queue.setInit("0");
-//		dead.setType(queue);
-//
-//		Graphic circle = factory.createGraphic();
-//		circle.setType("CIRCLE");
-//		circle.setX("198");
-//		circle.setY("349");
-//		dead.setGraphic(circle);
-//
-//		QueueObserver queueObserver = factory.createQueueObserver();		 
-//		queueObserver.setType("LENGTH");
-//		queueObserver.setName("SERVICE_OBS");
-//		dead.getQueueObserver().add(queueObserver);
+		Type queue = factory.createType();
+		queue.setStruct("QUEUE");
+		queue.setSize("10");
+		queue.setInit("0");
+		dead.setType(queue);
+
+		Graphic circle = factory.createGraphic();
+		circle.setType("CIRCLE");
+		circle.setX("198");
+		circle.setY("349");
+		dead.setGraphic(circle);
+
+		QueueObserver queueObserver = factory.createQueueObserver();		 
+		queueObserver.setType("LENGTH");
+		queueObserver.setName("SERVICE_OBS");
+		dead.getQueueObserver().add(queueObserver);
 		 
-
-
 		acd.getDead().add(dead);
 
 		// ---------------------------- END Dead State WAIT0
 
 		// ---------------------------- Begin Dead State WAIT1
 
-//		Dead dead1 = factory.createDead();
-//		dead1.setId("WAIT1");
-		// // wait1.setClazz(caller);
+		Dead dead1 = factory.createDead();
+		dead1.setId("WAIT1");
+		dead1.setClazz(acd.getClazz().get(1));
 
-//		Type queue1 = factory.createType();
-//		queue1.setStruct("QUEUE");
-//		queue1.setSize("10");
-//		queue1.setInit("0");
-//		dead1.setType(queue1);
-//
-//		Graphic circle3 = factory.createGraphic();
-//		circle3.setType("CIRCLE");
-//		circle3.setX("197");
-//		circle3.setY("107");
-//		dead1.setGraphic(circle3);
-//
-//		QueueObserver queueObserver1 = factory.createQueueObserver();
-// 		queueObserver1.setType("LENGTH");
-//		queueObserver1.setName("TALK_OBS");
-//		dead1.getQueueObserver().add(queueObserver1);
-//
-//		acd.getDead().add(dead1);
+		Type queue1 = factory.createType();
+		queue1.setStruct("QUEUE");
+		queue1.setSize("10");
+		queue1.setInit("0");
+		dead1.setType(queue1);
+
+		Graphic circle3 = factory.createGraphic();
+		circle3.setType("CIRCLE");
+		circle3.setX("197");
+		circle3.setY("107");
+		dead1.setGraphic(circle3);
+
+		QueueObserver queueObserver1 = factory.createQueueObserver();
+ 		queueObserver1.setType("LENGTH");
+		queueObserver1.setName("TALK_OBS");
+		dead1.getQueueObserver().add(queueObserver1);
+
+		acd.getDead().add(dead1);
 
 		// ---------------------------- END Dead State WAIT1
 
 		// ------------------------------START Dead state B0
 
-//		Dead deadB0 = factory.createDead();
-//		deadB0.setId("B0");
-//		// deadB0.setClazz(idle);
-//
-//		Type queue5 = factory.createType();
-//		queue5.setStruct("QUEUE");
-//		queue5.setSize("10");
-//		queue5.setInit("0");
-//		deadB0.setType(queue5);
-//
-//		Graphic circle5 = factory.createGraphic();
-//		circle5.setType("CIRCLE");
-//		circle5.setX("476");
-//		circle5.setY("358");
-//		deadB0.setGraphic(circle5);
-//
-//		acd.getDead().add(deadB0);
+		Dead deadB0 = factory.createDead();
+		deadB0.setId("B0");
+		deadB0.setClazz(acd.getClazz().get(2));
+
+		Type queue5 = factory.createType();
+		queue5.setStruct("QUEUE");
+		queue5.setSize("10");
+		queue5.setInit("0");
+		deadB0.setType(queue5);
+
+		Graphic circle5 = factory.createGraphic();
+		circle5.setType("CIRCLE");
+		circle5.setX("476");
+		circle5.setY("358");
+		deadB0.setGraphic(circle5);
+
+		acd.getDead().add(deadB0);
 
 		// ------------------------------END Dead state B0
 
 		// ------------------------------START Dead state B1
 
-//		Dead deadB1 = factory.createDead();
-//		deadB1.setId("B1");
-//		// deadB1.setClazz(idle);
-//
-//		Type queue6 = factory.createType();
-//		queue6.setStruct("QUEUE");
-//		queue6.setSize("10");
-//		queue6.setInit("0");
-//		deadB1.setType(queue6);
-//
-//		Graphic circle6 = factory.createGraphic();
-//		circle6.setType("CIRCLE");
-//		circle6.setX("462");
-//		circle6.setY("111");
-//		deadB1.setGraphic(circle6);
-//
-//		acd.getDead().add(deadB1);
+		Dead deadB1 = factory.createDead();
+		deadB1.setId("B1");
+		deadB1.setClazz(acd.getClazz().get(1));
+
+		Type queue6 = factory.createType();
+		queue6.setStruct("QUEUE");
+		queue6.setSize("10");
+		queue6.setInit("0");
+		deadB1.setType(queue6);
+
+		Graphic circle6 = factory.createGraphic();
+		circle6.setType("CIRCLE");
+		circle6.setX("462");
+		circle6.setY("111");
+		deadB1.setGraphic(circle6);
+
+		acd.getDead().add(deadB1);
 
 		// ------------------------------END Dead state B0
 
 		// ------------------------------START Dead state IDLE
 
-//		 Dead deadIdle = factory.createDead();
-//		 deadIdle.setId("IDLE");
-		 // deadIdle.setClazz(idle);
+		 Dead deadIdle = factory.createDead();
+		 deadIdle.setId("IDLE");
+		 deadIdle.setClazz(acd.getClazz().get(1));
 		
-//		 Type queue4 = factory.createType();
-//		 queue4.setStruct("QUEUE");
-//		 queue4.setSize("2");
-//		 queue4.setInit("2");
-//		 deadIdle.setType(queue4);
-//		
-//		 Graphic circle4 = factory.createGraphic();
-//		 circle4.setType("CIRCLE");
-//		 circle4.setX("334");
-//		 circle4.setY("222");
-//		 deadIdle.setGraphic(circle4);
-//		
-//		 acd.getDead().add(deadIdle);
+		 Type queue4 = factory.createType();
+		 queue4.setStruct("QUEUE");
+		 queue4.setSize("2");
+		 queue4.setInit("2");
+		 deadIdle.setType(queue4);
+		
+		 Graphic circle4 = factory.createGraphic();
+		 circle4.setType("CIRCLE");
+		 circle4.setX("334");
+		 circle4.setY("222");
+		 deadIdle.setGraphic(circle4);
+		
+		 acd.getDead().add(deadIdle);
 
 		// ------------------------------END Dead state IDLE
 
@@ -197,6 +198,7 @@ public class XACDMLBuilderFacade2 {
 	}
 
 	private Acd buildActivities(Acd acd) {
+		
 		ObjectFactory factory = new ObjectFactory();
 		// ---------------------------- Begin Activity Talk
 		Act talk = factory.createAct();
@@ -216,14 +218,14 @@ public class XACDMLBuilderFacade2 {
 		Dead idle = factory.createDead();
 		idle.setId("IDLE");
 		 
-//		ec1.setPrev(idle);
-		// ec1.setNext(idle);
-		//
+		ec1.setPrev(idle);
+	    ec1.setNext(acd.getDead().get(0));
+		
 		
 		EntityClass ec2 = factory.createEntityClass();
 		Dead wait1 = factory.createDead();
-		// ec1.setPrev(wait1);
-		// ec1.setNext(b1);
+	    ec2.setPrev(acd.getDead().get(0));
+		ec2.setNext(acd.getDead().get(0));
 
 		talk.setStat(uniform);
 		talk.setGraphic(box);
@@ -248,11 +250,11 @@ public class XACDMLBuilderFacade2 {
 		box5.setY("356");
 
 		EntityClass ec5 = factory.createEntityClass();
-		// ec1.setPrev(idle);
+	    ec1.setPrev(idle);
 		// ec1.setNext(idle);
 
 		EntityClass ec6 = factory.createEntityClass();
-		// ec1.setPrev(wait0);
+//		ec1.setPrev(wait1);
 		// ec1.setNext(deadB0);
 
 		actService.setStat(uniform5);
@@ -309,6 +311,7 @@ public class XACDMLBuilderFacade2 {
 
 		Generate arrivalGenerate = factory.createGenerate();
 		arrivalGenerate.setId("ARRIVAL");
+		arrivalGenerate.setClazz((Class)acd.getClazz().get(0));  //new
 
 		Stat negExp2 = factory.createStat();
 		negExp2.setParm1("5.0");
@@ -354,7 +357,7 @@ public class XACDMLBuilderFacade2 {
 		box3.setY("108");
 
 		Prev previous = factory.createPrev();
-		// previous.setDead(dead);
+		 previous.setDead(acd.getDead().get(0));
 		destroyDep0.getPrev().add(previous);
 		destroyDep0.setGraphic(box3);
 		// esta faltando destroy.setStat no codigo
@@ -393,14 +396,20 @@ public class XACDMLBuilderFacade2 {
 
 		ObjectFactory factory = new ObjectFactory();
 		Acd acd = factory.createAcd();
+		
+		Simtime simulationTime = new Simtime();
+		simulationTime.setTime("500");
+		
 		acd.setId(acdId);
+		acd.setSimtime(simulationTime);
+		
 
 		acd = buildEntities(acd);
 		acd = buildDeadStates(acd);
-//		acd = buildGenerateActivities(acd);
+		acd = buildGenerateActivities(acd);
 
-//		acd = buildActivities(acd);
-//		acd = buildDestroyActivities(acd);
+		acd = buildActivities(acd);
+		acd = buildDestroyActivities(acd);
 		
 		return acd;
 

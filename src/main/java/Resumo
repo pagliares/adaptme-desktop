@@ -28,3 +28,12 @@ Para gerar o programa java a partir da linha de comando:
  	
 Geracao automatica de classes a partir de um dtd
  - xjc -dtd xacdml.dtd
+ 
+ 
+ Erro que me custou mais de um mes:
+ com.sun.istack.internal.SAXException2: Object "xacdml.model.generated.Dead@73a8dfcc" is found in an IDREF property but this object doesnt have an ID.]
+ Solucao:
+ 
+ Muito simples. Basta colocar a anotacao @XmlID antes do campo protected String id das classes Class,Dead; (classe gerada automaticamente com xjc)
+ 
+ 
