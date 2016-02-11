@@ -24,6 +24,7 @@ import xacdml.model.generated.Next;
 import xacdml.model.generated.ObjectFactory;
 import xacdml.model.generated.Prev;
 import xacdml.model.generated.QueueObserver;
+import xacdml.model.generated.Simtime;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
 import simulator.base.Role;
@@ -303,17 +304,196 @@ public class XACDMLBuilderFacade {
 	}
 	
 	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks) {
-
+        String teste = buildXACDML(acdId, roles, workProducts, tasks);
+        return teste;
+	}
+	
+	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks){
+		
 		ObjectFactory factory = new ObjectFactory();
+		
 		Acd acd = factory.createAcd();
 		acd.setId(acdId);
 		
-		acd = buildEntities(acd, roles, workProducts);
-		acd = buildDeadStates(acd, roles, workProducts);
-		acd = buildGenerateActivities(acd, workProducts);
+		Simtime simulationTime = new Simtime();
+		simulationTime.setTime("500");
+		acd.setSimtime(simulationTime);
+ 		
+		// build generate activities
+		
+		Generate callGenerate = factory.createGenerate();
+		
+		for (WorkProduct workProduct: workProducts) {
+			callGenerate.setId("Generate : " + workProduct.getName());
+			
+			Class caller = factory.createClass();
+			caller.setId(workProduct.getName());
+			acd.getClazz().add(caller);
+	 		callGenerate.setClazz(caller);   
 
-		acd = buildActivities(acd, tasks);
-		acd = buildDestroyActivities(acd, workProducts);
+			
+			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
+			Stat negExp = factory.createStat();
+			negExp.setType("NEGEXP");
+			negExp.setParm1("7.0");
+			
+			Graphic box = factory.createGraphic();
+			box.setType("BOX");
+			box.setX("73");
+			box.setY("101");
+			
+			ActObserver actObserver = factory.createActObserver();
+			actObserver.setType("ACTIVE");
+			actObserver.setName("CALL_OBS");
+			
+			Dead dead = factory.createDead();
+			
+			dead.setId(workProduct.getQueueName());
+			dead.setClazz(caller);
+
+			Type queue = factory.createType();
+			queue.setStruct("QUEUE");
+			queue.setSize(Integer.toString(workProduct.getQuantity()));
+			queue.setInit("0"); // conferir
+			dead.setType(queue);
+
+			// Verificar a necessidade de colocar Graphic
+			Graphic circle = factory.createGraphic();
+			circle.setType("CIRCLE");
+			circle.setX("198");
+			circle.setY("349");
+			dead.setGraphic(circle);
+
+			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+			QueueObserver queueObserver = factory.createQueueObserver();
+			queueObserver.setType("LENGTH");
+			queueObserver.setName("SERVICE_OBS");
+			dead.getQueueObserver().add(queueObserver);
+
+			acd.getDead().add(dead);
+			
+			 
+			Next nextDead = factory.createNext();
+			nextDead.setDead(dead);
+			
+ 			callGenerate.getActObserver().add(actObserver);
+			callGenerate.setGraphic(box);
+			callGenerate.setStat(negExp);
+			callGenerate.getNext().add(nextDead);
+
+			acd.getGenerate().add(callGenerate);
+			callGenerate = factory.createGenerate();
+		}
+		
+		// end build generate activities
+		
+		// begin build dead states method - Resources. Dead states for temporal entities created above
+ 		Dead dead = factory.createDead();
+		
+		for (Role role: roles) {
+			
+ 			Class clerk = factory.createClass();
+			clerk.setId(role.getName());
+			acd.getClazz().add(clerk);
+			
+		
+			dead.setId("Resource queue: " + role.getName());
+			dead.setClazz(clerk);
+ 			
+			Type queue = factory.createType();
+			queue.setStruct("QUEUE");
+			queue.setSize(Integer.toString(role.getIntialQuantity()));
+			queue.setInit("0"); // conferir
+			dead.setType(queue);
+			
+			// Verificar a necessidade de colocar Graphic
+			Graphic circle = factory.createGraphic();
+			circle.setType("CIRCLE");
+			circle.setX("198");
+			circle.setY("349");
+			dead.setGraphic(circle);
+			
+			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+			QueueObserver queueObserver = factory.createQueueObserver();
+			queueObserver.setType("LENGTH");
+			queueObserver.setName("SERVICE_OBS");
+			dead.getQueueObserver().add(queueObserver);
+
+			acd.getDead().add(dead);
+			dead = factory.createDead();
+		}
+		
+		// end build dead states method
+		
+		
+		// begin buildActivities
+		
+         Act regularActivity = factory.createAct();
+		
+		for (String task: tasks){
+			
+			regularActivity.setId(task);
+
+			Stat uniform = factory.createStat();
+			uniform.setType("UNIFORM");
+			uniform.setParm1("1.0");
+			uniform.setParm2("5.0");
+
+			Graphic box = factory.createGraphic();
+			box.setType("BOX");
+			box.setX("319");
+			box.setY("110");
+//
+//			EntityClass ec1 = factory.createEntityClass();
+//			 
+//			ec1.setPrev(dead);
+//			
+//		    ec1.setNext(dead);
+//			
+//			EntityClass ec2 = factory.createEntityClass();
+//	 
+//		    ec2.setPrev(dead);
+//			ec2.setNext(dead);
+//
+			regularActivity.setStat(uniform);
+			regularActivity.setGraphic(box);
+//			regularActivity.getEntityClass().add(ec1);
+//			regularActivity.getEntityClass().add(ec2);
+			
+			acd.getAct().add(regularActivity);	
+			regularActivity = factory.createAct();
+		}
+		
+		// end buildActivities
+		
+		// begin destroy
+		Destroy destroyDep0 = factory.createDestroy();
+		for (WorkProduct workProduct: workProducts) {
+			
+			destroyDep0.setId("Destroy : " + workProduct.getName());
+//			destroyDep0.setClazz(caller);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
+
+			Stat uniform2 = factory.createStat();
+			uniform2.setType("UNIFORM");
+			uniform2.setParm1("0.0");
+			uniform2.setParm2("10.0");
+
+			Graphic box3 = factory.createGraphic();
+			box3.setType("BOX");
+			box3.setX("602");
+			box3.setY("108");
+
+//			Prev previous = factory.createPrev();
+//			previous.setDead(dead);
+//			destroyDep0.getPrev().add(previous);
+			destroyDep0.setGraphic(box3);
+			// esta faltando destroy.setStat no codigo
+			acd.getDestroy().add(destroyDep0);
+			destroyDep0 = factory.createDestroy();
+		}
+		
+		// end destroy
+		
 		this.acd = acd;
 		String result = null;
 		try {
@@ -324,7 +504,7 @@ public class XACDMLBuilderFacade {
 		} finally {
 			return result;
 		}
-	}
+ 	}
 
 	public Acd getAcd() {
 		return acd;
