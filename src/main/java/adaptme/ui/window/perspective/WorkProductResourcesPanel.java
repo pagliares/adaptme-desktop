@@ -1,50 +1,35 @@
 package adaptme.ui.window.perspective;
 
-import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
-import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
-import xacdml.model.XACDMLBuilderFacade;
-
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.tree.DefaultTreeModel;
-
-import adaptme.dynamic.gui.meeting.MeetingPanel;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.border.LineBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.MatteBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.BorderFactory;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class WorkProductResourcesPanel {
 	private JPanel panel;
@@ -54,6 +39,9 @@ public class WorkProductResourcesPanel {
  	private TableColumnModel modeloColuna;
 	private List<WorkProduct> workProducts = new ArrayList<>();
 	private JComboBox<String> comboBox;
+	private JPanel probabilityDistributionsPanel;
+	private JLabel lblNewLabel;
+	private JLabel selectedDemandWorkProductLabel;
  
 	public WorkProductResourcesPanel() {
 		
@@ -62,8 +50,6 @@ public class WorkProductResourcesPanel {
 		policyJComboBox.addItem("STACK");
 		
 		 
-
-
 		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
@@ -133,7 +119,7 @@ public class WorkProductResourcesPanel {
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
 		
-		JPanel probabilityDistributionsPanel = new JPanel();
+		probabilityDistributionsPanel = new JPanel();
 		probabilityDistributionsPanel.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.add(probabilityDistributionsPanel, BorderLayout.SOUTH);
 		
@@ -148,33 +134,45 @@ public class WorkProductResourcesPanel {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setViewportBorder(null);
 		scrollPane_2.setBorder(BorderFactory.createEmptyBorder());
+		
+		lblNewLabel = new JLabel("Generate activity for demand work product :");
+		
+		selectedDemandWorkProductLabel = new JLabel("");
 		GroupLayout gl_probabilityDistributionsPanel = new GroupLayout(probabilityDistributionsPanel);
 		gl_probabilityDistributionsPanel.setHorizontalGroup(
 			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
 							.addComponent(label, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
-							.addGap(39)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(6, Short.MAX_VALUE))
+							.addGap(28)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+							.addGap(0, 0, Short.MAX_VALUE))
+						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+							.addComponent(lblNewLabel)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(selectedDemandWorkProductLabel)))
+					.addContainerGap())
 		);
 		gl_probabilityDistributionsPanel.setVerticalGroup(
-			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
-					.addGap(0)
-					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+					.addContainerGap(16, Short.MAX_VALUE)
+					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel)
+						.addComponent(selectedDemandWorkProductLabel))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
-							.addGap(5)
-							.addComponent(label)))
-					.addGap(18)
-					.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(16, Short.MAX_VALUE))
+						.addComponent(label))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+					.addGap(16))
 		);
 		probabilityDistributionsPanel.setLayout(gl_probabilityDistributionsPanel);
+		probabilityDistributionsPanel.setVisible(false);
 		
 		comboBox.addItemListener(e -> {
 		    String s = (String) comboBox.getSelectedItem();
@@ -204,6 +202,23 @@ public class WorkProductResourcesPanel {
 		
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
+		
+		tableWorkProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		    @Override
+		    public void valueChanged(ListSelectionEvent event) {
+		    	
+		    	int indexSelectRow = tableWorkProduct.getSelectedRow();
+		    	boolean isRowandCheckBoxSelected = (Boolean)model.getValueAt(tableWorkProduct.getSelectedRow(), 1) == true;
+//		        if ((indexSelectRow > -1) && (isRowandCheckBoxSelected)){
+		    	 if ((indexSelectRow > -1) && (isRowandCheckBoxSelected)){
+		            // print first column value from selected row
+//		            System.out.println(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(), 0).toString());
+		    		probabilityDistributionsPanel.setVisible(true);
+		    		selectedDemandWorkProductLabel.setText(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(), 0).toString());
+
+		        }
+		    }
+		});
 		
 		modeloColuna = tableWorkProduct.getColumnModel();
 		TableColumn colunaPolicy = modeloColuna.getColumn(5);

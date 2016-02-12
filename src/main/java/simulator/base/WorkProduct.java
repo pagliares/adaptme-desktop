@@ -7,7 +7,7 @@ public class WorkProduct {
     private String name;
     private int size;
     private int done;
-    private boolean demandWorkProduct;
+    private boolean demandWorkProduct = false;
     
     private BestFitDistribution bestFitDistribution = BestFitDistribution.NORMAL;
 
