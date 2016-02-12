@@ -91,7 +91,8 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList, roleResourcePanel);
+				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
+						workProdutResourcesPanel);
 				textArea.append(result);
 			}
 		});

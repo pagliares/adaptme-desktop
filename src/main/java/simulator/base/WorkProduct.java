@@ -1,11 +1,16 @@
 package simulator.base;
 
+import model.spem.derived.BestFitDistribution;
+
 public class WorkProduct {
 	
     private String name;
     private int size;
     private int done;
     private boolean demandWorkProduct;
+    
+    private BestFitDistribution bestFitDistribution = BestFitDistribution.NORMAL;
+
     private boolean lock;
     private String status;
     
@@ -119,6 +124,14 @@ public class WorkProduct {
 
 	public void setObserverQueueLenghtTimeName(String observerQueueLenghtTimeName) {
 		this.observerQueueLenghtTimeName = observerQueueLenghtTimeName;
+	}
+
+	public BestFitDistribution getBestFitDistribution() {
+		return bestFitDistribution;
+	}
+
+	public void setBestFitDistribution(BestFitDistribution bestFitDistribution) {
+		this.bestFitDistribution = bestFitDistribution;
 	}
 
 }

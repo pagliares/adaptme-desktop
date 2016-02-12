@@ -12,6 +12,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import adaptme.ui.window.perspective.RoleResourcesPanel;
+import adaptme.ui.window.perspective.WorkProductResourcesPanel;
+import model.spem.derived.BestFitDistribution;
 import xacdml.model.generated.Acd;
 import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
@@ -305,12 +307,14 @@ public class XACDMLBuilderFacade {
 		return acd;
 	}
 	
-	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, RoleResourcesPanel roleResourcePanel) {
-        String teste = buildXACDML(acdId, roles, workProducts, tasks, roleResourcePanel);
+	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
+			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel) {
+        String teste = buildXACDML(acdId, roles, workProducts, tasks, roleResourcePanel, workProdutResourcesPanel);
         return teste;
 	}
 	
-	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, RoleResourcesPanel roleResourcePanel){
+	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
+			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
 		
 		ObjectFactory factory = new ObjectFactory();
 		
@@ -375,18 +379,28 @@ public class XACDMLBuilderFacade {
 		
 		Generate generateActivity = factory.createGenerate();
 		
-		for (WorkProduct workProduct: workProducts) {
+		
+		for (int i = 0; i < workProducts.size(); i++) {  
+
+			WorkProduct workProduct = workProducts.get(i);
 			
-			generateActivity.setId("Generate : " + workProduct.getName());
+			JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
+			
+             
+			
+			generateActivity.setId("Generate activity for : " + workProduct.getName());
 			
 			Class temporalEntity = factory.createClass();
 			temporalEntity.setId("Temporal entity " + workProduct.getName());
 			acd.getClazz().add(temporalEntity);
 	 		generateActivity.setClazz(temporalEntity);   
 
+	 		
+	 		BestFitDistribution bestFitDistributionName  = (BestFitDistribution)workProductTable.getModel().getValueAt(i, 2);
 			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
 			Stat negExp = factory.createStat();
-			negExp.setType("NEGEXP");
+			negExp.setType(bestFitDistributionName.toString());
+//			negExp.setType("NEGEXP");
 			negExp.setParm1("7.0");
 			
 			//Graphic box = factory.createGraphic();

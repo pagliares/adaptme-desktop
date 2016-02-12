@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
+import model.spem.derived.BestFitDistribution;
 import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
@@ -45,6 +46,7 @@ public class WorkProductResourcesPanel {
 	private JScrollPane scrollPane;
 	private JTable tableWorkProduct;
 	private JComboBox policyJComboBox;
+	private JComboBox bestFitDistributionJComboBox;
 	private TableColumnModel modeloColuna;
 	private List<WorkProduct> workProducts = new ArrayList<>();
 	
@@ -54,6 +56,14 @@ public class WorkProductResourcesPanel {
 		policyJComboBox = new JComboBox();
 		policyJComboBox.addItem("FIFO");
 		policyJComboBox.addItem("STACK");
+		
+		bestFitDistributionJComboBox = new JComboBox();
+		bestFitDistributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+		bestFitDistributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+		bestFitDistributionJComboBox.addItem(BestFitDistribution.NORMAL);
+		bestFitDistributionJComboBox.addItem(BestFitDistribution.POISSON);
+		bestFitDistributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+
 
 		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
@@ -143,9 +153,16 @@ public class WorkProductResourcesPanel {
 		
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
+		
 		modeloColuna = tableWorkProduct.getColumnModel();
 		TableColumn colunaPolicy = modeloColuna.getColumn(5);
  		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
+ 		
+ 		TableColumn colunaBestFitDistribution = modeloColuna.getColumn(2);
+ 		colunaBestFitDistribution.setCellEditor(new DefaultCellEditor(bestFitDistributionJComboBox));
+ 		
+ 		
+ 		
  		
  		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -174,6 +191,9 @@ public class WorkProductResourcesPanel {
 		return workProducts;
 	}
 
+	public JTable getTableWorkProduct() {
+		return tableWorkProduct;
+	}
 	 
 
 	 
