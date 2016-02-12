@@ -215,7 +215,7 @@ public class RunSimulationPanelXPThesis {
 	for (int i = 0; i < 10; i++) {
 	    WorkProduct workProduct = new WorkProduct();
 	    workProduct.setName("User Story " + i);
-	    workProduct.setSize((int) SimulationSample.getSampleFromLogNormalDistribution(60, 5));
+	    workProduct.setCapacity((int) SimulationSample.getSampleFromLogNormalDistribution(60, 5));
 	    workProduct.setStatus("");
 	    listWorkProduct.add(workProduct);
 	}

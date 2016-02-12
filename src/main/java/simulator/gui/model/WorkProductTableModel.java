@@ -2,18 +2,22 @@ package simulator.gui.model;
 
 import java.util.List;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import model.spem.derived.BestFitDistribution;
+import simulator.base.Policy;
 import simulator.base.WorkProduct;
 
-public class WorkProductTableModel extends AbstractTableModel {
+public class WorkProductTableModel extends AbstractTableModel implements TableModelListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private List<WorkProduct> workProducts;
 	
-	String[] headers = new String[] { "Work product", "Demand Work Product?", "Quantity", "Queue name", 
+	String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue name", 
 									  "Capacity", "Policy", "Observer queue length name", "Observer queue lenght time name"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
@@ -39,16 +43,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return workProduct.isDemandWorkProduct();
 		case 2:
-			return workProduct.getSize();
-		case 3:
 			return workProduct.getQueueName();
-		case 4:
+		case 3:
 			return workProduct.getCapacity();
-		case 5:
+		case 4:
 			return workProduct.getPolicy();
-		case 6:
+		case 5:
 			return workProduct.getObserverQueueLenghtName();
-		case 7:
+		case 6:
 			return workProduct.getObserverQueueLenghtTimeName();
 		default:
 			return null;
@@ -57,6 +59,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		 
 		WorkProduct workProduct = getWorkProductAt(rowIndex);
 		switch (columnIndex) {
 		case 0:
@@ -66,24 +69,22 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setDemandWorkProduct((boolean) aValue);
 			break;
 		case 2:
-			workProduct.setSize((int) aValue);
+			workProduct.setQueueName((String) aValue); 
 			break;
 		case 3:
-			 
+			workProduct.setCapacity((Integer) aValue);
 			break;
 		case 4:
-			 
+//			workProduct.setPolicy((Policy) aValue); 
 			break;
 		case 5:
-			 
+			workProduct.setObserverQueueLenghtName((String) aValue);
 			break;
 		case 6:
-			 
-			break;
-		case 7:
-			 
+			workProduct.setObserverQueueLenghtTimeName((String) aValue);
 			break;
 		}
+		System.out.println(workProduct); // teste
 	}
 
 	@Override
@@ -94,16 +95,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return Boolean.class;
 		case 2:
-			return Integer.class;
+			return String.class;
 		case 3:
-			return String.class;
+			return Integer.class;
 		case 4:
-			return String.class;
+//			return Policy.class;  // nao se e isso para combobox
 		case 5:
-			return String.class;  // nao se e isso para combobox
-		case 6:
 			return String.class;
-		case 7:
+		case 6:
 			return String.class;
 		default:
 			return null;
@@ -141,5 +140,21 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
+	}
+
+	// ainda nao sei se preciso implementar esta interface já que tenho o metodo setValueAt
+	@Override
+	public void tableChanged(TableModelEvent e) {
+//		int row = e.getFirstRow();
+//		int column = e.getColumn();
+//		TableModel model = (TableModel)e.getSource();
+//		String columnName = model.getColumnName(column);
+//		Object data = model.getValueAt(row, column);
+//		System.out.println("row.." + row);
+//		System.out.println("column.." + column);
+//		System.out.println("column name.." + columnName);
+//		System.out.println("cell value.." + data);
+		
+		
 	}
 }

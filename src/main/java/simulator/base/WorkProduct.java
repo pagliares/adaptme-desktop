@@ -5,21 +5,21 @@ import model.spem.derived.BestFitDistribution;
 public class WorkProduct {
 	
     private String name;
-    private int size;
-    private int done;
-    private boolean demandWorkProduct = false;
     
-    private BestFitDistribution bestFitDistribution = BestFitDistribution.NORMAL;
+    private int done;
+    private boolean demandWorkProduct;
+    
+    private BestFitDistribution bestFitDistribution;
 
     private boolean lock;
     private String status;
     
     private int quantity;
-    private String queueName = "Queue name";
+    private String queueName = "" ;
     private int capacity;
-    private Policy policy = Policy.FIFO;
-    private String observerQueueLenghtName = "Queue name";
-    private String observerQueueLenghtTimeName = "0";
+    private Policy policy;
+    private String observerQueueLenghtName = "";
+    private String observerQueueLenghtTimeName = "";
 
     public String getName() {
 	return name;
@@ -29,13 +29,7 @@ public class WorkProduct {
 	this.name = name;
     }
 
-    public int getSize() {
-	return size;
-    }
-
-    public void setSize(int size) {
-	this.size = size;
-    }
+     
 
     public String getStatus() {
 	return status;
@@ -65,10 +59,7 @@ public class WorkProduct {
 	this.lock = lock;
     }
 
-    @Override
-    public String toString() {
-	return name + " size " + size + " done " + done + ", status " + status;
-    }
+     
 
 	public boolean isDemandWorkProduct() {
 		return demandWorkProduct;
@@ -133,5 +124,15 @@ public class WorkProduct {
 	public void setBestFitDistribution(BestFitDistribution bestFitDistribution) {
 		this.bestFitDistribution = bestFitDistribution;
 	}
+
+	@Override
+	public String toString() {
+		return "WorkProduct [name=" + name + ", demandWorkProduct=" + demandWorkProduct
+				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
+				+ ", capacity=" + capacity + ", policy=" + policy + ", observerQueueLenghtName="
+				+ observerQueueLenghtName + ", observerQueueLenghtTimeName=" + observerQueueLenghtTimeName + "]";
+	}
+	
+	
 
 }

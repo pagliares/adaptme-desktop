@@ -47,7 +47,7 @@ public class SimpleProject extends Project {
 			return true;
 		    }
 		} else {
-		    if (workProduct.getDone() < workProduct.getSize()) {
+		    if (workProduct.getDone() < workProduct.getCapacity()) {
 			return true;
 		    }
 		}
@@ -108,7 +108,7 @@ public class SimpleProject extends Project {
     public WorkProduct getWorkProductToImplement(ProcessContentRepository content) {
 	List<WorkProduct> workProducts = getWorkProductHash().get(content.getName());
 	for (WorkProduct workProduct : workProducts) {
-	    if (!workProduct.isLock() && workProduct.getDone() < workProduct.getSize()) {
+	    if (!workProduct.isLock() && workProduct.getDone() < workProduct.getCapacity()) {
 		return workProduct;
 	    }
 	}

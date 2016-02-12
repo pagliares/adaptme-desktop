@@ -2,6 +2,7 @@ package adaptme.ui.window.perspective;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -54,64 +55,29 @@ public class WorkProductResourcesPanel {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(59, 59, 59)));
-
-		// panel_2 = new JPanel();
-		// panel_2.setBorder(new TitledBorder(null, "Role resources",
-		// TitledBorder.LEADING, TitledBorder.TOP, null, null));
-
+		
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
+		
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		
-		
-
 		scrollPane.setViewportView(tableWorkProduct);
-
-		// panel_2.setLayout(new BorderLayout(0, 0));
-
+		 
+		 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
-		// panel_2.add(scrollPane_1, BorderLayout.CENTER);
-		GroupLayout gl_panel = new GroupLayout(panel);
+ 		GroupLayout gl_panel = new GroupLayout(panel);
 
-		// gl_panel.setHorizontalGroup(
-		// gl_panel.createParallelGroup(Alignment.LEADING)
-		// .addGroup(gl_panel.createSequentialGroup()
-		// .addGap(6)
-		// .addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248,
-		// Short.MAX_VALUE)
-		// .addGap(27)
-		// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 248,
-		// Short.MAX_VALUE)
-		// .addGap(6))
-		// );
-
+		 
 		gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(6)
 						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE).addGap(27)
 
 						.addGap(6)));
-						// trecho abaixo igual ao superior sem
-						// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413,
-						// Short.MAX_VALUE))
-
-		// gl_panel.setVerticalGroup(
-		// gl_panel.createParallelGroup(Alignment.LEADING)
-		// .addGroup(gl_panel.createSequentialGroup()
-		// .addGap(6)
-		// .addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-		// .addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413,
-		// Short.MAX_VALUE)
-		// .addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 413,
-		// Short.MAX_VALUE))
-		// .addGap(6))
-		// );
-		// trecho abaixo igual ao superior sem .addComponent(panel_2,
-		// GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+						 
 		gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup().addGap(6)
@@ -127,9 +93,6 @@ public class WorkProductResourcesPanel {
 		
  		comboBox  = new JComboBox<String>();
   		setDistribution(BestFitDistribution.getList());
-		
-		
-		
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setViewportBorder(null);
@@ -176,7 +139,6 @@ public class WorkProductResourcesPanel {
 		
 		comboBox.addItemListener(e -> {
 		    String s = (String) comboBox.getSelectedItem();
-		    // scrollPaneParameters.removeAll();
 		    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
 		    scrollPane_2.setViewportView(new ParametersPanel(p).getPanel());
 		    scrollPane_2.revalidate();
@@ -203,6 +165,9 @@ public class WorkProductResourcesPanel {
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
 		
+//		tableWorkProduct.getModel().addTableModelListener(model); // nao sei se precisa
+		
+		// Listener disparado ao selecionar uma linha da tabela
 		tableWorkProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		    @Override
 		    public void valueChanged(ListSelectionEvent event) {
@@ -210,7 +175,7 @@ public class WorkProductResourcesPanel {
 		    	int indexSelectRow = tableWorkProduct.getSelectedRow();
 		    	boolean isRowandCheckBoxSelected = (Boolean)model.getValueAt(tableWorkProduct.getSelectedRow(), 1) == true;
 //		        if ((indexSelectRow > -1) && (isRowandCheckBoxSelected)){
-		    	 if ((indexSelectRow > -1) && (isRowandCheckBoxSelected)){
+		    	 if ((indexSelectRow > -1)){
 		            // print first column value from selected row
 //		            System.out.println(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(), 0).toString());
 		    		probabilityDistributionsPanel.setVisible(true);
@@ -221,19 +186,18 @@ public class WorkProductResourcesPanel {
 		});
 		
 		modeloColuna = tableWorkProduct.getColumnModel();
-		TableColumn colunaPolicy = modeloColuna.getColumn(5);
+		
+		TableColumn colunaPolicy = modeloColuna.getColumn(4);
  		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
  		
  		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer( centerRenderer );
-		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
-//		tableWorkProduct.setDefaultRenderer(String.class, centerRenderer); // centraliza todas colunas com String.class
-		
+		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+ 		
 
 		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
 	    .setHorizontalAlignment(JLabel.CENTER);
