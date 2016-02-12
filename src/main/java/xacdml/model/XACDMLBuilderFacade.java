@@ -396,9 +396,8 @@ public class XACDMLBuilderFacade {
 	 		generateActivity.setClazz(temporalEntity);   
 
 	 		
-	 		BestFitDistribution bestFitDistributionName  = (BestFitDistribution)workProductTable.getModel().getValueAt(i, 2);
- 			Stat distribution = factory.createStat();
- 			distribution.setType(bestFitDistributionName.toString());
+  			Stat distribution = factory.createStat();
+ 			distribution.setType("NORMAL");
  			distribution.setParm1("7.0");
 			
 			//Graphic box = factory.createGraphic();

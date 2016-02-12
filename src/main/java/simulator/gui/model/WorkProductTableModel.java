@@ -13,7 +13,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
 	
-	String[] headers = new String[] { "Work product", "Demand Work Product?", "Probability distribution", "Quantity", "Queue name", 
+	String[] headers = new String[] { "Work product", "Demand Work Product?", "Quantity", "Queue name", 
 									  "Capacity", "Policy", "Observer queue length name", "Observer queue lenght time name"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
@@ -39,18 +39,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return workProduct.isDemandWorkProduct();
 		case 2:
-			return workProduct.getBestFitDistribution();
-		case 3:
 			return workProduct.getSize();
-		case 4:
+		case 3:
 			return workProduct.getQueueName();
-		case 5:
+		case 4:
 			return workProduct.getCapacity();
-		case 6:
+		case 5:
 			return workProduct.getPolicy();
-		case 7:
+		case 6:
 			return workProduct.getObserverQueueLenghtName();
-		case 8:
+		case 7:
 			return workProduct.getObserverQueueLenghtTimeName();
 		default:
 			return null;
@@ -68,10 +66,10 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setDemandWorkProduct((boolean) aValue);
 			break;
 		case 2:
-//			workProduct.setBestFitDistribution((BestFitDistribution) aValue); CAST EXCEPTION STRING TO ENUM
+			workProduct.setSize((int) aValue);
 			break;
 		case 3:
-			workProduct.setSize((int) aValue);
+			 
 			break;
 		case 4:
 			 
@@ -83,9 +81,6 @@ public class WorkProductTableModel extends AbstractTableModel {
 			 
 			break;
 		case 7:
-			 
-			break;
-		case 8:
 			 
 			break;
 		}
@@ -99,18 +94,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return Boolean.class;
 		case 2:
-			return BestFitDistribution.class;
-		case 3:
 			return Integer.class;
+		case 3:
+			return String.class;
 		case 4:
 			return String.class;
 		case 5:
-			return String.class;
-		case 6:
 			return String.class;  // nao se e isso para combobox
-		case 7:
+		case 6:
 			return String.class;
-		case 8:
+		case 7:
 			return String.class;
 		default:
 			return null;
