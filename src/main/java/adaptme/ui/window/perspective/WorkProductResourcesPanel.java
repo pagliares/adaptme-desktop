@@ -20,6 +20,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
 import model.spem.derived.BestFitDistribution;
+import model.spem.derived.Parameters;
+import model.spem.derived.gui.ParametersPanel;
 import model.spem.util.StartConfiguration;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
@@ -33,6 +35,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
 
+import adaptme.dynamic.gui.meeting.MeetingPanel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
@@ -40,6 +44,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.BorderFactory;
 
 public class WorkProductResourcesPanel {
 	private JPanel panel;
@@ -49,7 +54,7 @@ public class WorkProductResourcesPanel {
 	private JComboBox bestFitDistributionJComboBox;
 	private TableColumnModel modeloColuna;
 	private List<WorkProduct> workProducts = new ArrayList<>();
-	
+	private JComboBox<String> comboBox;
  
 	public WorkProductResourcesPanel() {
 		
@@ -133,6 +138,58 @@ public class WorkProductResourcesPanel {
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
+		
+		JPanel probabilityDistributionsPanel = new JPanel();
+		probabilityDistributionsPanel.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.add(probabilityDistributionsPanel, BorderLayout.SOUTH);
+		
+		JLabel label = new JLabel("Best fit probability distribution");
+		
+ 		comboBox  = new JComboBox<String>();
+  		setDistribution(BestFitDistribution.getList());
+		
+		
+		
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setViewportBorder(null);
+		scrollPane_2.setBorder(BorderFactory.createEmptyBorder());
+		GroupLayout gl_probabilityDistributionsPanel = new GroupLayout(probabilityDistributionsPanel);
+		gl_probabilityDistributionsPanel.setHorizontalGroup(
+			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
+							.addGap(39)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(6, Short.MAX_VALUE))
+		);
+		gl_probabilityDistributionsPanel.setVerticalGroup(
+			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+					.addGap(0)
+					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(label)))
+					.addGap(18)
+					.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(16, Short.MAX_VALUE))
+		);
+		probabilityDistributionsPanel.setLayout(gl_probabilityDistributionsPanel);
+		
+		comboBox.addItemListener(e -> {
+		    String s = (String) comboBox.getSelectedItem();
+		    // scrollPaneParameters.removeAll();
+		    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+		    scrollPane_2.setViewportView(new ParametersPanel(p).getPanel());
+		    scrollPane_2.revalidate();
+		    scrollPane_2.repaint();
+		});
 		panel.setLayout(gl_panel);
 
 	}
@@ -194,8 +251,13 @@ public class WorkProductResourcesPanel {
 	public JTable getTableWorkProduct() {
 		return tableWorkProduct;
 	}
-	 
+	
+	 public String getDistribution() {
+		return (String) comboBox.getSelectedItem();
+	 }
 
-	 
-
+	 public void setDistribution(List<String> list) {
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
+			comboBox.setModel(model);
+	 }
 }

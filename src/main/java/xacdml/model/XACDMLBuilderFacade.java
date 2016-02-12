@@ -397,11 +397,9 @@ public class XACDMLBuilderFacade {
 
 	 		
 	 		BestFitDistribution bestFitDistributionName  = (BestFitDistribution)workProductTable.getModel().getValueAt(i, 2);
-			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
-			Stat negExp = factory.createStat();
-			negExp.setType(bestFitDistributionName.toString());
-//			negExp.setType("NEGEXP");
-			negExp.setParm1("7.0");
+ 			Stat distribution = factory.createStat();
+ 			distribution.setType(bestFitDistributionName.toString());
+ 			distribution.setParm1("7.0");
 			
 			//Graphic box = factory.createGraphic();
 			//box.setType("BOX");
@@ -443,7 +441,7 @@ public class XACDMLBuilderFacade {
 			
  			generateActivity.getActObserver().add(actObserver);
 //			callGenerate.setGraphic(box);
-			generateActivity.setStat(negExp);
+			generateActivity.setStat(distribution);
 			generateActivity.getNext().add(nextDead);
 
 			acd.getGenerate().add(generateActivity);
