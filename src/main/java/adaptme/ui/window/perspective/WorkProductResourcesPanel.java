@@ -112,6 +112,7 @@ public class WorkProductResourcesPanel {
 		
 		WorkProductTableModel model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
+		tableWorkProduct.changeSelection(0, 0, false, false);
 
 		// Listener disparado ao selecionar uma linha da tabela
 		tableWorkProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
