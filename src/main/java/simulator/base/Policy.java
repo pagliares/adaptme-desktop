@@ -1,6 +1,6 @@
 package simulator.base;
 
 public enum Policy {
-	FIFO, QUEUE;
+	FIFO, STACK, PRIORITY_QUEUE;
 
 }

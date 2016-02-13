@@ -75,7 +75,8 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 			workProduct.setCapacity((Integer) aValue);
 			break;
 		case 4:
-//			workProduct.setPolicy((Policy) aValue); 
+			workProduct.setPolicy((Policy)aValue); 
+
 			break;
 		case 5:
 			workProduct.setObserverQueueLenghtName((String) aValue);
@@ -99,7 +100,7 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 		case 3:
 			return Integer.class;
 		case 4:
-//			return Policy.class;  // nao se e isso para combobox
+			return Policy.class;  // nao se e isso para combobox
 		case 5:
 			return String.class;
 		case 6:

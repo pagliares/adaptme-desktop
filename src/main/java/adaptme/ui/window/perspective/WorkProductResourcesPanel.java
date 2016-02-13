@@ -28,6 +28,7 @@ import javax.swing.table.TableColumnModel;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
+import simulator.base.Policy;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -47,8 +48,9 @@ public class WorkProductResourcesPanel {
 	public WorkProductResourcesPanel() {
 		
 		policyJComboBox = new JComboBox();
-		policyJComboBox.addItem("FIFO");
-		policyJComboBox.addItem("STACK");
+		policyJComboBox.addItem(Policy.FIFO);
+		policyJComboBox.addItem(Policy.STACK);
+		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
 		
 		 
 		panel = new JPanel();
