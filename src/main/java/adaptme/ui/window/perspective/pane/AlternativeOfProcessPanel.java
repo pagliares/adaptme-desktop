@@ -597,6 +597,7 @@ public class AlternativeOfProcessPanel {
 		
 		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
 		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
+		workProductResourcesPanel.configuraTableListener();
 		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
 		
 		Set<String> taskList = persistProcess.getTaskList();
