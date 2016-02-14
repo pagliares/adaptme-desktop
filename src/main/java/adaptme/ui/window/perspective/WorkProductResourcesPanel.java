@@ -33,25 +33,33 @@ import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 
 public class WorkProductResourcesPanel {
-	private JPanel panel;
-	private JScrollPane scrollPane;
-	private JTable tableWorkProduct;
-	private JComboBox policyJComboBox;
- 	private TableColumnModel modeloColuna;
-	private List<WorkProduct> workProducts = new ArrayList<>();
-	private JComboBox<String> comboBox;
- 	
-	private boolean isFirstTime = true;
-	private JPanel panel_1;
-	private GroupLayout gl_panel;
 	
-	private List<JPanel> listOfProbabilityDistributionsPanels = new ArrayList<>();
+	private JPanel topPanel;
+	private JPanel titledPanel;
 	private JPanel probabilityDistributionPanel;
-	private int previousSelectedRow;
-	private int indexSelectedRow;
+	private List<JPanel> listOfProbabilityDistributionsPanels = new ArrayList<>();
+	
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_2;
+	
+	private JComboBox<String> comboBox;
+	
+	private JTable tableWorkProduct;
+	private WorkProductTableModel model;
+ 	private TableColumnModel modeloColuna;
+	private JComboBox policyJComboBox;
+
+	private List<WorkProduct> workProducts = new ArrayList<>();
+	
+	private GroupLayout gl_topPanel;
+	
 	private JLabel lblNewLabel;
 	private JLabel selectedDemandWorkProductLabel;
- 
+	
+	private boolean isFirstTime = true;
+	private int previousSelectedRow;
+	private int indexSelectedRow;
+	
 	public WorkProductResourcesPanel() {
 		
 		policyJComboBox = new JComboBox();
@@ -59,17 +67,17 @@ public class WorkProductResourcesPanel {
 		policyJComboBox.addItem(Policy.STACK);
 		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
 		
-		panel = new JPanel();
-	    panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
+		topPanel = new JPanel();
+	    titledPanel = new JPanel();
+		titledPanel.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(59, 59, 59)));
 		
-		panel_1.setLayout(new BorderLayout(0, 0));
+		titledPanel.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
 		
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		titledPanel.add(scrollPane, BorderLayout.CENTER);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
@@ -78,21 +86,23 @@ public class WorkProductResourcesPanel {
 		 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
- 		gl_panel = new GroupLayout(panel);
+ 		gl_topPanel = new GroupLayout(topPanel);
 
 		 
-		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(6)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE).addGap(27)
+		gl_topPanel.setHorizontalGroup(
+				gl_topPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_topPanel.createSequentialGroup().addGap(6)
+						.addComponent(titledPanel, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE).addGap(27)
 
 						.addGap(6)));
 						 
-		gl_panel.setVerticalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup().addGap(6)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+		gl_topPanel.setVerticalGroup(
+				gl_topPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_topPanel.createSequentialGroup().addGap(6)
+								.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(titledPanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
+		
+		
 	}
 
 	
@@ -104,45 +114,55 @@ public class WorkProductResourcesPanel {
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(names[i]);
 			workProducts.add(workProduct);
-			createJPanel();
+			createProbabilityPanel(i);
 		}
+		model = new WorkProductTableModel(workProducts);
+		tableWorkProduct.setModel(model);
+//		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 	}
 	
 	public void configuraTableListener() { 
 		
-		WorkProductTableModel model = new WorkProductTableModel(workProducts);
-		tableWorkProduct.setModel(model);
-		tableWorkProduct.changeSelection(0, 0, false, false);
-
 		// Listener disparado ao selecionar uma linha da tabela
 		tableWorkProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
+				
 				indexSelectedRow = tableWorkProduct.getSelectedRow();
-				 
-				boolean isRowandCheckBoxSelected = (Boolean) model.getValueAt(tableWorkProduct.getSelectedRow(),1) == true;
+//				System.out.println("index selected row " + indexSelectedRow);
+//				boolean isRowandCheckBoxSelected = (Boolean) model.getValueAt(tableWorkProduct.getSelectedRow(),1) == true;
 				// if ((indexSelectRow > -1) && (isRowandCheckBoxSelected)){
 				if ((indexSelectedRow > -1)) {
 					// System.out.println(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(),0).toString());
-					previousSelectedRow = event.getLastIndex();
-					listOfProbabilityDistributionsPanels.get(indexSelectedRow).setVisible(true);
-					selectedDemandWorkProductLabel.setText(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(), 0).toString());
+					 
+					probabilityDistributionPanel = listOfProbabilityDistributionsPanels.get(indexSelectedRow);
+					System.out.println(probabilityDistributionPanel.getName());
+					titledPanel.add(probabilityDistributionPanel, BorderLayout.SOUTH);
+
+ 					 
+//					scrollPane_2.setViewportView(probabilityDistributionPanel);
+//					scrollPane_2.revalidate();
+//					scrollPane_2.repaint();
+					selectedDemandWorkProductLabel.setText(tableWorkProduct.getValueAt(tableWorkProduct.getSelectedRow(), 0).toString() + 
+							"  " + probabilityDistributionPanel.getName());
 				}
 			}
 		});
 		
  	}
 	
-	private void createJPanel() { 
+	private void createProbabilityPanel(int i) { 
 		probabilityDistributionPanel = new JPanel();
+		probabilityDistributionPanel.setName("panel.:" + i);
 		probabilityDistributionPanel.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(probabilityDistributionPanel, BorderLayout.SOUTH);
+		titledPanel.add(probabilityDistributionPanel, BorderLayout.SOUTH);
 		JLabel label = new JLabel("Best fit probability distribution");
 		
  		comboBox  = new JComboBox<String>();
   		setDistribution(BestFitDistribution.getList());
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2 = new JScrollPane();
 		scrollPane_2.setViewportBorder(null);
 		scrollPane_2.setBorder(BorderFactory.createEmptyBorder());
 		
@@ -192,7 +212,7 @@ public class WorkProductResourcesPanel {
 		    scrollPane_2.repaint();
 		});
 		
-		panel.setLayout(gl_panel);
+		topPanel.setLayout(gl_topPanel);
 		listOfProbabilityDistributionsPanels.add(probabilityDistributionPanel);
 
  
@@ -246,6 +266,6 @@ public class WorkProductResourcesPanel {
 	 }
 	 
 	 public JPanel getPanel() {
-			return panel;
+			return topPanel;
 		}
 }

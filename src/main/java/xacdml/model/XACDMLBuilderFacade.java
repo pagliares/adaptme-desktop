@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -378,15 +379,15 @@ public class XACDMLBuilderFacade {
 		// build generate activities
 		
 		Generate generateActivity = factory.createGenerate();
-		
+//		List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
 		
 		for (int i = 0; i < workProducts.size(); i++) {  
 
 			WorkProduct workProduct = workProducts.get(i);
 			
 			JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
-			
-             
+//			JPanel probabilityPanel = listProbabilityDistributionPanel.get(i);
+			 
 			
 			generateActivity.setId("Generate activity for : " + workProduct.getName());
 			
