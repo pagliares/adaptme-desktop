@@ -52,6 +52,7 @@ public class WorkProductResourcesPanel {
 	private boolean isFirstTime = true;
 	private int previousSelectedRow;
 	private int indexSelectedRow;
+	private JPanel outerProbabilityPanel;
 	
 	
 	public WorkProductResourcesPanel() {
@@ -95,6 +96,10 @@ public class WorkProductResourcesPanel {
 								.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
 										.addComponent(titledPanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
 										.addGap(6))));
+		
+		outerProbabilityPanel = new JPanel();
+		titledPanel.add(outerProbabilityPanel, BorderLayout.SOUTH);
+		outerProbabilityPanel.setLayout(new BorderLayout(0, 0));
 	}
 
 	public void setModelComboBoxWorkProduct(Set<String> list) {
@@ -115,7 +120,7 @@ public class WorkProductResourcesPanel {
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
-		titledPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
+		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
 
 	}
 	
@@ -134,8 +139,10 @@ public class WorkProductResourcesPanel {
  					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
 					System.out.println(probabilityDistributionInnerPannel.getName());
-					titledPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
-
+					outerProbabilityPanel.removeAll();
+					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
+					outerProbabilityPanel.updateUI();
+//                    titledPanel.updateUI();
  					 
 //					scrollPane_2.setViewportView(probabilityDistributionPanel);
 //					scrollPane_2.revalidate();
