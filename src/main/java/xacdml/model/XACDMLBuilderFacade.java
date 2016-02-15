@@ -399,7 +399,7 @@ public class XACDMLBuilderFacade {
 			System.out.println(probabilityDistributionInnerPanel.getPanelTitleLabel());
 			System.out.println(probabilityDistributionInnerPanel.getComboBox().getSelectedItem());
 			Parameters parameters = probabilityDistributionInnerPanel.getParameters();
-			System.out.println(parameters.toString());
+//			System.out.println(parameters.toString());
 
 			Stat distribution = factory.createStat();
 			
@@ -449,8 +449,6 @@ public class XACDMLBuilderFacade {
 	 		generateActivity.setClazz(temporalEntity);   
 
 	 		
-  			
-			
 			//Graphic box = factory.createGraphic();
 			//box.setType("BOX");
 			//box.setX("73");
