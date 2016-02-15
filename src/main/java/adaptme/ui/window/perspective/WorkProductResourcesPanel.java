@@ -105,7 +105,9 @@ public class WorkProductResourcesPanel {
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(names[i]);
 			workProducts.add(workProduct);
-			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i);
+			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + names[i]);
+			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
+
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 		}
 		model = new WorkProductTableModel(workProducts);
@@ -113,6 +115,8 @@ public class WorkProductResourcesPanel {
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
+		titledPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
+
 	}
 	
 	public void configuraTableListener() { 
@@ -136,9 +140,9 @@ public class WorkProductResourcesPanel {
 //					scrollPane_2.setViewportView(probabilityDistributionPanel);
 //					scrollPane_2.revalidate();
 //					scrollPane_2.repaint();
-					String probabilityDistributionInnerPannelName =  probabilityDistributionInnerPannel.getName();
- 					String selectedWorkProduct = tableWorkProduct.getValueAt(indexSelectedRow, 0).toString();
-					probabilityDistributionInnerPannel.getSelectedDemandWorkProductLabel().setText(selectedWorkProduct +"  " + probabilityDistributionInnerPannelName);
+//					String probabilityDistributionInnerPannelName =  probabilityDistributionInnerPannel.getName();
+// 					String selectedWorkProduct = tableWorkProduct.getValueAt(indexSelectedRow, 0).toString();
+//					probabilityDistributionInnerPannel.getSelectedDemandWorkProductLabel().setText(selectedWorkProduct +"  " + probabilityDistributionInnerPannelName);
 				}
 			}
 		});

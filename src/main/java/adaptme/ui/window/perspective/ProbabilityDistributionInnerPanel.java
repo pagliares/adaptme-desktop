@@ -26,7 +26,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	private JLabel selectedDemandWorkProductLabel;
 	private Parameters parameters;
 	
-	public ProbabilityDistributionInnerPanel(int i) { 
+	public ProbabilityDistributionInnerPanel(int i, String title) { 
 		 
 		this.setName("panel.:" + i);
 		this.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -39,7 +39,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
-		panelTitleLabel = new JLabel("Generate activity for demand work product :");
+		panelTitleLabel = new JLabel(title);
 		
 		selectedDemandWorkProductLabel = new JLabel("");
 		GroupLayout gl_probabilityDistributionsPanel = new GroupLayout(this);
