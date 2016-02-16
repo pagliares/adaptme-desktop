@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui;
+package adaptme.ui.dynamic;
 
 import java.awt.Font;
 import java.util.List;

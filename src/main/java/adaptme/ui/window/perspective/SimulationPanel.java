@@ -2,12 +2,14 @@ package adaptme.ui.window.perspective;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import adaptme.ui.dynamic.MainPanel;
+import adaptme.ui.dynamic.RunSimulationPanelXPThesis;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import adaptme.dynamic.gui.MainPanel;
-import adaptme.dynamic.gui.RunSimulationPanelXPThesis;
 import model.spem.ProcessRepository;
 
 public class SimulationPanel {

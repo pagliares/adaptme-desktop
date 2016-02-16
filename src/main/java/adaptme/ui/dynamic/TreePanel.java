@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui;
+package adaptme.ui.dynamic;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
-import adaptme.dynamic.gui.renderer.TreeTableCellRenderSimpleUMA;
+import adaptme.ui.dynamic.renderer.TreeTableCellRenderSimpleUMA;
 
 public class TreePanel extends JPanel implements UpdatePanel {
 

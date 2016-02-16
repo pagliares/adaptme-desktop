@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui.task;
+package adaptme.ui.dynamic.task;
 
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import adaptme.dynamic.gui.RepositoryViewPanel;
-import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.dynamic.RepositoryViewPanel;
+import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
 
 public class RolePanel implements UpdatePanel {

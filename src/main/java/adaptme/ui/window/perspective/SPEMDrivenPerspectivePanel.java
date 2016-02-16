@@ -16,9 +16,9 @@ import org.jdesktop.swingx.JXTreeTable;
 
 import adaptme.base.MethodLibraryWrapper;
 import adaptme.base.ObjectFactory;
-import adaptme.dynamic.gui.SimulationObjectivePanel;
 import adaptme.ui.components.model.DynamicWorkBreakdownStructureTreeTableModel;
 import adaptme.ui.components.renderer.TreeTableCellRenderCustom;
+import adaptme.ui.dynamic.SimulationObjectivePanel;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import adaptme.ui.window.perspective.pane.PerspectivePanel;

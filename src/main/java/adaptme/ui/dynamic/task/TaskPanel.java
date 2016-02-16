@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui.task;
+package adaptme.ui.dynamic.task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.dynamic.UpdatePanel;
 
 public class TaskPanel implements UpdatePanel {
 

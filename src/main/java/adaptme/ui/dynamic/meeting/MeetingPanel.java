@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui.meeting;
+package adaptme.ui.dynamic.meeting;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,8 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.dynamic.gui.RepositoryViewPanel;
-import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.dynamic.RepositoryViewPanel;
+import adaptme.ui.dynamic.UpdatePanel;
+import adaptme.ui.listener.ProbabilityDistributionPanelListener;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
@@ -76,67 +77,12 @@ public class MeetingPanel implements UpdatePanel {
 
 	label = new JLabel("business days");
 
-	focusListener = new FocusListener() {
+	focusListener = new ProbabilityDistributionPanelListener();
 
-	    @Override
-	    public void focusLost(FocusEvent e) {
-	    	    
-//	    		String s = (String) comboBoxDistribution.getSelectedItem();
-	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
-	    	    JTextField textField = (JTextField) e.getSource();
-	    		if (parameters instanceof ConstantParameters) {
-					
-					ConstantParameters constantParameters = (ConstantParameters)parameters;
-					constantParameters.setValue(Double.parseDouble(textField.getText()));
-		 			 
-				} else if (parameters instanceof UniformParameters) {
-					
-					UniformParameters UniformParameters = (UniformParameters)parameters;
-					if (textField.getName().equals("high")) {
-						UniformParameters.setHigh(Double.parseDouble(textField.getText()));
-					} else {
-						UniformParameters.setLow(Double.parseDouble(textField.getText()));
-					}
-					
-				
-
-				} else if (parameters instanceof NegativeExponential) {
-					
-					NegativeExponential negativeExponential = (NegativeExponential)parameters;
-					negativeExponential.setAverage(Double.parseDouble(textField.getText()));
- 					 
-	 	 			
-				} else if (parameters instanceof NormalParameters) {
-					
-					NormalParameters normalParameters = (NormalParameters)parameters;
-					
-					if (textField.getName().equals("average")) {
-						normalParameters.setMean(Double.parseDouble(textField.getText()));
-					} else {
-						normalParameters.setStandardDeviation(Double.parseDouble(textField.getText()));
-					}
- 
-
-				} else if (parameters instanceof PoissonParameters) {
-					
-					PoissonParameters poissonParameters = (PoissonParameters)parameters;
-					poissonParameters.setMean(Double.parseDouble(textField.getText()));
-	 			}
-	    	
-//		repositoryViewPanel.setMessagem("");
-	    }
-
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
-	
-	
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	scrollPaneParameters.setViewportBorder(null);
-	parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
+	parameters = Parameters.createParameter(BestFitDistribution.CONSTANT);
 	Sample sample = new Sample();
 	processContentRepository.setSample(sample);
 	processContentRepository.getSample().setParameters(parameters);
@@ -152,6 +98,7 @@ public class MeetingPanel implements UpdatePanel {
 	    scrollPaneParameters.repaint();
 		processContentRepository.getSample().setParameters(parameters);
 	});
+	
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 		.addGroup(gl_panel.createSequentialGroup().addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
@@ -214,6 +161,7 @@ public class MeetingPanel implements UpdatePanel {
     public void setDistribution(List<String> list) {
 	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
 	comboBoxDistribution.setModel(model);
+	
     }
 
     public double getDurationMean() {

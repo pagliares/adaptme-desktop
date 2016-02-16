@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui;
+package adaptme.ui.dynamic;
 
 public interface NumberCompontent {
     String getKey();

@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui.renderer;
+package adaptme.ui.dynamic.renderer;
 
 import java.awt.Color;
 import java.awt.Component;

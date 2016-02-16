@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui;
+package adaptme.ui.dynamic;
 
 import javax.swing.JPanel;
 

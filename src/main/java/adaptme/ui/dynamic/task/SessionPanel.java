@@ -1,4 +1,4 @@
-package adaptme.dynamic.gui.task;
+package adaptme.ui.dynamic.task;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.dynamic.gui.RepositoryViewPanel;
-import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.dynamic.RepositoryViewPanel;
+import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.ProcessContentRepository;
 import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;

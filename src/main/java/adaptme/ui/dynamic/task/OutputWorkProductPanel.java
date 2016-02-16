@@ -1,6 +1,5 @@
-package adaptme.dynamic.gui.task;
+package adaptme.ui.dynamic.task;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -15,41 +14,36 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.dynamic.gui.RepositoryViewPanel;
-import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.dynamic.RepositoryViewPanel;
+import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
 import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
 
-public class InputWorkProductPanel implements UpdatePanel {
-
+public class OutputWorkProductPanel implements UpdatePanel {
     private JLabel lblSizemean;
-    private JLabel lblInputWorkProduct;
+    private JLabel lblOutputWorkProduct;
     private JTextField textFieldSizeMean;
     private JLabel lblSizestdDeviation;
     private JLabel lblBestFitProbability;
     private JComboBox<String> comboBoxSizeDistribuiton;
     private JTextField textFieldSizeStdDeviation;
-    // private RepositoryViewPanel repositoryViewPanel;
     private String title;
     private MethodContentRepository methodContentRepository;
-    private JPanel panel = new JPanel();
-    private JScrollPane scrollPaneParameters;
 
-    public InputWorkProductPanel(RepositoryViewPanel repositoryViewPanel,
+    public OutputWorkProductPanel(RepositoryViewPanel repositoryViewPanel,
 	    MethodContentRepository methodContentRepository) {
 
 	this.methodContentRepository = methodContentRepository;
-	// this.repositoryViewPanel = repositoryViewPanel;
 	lblSizemean = new JLabel("Size (mean)");
 
-	lblInputWorkProduct = new JLabel("Input work product - ");
-	lblInputWorkProduct.setFont(new Font("SansSerif", Font.BOLD, 14));
+	lblOutputWorkProduct = new JLabel("Output work product - ");
+	lblOutputWorkProduct.setFont(new Font("SansSerif", Font.BOLD, 14));
 
 	textFieldSizeMean = new JTextField();
 	textFieldSizeMean.setText("10");
@@ -66,9 +60,9 @@ public class InputWorkProductPanel implements UpdatePanel {
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setViewportBorder(null);
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
-	comboBoxSizeDistribuiton = new JComboBox<>();
 	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
 	scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
+	comboBoxSizeDistribuiton = new JComboBox<>();
 	comboBoxSizeDistribuiton.addItemListener(e -> {
 	    String s = (String) comboBoxSizeDistribuiton.getSelectedItem();
 	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
@@ -76,6 +70,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
 	});
+
 	FocusListener focusListener = new FocusListener() {
 
 	    @Override
@@ -90,9 +85,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 	};
 	textFieldSizeMean.addFocusListener(focusListener);
 	textFieldSizeStdDeviation.addFocusListener(focusListener);
-	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Input", TitledBorder.LEADING,
-		TitledBorder.TOP, null, new Color(59, 59, 59)));
-
+	panel.setBorder(new TitledBorder(null, "Output", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -103,16 +96,16 @@ public class InputWorkProductPanel implements UpdatePanel {
 							scrollPaneParameters))
 			.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup().addGap(6).addGroup(gl_panel
 				.createParallelGroup(Alignment.LEADING)
-				.addComponent(lblInputWorkProduct, GroupLayout.PREFERRED_SIZE, 305,
+				.addComponent(lblOutputWorkProduct, GroupLayout.PREFERRED_SIZE, 305,
 					GroupLayout.PREFERRED_SIZE)
 				.addGroup(gl_panel.createSequentialGroup().addComponent(lblBestFitProbability)
-					.addGap(68).addComponent(comboBoxSizeDistribuiton, GroupLayout.PREFERRED_SIZE,
+					.addGap(65).addComponent(comboBoxSizeDistribuiton, GroupLayout.PREFERRED_SIZE,
 						196, GroupLayout.PREFERRED_SIZE))))
 			.addGroup(Alignment.LEADING,
 				gl_panel.createSequentialGroup().addContainerGap().addComponent(lblSizemean).addGap(28)
 					.addComponent(textFieldSizeMean, GroupLayout.PREFERRED_SIZE, 76,
 						GroupLayout.PREFERRED_SIZE)
-					.addGap(37).addComponent(lblSizestdDeviation).addGap(44)
+					.addGap(28).addComponent(lblSizestdDeviation).addGap(53)
 					.addComponent(textFieldSizeStdDeviation, GroupLayout.PREFERRED_SIZE, 66,
 						GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(22, Short.MAX_VALUE)));
@@ -120,23 +113,24 @@ public class InputWorkProductPanel implements UpdatePanel {
 		gl_panel.createParallelGroup(Alignment.LEADING)
 			.addGroup(
 				gl_panel.createSequentialGroup().addGap(23)
-					.addComponent(lblInputWorkProduct, GroupLayout.PREFERRED_SIZE, 16,
+					.addComponent(lblOutputWorkProduct, GroupLayout.PREFERRED_SIZE, 16,
 						GroupLayout.PREFERRED_SIZE)
-				.addGap(22)
+				.addGap(14)
 				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup().addGap(5)
 						.addComponent(lblBestFitProbability))
 				.addComponent(comboBoxSizeDistribuiton, GroupLayout.PREFERRED_SIZE,
-					GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(18)
-		.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-		.addGap(18)
+					GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		.addPreferredGap(ComponentPlacement.UNRELATED)
+		.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+		.addPreferredGap(ComponentPlacement.RELATED)
 		.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 			.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(lblSizemean))
 			.addComponent(textFieldSizeMean, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 				GroupLayout.PREFERRED_SIZE)
 			.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(lblSizestdDeviation))
 			.addComponent(textFieldSizeStdDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-				GroupLayout.PREFERRED_SIZE)).addGap(92)));
+				GroupLayout.PREFERRED_SIZE)).addGap(23)));
 	panel.setLayout(gl_panel);
     }
 
@@ -152,7 +146,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 	textFieldSizeMean.setText("" + sizeMean);
     }
 
-    public void setSizeStdDeviation(double sizeStdDeviation) {
+    public void setSizeStdDeviation(JTextField sizeStdDeviation) {
 	textFieldSizeStdDeviation.setText("" + sizeStdDeviation);
     }
 
@@ -165,10 +159,13 @@ public class InputWorkProductPanel implements UpdatePanel {
 	comboBoxSizeDistribuiton.setModel(model);
     }
 
-    public void setInputWorkProductLabel(String label) {
-	title = label;
-	lblInputWorkProduct.setText("Input work product - " + label);
+    public void setOutputWorkProductLabel(String title) {
+	this.title = title;
+	lblOutputWorkProduct.setText("Output work product - " + title);
     }
+
+    private JPanel panel = new JPanel();
+    private JScrollPane scrollPaneParameters;
 
     @Override
     public JPanel getPanel() {
