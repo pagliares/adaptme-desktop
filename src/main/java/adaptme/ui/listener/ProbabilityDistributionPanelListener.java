@@ -19,8 +19,8 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 	private Parameters parameters;
 	
 	 @Override
-	    public void focusLost(FocusEvent e) {
-	    	    
+	    public void focusLost(FocusEvent e) { 	    
+		        ProcessRepository pr = SPEMDrivenPerspectivePanel.processRepository;  // teste breakpoint
 //	    		String s = (String) comboBoxDistribution.getSelectedItem();
 	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
 	    	    JTextField textField = (JTextField) e.getSource();
@@ -70,6 +70,10 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 	    public void focusGained(FocusEvent e) {
 	    	 // verificar depois a necessidade
 	    }
+
+		public void setParameters(Parameters parameters) {
+			this.parameters = parameters;
+		}
 	
 
 }

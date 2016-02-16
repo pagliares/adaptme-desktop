@@ -45,7 +45,7 @@ public class MeetingPanel implements UpdatePanel {
     private JComboBox<String> comboBoxDistribution;
     private ProcessContentRepository processContentRepository;
     private ParametersPanel parametersPanel;
-    private FocusListener focusListener;
+    private ProbabilityDistributionPanelListener focusListener;
     private Parameters parameters;
 
 
@@ -87,12 +87,16 @@ public class MeetingPanel implements UpdatePanel {
 	processContentRepository.setSample(sample);
 	processContentRepository.getSample().setParameters(parameters);
 	parametersPanel =  new ParametersPanel(parameters, focusListener);
+	focusListener.setParameters(parameters);
+
 	scrollPaneParameters.setViewportView(parametersPanel.getPanel());
+	
 	comboBoxDistribution.addItemListener(e -> {
 	    String s = (String) comboBoxDistribution.getSelectedItem();
 	    // scrollPaneParameters.removeAll();
 	     parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
 	    parametersPanel =  new ParametersPanel(parameters, focusListener);
+		focusListener.setParameters(parameters);
 	    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();

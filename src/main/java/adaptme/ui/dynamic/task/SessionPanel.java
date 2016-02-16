@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
+import adaptme.ui.listener.ProbabilityDistributionPanelListener;
 import model.spem.ProcessContentRepository;
 import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
@@ -27,202 +28,197 @@ import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
 
 public class SessionPanel implements UpdatePanel {
-    private JLabel lblSession;
-    private JLabel lblDurationmean;
-    private JTextField textFieldDurationMean;
-    private JLabel lblDurationstdDeviation;
-    private JTextField textFieldDurationStdDeviation;
-    private JLabel lblBestFitProbbility;
-    private JComboBox<String> comboBoxDistribution;
-    private String title;
-    private ProcessContentRepository processContentRepository;
-    private JPanel panel = new JPanel();
-    private JLabel lblUnity;
-    private JComboBox<String> comboBoxMeasurementUnity;
-    private JLabel lblMinimumNumberOf;
-    private JTextField textFieldNumberOfDevelopersNeeded;
-    private JScrollPane scrollPaneParameters;
+	private JLabel lblSession;
+	private JLabel lblDurationmean;
+	private JTextField textFieldDurationMean;
+	private JLabel lblDurationstdDeviation;
+	private JTextField textFieldDurationStdDeviation;
+	private JLabel lblBestFitProbbility;
+	private JComboBox<String> comboBoxDistribution;
+	private String title;
+	private ProcessContentRepository processContentRepository;
+	private JPanel panel = new JPanel();
+	private JLabel lblUnity;
+	private JComboBox<String> comboBoxMeasurementUnity;
+	private JLabel lblMinimumNumberOf;
+	private JTextField textFieldNumberOfDevelopersNeeded;
+	private JScrollPane scrollPaneParameters;
+	private Parameters parameters;
+	private ProbabilityDistributionPanelListener probabilityDistributionPanelListener = new ProbabilityDistributionPanelListener();
 
-    public SessionPanel(RepositoryViewPanel repositoryViewPanel, ProcessContentRepository processContentRepository) {
+	public SessionPanel(RepositoryViewPanel repositoryViewPanel, ProcessContentRepository processContentRepository) {
 
-	this.processContentRepository = processContentRepository;
-	lblSession = new JLabel("Development session");
-	lblSession.setFont(new Font("SansSerif", Font.BOLD, 14));
+		this.processContentRepository = processContentRepository;
+		lblSession = new JLabel("Development session");
+		lblSession.setFont(new Font("SansSerif", Font.BOLD, 14));
 
-	lblDurationmean = new JLabel("Duration (mean)");
+		lblDurationmean = new JLabel("Duration (mean)");
 
-	textFieldDurationMean = new JTextField();
-	textFieldDurationMean.setText("10");
-	textFieldDurationMean.setColumns(10);
+		textFieldDurationMean = new JTextField();
+		textFieldDurationMean.setText("10");
+		textFieldDurationMean.setColumns(10);
 
-	lblDurationstdDeviation = new JLabel("Duration (Std. deviation)");
+		lblDurationstdDeviation = new JLabel("Duration (Std. deviation)");
 
-	textFieldDurationStdDeviation = new JTextField();
-	textFieldDurationStdDeviation.setText("0");
-	textFieldDurationStdDeviation.setColumns(10);
+		textFieldDurationStdDeviation = new JTextField();
+		textFieldDurationStdDeviation.setText("0");
+		textFieldDurationStdDeviation.setColumns(10);
 
-	lblBestFitProbbility = new JLabel("Best fit probability distribution");
+		lblBestFitProbbility = new JLabel("Best fit probability distribution");
 
-	scrollPaneParameters = new JScrollPane();
-	scrollPaneParameters.setViewportBorder(null);
-	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
-	comboBoxDistribution = new JComboBox<>();
-	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
-	scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
-	comboBoxDistribution.addItemListener(e -> {
-	    String s = (String) comboBoxDistribution.getSelectedItem();
-	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	    scrollPaneParameters.setViewportView(new ParametersPanel(p, null).getPanel());
-	    scrollPaneParameters.revalidate();
-	    scrollPaneParameters.repaint();
-	});
-	panel.setBorder(
-		new TitledBorder(null, "Session", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
+		scrollPaneParameters = new JScrollPane();
+		scrollPaneParameters.setViewportBorder(null);
+		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
+		comboBoxDistribution = new JComboBox<>();
+		parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
+		Sample sample = new Sample();
+		processContentRepository.setSample(sample);
+		processContentRepository.getSample().setParameters(parameters);
+		scrollPaneParameters.setViewportView(new ParametersPanel(parameters, probabilityDistributionPanelListener).getPanel());
+		probabilityDistributionPanelListener.setParameters(parameters);
+		comboBoxDistribution.addItemListener(e -> {
+			String s = (String) comboBoxDistribution.getSelectedItem();
+			parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+			probabilityDistributionPanelListener.setParameters(parameters);
+			scrollPaneParameters.setViewportView(new ParametersPanel(parameters, probabilityDistributionPanelListener).getPanel());
+			scrollPaneParameters.revalidate();
+			scrollPaneParameters.repaint();
+			processContentRepository.getSample().setParameters(parameters);
 
-	lblUnity = new JLabel("Measurement unity");
+		});
+		panel.setBorder(
+				new TitledBorder(null, "Local view", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
 
-	comboBoxMeasurementUnity = new JComboBox<>();
+		lblUnity = new JLabel("Measurement unity");
 
-	lblMinimumNumberOf = new JLabel("Minimum number of developers needed");
+		comboBoxMeasurementUnity = new JComboBox<>();
 
-	textFieldNumberOfDevelopersNeeded = new JTextField();
-	textFieldNumberOfDevelopersNeeded.setText("1");
-	textFieldNumberOfDevelopersNeeded.setColumns(10);
-	GroupLayout gl_panel = new GroupLayout(panel);
-	gl_panel.setHorizontalGroup(
-		gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(6)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addComponent(lblSession)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-						.addGap(65)
-						.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
-					.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addComponent(lblUnity)
-						.addGap(136)
-						.addComponent(comboBoxMeasurementUnity, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_panel.createSequentialGroup()
-						.addComponent(lblDurationmean)
-						.addGap(10)
-						.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-						.addGap(40)
-						.addComponent(lblDurationstdDeviation)
-						.addGap(10)
-						.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_panel.createSequentialGroup()
-						.addComponent(lblMinimumNumberOf)
-						.addGap(21)
-						.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))))
-	);
-	gl_panel.setVerticalGroup(
-		gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(18)
-				.addComponent(lblSession)
-				.addGap(16)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(5)
-						.addComponent(lblBestFitProbbility))
-					.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(6)
-				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-				.addGap(18)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(5)
-						.addComponent(lblUnity))
-					.addComponent(comboBoxMeasurementUnity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(7)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(3)
-						.addComponent(lblDurationmean))
-					.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(3)
-						.addComponent(lblDurationstdDeviation))
-					.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(12)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
+		lblMinimumNumberOf = new JLabel("Minimum number of developers needed");
+
+		textFieldNumberOfDevelopersNeeded = new JTextField();
+		textFieldNumberOfDevelopersNeeded.setText("1");
+		textFieldNumberOfDevelopersNeeded.setColumns(10);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
 						.addGap(6)
-						.addComponent(lblMinimumNumberOf))
-					.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-	);
-	panel.setLayout(gl_panel);
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblSession)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+										.addGap(65)
+										.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+								.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(lblUnity)
+										.addGap(136)
+										.addComponent(comboBoxMeasurementUnity, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(lblDurationmean)
+										.addGap(10)
+										.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+										.addGap(40)
+										.addComponent(lblDurationstdDeviation)
+										.addGap(10)
+										.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(lblMinimumNumberOf)
+										.addGap(21)
+										.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))))
+				);
+		gl_panel.setVerticalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+						.addGap(18)
+						.addComponent(lblSession)
+						.addGap(16)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(5)
+										.addComponent(lblBestFitProbbility))
+								.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGap(6)
+						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(5)
+										.addComponent(lblUnity))
+								.addComponent(comboBoxMeasurementUnity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGap(7)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(3)
+										.addComponent(lblDurationmean))
+								.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(3)
+										.addComponent(lblDurationstdDeviation))
+								.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGap(12)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(6)
+										.addComponent(lblMinimumNumberOf))
+								.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+				);
+		panel.setLayout(gl_panel);
 
-	FocusListener focusListener = new FocusListener() {
+	}
 
-	    @Override
-	    public void focusLost(FocusEvent e) {
-		repositoryViewPanel.setMessagem("");
-	    }
+	public String getDistribution() {
+		return (String) comboBoxDistribution.getSelectedItem();
+	}
 
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
-	textFieldDurationMean.addFocusListener(focusListener);
-	textFieldDurationStdDeviation.addFocusListener(focusListener);
-    }
+	public void setDistribution(List<String> list) {
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
+		comboBoxDistribution.setModel(model);
+	}
 
-    public String getDistribution() {
-	return (String) comboBoxDistribution.getSelectedItem();
-    }
+	public String getMeasurementUnity() {
+		return (String) comboBoxMeasurementUnity.getSelectedItem();
+	}
 
-    public void setDistribution(List<String> list) {
-	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	comboBoxDistribution.setModel(model);
-    }
+	public void setMeasurementUnity(List<String> list) {
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
+		comboBoxMeasurementUnity.setModel(model);
+	}
 
-    public String getMeasurementUnity() {
-	return (String) comboBoxMeasurementUnity.getSelectedItem();
-    }
+	public double getDurationMean() {
+		return Double.parseDouble(textFieldDurationMean.getText());
+	}
 
-    public void setMeasurementUnity(List<String> list) {
-	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	comboBoxMeasurementUnity.setModel(model);
-    }
+	public double getDurationStdDeviation() {
+		return Double.parseDouble(textFieldDurationStdDeviation.getText());
+	}
 
-    public double getDurationMean() {
-	return Double.parseDouble(textFieldDurationMean.getText());
-    }
+	public void setDurationMean(double durationMean) {
+		textFieldDurationMean.setText("" + durationMean);
+	}
 
-    public double getDurationStdDeviation() {
-	return Double.parseDouble(textFieldDurationStdDeviation.getText());
-    }
+	public void setDurationStdDeviation(double durationStdDeviation) {
+		textFieldDurationStdDeviation.setText("" + durationStdDeviation);
+	}
 
-    public void setDurationMean(double durationMean) {
-	textFieldDurationMean.setText("" + durationMean);
-    }
+	public void setSessionTitle(String title) {
+		this.title = title;
+		lblSession.setText(title);
+	}
 
-    public void setDurationStdDeviation(double durationStdDeviation) {
-	textFieldDurationStdDeviation.setText("" + durationStdDeviation);
-    }
+	@Override
+	public JPanel getPanel() {
+		return panel;
+	}
 
-    public void setSessionTitle(String title) {
-	this.title = title;
-	lblSession.setText(title);
-    }
-
-    @Override
-    public JPanel getPanel() {
-	return panel;
-    }
-
-    @Override
-    public void updateContent() {
-	// Parameters parameters = new Parameters();
-	// parameters.setMean(getDurationMean());
-	// parameters.setStandardDeviation(getDurationStdDeviation());
-	Sample sample = new Sample();
-	sample.setDistribution(BestFitDistribution.getDistributionByName(getDistribution()));
-	// sample.setParameters(parameters);
-	processContentRepository.setSample(sample);
-    }
+	@Override
+	public void updateContent() {
+		// Parameters parameters = new Parameters();
+		// parameters.setMean(getDurationMean());
+		// parameters.setStandardDeviation(getDurationStdDeviation());
+		Sample sample = new Sample();
+		sample.setDistribution(BestFitDistribution.getDistributionByName(getDistribution()));
+		// sample.setParameters(parameters);
+		processContentRepository.setSample(sample);
+	}
 }
