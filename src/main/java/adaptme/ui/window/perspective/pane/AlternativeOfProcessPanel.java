@@ -414,7 +414,7 @@ public class AlternativeOfProcessPanel {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 				Object object = node.getUserObject();
 				if (object instanceof ElementWrapper) {
-					ElementWrapper ew = (ElementWrapper) object;
+					ElementWrapper ew = (ElementWrapper) object;  // este elemento wrapper que é adicionado na tree
 					newMenu.setVisible(true);
 					if (ew.getName().equals(EPFConstants.rolesText)) {
 						leftTree.setSelectionPath(path);
@@ -473,7 +473,7 @@ public class AlternativeOfProcessPanel {
 								.getParent().getParent()).getUserObject()).getElement();
 						actionDeliveryProcess.setMethodPluginList(plugin.getMethodPackage());
 					} else if (ew.getElement() instanceof ProcessComponent) {
-						Process process = ((ProcessComponent) ew.getElement()).getProcess();
+						Process process = ((ProcessComponent) ew.getElement()).getProcess(); // 
 						leftTree.setSelectionPath(path);
 						leftTree.scrollPathToVisible(path);
 						for (JMenuItem menu : listMenuItems) {

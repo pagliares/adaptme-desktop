@@ -22,10 +22,12 @@ import adaptme.ui.components.renderer.TreeTableCellRenderCustom;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import adaptme.ui.window.perspective.pane.PerspectivePanel;
+import model.spem.ProcessRepository;
 import simulator.uma.dynamic.DynamicProcess;
 
 public class SPEMDrivenPerspectivePanel implements PerspectivePanel {
 
+	public static ProcessRepository processRepository = new ProcessRepository();  // global
 	private JPanel panel;
 	// private AdaptMeUI adaptMeUI;
 

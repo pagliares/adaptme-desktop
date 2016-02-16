@@ -19,6 +19,7 @@ import adaptme.base.MethodLibraryWrapper;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
+import model.spem.ProcessRepository;
 
 public class SimulationObjectivePanel {
     private JPanel panel;
@@ -26,7 +27,7 @@ public class SimulationObjectivePanel {
     private JScrollPane scrollPane;
     private JTextArea textArea;
     private JButton btnNextCalibrateSimualation;
-
+ 
     public SimulationObjectivePanel(JTabbedPane tabbedPane, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 	panel = new JPanel();
 
@@ -39,9 +40,10 @@ public class SimulationObjectivePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(textArea.getText().trim().isEmpty()){
-				JOptionPane.showMessageDialog(panel, "The objective fild is required");
+				JOptionPane.showMessageDialog(panel, "The objective field is required");
 				return; 
 			}
+			SPEMDrivenPerspectivePanel.processRepository.setSimulationObjective(textArea.getText());
 			tabbedPane.addTab("2. Identification of alternative of process", null, alternativeOfProcessPanel.getPanel(), null);
 			tabbedPane.setSelectedIndex(1);
 		}

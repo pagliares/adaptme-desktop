@@ -20,10 +20,17 @@ import javax.swing.border.TitledBorder;
 
 import adaptme.dynamic.gui.RepositoryViewPanel;
 import adaptme.dynamic.gui.UpdatePanel;
+import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.ProcessContentRepository;
+import model.spem.ProcessRepository;
 import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
+import model.spem.derived.ConstantParameters;
+import model.spem.derived.NegativeExponential;
+import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
+import model.spem.derived.PoissonParameters;
+import model.spem.derived.UniformParameters;
 import model.spem.derived.gui.ParametersPanel;
 import javax.swing.UIManager;
 
@@ -36,6 +43,10 @@ public class MeetingPanel implements UpdatePanel {
     private JLabel lblBestFitProbbility;
     private JComboBox<String> comboBoxDistribution;
     private ProcessContentRepository processContentRepository;
+    private ParametersPanel parametersPanel;
+    private FocusListener focusListener;
+    private Parameters parameters;
+
 
     public MeetingPanel(RepositoryViewPanel repositoryViewPanel, ProcessContentRepository processContentRepository) {
 
@@ -65,18 +76,81 @@ public class MeetingPanel implements UpdatePanel {
 
 	label = new JLabel("business days");
 
+	focusListener = new FocusListener() {
+
+	    @Override
+	    public void focusLost(FocusEvent e) {
+	    	    
+//	    		String s = (String) comboBoxDistribution.getSelectedItem();
+	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
+	    	    JTextField textField = (JTextField) e.getSource();
+	    		if (parameters instanceof ConstantParameters) {
+					
+					ConstantParameters constantParameters = (ConstantParameters)parameters;
+					constantParameters.setValue(Double.parseDouble(textField.getText()));
+		 			 
+				} else if (parameters instanceof UniformParameters) {
+					
+					UniformParameters UniformParameters = (UniformParameters)parameters;
+					if (textField.getName().equals("high")) {
+						UniformParameters.setHigh(Double.parseDouble(textField.getText()));
+					} else {
+						UniformParameters.setLow(Double.parseDouble(textField.getText()));
+					}
+					
+				
+
+				} else if (parameters instanceof NegativeExponential) {
+					
+					NegativeExponential negativeExponential = (NegativeExponential)parameters;
+					negativeExponential.setAverage(Double.parseDouble(textField.getText()));
+ 					 
+	 	 			
+				} else if (parameters instanceof NormalParameters) {
+					
+					NormalParameters normalParameters = (NormalParameters)parameters;
+					
+					if (textField.getName().equals("average")) {
+						normalParameters.setMean(Double.parseDouble(textField.getText()));
+					} else {
+						normalParameters.setStandardDeviation(Double.parseDouble(textField.getText()));
+					}
+ 
+
+				} else if (parameters instanceof PoissonParameters) {
+					
+					PoissonParameters poissonParameters = (PoissonParameters)parameters;
+					poissonParameters.setMean(Double.parseDouble(textField.getText()));
+	 			}
+	    	
+//		repositoryViewPanel.setMessagem("");
+	    }
+
+	    @Override
+	    public void focusGained(FocusEvent e) {
+		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
+	    }
+	};
+	
+	
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	scrollPaneParameters.setViewportBorder(null);
-	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
-	scrollPaneParameters.setViewportView(new ParametersPanel(parameters).getPanel());
+	parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
+	Sample sample = new Sample();
+	processContentRepository.setSample(sample);
+	processContentRepository.getSample().setParameters(parameters);
+	parametersPanel =  new ParametersPanel(parameters, focusListener);
+	scrollPaneParameters.setViewportView(parametersPanel.getPanel());
 	comboBoxDistribution.addItemListener(e -> {
 	    String s = (String) comboBoxDistribution.getSelectedItem();
 	    // scrollPaneParameters.removeAll();
-	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	    scrollPaneParameters.setViewportView(new ParametersPanel(p).getPanel());
+	     parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+	    parametersPanel =  new ParametersPanel(parameters, focusListener);
+	    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
+		processContentRepository.getSample().setParameters(parameters);
 	});
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
@@ -128,18 +202,7 @@ public class MeetingPanel implements UpdatePanel {
 			.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(label))).addGap(285)));
 	panel.setLayout(gl_panel);
 
-	FocusListener focusListener = new FocusListener() {
-
-	    @Override
-	    public void focusLost(FocusEvent e) {
-		repositoryViewPanel.setMessagem("");
-	    }
-
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
+	
 	textFieldDurationMean.addFocusListener(focusListener);
 	textFieldDurationStdDeviation.addFocusListener(focusListener);
     }

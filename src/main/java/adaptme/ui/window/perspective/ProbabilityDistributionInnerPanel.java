@@ -80,7 +80,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		comboBox.addItemListener(e -> {
 		    String s = (String) comboBox.getSelectedItem();
 		    parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-		    scrollPane.setViewportView(new ParametersPanel(parameters).getPanel());
+		    scrollPane.setViewportView(new ParametersPanel(parameters, null).getPanel());
 		    scrollPane.revalidate();
 		    scrollPane.repaint();
 		});

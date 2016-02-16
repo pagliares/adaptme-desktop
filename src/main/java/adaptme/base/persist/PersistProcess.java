@@ -37,6 +37,7 @@ import adaptme.dynamic.gui.task.OutputWorkProductPanel;
 import adaptme.dynamic.gui.task.RolePanel;
 import adaptme.dynamic.gui.task.SessionPanel;
 import adaptme.dynamic.gui.task.TaskPanel;
+import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
@@ -56,6 +57,7 @@ public class PersistProcess {
 	private Set<String> taskList;
 
 	private ProcessRepository root;
+	 
 	private MethodLibraryHash methodLibraryHash;
 
 	public PersistProcess() {
@@ -68,7 +70,8 @@ public class PersistProcess {
 
 	public ProcessRepository buildProcess(Process process, MethodLibraryHash methodLibraryHash) {
 		this.methodLibraryHash = methodLibraryHash;
-		root = new ProcessRepository();
+//		root = new ProcessRepository();
+		root = SPEMDrivenPerspectivePanel.processRepository;
 		root.setName(process.getPresentationName());
 
 		buildChildren(process, root, root, null);

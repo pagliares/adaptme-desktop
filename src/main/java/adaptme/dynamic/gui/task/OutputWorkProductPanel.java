@@ -61,12 +61,12 @@ public class OutputWorkProductPanel implements UpdatePanel {
 	scrollPaneParameters.setViewportBorder(null);
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
-	scrollPaneParameters.setViewportView(new ParametersPanel(parameters).getPanel());
+	scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
 	comboBoxSizeDistribuiton = new JComboBox<>();
 	comboBoxSizeDistribuiton.addItemListener(e -> {
 	    String s = (String) comboBoxSizeDistribuiton.getSelectedItem();
 	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	    scrollPaneParameters.setViewportView(new ParametersPanel(p).getPanel());
+	    scrollPaneParameters.setViewportView(new ParametersPanel(p, null).getPanel());
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
 	});

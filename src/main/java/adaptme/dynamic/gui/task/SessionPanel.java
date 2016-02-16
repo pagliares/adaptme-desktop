@@ -68,11 +68,11 @@ public class SessionPanel implements UpdatePanel {
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	comboBoxDistribution = new JComboBox<>();
 	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
-	scrollPaneParameters.setViewportView(new ParametersPanel(parameters).getPanel());
+	scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
 	comboBoxDistribution.addItemListener(e -> {
 	    String s = (String) comboBoxDistribution.getSelectedItem();
 	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	    scrollPaneParameters.setViewportView(new ParametersPanel(p).getPanel());
+	    scrollPaneParameters.setViewportView(new ParametersPanel(p, null).getPanel());
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
 	});

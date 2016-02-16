@@ -32,6 +32,10 @@ public class ProcessRepository implements Serializable {
 
     @XmlAttribute
     private String name = "Teste process name";
+    
+    @XmlAttribute
+    private String simulationObjective;
+
 
     @XmlAttribute
     private boolean chosen;
@@ -88,4 +92,12 @@ public class ProcessRepository implements Serializable {
     public String toString() {
 	return name;
     }
+
+	public String getSimulationObjective() {
+		return simulationObjective;
+	}
+
+	public void setSimulationObjective(String simulationObjective) {
+		this.simulationObjective = simulationObjective;
+	}
 }
