@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +47,7 @@ import org.eclipse.epf.uma.Tool;
 import org.eclipse.epf.uma.WorkProductType;
 
 import adaptme.base.persist.PersistProcess;
+import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
 
@@ -408,7 +410,10 @@ public class MethodLibraryWrapper {
     
     public static void main(String[] args) {
     	PersistProcess persistProcess = new PersistProcess();
- 		File methodLibraryFile = new File("/Users/pagliares/Dropbox/projetosEPFComposer/Exported_EPF_XML_Processes/Software_Process_Alternatives/Software_Process_Alternatives.xml");
+// 		File methodLibraryFile = new File("/Users/pagliares/Dropbox/projetosEPFComposer/Exported_EPF_XML_Processes/Software_Process_Alternatives/Software_Process_Alternatives.xml");
+// 		File methodLibraryFile = new File("/Users/pagliares/Dropbox/projetosEPFComposer/Exported_EPF_XML_Processes/Risotto/Risotto.xml");
+ 		File methodLibraryFile = new File("/Users/pagliares/Dropbox/projetosEPFComposer/Exported_EPF_XML_Processes/STPA/STPA.xml");
+
  		MethodLibraryWrapper methodLibraryWrapper = new MethodLibraryWrapper();
  		methodLibraryWrapper.load(methodLibraryFile);
  		List<Process> processes = methodLibraryWrapper.getUMAProcesses();
@@ -420,25 +425,31 @@ public class MethodLibraryWrapper {
   			processesRepository.add(persistProcess.buildProcess(p, methodLibraryWrapper.methodLibraryHash));
   		}
   		
-  		for (ProcessRepository pr: processesRepository) {
-  			System.out.println(pr.getName());
-  			System.out.println(pr.getSimulationObjective());
-  			List<ProcessContentRepository> processContents = pr.getProcessContents();
-  			for (ProcessContentRepository pcr : processContents) {
-//  				System.out.println(pcr.getName());
-//  				System.out.println(pcr.getType().toString());
-  				List<ProcessContentRepository> children = pcr.getChildren();
-  				for (ProcessContentRepository pcrc : children) {
-  					System.out.println(pcrc.getName());
-  	  				System.out.println(pcrc.getType().toString());
-  	  			List<ProcessContentRepository> children2 = pcrc.getChildren();
-  	  			for (ProcessContentRepository pcrc2 : children2) {
-  					System.out.println(pcrc2.getName());
-  	  				System.out.println(pcrc2.getType().toString());
-  				}
-  				}
+  		ProcessRepository p = processesRepository.get(0);
+//  		p.imprimeTasks(p.getProcessContents());
+  		
+  		List<ProcessContentRepository> resultado = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
+   		System.out.println("Tasks");
+  		for (ProcessContentRepository p1: resultado) {
+  			System.out.println("\n\n"+p1.getName());
+   			MethodContentRepository role = p1.getMainRole();
+  			System.out.print("Role                 :  " + role.getName());
+  			 
+  			System.out.print("\nInput work products  : " );
+  			Set<MethodContentRepository> inputWorkProducts = p1.getInputMethodContentsRepository();
+  			for (MethodContentRepository m: inputWorkProducts) {
+  				System.out.print("\t" + m.getName());
   			}
+  			System.out.print("\nOutput work products : ");
+  			Set<MethodContentRepository> outputWorkProducts = p1.getOutputMethodContentsRepository();
+  			for (MethodContentRepository m: outputWorkProducts) {
+  				System.out.print("\t" + m.getName());
+   			}
   		}
+ 
+  		
+  		
+ 
  		
 
     }

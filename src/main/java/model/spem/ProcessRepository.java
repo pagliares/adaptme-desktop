@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import model.spem.util.ProcessContentType;
+
 @Entity
 @Table(name = "PROCESS")
 @XmlRootElement(name = "process")
@@ -47,6 +49,10 @@ public class ProcessRepository implements Serializable {
     @ManyToOne
     @XmlTransient
     private SimulationFacade simulationFacade;
+    
+    @XmlTransient
+    // faltar ignorar JPA
+    private List<ProcessContentRepository> listTasks = new ArrayList<>();
 
     public ProcessRepository() {
 	processContents = new ArrayList<>();
@@ -100,4 +106,37 @@ public class ProcessRepository implements Serializable {
 	public void setSimulationObjective(String simulationObjective) {
 		this.simulationObjective = simulationObjective;
 	}
+	
+	public List<ProcessContentRepository> getListProcessContentRepositoryWithTasksOnly(List<ProcessContentRepository> listOfProcessContentRepository) {
+ 		if (listOfProcessContentRepository == null) {
+			return null;
+		} else {
+			for (ProcessContentRepository pcr: listOfProcessContentRepository ) {
+				if (pcr.getType().equals(ProcessContentType.TASK)) {
+					listTasks.add(pcr);
+				} else
+					getListProcessContentRepositoryWithTasksOnly(pcr.getChildren());		 
+			}
+			return listTasks;
+		}
+	}
+	
+	public void imprimeTasks(List<ProcessContentRepository> listOfProcessContentRepository) {
+		 
+		if (listOfProcessContentRepository == null) {
+			return;
+		} else {
+			for (ProcessContentRepository pcr: listOfProcessContentRepository ) {
+				if (pcr.getType().equals(ProcessContentType.TASK)) {
+					System.out.println(pcr.getName());
+				} else
+					imprimeTasks(pcr.getChildren()); 
+			}
+		 
+		}
+	}
+	
+	
+	
+	
 }
