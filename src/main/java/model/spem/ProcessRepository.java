@@ -107,6 +107,7 @@ public class ProcessRepository implements Serializable {
 		this.simulationObjective = simulationObjective;
 	}
 	
+	// With this return, i can get list of roles, additional roles, input/output workproducts
 	public List<ProcessContentRepository> getListProcessContentRepositoryWithTasksOnly(List<ProcessContentRepository> listOfProcessContentRepository) {
  		if (listOfProcessContentRepository == null) {
 			return null;

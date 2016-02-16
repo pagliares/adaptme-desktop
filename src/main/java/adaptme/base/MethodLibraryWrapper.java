@@ -50,6 +50,9 @@ import adaptme.base.persist.PersistProcess;
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
+import model.spem.Sample;
+import model.spem.measurement.DurationMeasurement;
+import model.spem.measurement.Measurement;
 
 /**
  * Classe de manipulação do objeto MethodLibrary. Fornece métodos para
@@ -417,7 +420,7 @@ public class MethodLibraryWrapper {
  		MethodLibraryWrapper methodLibraryWrapper = new MethodLibraryWrapper();
  		methodLibraryWrapper.load(methodLibraryFile);
  		List<Process> processes = methodLibraryWrapper.getUMAProcesses();
- 		System.out.println(processes.size());
+// 		System.out.println(processes.size());
  		
  		List<ProcessRepository> processesRepository = new ArrayList<>();
   		
@@ -429,13 +432,18 @@ public class MethodLibraryWrapper {
 //  		p.imprimeTasks(p.getProcessContents());
   		
   		List<ProcessContentRepository> resultado = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
-   		System.out.println("Tasks");
+    		
   		for (ProcessContentRepository p1: resultado) {
-  			System.out.println("\n\n"+p1.getName());
+  			System.out.println("\n\n"+ p1.getType().toString() + "                 :  " + p1.getName());
    			MethodContentRepository role = p1.getMainRole();
-  			System.out.print("Role                 :  " + role.getName());
+  			System.out.print("Main Role            :  " + role.getName()+"\n");
+  			
+  			List<MethodContentRepository> additionalRoles = p1.getAdditionalRoles();
+  			for (MethodContentRepository additionalRole: additionalRoles) {
+  				System.out.println("Additional role      :  " + additionalRole.getName());
+  			}
   			 
-  			System.out.print("\nInput work products  : " );
+  			System.out.print("Input work products  : " );
   			Set<MethodContentRepository> inputWorkProducts = p1.getInputMethodContentsRepository();
   			for (MethodContentRepository m: inputWorkProducts) {
   				System.out.print("\t" + m.getName());
@@ -445,12 +453,23 @@ public class MethodLibraryWrapper {
   			for (MethodContentRepository m: outputWorkProducts) {
   				System.out.print("\t" + m.getName());
    			}
+  			
+  			// Testar o codigo abaixo para  o repositorio que vem do web service
+//  			System.out.print("\nSample : ");
+//  			Sample sampleTask = p1.getSample();
+//  			System.out.println("Sample size  : "  + sampleTask.getSize());
+//  	
+//  			List<Measurement> measurements = sampleTask.getMeasurements();
+//  			System.out.println("measurements  : " );
+//  			for (Measurement m: measurements) {
+//  				if (m instanceof DurationMeasurement) {
+//  					DurationMeasurement d = (DurationMeasurement)m;
+//  					System.out.print("\t" + d.getValue());
+//  				}
+//  				
+//   			}
+  			
+  			
   		}
- 
-  		
-  		
- 
- 		
-
     }
 }
