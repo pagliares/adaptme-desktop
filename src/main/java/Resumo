@@ -20,6 +20,12 @@ Para gerar o programa java a partir da linha de comando:
    - Para que o arquivo out tenha valores, precisamos configurar observadores antes no groupsim antes
      de gerar o xacdml
 
+
+Erros:
+
+1 - deve ser enviado para o servidor, SimulationFacade que possui o atributo objective e nao ProcessRepository com
+atributo objective? Por enquanto está tudo no ProcessRepository e posso excluir SimulationFacade
+
      
  WindowBuilder
  - Nome oficial (SWT designer)
