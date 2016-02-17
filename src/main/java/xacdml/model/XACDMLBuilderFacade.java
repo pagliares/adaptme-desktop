@@ -143,28 +143,40 @@ public class XACDMLBuilderFacade {
   		Dead deadPermanentEntity = factory.createDead();
 
  		// Creation of dead resource queues necessary to the creation of regular activities
-  	    // nao uso for each pois preciso do indice para pegar a quantidade digitada na coluna
+  	    // nao uso for each pois preciso do indice para pegar a quantidade digitada na coluna da JTable roles
+  		
   		for (int i = 0; i < roles.size(); i++) {  
 
 			Role role = roles.get(i);
+			
+			// cria a entidade permanente
  			Class permanentEntity = factory.createClass();
  			permanentEntity.setId(role.getName());
 			acd.getClazz().add(permanentEntity);
 			
-			deadPermanentEntity.setId("Resource queue: " + role.getName());
+			// cria a fila para armazenenar a entidade permanente
+			deadPermanentEntity.setId("Resource queue for permanent entity: " + role.getName());
 			deadPermanentEntity.setClazz(permanentEntity);
- 			
-			 
+			
+			// pega atributos configurados na Jtable role, necessario tambem par o tipo de fila abaixo
+			
 			JTable roleTable = roleResourcePanel.getTableRole();
-			Integer quantity = (Integer)roleTable.getModel().getValueAt(i, 1);
-            role.setIntialQuantity(quantity);
-            
-            
-            Type queue = factory.createType();
-			queue.setStruct("QUEUE");
+			Integer initialQuantity = (Integer)roleTable.getModel().getValueAt(i, 1);
+			role.setIntialQuantity(initialQuantity);
+			
+			// define o tipo da fila da entidade permanente (QUEUE, STACK or SET)
+			String queueType = (roleTable.getModel().getValueAt(i, 2)).toString();
+			Type queue = factory.createType();
+			
+			queue.setStruct(queueType);
 			queue.setSize(Integer.toString(role.getIntialQuantity()));
 			queue.setInit("0"); // conferir
 			deadPermanentEntity.setType(queue);
+ 			
+			
+            
+            
+           
 			
             Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 2);
             if (isStationary) {

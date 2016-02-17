@@ -100,7 +100,7 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 		case 3:
 			return Integer.class;
 		case 4:
-			return Policy.class;  // nao se e isso para combobox
+			return Policy.class;   
 		case 5:
 			return String.class;
 		case 6:

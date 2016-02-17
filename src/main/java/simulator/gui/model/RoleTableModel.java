@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import simulator.base.QueueType;
 import simulator.base.Role;
 
 public class RoleTableModel extends AbstractTableModel {
@@ -12,7 +13,7 @@ public class RoleTableModel extends AbstractTableModel {
 
 	private List<Role> roles;
 
-	String[] headersRole = new String[] { "Name", "InitialQuantity", "Observe Stationary Time" };
+	String[] headersRole = new String[] { "Name", "InitialQuantity", "Queue type", "Observe Stationary Time" };
 
 	public RoleTableModel(List<Role> roles) {
 		this.roles = roles;
@@ -37,6 +38,8 @@ public class RoleTableModel extends AbstractTableModel {
 		case 1:
 			return role.getIntialQuantity();
 		case 2:
+			return role.getQueueType();
+		case 3:
 			return role.isObserveStationaryTime();
 
 		default:
@@ -55,6 +58,9 @@ public class RoleTableModel extends AbstractTableModel {
 			role.setIntialQuantity((int) aValue);
 			break;
 		case 2:
+			role.setQueueType((QueueType) aValue);
+			break;
+		case 3:
 			role.setObserveStationaryTime((boolean) aValue);
 			break;
 		}
@@ -68,6 +74,8 @@ public class RoleTableModel extends AbstractTableModel {
 		case 1:
 			return Integer.class;
 		case 2:
+			return QueueType.class;
+		case 3:
 			return Boolean.class;
 
 		default:

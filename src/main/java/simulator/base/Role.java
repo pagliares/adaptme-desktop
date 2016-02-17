@@ -1,8 +1,10 @@
 package simulator.base;
 
 public class Role {
+	
 	private String name;
 	private int intialQuantity;
+	private QueueType queueType;
 	private boolean observeStationaryTime;
 	
 	public String getName() {
@@ -22,6 +24,12 @@ public class Role {
 	}
 	public void setObserveStationaryTime(boolean observeStationaryTime) {
 		this.observeStationaryTime = observeStationaryTime;
+	}
+	public QueueType getQueueType() {
+		return queueType;
+	}
+	public void setQueueType(QueueType queueType) {
+		this.queueType = queueType;
 	}
 
 }

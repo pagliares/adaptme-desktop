@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -19,10 +20,13 @@ import javax.swing.JTable;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import adaptme.ui.dynamic.RunSimulationPanelXPThesis;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
+import simulator.base.Policy;
+import simulator.base.QueueType;
 import simulator.base.Role;
 import simulator.base.WorkProduct;
 import simulator.gui.model.RoleTableModel;
@@ -43,8 +47,15 @@ public class RoleResourcesPanel {
 	private Set<String> taskList;
 	
  	private List<Role> roles = new ArrayList<>();
+ 	
+ 	private JComboBox<QueueType> queueTypeJComboBox;
 
 	public RoleResourcesPanel() {
+		
+		queueTypeJComboBox = new JComboBox<>();
+		queueTypeJComboBox.addItem(QueueType.QUEUE);
+		queueTypeJComboBox.addItem(QueueType.SET);
+		queueTypeJComboBox.addItem(QueueType.STACK);
 		
 		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
@@ -104,21 +115,34 @@ public class RoleResourcesPanel {
 		RoleTableModel roleTableModel = new RoleTableModel(roles);
 		
  		tableRole.setModel(roleTableModel);
+		configuraColunas();
+
+ 	}
+	
+	
+	public void configuraColunas() { 
+		
 		modeloColuna = tableRole.getColumnModel(); 
- 
+		
+		TableColumn colunaQueueType = modeloColuna.getColumn(2);
+		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
+		 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		
 		tableRole.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		tableRole.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		tableRole.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
  
 
 		((DefaultTableCellRenderer) tableRole.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
-		tableRole.getColumnModel().getColumn(1).setPreferredWidth(15);
+		tableRole.getColumnModel().getColumn(0).setPreferredWidth(15);
 		tableRole.getColumnModel().getColumn(1).setPreferredWidth(23);
 		tableRole.getColumnModel().getColumn(2).setPreferredWidth(9);
-
- 	}
+		tableRole.getColumnModel().getColumn(3).setPreferredWidth(9);
+		
+	}
 
 	public List<Role> getRoles() {
 		return roles;
