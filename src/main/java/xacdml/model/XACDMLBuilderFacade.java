@@ -3,6 +3,7 @@ package xacdml.model;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,9 +13,16 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.eclipse.epf.uma.Process;
+
+import adaptme.base.MethodLibraryWrapper;
 import adaptme.ui.window.perspective.ProbabilityDistributionInnerPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
+import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
+import model.spem.MethodContentRepository;
+import model.spem.ProcessContentRepository;
+import model.spem.ProcessRepository;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.ConstantParameters;
 import model.spem.derived.NegativeExponential;
@@ -46,7 +54,6 @@ public class XACDMLBuilderFacade {
 
 	private Acd acd;
 	 
-	
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 
 		try {
@@ -118,211 +125,11 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	public Acd buildEntities(Acd acd, List<Role> roles, List<WorkProduct> workProducts) {
-		 
-		ObjectFactory factory = new ObjectFactory();
-		
-		for (Role role: roles) {
-			Class clazz = factory.createClass();
-			clazz.setId(role.getName());
-			acd.getClazz().add(clazz);
-		}
-		
-		for (WorkProduct workProduct: workProducts) {
-			Class clazz = factory.createClass();
-			clazz.setId(workProduct.getName());
-			acd.getClazz().add(clazz);
-		}
-		
-		
-		return acd;
-	}
 	
-	public Acd buildDeadStates(Acd acd, List<Role> roles, List<WorkProduct> workProducts) {
-
-		ObjectFactory factory = new ObjectFactory();
-		Dead dead = factory.createDead();
-		
-		for (WorkProduct workProduct: workProducts) {
-			dead.setId(workProduct.getQueueName());
-			// dead.setClazz(inquirer);
-			
-			Type queue = factory.createType();
-			queue.setStruct("QUEUE");
-			queue.setSize(Integer.toString(workProduct.getQuantity()));
-			queue.setInit("0"); // conferir
-			dead.setType(queue);
-			
-			// Verificar a necessidade de colocar Graphic
-			Graphic circle = factory.createGraphic();
-			circle.setType("CIRCLE");
-			circle.setX("198");
-			circle.setY("349");
-			dead.setGraphic(circle);
-			
-			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			QueueObserver queueObserver = factory.createQueueObserver();
-			queueObserver.setType("LENGTH");
-			queueObserver.setName("SERVICE_OBS");
-			dead.getQueueObserver().add(queueObserver);
-
-			acd.getDead().add(dead);
-			dead = factory.createDead();
-		}
-		
-		
-		for (Role role: roles) {
-			dead.setId("Resource queue: " + role.getName());
-			// dead.setClazz(inquirer);
-			
-			Type queue = factory.createType();
-			queue.setStruct("QUEUE");
-			queue.setSize(Integer.toString(role.getIntialQuantity()));
-			queue.setInit("0"); // conferir
-			dead.setType(queue);
-			
-			// Verificar a necessidade de colocar Graphic
-			Graphic circle = factory.createGraphic();
-			circle.setType("CIRCLE");
-			circle.setX("198");
-			circle.setY("349");
-			dead.setGraphic(circle);
-			
-			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			QueueObserver queueObserver = factory.createQueueObserver();
-			queueObserver.setType("LENGTH");
-			queueObserver.setName("SERVICE_OBS");
-			dead.getQueueObserver().add(queueObserver);
-
-			acd.getDead().add(dead);
-			dead = factory.createDead();
-		}
-
-		return acd;
-	}
-	
-	public Acd buildActivities(Acd acd, Set<String> tasks) {
-	
-		ObjectFactory factory = new ObjectFactory();
-		Act regularActivity = factory.createAct();
-		
-		for (String task: tasks){
-			
-			regularActivity.setId(task);
-
-			Stat uniform = factory.createStat();
-			uniform.setType("UNIFORM");
-			uniform.setParm1("1.0");
-			uniform.setParm2("5.0");
-
-			Graphic box = factory.createGraphic();
-			box.setType("BOX");
-			box.setX("319");
-			box.setY("110");
-
-			EntityClass ec1 = factory.createEntityClass();
-			Dead idle = factory.createDead();
-			idle.setId("IDLE"); // pegar nome do panel 3.1
-
-			// ec1.setPrev(idle);
-			// ec1.setNext(idle);
-			//
-
-			EntityClass ec2 = factory.createEntityClass();
-			Dead wait1 = factory.createDead();
-			wait1.setId("IDLE"); // pegar nome do panel 3.1
-			// ec1.setPrev(wait1);
-			// ec1.setNext(b1);
-
-			regularActivity.setStat(uniform);
-			regularActivity.setGraphic(box);
-			regularActivity.getEntityClass().add(ec1);
-			regularActivity.getEntityClass().add(ec2);
-			
-			acd.getAct().add(regularActivity);	
-			regularActivity = factory.createAct();
-		}
-	
-		return acd;
-	}
-	
-	public Acd buildGenerateActivities(Acd acd, List<WorkProduct> workProducts) {
-
-		ObjectFactory factory = new ObjectFactory();
-		Generate callGenerate = factory.createGenerate();
-		
-		for (WorkProduct workProduct: workProducts) {
-			callGenerate.setId("Generate : " + workProduct.getName());
-			// Class clazz = factory.createClass(); // new
-			// clazz.setId("CALL"); // new
-            // callGenerate.setClazz((Class) acd.getClazz().get(0)); // new
-			
-			// Falta uma coluna no panel 3.2. Demand WorkProduct possui distribuicao de probabilidade
-			Stat negExp = factory.createStat();
-			negExp.setType("NEGEXP");
-			negExp.setParm1("7.0");
-			
-			Graphic box = factory.createGraphic();
-			box.setType("BOX");
-			box.setX("73");
-			box.setY("101");
-			
-			ActObserver actObserver = factory.createActObserver();
-			actObserver.setType("ACTIVE");
-			actObserver.setName("CALL_OBS");
-			
-			Next nextDead = factory.createNext();
-			// nextDead.setDead(dead);
-			callGenerate.getActObserver().add(actObserver);
-			callGenerate.setGraphic(box);
-			callGenerate.setStat(negExp);
-			callGenerate.getNext().add(nextDead);
-
-			acd.getGenerate().add(callGenerate);
-			callGenerate = factory.createGenerate();
-		}
-
-		return acd;
-	}
-
-	public Acd buildDestroyActivities(Acd acd, List<WorkProduct> workProducts) {
-		
-		ObjectFactory factory = new ObjectFactory();
-		Destroy destroyDep0 = factory.createDestroy();
-		for (WorkProduct workProduct: workProducts) {
-			
-			destroyDep0.setId("Destroy : " + workProduct.getName());
-
-			Stat uniform2 = factory.createStat();
-			uniform2.setType("UNIFORM");
-			uniform2.setParm1("0.0");
-			uniform2.setParm2("10.0");
-
-			Graphic box3 = factory.createGraphic();
-			box3.setType("BOX");
-			box3.setX("602");
-			box3.setY("108");
-
-			Prev previous = factory.createPrev();
-			// previous.setDead(dead);
-			destroyDep0.getPrev().add(previous);
-			destroyDep0.setGraphic(box3);
-			// esta faltando destroy.setStat no codigo
-			acd.getDestroy().add(destroyDep0);
-			destroyDep0 = factory.createDestroy();
-		}
-
-		return acd;
-	}
-	
-	public String buildProcess(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
-			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel) {
-        String teste = buildXACDML(acdId, roles, workProducts, tasks, roleResourcePanel, workProdutResourcesPanel);
-        return teste;
-	}
-	
-	public String buildXACDML(String acdId, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
+	public String buildXACDML(String acdId, String simTime, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
 			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
+		
+//		printProcessRepositoryForDebugPurposes();
 		
 		ObjectFactory factory = new ObjectFactory();
 		
@@ -330,7 +137,7 @@ public class XACDMLBuilderFacade {
 		acd.setId(acdId);
 		
 		Simtime simulationTime = new Simtime();
-		simulationTime.setTime("500");
+		simulationTime.setTime(simTime);
 		acd.setSimtime(simulationTime);
 		
   		Dead deadPermanentEntity = factory.createDead();
@@ -582,6 +389,66 @@ public class XACDMLBuilderFacade {
 			return result;
 		}
  	}
+	
+	public void printProcessRepositoryForDebugPurposes() {
+		
+		
+//		MethodLibraryWrapper methodLibraryWrapper = new MethodLibraryWrapper();
+// 		methodLibraryWrapper.load(methodLibraryFile);
+// 		List<Process> processes = methodLibraryWrapper.getUMAProcesses();
+// 		System.out.println(processes.size());
+ 		
+// 		List<ProcessRepository> processesRepository = new ArrayList<>();
+  		
+//  		for (Process p: processes) {
+//  			processesRepository.add(persistProcess.buildProcess(p, methodLibraryWrapper.methodLibraryHash));
+//  		}
+  		
+//  		ProcessRepository p = processesRepository.get(0);
+//  		p.imprimeTasks(p.getProcessContents());
+ 		ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
+  		List<ProcessContentRepository> resultado = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
+    		
+  		for (ProcessContentRepository p1: resultado) {
+  			System.out.println("\n\n"+ p1.getType().toString() + "                 :  " + p1.getName());
+   			MethodContentRepository role = p1.getMainRole();
+  			System.out.print("Main Role            :  " + role.getName()+"\n");
+  			
+  			List<MethodContentRepository> additionalRoles = p1.getAdditionalRoles();
+  			for (MethodContentRepository additionalRole: additionalRoles) {
+  				System.out.println("Additional role      :  " + additionalRole.getName());
+  			}
+  			 
+  			System.out.print("Input work products  : " );
+  			Set<MethodContentRepository> inputWorkProducts = p1.getInputMethodContentsRepository();
+  			for (MethodContentRepository m: inputWorkProducts) {
+  				System.out.print("\t" + m.getName());
+  			}
+  			System.out.print("\nOutput work products : ");
+  			Set<MethodContentRepository> outputWorkProducts = p1.getOutputMethodContentsRepository();
+  			for (MethodContentRepository m: outputWorkProducts) {
+  				System.out.print("\t" + m.getName());
+   			}
+  			
+  			// Testar o codigo abaixo para  o repositorio que vem do web service
+//  			System.out.print("\nSample : ");
+//  			Sample sampleTask = p1.getSample();
+//  			System.out.println("Sample size  : "  + sampleTask.getSize());
+//  	
+//  			List<Measurement> measurements = sampleTask.getMeasurements();
+//  			System.out.println("measurements  : " );
+//  			for (Measurement m: measurements) {
+//  				if (m instanceof DurationMeasurement) {
+//  					DurationMeasurement d = (DurationMeasurement)m;
+//  					System.out.print("\t" + d.getValue());
+//  				}
+//  				
+//   			}
+  			
+  			
+  		}
+
+	}
 
 	public Acd getAcd() {
 		return acd;

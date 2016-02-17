@@ -55,6 +55,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	private Set<String> taskList;
 	private JTextField acdIDTextField;
 	private JTextArea textArea;
+	private JTextField simulationTimeJTextField;
 	
 	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
 			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
@@ -77,8 +78,11 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 		acdIDTextField.setColumns(10);
 		panel.add(acdIDTextField);
 		
-		JLabel lblNewLabel = new JLabel("                 ");
-		panel.add(lblNewLabel);
+		JLabel whiteSpaceJLabel1 = new JLabel("   ");
+		panel.add(whiteSpaceJLabel1);
+		
+		JLabel simulationTimeJLabel = new JLabel("Simulation time");
+		panel.add(simulationTimeJLabel);
 		
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
@@ -91,11 +95,18 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				String result = xACDMLBuilderFacade.buildProcess(acdIDTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
+				String result = xACDMLBuilderFacade.buildXACDML(acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
 						workProdutResourcesPanel);
 				textArea.append(result);
 			}
 		});
+		
+		simulationTimeJTextField = new JTextField();
+		panel.add(simulationTimeJTextField);
+		simulationTimeJTextField.setColumns(4);
+		
+		JLabel whiteSpaceJLabel2 = new JLabel("       ");
+		panel.add(whiteSpaceJLabel2);
 		panel.add(btnGenerateXacdml);
 		
 		JPanel panel_1 = new JPanel();
@@ -148,6 +159,10 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	
 	public void setAcdIDTextField(JTextField acdIDTextField) {
 		this.acdIDTextField = acdIDTextField;
+	}
+
+	public JTextField getSimulationTimeJTextField() {
+		return simulationTimeJTextField;
 	}
 }
  
