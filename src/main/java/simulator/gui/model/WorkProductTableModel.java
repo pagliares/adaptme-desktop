@@ -2,12 +2,7 @@ package simulator.gui.model;
 
 import java.util.List;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-
-import model.spem.derived.BestFitDistribution;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
@@ -18,7 +13,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
 	
-	String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
+	private String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
 									  "Capacity", "Policy", "Observer queue length name", "Observer queue lenght time name"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
@@ -139,10 +134,6 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return false;
 		}
 		return true;
-	}
-
-	public int getNumberOfDevelopers() {
-		return workProducts.size();
 	}
 
 	public List<WorkProduct> getWorkProducts() {

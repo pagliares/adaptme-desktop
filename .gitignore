@@ -11,6 +11,7 @@ msp/
 test-output/
 output/
 xacdml_models/
+input/
  
 # OS Files #
 .DS_Store

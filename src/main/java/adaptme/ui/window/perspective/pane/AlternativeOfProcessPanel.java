@@ -79,7 +79,7 @@ import adaptme.ui.panel.base.workproduct.artifact.TabbedPanelArtifact;
 import adaptme.ui.panel.base.workproduct.deliverable.TabbedPanelDeliverable;
 import adaptme.ui.panel.base.workproduct.outcome.TabbedPanelOutcome;
 import adaptme.ui.window.AdaptMeUI;
-import adaptme.ui.window.perspective.DefineXACDMLTextAreaPanel;
+import adaptme.ui.window.perspective.XACDMLTextAreaPanel;
 import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.RunSimulationPanel;
@@ -130,11 +130,9 @@ public class AlternativeOfProcessPanel {
 
 	private JTabbedPane leftTreeTabbedPane;
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
-//	private DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel;
-	
+ 	
 	private ProcessRepository processRepository;
-//	private ProcessRepository processRepositoryTask;
-	
+ 	
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
 			MethodLibraryWrapper methodLibraryWrapper) {
@@ -606,10 +604,7 @@ public class AlternativeOfProcessPanel {
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
 		
-		
- 
-		DefineXACDMLTextAreaPanel defineXACDMLTextAreaPanel = new DefineXACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
-		
+		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 	
@@ -629,8 +624,7 @@ public class AlternativeOfProcessPanel {
 
 	private NumberTreeNode buildTreeNode(ProcessRepository processRepository) {
 		NumberTreeNode root = new NumberTreeNode(processRepository.getName(), "root");
-//		System.out.println(processRepository.getName());
-		for (ProcessContentRepository content : processRepository.getProcessContents()) {
+ 		for (ProcessContentRepository content : processRepository.getProcessContents()) {
 			root.add(buildChidren(content));
 		}
  

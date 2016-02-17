@@ -3,7 +3,6 @@ package simulator.gui.model;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-
 import simulator.base.QueueType;
 import simulator.base.Role;
 
@@ -12,8 +11,7 @@ public class RoleTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -4739793782253876825L;
 
 	private List<Role> roles;
-
-	String[] headersRole = new String[] { "Name", "Queue type", "Queue size", "Queue initial quantity", "Observe stationary time" };
+	private String[] headersRole = new String[] { "Name", "Queue type", "Queue size", "Queue initial quantity", "Observe stationary time" };
 
 	public RoleTableModel(List<Role> roles) {
 		this.roles = roles;

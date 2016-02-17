@@ -2,8 +2,6 @@ package adaptme.ui.window.perspective;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +9,6 @@ import java.util.Set;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,30 +20,20 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import adaptme.ui.dynamic.RunSimulationPanelXPThesis;
-import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
-import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.Role;
-import simulator.base.WorkProduct;
 import simulator.gui.model.RoleTableModel;
-import xacdml.model.XACDMLBuilderFacade;
 
 public class RoleResourcesPanel {
+	
 	private JPanel panel;
 	private JScrollPane scrollPane;
+	
 	private JTable tableRole;
  	private TableColumnModel modeloColuna;
-	
-//	private AlternativeOfProcessPanel alternativeOfProcessPanel;
-//	private WorkProductResourcesPanel workProdutResourcesPanel;
-//	private RoleResourcesPanel roleResourcePanel;
-//	private XACDMLBuilderFacade xACDMLBuilderFacade;
-
-	private Set<String> taskList;
+ 	private RoleTableModel roleTableModel;
 	
  	private List<Role> roles = new ArrayList<>();
- 	
  	private JComboBox<QueueType> queueTypeJComboBox;
 
 	public RoleResourcesPanel() {
@@ -70,7 +57,6 @@ public class RoleResourcesPanel {
 
 		scrollPane.setViewportView(tableRole);
 
- 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
  		GroupLayout gl_panel = new GroupLayout(panel);
@@ -95,7 +81,6 @@ public class RoleResourcesPanel {
 		return panel;
 	}
 
-	
 	public void setComboBoxRole(Set<String> list) {
 		 
 		String[] names = list.toArray(new String[list.size()]);
@@ -106,14 +91,11 @@ public class RoleResourcesPanel {
 			roles.add(role);
 		}
 
-		RoleTableModel roleTableModel = new RoleTableModel(roles);
-		
+		roleTableModel = new RoleTableModel(roles);
  		tableRole.setModel(roleTableModel);
+ 		configuraColunas();
  		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
  		tableRole.setValueAt(QueueType.QUEUE, 0, 1);
- 		 
-		configuraColunas();
-
  	}
 	
 	

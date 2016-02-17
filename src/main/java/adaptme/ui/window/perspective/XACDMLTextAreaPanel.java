@@ -45,7 +45,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 
-public class DefineXACDMLTextAreaPanel extends JPanel {
+public class XACDMLTextAreaPanel extends JPanel {
 
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private WorkProductResourcesPanel workProdutResourcesPanel;
@@ -57,7 +57,7 @@ public class DefineXACDMLTextAreaPanel extends JPanel {
 	private JTextArea textArea;
 	private JTextField simulationTimeJTextField;
 	
-	public DefineXACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
+	public XACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
 			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
 		
 	

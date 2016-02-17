@@ -6,6 +6,7 @@ public class Role {
 	private int intialQuantity;
 	private QueueType queueType;
 	private int queueSize;
+	
 	private boolean observeStationaryTime;
 	
 	public String getName() {

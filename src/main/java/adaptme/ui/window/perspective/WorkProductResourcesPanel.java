@@ -2,14 +2,11 @@ package adaptme.ui.window.perspective;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
@@ -34,25 +31,21 @@ public class WorkProductResourcesPanel {
 	
 	private JPanel topPanel;
 	private JPanel titledPanel;
+	private JPanel outerProbabilityPanel;
 	private ProbabilityDistributionInnerPanel probabilityDistributionInnerPannel;
  	private List<JPanel> listOfProbabilityDistributionsInnerPanels = new ArrayList<>();
-	
+ 	private GroupLayout gl_topPanel;
 	private JScrollPane scrollPane;
  	
 	private JTable tableWorkProduct;
 	private WorkProductTableModel model;
  	private TableColumnModel modeloColuna;
+ 	
 	private JComboBox<Policy> policyJComboBox;
 	private JComboBox<QueueType> queueTypeJComboBox;
 
 	private List<WorkProduct> workProducts = new ArrayList<>();
-	
-	private GroupLayout gl_topPanel;
-	
- 
 	private int indexSelectedRow;
-	private JPanel outerProbabilityPanel;
-	
 	
 	public WorkProductResourcesPanel() {
 		
@@ -65,7 +58,6 @@ public class WorkProductResourcesPanel {
 		policyJComboBox.addItem(Policy.FIFO);
 		policyJComboBox.addItem(Policy.STACK);
 		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
-		
 		
 		topPanel = new JPanel();
 	    titledPanel = new JPanel();
@@ -82,7 +74,6 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
 		scrollPane.setViewportView(tableWorkProduct);
-		 
 		 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
@@ -151,23 +142,12 @@ public class WorkProductResourcesPanel {
 			}
 		});
 		
-		policyJComboBox.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		}
-		);
- 
 		tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
 		tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
- 
-		
-	
- 
-		
  	}
 	
 	public void configuraColunas() { 
+		
 		modeloColuna = tableWorkProduct.getColumnModel();
 
 		TableColumn colunaQueueType = modeloColuna.getColumn(2);
@@ -178,6 +158,7 @@ public class WorkProductResourcesPanel {
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		
 		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
@@ -211,6 +192,6 @@ public class WorkProductResourcesPanel {
 	 }
 	 
 	 public JPanel getPanel() {
-			return topPanel;
-		}
+		 return topPanel;
+	 }
 }
