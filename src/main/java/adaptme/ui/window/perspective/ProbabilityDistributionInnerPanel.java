@@ -16,7 +16,7 @@ import javax.swing.border.TitledBorder;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
-import simulator.base.ObserverType;
+import simulator.base.ActiveObserverType;
 
 public class ProbabilityDistributionInnerPanel extends JPanel {
 	
@@ -27,7 +27,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	private JLabel selectedDemandWorkProductLabel;
 	private Parameters parameters;
 	private JLabel observerTypeLabel;
-	private JComboBox<ObserverType> observerTypeJComboBox;
+	private JComboBox<ActiveObserverType> observerTypeJComboBox;
 	
 	public ProbabilityDistributionInnerPanel(int i, String title) { 
 		 
@@ -49,10 +49,10 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		observerTypeLabel = new JLabel("Observer type");
 		
 		observerTypeJComboBox = new JComboBox<>();
-		observerTypeJComboBox.addItem(ObserverType.NONE);
-		observerTypeJComboBox.addItem(ObserverType.ACTIVE);
-		observerTypeJComboBox.addItem(ObserverType.DELAY);
-		observerTypeJComboBox.addItem(ObserverType.PROCESSOR);
+		observerTypeJComboBox.addItem(ActiveObserverType.NONE);
+		observerTypeJComboBox.addItem(ActiveObserverType.ACTIVE);
+		observerTypeJComboBox.addItem(ActiveObserverType.DELAY);
+		observerTypeJComboBox.addItem(ActiveObserverType.PROCESSOR);
 		
 		GroupLayout gl_probabilityDistributionsPanel = new GroupLayout(this);
 		gl_probabilityDistributionsPanel.setHorizontalGroup(
@@ -148,11 +148,11 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		this.parameters = parameters;
 	}
 
-	public JComboBox<ObserverType> getObserverTypeJComboBox() {
+	public JComboBox<ActiveObserverType> getObserverTypeJComboBox() {
 		return observerTypeJComboBox;
 	}
 
-	public void setObserverTypeJComboBox(JComboBox<ObserverType> observerTypeJComboBox) {
+	public void setObserverTypeJComboBox(JComboBox<ActiveObserverType> observerTypeJComboBox) {
 		this.observerTypeJComboBox = observerTypeJComboBox;
 	}
 

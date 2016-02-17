@@ -7,11 +7,8 @@ import javax.xml.bind.annotation.XmlEnum;
 
 @XmlEnum
 public enum BestFitDistribution {
-
-//    NORMAL("Normal"), LOG_NORMAL("Log Normal"), BINOMIAL("Binomial"), GEOMETRIC("Geometric"), GAMMA("Gamma"), POISSON(
-//	    "Poisson"), CONSTANT("Constant"), UNIFORM("Uniform"), NEGATIVE_EXPONENTIAL("Negative exponential");
 	
-	CONSTANT("Constant"), UNIFORM("Uniform"), NORMAL("Normal"), NEGATIVE_EXPONENTIAL("Negative exponential"), POISSON("Poisson");
+	NONE("None"), CONSTANT("Constant"), UNIFORM("Uniform"), NORMAL("Normal"), NEGATIVE_EXPONENTIAL("Negative exponential"), POISSON("Poisson");
 
     private String name;
 

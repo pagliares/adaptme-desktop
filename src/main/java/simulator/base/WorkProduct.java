@@ -19,7 +19,7 @@ public class WorkProduct {
     private int capacity;
     private Policy policy;
     
-	private ObserverType observerType;
+	private ActiveObserverType observerType;
 	private QueueType queueType;
 
     private String observerQueueLenghtName = "";
@@ -137,11 +137,11 @@ public class WorkProduct {
 				+ observerQueueLenghtName + ", observerQueueLenghtTimeName=" + observerQueueLenghtTimeName + "]";
 	}
 
-	public ObserverType getObserverType() {
+	public ActiveObserverType getObserverType() {
 		return observerType;
 	}
 
-	public void setObserverType(ObserverType observerType) {
+	public void setObserverType(ActiveObserverType observerType) {
 		this.observerType = observerType;
 	}
 

@@ -47,7 +47,7 @@ import xacdml.model.generated.QueueObserver;
 import xacdml.model.generated.Simtime;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
-import simulator.base.ObserverType;
+import simulator.base.ActiveObserverType;
 import simulator.base.QueueObserverType;
 import simulator.base.Role;
 import simulator.base.Task;
@@ -247,8 +247,8 @@ public class XACDMLBuilderFacade {
  			}
 			
 			// Configura os observers da Generate Activity
-			JComboBox<ObserverType> observerTypeComboBox = probabilityDistributionInnerPanel.getObserverTypeJComboBox();
-			if (!observerTypeComboBox.getSelectedItem().equals(ObserverType.NONE)) {
+			JComboBox<ActiveObserverType> observerTypeComboBox = probabilityDistributionInnerPanel.getObserverTypeJComboBox();
+			if (!observerTypeComboBox.getSelectedItem().equals(ActiveObserverType.NONE)) {
 				ActObserver actObserver = factory.createActObserver();
 				actObserver.setType(observerTypeComboBox.getSelectedItem().toString());
 				actObserver.setName("Observer type " + observerTypeComboBox.getSelectedItem().toString());
