@@ -110,7 +110,8 @@ public class RoleResourcesPanel {
 		
  		tableRole.setModel(roleTableModel);
  		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
- 		queueTypeJComboBox.setSelectedItem(QueueType.QUEUE);
+ 		tableRole.setValueAt(QueueType.QUEUE, 0, 1);
+ 		 
 		configuraColunas();
 
  	}

@@ -2,6 +2,8 @@ package adaptme.ui.window.perspective;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +66,7 @@ public class WorkProductResourcesPanel {
 		policyJComboBox.addItem(Policy.STACK);
 		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
 		
+		
 		topPanel = new JPanel();
 	    titledPanel = new JPanel();
 		titledPanel.setBorder(new TitledBorder(null, "Work product resources", TitledBorder.LEADING, TitledBorder.TOP, null,
@@ -123,7 +126,7 @@ public class WorkProductResourcesPanel {
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
-		policyJComboBox.setSelectedItem(Policy.FIFO);
+
  		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
 
 	}
@@ -147,6 +150,20 @@ public class WorkProductResourcesPanel {
 				}
 			}
 		});
+		
+		policyJComboBox.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		}
+		);
+ 
+		tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
+		tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
+ 
+		
+	
+ 
 		
  	}
 	

@@ -43,3 +43,13 @@ Geracao automatica de classes a partir de um dtd
  Muito simples. Basta colocar a anotacao @XmlID antes do campo protected String id das classes Class,Dead; (classe gerada automaticamente com xjc)
  
  
+ 3 - Como deixar um item de um JComboBox selecionado por default quando ele está dentro de um JTable (Horas para resolver)
+ 
+ Solucao: Nao temos que configurar o JComboBox, e sim a JTable :)
+ 
+ tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
+tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
+ 
+ 
+ 
+ 
