@@ -36,8 +36,7 @@ public class RoleResourcesPanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JTable tableRole;
- 	private JComboBox policyJComboBox;
-	private TableColumnModel modeloColuna;
+ 	private TableColumnModel modeloColuna;
 	
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private WorkProductResourcesPanel workProdutResourcesPanel;
@@ -56,10 +55,11 @@ public class RoleResourcesPanel {
 		queueTypeJComboBox.addItem(QueueType.QUEUE);
 		queueTypeJComboBox.addItem(QueueType.SET);
 		queueTypeJComboBox.addItem(QueueType.STACK);
+
 		
-		this.taskList = taskList;
-		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
-		this.workProdutResourcesPanel = workProdutResourcesPanel;
+//		this.taskList = taskList;
+//		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
+//		this.workProdutResourcesPanel = workProdutResourcesPanel;
 		 
 
 		panel = new JPanel();
@@ -115,6 +115,8 @@ public class RoleResourcesPanel {
 		RoleTableModel roleTableModel = new RoleTableModel(roles);
 		
  		tableRole.setModel(roleTableModel);
+ 		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
+ 		queueTypeJComboBox.setSelectedItem(QueueType.QUEUE);
 		configuraColunas();
 
  	}
@@ -124,7 +126,7 @@ public class RoleResourcesPanel {
 		
 		modeloColuna = tableRole.getColumnModel(); 
 		
-		TableColumn colunaQueueType = modeloColuna.getColumn(2);
+		TableColumn colunaQueueType = modeloColuna.getColumn(1);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
 		 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -133,6 +135,7 @@ public class RoleResourcesPanel {
 		tableRole.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		tableRole.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		tableRole.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tableRole.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
  
 
 		((DefaultTableCellRenderer) tableRole.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
@@ -141,6 +144,7 @@ public class RoleResourcesPanel {
 		tableRole.getColumnModel().getColumn(1).setPreferredWidth(23);
 		tableRole.getColumnModel().getColumn(2).setPreferredWidth(9);
 		tableRole.getColumnModel().getColumn(3).setPreferredWidth(9);
+		tableRole.getColumnModel().getColumn(4).setPreferredWidth(9);
 		
 	}
 

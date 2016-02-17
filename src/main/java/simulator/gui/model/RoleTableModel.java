@@ -13,7 +13,7 @@ public class RoleTableModel extends AbstractTableModel {
 
 	private List<Role> roles;
 
-	String[] headersRole = new String[] { "Name", "InitialQuantity", "Queue type", "Observe Stationary Time" };
+	String[] headersRole = new String[] { "Name", "Queue type", "Queue size", "Queue initial quantity", "Observe stationary time" };
 
 	public RoleTableModel(List<Role> roles) {
 		this.roles = roles;
@@ -36,12 +36,13 @@ public class RoleTableModel extends AbstractTableModel {
 		case 0:
 			return role.getName();
 		case 1:
-			return role.getIntialQuantity();
-		case 2:
 			return role.getQueueType();
-		case 3:
+		case 2:
+			return role.getQueueSize();
+ 		case 3:
+ 			return role.getIntialQuantity();
+		case 4:
 			return role.isObserveStationaryTime();
-
 		default:
 			return null;
 		}
@@ -55,12 +56,15 @@ public class RoleTableModel extends AbstractTableModel {
 			role.setName((String) aValue);
 			break;
 		case 1:
-			role.setIntialQuantity((int) aValue);
-			break;
-		case 2:
 			role.setQueueType((QueueType) aValue);
 			break;
+		case 2:
+			role.setQueueSize((int) aValue);
+			break;
 		case 3:
+			role.setIntialQuantity((int) aValue);
+			break;
+		case 4:
 			role.setObserveStationaryTime((boolean) aValue);
 			break;
 		}
@@ -72,12 +76,13 @@ public class RoleTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return Integer.class;
-		case 2:
 			return QueueType.class;
+		case 2:
+			return Integer.class;
 		case 3:
+			return Integer.class;
+		case 4:
 			return Boolean.class;
-
 		default:
 			return null;
 		}
@@ -102,6 +107,9 @@ public class RoleTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
+		if (column == 0) {
+			return false;
+		}
 		return true;
 	}
 

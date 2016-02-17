@@ -161,24 +161,20 @@ public class XACDMLBuilderFacade {
 			// pega atributos configurados na Jtable role, necessario tambem par o tipo de fila abaixo
 			
 			JTable roleTable = roleResourcePanel.getTableRole();
-			Integer initialQuantity = (Integer)roleTable.getModel().getValueAt(i, 1);
+			Integer initialQuantity = (Integer)roleTable.getModel().getValueAt(i, 3);
 			role.setIntialQuantity(initialQuantity);
 			
 			// define o tipo da fila da entidade permanente (QUEUE, STACK or SET)
-			String queueType = (roleTable.getModel().getValueAt(i, 2)).toString();
+			String queueType = (roleTable.getModel().getValueAt(i, 1)).toString();
+			String queueSize = roleTable.getModel().getValueAt(i, 2).toString();
 			Type queue = factory.createType();
 			
 			queue.setStruct(queueType);
-			queue.setSize(Integer.toString(role.getIntialQuantity()));
-			queue.setInit("0"); // conferir
+			queue.setSize(queueSize);
+			queue.setInit(Integer.toString(role.getIntialQuantity()));
 			deadPermanentEntity.setType(queue);
- 			
-			
-            
-            
-           
-			
-            Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 2);
+ 		
+            Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 4);
             if (isStationary) {
             	QueueObserver queueObserver = factory.createQueueObserver();
             	queueObserver.setType("STATIONARY");

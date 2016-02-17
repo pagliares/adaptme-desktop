@@ -5,6 +5,7 @@ public class Role {
 	private String name;
 	private int intialQuantity;
 	private QueueType queueType;
+	private int queueSize;
 	private boolean observeStationaryTime;
 	
 	public String getName() {
@@ -30,6 +31,12 @@ public class Role {
 	}
 	public void setQueueType(QueueType queueType) {
 		this.queueType = queueType;
+	}
+	public int getQueueSize() {
+		return queueSize;
+	}
+	public void setQueueSize(int queueSize) {
+		this.queueSize = queueSize;
 	}
 
 }
