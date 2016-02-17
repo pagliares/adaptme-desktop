@@ -11,7 +11,7 @@ import model.spem.derived.BestFitDistribution;
 import simulator.base.Policy;
 import simulator.base.WorkProduct;
 
-public class WorkProductTableModel extends AbstractTableModel implements TableModelListener {
+public class WorkProductTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,7 +76,6 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 			break;
 		case 4:
 			workProduct.setPolicy((Policy)aValue); 
-
 			break;
 		case 5:
 			workProduct.setObserverQueueLenghtName((String) aValue);
@@ -84,8 +83,7 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 		case 6:
 			workProduct.setObserverQueueLenghtTimeName((String) aValue);
 			break;
-		}
-		System.out.println(workProduct); // teste
+		} 
 	}
 
 	@Override
@@ -143,19 +141,4 @@ public class WorkProductTableModel extends AbstractTableModel implements TableMo
 		return workProducts;
 	}
 
-	// ainda nao sei se preciso implementar esta interface já que tenho o metodo setValueAt
-	@Override
-	public void tableChanged(TableModelEvent e) {
-//		int row = e.getFirstRow();
-//		int column = e.getColumn();
-//		TableModel model = (TableModel)e.getSource();
-//		String columnName = model.getColumnName(column);
-//		Object data = model.getValueAt(row, column);
-//		System.out.println("row.." + row);
-//		System.out.println("column.." + column);
-//		System.out.println("column name.." + columnName);
-//		System.out.println("cell value.." + data);
-		
-		
-	}
 }

@@ -24,6 +24,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import simulator.base.Policy;
+import simulator.base.QueueType;
 import simulator.base.WorkProduct;
 import simulator.gui.model.WorkProductTableModel;
 
@@ -40,24 +41,20 @@ public class WorkProductResourcesPanel {
 	private JTable tableWorkProduct;
 	private WorkProductTableModel model;
  	private TableColumnModel modeloColuna;
-	private JComboBox policyJComboBox;
+	private JComboBox<Policy> policyJComboBox;
 
 	private List<WorkProduct> workProducts = new ArrayList<>();
 	
 	private GroupLayout gl_topPanel;
 	
-	private JLabel lblNewLabel;
-	private JLabel selectedDemandWorkProductLabel;
-	
-	private boolean isFirstTime = true;
-	private int previousSelectedRow;
+ 
 	private int indexSelectedRow;
 	private JPanel outerProbabilityPanel;
 	
 	
 	public WorkProductResourcesPanel() {
 		
-		policyJComboBox = new JComboBox();
+		policyJComboBox = new JComboBox<>();
 		policyJComboBox.addItem(Policy.FIFO);
 		policyJComboBox.addItem(Policy.STACK);
 		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
@@ -120,6 +117,7 @@ public class WorkProductResourcesPanel {
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
+		policyJComboBox.setSelectedItem(Policy.FIFO);
 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
 
 	}
@@ -142,14 +140,7 @@ public class WorkProductResourcesPanel {
 					outerProbabilityPanel.removeAll();
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
 					outerProbabilityPanel.updateUI();
-//                    titledPanel.updateUI();
- 					 
-//					scrollPane_2.setViewportView(probabilityDistributionPanel);
-//					scrollPane_2.revalidate();
-//					scrollPane_2.repaint();
-//					String probabilityDistributionInnerPannelName =  probabilityDistributionInnerPannel.getName();
-// 					String selectedWorkProduct = tableWorkProduct.getValueAt(indexSelectedRow, 0).toString();
-//					probabilityDistributionInnerPannel.getSelectedDemandWorkProductLabel().setText(selectedWorkProduct +"  " + probabilityDistributionInnerPannelName);
+
 				}
 			}
 		});

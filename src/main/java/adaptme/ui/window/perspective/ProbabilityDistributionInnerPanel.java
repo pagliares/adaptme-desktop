@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
+import simulator.base.ObserverType;
 
 public class ProbabilityDistributionInnerPanel extends JPanel {
 	
@@ -25,6 +26,8 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	private JLabel panelTitleLabel;
 	private JLabel selectedDemandWorkProductLabel;
 	private Parameters parameters;
+	private JLabel observerTypeLabel;
+	private JComboBox<ObserverType> observerTypeJComboBox;
 	
 	public ProbabilityDistributionInnerPanel(int i, String title) { 
 		 
@@ -42,38 +45,60 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		panelTitleLabel = new JLabel(title);
 		
 		selectedDemandWorkProductLabel = new JLabel("");
+		
+		observerTypeLabel = new JLabel("Observer type");
+		
+		observerTypeJComboBox = new JComboBox<>();
+		observerTypeJComboBox.addItem(ObserverType.NONE);
+		observerTypeJComboBox.addItem(ObserverType.ACTIVE);
+		observerTypeJComboBox.addItem(ObserverType.DELAY);
+		observerTypeJComboBox.addItem(ObserverType.PROCESSOR);
+		
 		GroupLayout gl_probabilityDistributionsPanel = new GroupLayout(this);
 		gl_probabilityDistributionsPanel.setHorizontalGroup(
 			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
-							.addComponent(label, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
-							.addGap(28)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-							.addGap(0, 0, Short.MAX_VALUE))
-						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
-							.addComponent(panelTitleLabel)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(selectedDemandWorkProductLabel)))
-					.addContainerGap())
+							.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+									.addComponent(label, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+									.addComponent(observerTypeLabel)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(observerTypeJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addGap(39)
+							.addComponent(selectedDemandWorkProductLabel))
+						.addComponent(panelTitleLabel)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_probabilityDistributionsPanel.setVerticalGroup(
 			gl_probabilityDistributionsPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
-					.addContainerGap(16, Short.MAX_VALUE)
-					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(panelTitleLabel)
-						.addComponent(selectedDemandWorkProductLabel))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-					.addGap(16))
+					.addGap(20)
+					.addComponent(panelTitleLabel)
+					.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+							.addComponent(selectedDemandWorkProductLabel)
+							.addGap(72))
+						.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
+							.addGap(18)
+							.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(observerTypeJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(observerTypeLabel))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGap(61))
 		);
 		this.setLayout(gl_probabilityDistributionsPanel);
  		
@@ -122,5 +147,15 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	public void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
+
+	public JComboBox<ObserverType> getObserverTypeJComboBox() {
+		return observerTypeJComboBox;
+	}
+
+	public void setObserverTypeJComboBox(JComboBox<ObserverType> observerTypeJComboBox) {
+		this.observerTypeJComboBox = observerTypeJComboBox;
+	}
+
+	 
 
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.xml.bind.JAXBContext;
@@ -46,6 +47,7 @@ import xacdml.model.generated.QueueObserver;
 import xacdml.model.generated.Simtime;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
+import simulator.base.ObserverType;
 import simulator.base.Role;
 import simulator.base.Task;
 import simulator.base.WorkProduct;
@@ -181,19 +183,6 @@ public class XACDMLBuilderFacade {
             	deadPermanentEntity.getQueueObserver().add(queueObserver);
             }
             
-			// Verificar a necessidade de colocar Graphic
-			//Graphic circle = factory.createGraphic();
-			//circle.setType("CIRCLE");
-			//circle.setX("198");
-			//circle.setY("349");
-			//dead.setGraphic(circle);
-			
-			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			QueueObserver queueObserver = factory.createQueueObserver();
-			queueObserver.setType("LENGTH");
-			queueObserver.setName("SERVICE_OBS");
-			deadPermanentEntity.getQueueObserver().add(queueObserver);
-
 			acd.getDead().add(deadPermanentEntity);
 			deadPermanentEntity = factory.createDead();
 		}
@@ -207,54 +196,7 @@ public class XACDMLBuilderFacade {
 
 			WorkProduct workProduct = workProducts.get(i);
 			
-			JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
-			ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(i);
 			
-			System.out.println(probabilityDistributionInnerPanel.getName());
-			System.out.println(probabilityDistributionInnerPanel.getPanelTitleLabel());
-			System.out.println(probabilityDistributionInnerPanel.getComboBox().getSelectedItem());
-			Parameters parameters = probabilityDistributionInnerPanel.getParameters();
-//			System.out.println(parameters.toString());
-
-			Stat distribution = factory.createStat();
-			
-			if (parameters instanceof ConstantParameters) {
-				
-				ConstantParameters constantParameters = (ConstantParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("CONSTANT");
-	 			distribution.setParm1(Double.toString(constantParameters.getValue()));
-	 			
-			} else if (parameters instanceof UniformParameters) {
-				
-				UniformParameters UniformParameters = (UniformParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("UNIFORM");
-	 			distribution.setParm1(Double.toString(UniformParameters.getLow()));
-	 			distribution.setParm2(Double.toString(UniformParameters.getHigh()));
- 	 			
-			} else if (parameters instanceof NegativeExponential) {
-				
-				NegativeExponential negativeExponential = (NegativeExponential)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("NEGEXP");
-	 			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
- 	 			
-			} else if (parameters instanceof NormalParameters) {
-				
-				NormalParameters normalParameters = (NormalParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("NORMAL");
-	 			distribution.setParm1(Double.toString(normalParameters.getMean()));
-	 			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
-
-			} else if (parameters instanceof PoissonParameters) {
-				
-				PoissonParameters poissonParameters = (PoissonParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("POISSON");
-	 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
- 			}
 			
 			generateActivity.setId("Generate activity for : " + workProduct.getName());
 			
@@ -262,16 +204,57 @@ public class XACDMLBuilderFacade {
 			temporalEntity.setId("Temporal entity " + workProduct.getName());
 			acd.getClazz().add(temporalEntity);
 	 		generateActivity.setClazz(temporalEntity);   
-
 	 		
-			//Graphic box = factory.createGraphic();
-			//box.setType("BOX");
-			//box.setX("73");
-			//box.setY("101");
+	 		// ate a linha 247, configura os dados da distribuicao selecionada
+	 		JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
+			// pega o painel x associado com o workproduct x
+			ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(i);
+		 
+			Parameters parameters = probabilityDistributionInnerPanel.getParameters();
+
+			Stat distribution = factory.createStat();
 			
-			ActObserver actObserver = factory.createActObserver();
-			actObserver.setType("ACTIVE");
-			actObserver.setName("CALL_OBS");
+			if (parameters instanceof ConstantParameters) {
+				ConstantParameters constantParameters = (ConstantParameters)parameters;
+				distribution = factory.createStat();
+	 			distribution.setType("CONSTANT");
+	 			distribution.setParm1(Double.toString(constantParameters.getValue()));
+	 			
+			} else if (parameters instanceof UniformParameters) {
+				UniformParameters UniformParameters = (UniformParameters)parameters;
+				distribution = factory.createStat();
+	 			distribution.setType("UNIFORM");
+	 			distribution.setParm1(Double.toString(UniformParameters.getLow()));
+	 			distribution.setParm2(Double.toString(UniformParameters.getHigh()));
+ 	 			
+			} else if (parameters instanceof NegativeExponential) {
+				NegativeExponential negativeExponential = (NegativeExponential)parameters;
+				distribution = factory.createStat();
+	 			distribution.setType("NEGEXP");
+	 			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+ 	 			
+			} else if (parameters instanceof NormalParameters) {
+				NormalParameters normalParameters = (NormalParameters)parameters;
+				distribution = factory.createStat();
+	 			distribution.setType("NORMAL");
+	 			distribution.setParm1(Double.toString(normalParameters.getMean()));
+	 			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+			} else if (parameters instanceof PoissonParameters) {
+				PoissonParameters poissonParameters = (PoissonParameters)parameters;
+				distribution = factory.createStat();
+	 			distribution.setType("POISSON");
+	 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
+ 			}
+			
+			// Configura os observers da Generate Activity
+			JComboBox<ObserverType> observerTypeComboBox = probabilityDistributionInnerPanel.getObserverTypeJComboBox();
+			if (!observerTypeComboBox.getSelectedItem().equals(ObserverType.NONE)) {
+				ActObserver actObserver = factory.createActObserver();
+				actObserver.setType(observerTypeComboBox.getSelectedItem().toString());
+				actObserver.setName("Observer type " + observerTypeComboBox.getSelectedItem().toString());
+				generateActivity.getActObserver().add(actObserver);
+			}
 			
 			Dead deadTemporalEntity = factory.createDead();
 			
@@ -302,7 +285,7 @@ public class XACDMLBuilderFacade {
 			Next nextDead = factory.createNext();
 			nextDead.setDead(deadTemporalEntity);
 			
- 			generateActivity.getActObserver().add(actObserver);
+ 			
 //			callGenerate.setGraphic(box);
 			generateActivity.setStat(distribution);
 			generateActivity.getNext().add(nextDead);

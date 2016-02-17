@@ -18,6 +18,9 @@ public class WorkProduct {
     private String queueName = "" ;
     private int capacity;
     private Policy policy;
+    
+	private ObserverType observerType;
+
     private String observerQueueLenghtName = "";
     private String observerQueueLenghtTimeName = "";
 
@@ -131,6 +134,14 @@ public class WorkProduct {
 				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
 				+ ", capacity=" + capacity + ", policy=" + policy + ", observerQueueLenghtName="
 				+ observerQueueLenghtName + ", observerQueueLenghtTimeName=" + observerQueueLenghtTimeName + "]";
+	}
+
+	public ObserverType getObserverType() {
+		return observerType;
+	}
+
+	public void setObserverType(ObserverType observerType) {
+		this.observerType = observerType;
 	}
 	
 	

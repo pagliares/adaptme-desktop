@@ -38,10 +38,10 @@ public class RoleResourcesPanel {
 	private JTable tableRole;
  	private TableColumnModel modeloColuna;
 	
-	private AlternativeOfProcessPanel alternativeOfProcessPanel;
-	private WorkProductResourcesPanel workProdutResourcesPanel;
-	private RoleResourcesPanel roleResourcePanel;
-	private XACDMLBuilderFacade xACDMLBuilderFacade;
+//	private AlternativeOfProcessPanel alternativeOfProcessPanel;
+//	private WorkProductResourcesPanel workProdutResourcesPanel;
+//	private RoleResourcesPanel roleResourcePanel;
+//	private XACDMLBuilderFacade xACDMLBuilderFacade;
 
 	private Set<String> taskList;
 	
@@ -55,12 +55,6 @@ public class RoleResourcesPanel {
 		queueTypeJComboBox.addItem(QueueType.QUEUE);
 		queueTypeJComboBox.addItem(QueueType.SET);
 		queueTypeJComboBox.addItem(QueueType.STACK);
-
-		
-//		this.taskList = taskList;
-//		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
-//		this.workProdutResourcesPanel = workProdutResourcesPanel;
-		 
 
 		panel = new JPanel();
 		JPanel panel_1 = new JPanel();
