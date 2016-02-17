@@ -42,7 +42,7 @@ public class MeetingPanel implements UpdatePanel {
     private JLabel lblDurationstdDeviation;
     private JTextField textFieldDurationStdDeviation;
     private JLabel lblBestFitProbbility;
-    private JComboBox<String> comboBoxDistribution;
+    private JComboBox<BestFitDistribution> distributionJComboBox;
     private ProcessContentRepository processContentRepository;
     private ParametersPanel parametersPanel;
     private ProbabilityDistributionPanelListener focusListener;
@@ -69,7 +69,14 @@ public class MeetingPanel implements UpdatePanel {
 
 	lblBestFitProbbility = new JLabel("Best fit probability distribution");
 
-	comboBoxDistribution = new JComboBox<>();
+	distributionJComboBox = new JComboBox<>();
+	distributionJComboBox.addItem(BestFitDistribution.NONE);
+	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+	distributionJComboBox.addItem(BestFitDistribution.POISSON);
+	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+	
 	panel.setBorder(
 		new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
 
@@ -91,10 +98,11 @@ public class MeetingPanel implements UpdatePanel {
 
 	scrollPaneParameters.setViewportView(parametersPanel.getPanel());
 	
-	comboBoxDistribution.addItemListener(e -> {
-	    String s = (String) comboBoxDistribution.getSelectedItem();
+	distributionJComboBox.addItemListener(e -> {
+//	    String s = (String) distributionJComboBox.getSelectedItem();
 	    // scrollPaneParameters.removeAll();
-	     parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+//	     parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+	     parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
 	    parametersPanel =  new ParametersPanel(parameters, focusListener);
 		focusListener.setParameters(parameters);
 	    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
@@ -111,7 +119,7 @@ public class MeetingPanel implements UpdatePanel {
 					.addGroup(gl_panel.createSequentialGroup()
 						.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175,
 							GroupLayout.PREFERRED_SIZE)
-						.addGap(69).addComponent(comboBoxDistribution,
+						.addGap(69).addComponent(distributionJComboBox,
 							GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))))
 			.addGroup(gl_panel.createSequentialGroup().addContainerGap().addComponent(scrollPaneParameters,
 				GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
@@ -135,7 +143,7 @@ public class MeetingPanel implements UpdatePanel {
 				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup().addGap(5)
 						.addComponent(lblBestFitProbbility))
-					.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE,
+					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE,
 						GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(22)
 				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105,
@@ -159,14 +167,14 @@ public class MeetingPanel implements UpdatePanel {
     }
 
     public String getDistribution() {
-	return (String) comboBoxDistribution.getSelectedItem();
+	return (String) distributionJComboBox.getSelectedItem();
     }
 
-    public void setDistribution(List<String> list) {
-	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	comboBoxDistribution.setModel(model);
-	
-    }
+//    public void setDistribution(List<String> list) {
+//	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
+//	distributionJComboBox.setModel(model);
+//	
+//    }
 
     public double getDurationMean() {
 	return Double.parseDouble(textFieldDurationMean.getText());

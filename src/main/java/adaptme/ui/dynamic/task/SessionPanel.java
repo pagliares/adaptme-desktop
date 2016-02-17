@@ -34,7 +34,7 @@ public class SessionPanel implements UpdatePanel {
 	private JLabel lblDurationstdDeviation;
 	private JTextField textFieldDurationStdDeviation;
 	private JLabel lblBestFitProbbility;
-	private JComboBox<String> comboBoxDistribution;
+	private JComboBox<BestFitDistribution> distributionJComboBox;
 	private String title;
 	private ProcessContentRepository processContentRepository;
 	private JPanel panel = new JPanel();
@@ -69,16 +69,23 @@ public class SessionPanel implements UpdatePanel {
 		scrollPaneParameters = new JScrollPane();
 		scrollPaneParameters.setViewportBorder(null);
 		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
-		comboBoxDistribution = new JComboBox<>();
+		distributionJComboBox = new JComboBox<>();
+		distributionJComboBox.addItem(BestFitDistribution.NONE);
+ 		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+ 		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.POISSON);
+ 		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+ 		
 		parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
 		Sample sample = new Sample();
 		processContentRepository.setSample(sample);
 		processContentRepository.getSample().setParameters(parameters);
 		scrollPaneParameters.setViewportView(new ParametersPanel(parameters, probabilityDistributionPanelListener).getPanel());
 		probabilityDistributionPanelListener.setParameters(parameters);
-		comboBoxDistribution.addItemListener(e -> {
-			String s = (String) comboBoxDistribution.getSelectedItem();
-			parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
+		distributionJComboBox.addItemListener(e -> {
+			 
+			parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
 			probabilityDistributionPanelListener.setParameters(parameters);
 			scrollPaneParameters.setViewportView(new ParametersPanel(parameters, probabilityDistributionPanelListener).getPanel());
 			scrollPaneParameters.revalidate();
@@ -108,7 +115,7 @@ public class SessionPanel implements UpdatePanel {
 								.addGroup(gl_panel.createSequentialGroup()
 										.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
 										.addGap(65)
-										.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+										.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
 								.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_panel.createSequentialGroup()
 										.addComponent(lblUnity)
@@ -137,7 +144,7 @@ public class SessionPanel implements UpdatePanel {
 								.addGroup(gl_panel.createSequentialGroup()
 										.addGap(5)
 										.addComponent(lblBestFitProbbility))
-								.addComponent(comboBoxDistribution, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGap(6)
 						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 						.addGap(18)
@@ -168,13 +175,13 @@ public class SessionPanel implements UpdatePanel {
 	}
 
 	public String getDistribution() {
-		return (String) comboBoxDistribution.getSelectedItem();
+		return (String) distributionJComboBox.getSelectedItem();
 	}
 
-	public void setDistribution(List<String> list) {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-		comboBoxDistribution.setModel(model);
-	}
+//	public void setDistribution(List<String> list) {
+//		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
+//		distributionJComboBox.setModel(model);
+//	}
 
 	public String getMeasurementUnity() {
 		return (String) comboBoxMeasurementUnity.getSelectedItem();

@@ -395,7 +395,7 @@ public class PersistProcess {
 			InputWorkProductPanel inputWorkProductPanel = new InputWorkProductPanel(repositoryViewPanel,
 					methodContentRepository);
 			inputWorkProductPanel.setInputWorkProductLabel(methodContentRepository.getName());
-			inputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
+	//		inputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
 			taskPanel.addPanel(inputWorkProductPanel);
 		}
 		for (MethodContentRepository methodContentRepository : content.getOutputMethodContentsRepository()) {
@@ -403,18 +403,18 @@ public class PersistProcess {
 					methodContentRepository);
 			outputWorkProductPanel.setOutputWorkProductLabel(methodContentRepository.getName());
 
-			outputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
+		//	outputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
 			taskPanel.addPanel(outputWorkProductPanel);
 		}
 		MethodContentRepository role = content.getMainRole();
 		RolePanel rolePanel = new RolePanel(repositoryViewPanel, role);
 		rolePanel.setRoleLabel(role.getName());
-		rolePanel.setDistribution(BestFitDistribution.getList());
+	//	rolePanel.setDistribution(BestFitDistribution.getList());
 		taskPanel.addPanel(rolePanel);
 		for (MethodContentRepository methodContentRepository : content.getAdditionalRoles()) {
 			RolePanel panel = new RolePanel(repositoryViewPanel, methodContentRepository);
 			panel.setRoleLabel(methodContentRepository.getName());
-			panel.setDistribution(BestFitDistribution.getList());
+	//		panel.setDistribution(BestFitDistribution.getList());
 			taskPanel.addPanel(panel);
 		}
 
@@ -426,7 +426,7 @@ public class PersistProcess {
 		sessionPanel.setSessionTitle(content.getName());
 		hashMap.put(content.getName(), sessionPanel);
 		keySet.add(content.getName());
-		sessionPanel.setDistribution(BestFitDistribution.getList());
+//		sessionPanel.setDistribution(BestFitDistribution.getList());
 		for (ProcessContentRepository processContentRepository : content.getChildren()) {
 			buildChildGUI(processContentRepository, hashMap, repositoryViewPanel, keySet);
 		}
@@ -449,7 +449,7 @@ public class PersistProcess {
 			RepositoryViewPanel repositoryViewPanel, List<String> keySet) {
 		TaskPanel taskPanel = new TaskPanel();
 		SessionPanel sessionPanel = new SessionPanel(repositoryViewPanel, content);
-		sessionPanel.setDistribution(BestFitDistribution.getList());
+//		sessionPanel.setDistribution(BestFitDistribution.getList());
 		sessionPanel.setMeasurementUnity(TimeEnum.getList());
 		sessionPanel.setSessionTitle(content.getName());
 		taskPanel.addPanel(sessionPanel);

@@ -1,9 +1,6 @@
 package adaptme.ui.window.perspective;
 
-import java.util.List;
-
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
@@ -21,7 +18,7 @@ import simulator.base.ActiveObserverType;
 public class ProbabilityDistributionInnerPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> comboBox;
+	private JComboBox<BestFitDistribution> distributionJComboBox;
 	private JScrollPane scrollPane;
 	private JLabel panelTitleLabel;
 	private JLabel selectedDemandWorkProductLabel;
@@ -35,9 +32,14 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		this.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
  		JLabel label = new JLabel("Best fit probability distribution");
 		
- 		comboBox  = new JComboBox<String>();
-  		setDistribution(BestFitDistribution.getList());
-		
+ 		distributionJComboBox  = new JComboBox<>();
+ 		distributionJComboBox.addItem(BestFitDistribution.NONE);
+ 		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+ 		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.POISSON);
+ 		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+ 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -65,7 +67,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 								.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
 									.addComponent(label, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
-									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+									.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_probabilityDistributionsPanel.createSequentialGroup()
 									.addComponent(observerTypeLabel)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -94,7 +96,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_probabilityDistributionsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(label)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)))
@@ -102,20 +104,16 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		);
 		this.setLayout(gl_probabilityDistributionsPanel);
  		
-		comboBox.addItemListener(e -> {
-		    String s = (String) comboBox.getSelectedItem();
-		    parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-		    scrollPane.setViewportView(new ParametersPanel(parameters, null).getPanel());
+		distributionJComboBox.addItemListener(e -> {
+ 
+		    parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
+		    scrollPane.setViewportView(new ParametersPanel(parameters, null).getPanel()); // null, pois aqui diferentemente do meeting panel, nao estou
+		    																			  // populando processRepository on the fly
 		    scrollPane.revalidate();
 		    scrollPane.repaint();
 		});
 	}
 	
-	public void setDistribution(List<String> list) {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-			comboBox.setModel(model);
-	 }
-
 	public JLabel getSelectedDemandWorkProductLabel() {
 		return selectedDemandWorkProductLabel;
 	}
@@ -132,12 +130,12 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		this.panelTitleLabel = panelTitleLabel;
 	}
 
-	public JComboBox<String> getComboBox() {
-		return comboBox;
+	public JComboBox<BestFitDistribution> getDistributionJComboBox() {
+		return distributionJComboBox;
 	}
 
-	public void setComboBox(JComboBox<String> comboBox) {
-		this.comboBox = comboBox;
+	public void setDistributionJComboBox(JComboBox<BestFitDistribution> comboBox) {
+		this.distributionJComboBox = comboBox;
 	}
 
 	public Parameters getParameters() {

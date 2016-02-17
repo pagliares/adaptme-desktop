@@ -15,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
+import model.spem.derived.BestFitDistribution;
 
 public class RolePanel implements UpdatePanel {
     private JLabel lblRole;
@@ -23,7 +24,7 @@ public class RolePanel implements UpdatePanel {
     private JLabel lblSkill;
     private JTextField textFieldSkill;
     private JLabel lblBestFitProbability;
-    private JComboBox<String> comboBoxDistribution;
+    private JComboBox<BestFitDistribution> distributionJComboBox;
     private String title;
     private MethodContentRepository methodContentRepository;
 
@@ -51,8 +52,15 @@ public class RolePanel implements UpdatePanel {
 	lblBestFitProbability = new JLabel("Best fit probability distribution");
 	lblBestFitProbability.setBounds(12, 122, 143, 14);
 
-	comboBoxDistribution = new JComboBox<>();
-	comboBoxDistribution.setBounds(256, 119, 164, 20);
+	distributionJComboBox = new JComboBox<>();
+	distributionJComboBox.addItem(BestFitDistribution.NONE);
+	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+	distributionJComboBox.addItem(BestFitDistribution.POISSON);
+	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+	
+	distributionJComboBox.setBounds(256, 119, 164, 20);
 	panel.setBorder(new TitledBorder(null, "Role", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	panel.setLayout(null);
 	panel.add(lblRole);
@@ -61,7 +69,7 @@ public class RolePanel implements UpdatePanel {
 	panel.add(lblSkill);
 	panel.add(textFieldSkill);
 	panel.add(lblBestFitProbability);
-	panel.add(comboBoxDistribution);
+	panel.add(distributionJComboBox);
 
 	FocusListener focusListener = new FocusListener() {
 
@@ -96,13 +104,10 @@ public class RolePanel implements UpdatePanel {
     }
 
     public String getComboBoxDistribution() {
-	return (String) comboBoxDistribution.getSelectedItem();
+	return (String) distributionJComboBox.getSelectedItem();
     }
 
-    public void setDistribution(List<String> list) {
-	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	comboBoxDistribution.setModel(model);
-    }
+     
 
     public void setRoleLabel(String title) {
 	this.title = title;

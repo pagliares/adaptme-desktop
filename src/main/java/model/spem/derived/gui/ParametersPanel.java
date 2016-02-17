@@ -17,54 +17,59 @@ import org.apache.commons.lang3.text.WordUtils;
 import model.spem.derived.Parameters;
 
 public class ParametersPanel {
-    private JPanel panel;
- 
-    public ParametersPanel(Parameters parameters, FocusListener focusListener) {
-    	Field[] fields = parameters.getClass().getDeclaredFields();
+	private JPanel panel;
 
-    	panel = new JPanel();
-    	panel.setLayout(new GridBagLayout());
-    	int gridy = 0;
-    	double weightx = 1;
-    	double weighty = 1;
-    	
-    	for (Field field : fields) {
-    		String name = field.getName();
-    		StringBuilder labelText = new StringBuilder();
-    		for (String w : name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")) {  // pega camel case para nao camel case e colocar espacos
-    			labelText.append(w.toLowerCase()).append(" ");
-    		}
-    		GridBagConstraints constraints = new GridBagConstraints();
-    		// constraints.insets = new Insets(2, 0, 0, 0);
-    		constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-    		// constraints.anchor = GridBagConstraints.PAGE_START;
-    		constraints.fill = GridBagConstraints.HORIZONTAL;
-    		constraints.weighty = weighty;
-    		constraints.weightx = weightx;
-    		constraints.gridx = 0;
-    		constraints.gridy = gridy;
-    		// constraints.gridwidth = 5;
-    		JLabel label = new JLabel(WordUtils.capitalizeFully(labelText.toString()));
-    		label.setPreferredSize(new Dimension(115, 24));
-    		panel.add(label, constraints);
-    		constraints.fill = GridBagConstraints.NONE;
-    		constraints.gridx = 5;
-    		
-    		JTextField titleText = new JTextField("0");
-    		titleText.setName(name);
-    		titleText.addFocusListener(focusListener);
-     		
-    		titleText.setPreferredSize(new Dimension(58, 28));
-    		panel.add(titleText, constraints);
-    		gridy += 1;
-    		weightx = 0.8;
-    		weighty = 0.8;
-    	}
-    }
+	public ParametersPanel(Parameters parameters, FocusListener focusListener) {
+		if (parameters == null) { // None foi selecionado no combobox
+			panel = new JPanel();
+		} else {
+			Field[] fields = parameters.getClass().getDeclaredFields();
 
-    public JPanel getPanel() {
-	return panel;
-    }
+			panel = new JPanel();
+			panel.setLayout(new GridBagLayout());
+			int gridy = 0;
+			double weightx = 1;
+			double weighty = 1;
 
-	
+			for (Field field : fields) {
+				String name = field.getName();
+				StringBuilder labelText = new StringBuilder();
+				for (String w : name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")) {  // pega camel case para nao camel case e colocar espacos
+					labelText.append(w.toLowerCase()).append(" ");
+				}
+				GridBagConstraints constraints = new GridBagConstraints();
+				// constraints.insets = new Insets(2, 0, 0, 0);
+				constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+				// constraints.anchor = GridBagConstraints.PAGE_START;
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.weighty = weighty;
+				constraints.weightx = weightx;
+				constraints.gridx = 0;
+				constraints.gridy = gridy;
+				// constraints.gridwidth = 5;
+				JLabel label = new JLabel(WordUtils.capitalizeFully(labelText.toString()));
+				label.setPreferredSize(new Dimension(115, 24));
+				panel.add(label, constraints);
+				constraints.fill = GridBagConstraints.NONE;
+				constraints.gridx = 5;
+
+				JTextField titleText = new JTextField("0");
+				titleText.setName(name);
+				titleText.addFocusListener(focusListener);
+
+				titleText.setPreferredSize(new Dimension(58, 28));
+				panel.add(titleText, constraints);
+				gridy += 1;
+				weightx = 0.8;
+				weighty = 0.8;
+			}
+
+		}
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+
 }

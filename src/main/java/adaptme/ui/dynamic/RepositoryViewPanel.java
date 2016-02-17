@@ -1,10 +1,13 @@
 package adaptme.ui.dynamic;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -12,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
 import org.jfree.chart.ChartFactory;
@@ -22,12 +26,6 @@ import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
 import model.spem.derived.BestFitDistribution;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class RepositoryViewPanel {
 
@@ -40,7 +38,7 @@ public class RepositoryViewPanel {
 	private JLabel lblDurationstdDeviation;
 	private JTextField textFieldDurationStdDeviation;
 	private JLabel lblBestFitProbability;
-	private JComboBox<String> comboBoxBestDistribution;
+	private JComboBox<BestFitDistribution> distributionJComboBox;
 	private JLabel lblBusinesDays;
 	private JLabel label;
 	private JLabel lblProcessElement;
@@ -75,10 +73,16 @@ public class RepositoryViewPanel {
 
 		lblBestFitProbability = new JLabel("Best fit probability distribution");
 
-		comboBoxBestDistribution = new JComboBox<>();
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(
-				BestFitDistribution.getList().toArray(new String[BestFitDistribution.getList().size()]));
-		comboBoxBestDistribution.setModel(model);
+		distributionJComboBox = new JComboBox<>();
+		distributionJComboBox.addItem(BestFitDistribution.NONE);
+ 		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+ 		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+ 		distributionJComboBox.addItem(BestFitDistribution.POISSON);
+ 		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+		
+		
+	 
 
 		lblBusinesDays = new JLabel("Business days");
 
@@ -168,7 +172,7 @@ public class RepositoryViewPanel {
 					.addGap(4)
 					.addComponent(lblBestFitProbability, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
 					.addGap(49)
-					.addComponent(comboBoxBestDistribution, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
+					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(4)
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE))
@@ -216,7 +220,7 @@ public class RepositoryViewPanel {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(10)
 							.addComponent(lblBestFitProbability))
-						.addComponent(comboBoxBestDistribution, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(17)
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
 					.addGap(8)
@@ -277,12 +281,7 @@ public class RepositoryViewPanel {
 	}
 
 	public String getCBestDistribution() {
-		return (String) comboBoxBestDistribution.getSelectedItem();
-	}
-
-	public void setComboBoxBestDistribution(List<String> list) {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-		comboBoxBestDistribution.setModel(model);
+		return (String) distributionJComboBox.getSelectedItem();
 	}
 
 	public void setTitle(String title) {

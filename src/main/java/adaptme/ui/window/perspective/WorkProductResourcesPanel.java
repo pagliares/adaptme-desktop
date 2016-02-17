@@ -36,8 +36,7 @@ public class WorkProductResourcesPanel {
  	private List<JPanel> listOfProbabilityDistributionsInnerPanels = new ArrayList<>();
 	
 	private JScrollPane scrollPane;
-	private JComboBox<String> comboBox;
-	
+ 	
 	private JTable tableWorkProduct;
 	private WorkProductTableModel model;
  	private TableColumnModel modeloColuna;
@@ -191,15 +190,6 @@ public class WorkProductResourcesPanel {
 		return tableWorkProduct;
 	}
 	
-	 public String getDistribution() {
-		return (String) comboBox.getSelectedItem();
-	 }
-
-	 public void setDistribution(List<String> list) {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-			comboBox.setModel(model);
-	 }
-	 
 	 public List<JPanel> getListOfProbabilityDistributionPanels() {
 		 return listOfProbabilityDistributionsInnerPanels;
 	 }

@@ -33,13 +33,14 @@ public class InputWorkProductPanel implements UpdatePanel {
     private JTextField textFieldSizeMean;
     private JLabel lblSizestdDeviation;
     private JLabel lblBestFitProbability;
-    private JComboBox<String> comboBoxSizeDistribuiton;
+    private JComboBox<BestFitDistribution> distributionJComboBox;
     private JTextField textFieldSizeStdDeviation;
     // private RepositoryViewPanel repositoryViewPanel;
     private String title;
     private MethodContentRepository methodContentRepository;
     private JPanel panel = new JPanel();
     private JScrollPane scrollPaneParameters;
+    private Parameters parameters;
 
     public InputWorkProductPanel(RepositoryViewPanel repositoryViewPanel,
 	    MethodContentRepository methodContentRepository) {
@@ -66,13 +67,22 @@ public class InputWorkProductPanel implements UpdatePanel {
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setViewportBorder(null);
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
-	comboBoxSizeDistribuiton = new JComboBox<>();
-	Parameters parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
+	distributionJComboBox = new JComboBox<>();
+	distributionJComboBox.addItem(BestFitDistribution.NONE);
+	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+	distributionJComboBox.addItem(BestFitDistribution.POISSON);
+	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+
+	
+	parameters = Parameters.createParameter(BestFitDistribution.NORMAL);
 	scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
-	comboBoxSizeDistribuiton.addItemListener(e -> {
-	    String s = (String) comboBoxSizeDistribuiton.getSelectedItem();
-	    Parameters p = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	    scrollPaneParameters.setViewportView(new ParametersPanel(p, null).getPanel());
+	distributionJComboBox.addItemListener(e -> {
+	     
+	    parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
+
+	    scrollPaneParameters.setViewportView(new ParametersPanel(parameters, null).getPanel());
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
 	});
@@ -106,7 +116,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 				.addComponent(lblInputWorkProduct, GroupLayout.PREFERRED_SIZE, 305,
 					GroupLayout.PREFERRED_SIZE)
 				.addGroup(gl_panel.createSequentialGroup().addComponent(lblBestFitProbability)
-					.addGap(68).addComponent(comboBoxSizeDistribuiton, GroupLayout.PREFERRED_SIZE,
+					.addGap(68).addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE,
 						196, GroupLayout.PREFERRED_SIZE))))
 			.addGroup(Alignment.LEADING,
 				gl_panel.createSequentialGroup().addContainerGap().addComponent(lblSizemean).addGap(28)
@@ -126,7 +136,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup().addGap(5)
 						.addComponent(lblBestFitProbability))
-				.addComponent(comboBoxSizeDistribuiton, GroupLayout.PREFERRED_SIZE,
+				.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE,
 					GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(18)
 		.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 		.addGap(18)
@@ -157,14 +167,10 @@ public class InputWorkProductPanel implements UpdatePanel {
     }
 
     public String getSizeDistribuiton() {
-	return (String) comboBoxSizeDistribuiton.getSelectedItem();
+	return (String) distributionJComboBox.getSelectedItem();
     }
 
-    public void setSizeDistribuiton(List<String> list) {
-	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	comboBoxSizeDistribuiton.setModel(model);
-    }
-
+   
     public void setInputWorkProductLabel(String label) {
 	title = label;
 	lblInputWorkProduct.setText("Input work product - " + label);
