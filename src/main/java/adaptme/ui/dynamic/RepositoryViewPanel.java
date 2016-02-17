@@ -32,20 +32,11 @@ public class RepositoryViewPanel {
 	private JPanel panel;
 
 	private JLabel lblSampleSize;
-	private JTextField textFieldSampleSize;
-	private JLabel lblDurationmean;
-	private JTextField textFieldDurationMean;
-	private JLabel lblDurationstdDeviation;
-	private JTextField textFieldDurationStdDeviation;
-	private JLabel lblBestFitProbability;
-	private JComboBox<BestFitDistribution> distributionJComboBox;
-	private JLabel lblBusinesDays;
-	private JLabel label;
 	private JLabel lblProcessElement;
-	private JButton btnUseRepositoryDistribution;
-	private JPanel panelGraphic;
+	private JPanel histogramChartPanel;
 	private JLabel lblMessagem;
 	private JTextField textFieldNumberOfBins;
+	private JLabel sampleSizeValueLabel;
 
 	public RepositoryViewPanel() {
 
@@ -53,55 +44,20 @@ public class RepositoryViewPanel {
 
 		panel.setBorder(new TitledBorder(null, "Repository View", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
-		lblSampleSize = new JLabel("Sample size");
-
-		textFieldSampleSize = new JTextField();
-		textFieldSampleSize.setText("0");
-		textFieldSampleSize.setColumns(10);
-
-		lblDurationmean = new JLabel("Duration (mean)");
-
-		textFieldDurationMean = new JTextField();
-		textFieldDurationMean.setText("0");
-		textFieldDurationMean.setColumns(10);
-
-		lblDurationstdDeviation = new JLabel("Duration (Std. Deviation)");
-
-		textFieldDurationStdDeviation = new JTextField();
-		textFieldDurationStdDeviation.setText("0");
-		textFieldDurationStdDeviation.setColumns(10);
-
-		lblBestFitProbability = new JLabel("Best fit probability distribution");
-
-		distributionJComboBox = new JComboBox<>();
-		distributionJComboBox.addItem(BestFitDistribution.NONE);
- 		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
- 		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
- 		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
- 		distributionJComboBox.addItem(BestFitDistribution.POISSON);
- 		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
-		
-		
-	 
-
-		lblBusinesDays = new JLabel("Business days");
-
-		label = new JLabel("Business days");
+		lblSampleSize = new JLabel("Sample size :");
 
 		lblProcessElement = new JLabel("Process element: ");
 		lblProcessElement.setFont(new Font("Tahoma", Font.BOLD, 13));
 
-		btnUseRepositoryDistribution = new JButton("Use repository distribution");
-
-		panelGraphic = new JPanel();
+		histogramChartPanel = new JPanel();
 
 		lblMessagem = new JLabel("");
 		lblMessagem.setFont(new Font("SansSerif", Font.BOLD, 14));
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Histogram Config", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelGraphic.setLayout(new BorderLayout(0, 0));
-		panelGraphic.add(getHistogram(5), BorderLayout.CENTER);
+		JPanel histogramConfigPanel = new JPanel();
+		histogramConfigPanel.setBorder(new TitledBorder(null, "Histogram Config", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		histogramChartPanel.setLayout(new BorderLayout(0, 0));
+		histogramChartPanel.add(getHistogram(5), BorderLayout.CENTER);
 		
 		JLabel lblNumberOfBins = new JLabel("Number of Bins");
 		
@@ -112,123 +68,76 @@ public class RepositoryViewPanel {
 		JButton btnUpdateHistogram = new JButton("Update Histogram");
 		btnUpdateHistogram.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelGraphic.removeAll();
-				panelGraphic.add(getHistogram(Integer.parseInt(textFieldNumberOfBins.getText())), BorderLayout.CENTER);
-				panelGraphic.updateUI();
+				histogramChartPanel.removeAll();
+				histogramChartPanel.add(getHistogram(Integer.parseInt(textFieldNumberOfBins.getText())), BorderLayout.CENTER);
+				histogramChartPanel.updateUI();
 			}
 		});
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
+		GroupLayout gl_histogramConfigPanel = new GroupLayout(histogramConfigPanel);
+		gl_histogramConfigPanel.setHorizontalGroup(
+			gl_histogramConfigPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_histogramConfigPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblNumberOfBins)
-					.addPreferredGap(ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
-					.addComponent(textFieldNumberOfBins, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-					.addGap(37))
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(116)
+					.addGap(18)
+					.addComponent(textFieldNumberOfBins, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
 					.addComponent(btnUpdateHistogram)
-					.addContainerGap(121, Short.MAX_VALUE))
+					.addGap(96))
 		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+		gl_histogramConfigPanel.setVerticalGroup(
+			gl_histogramConfigPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_histogramConfigPanel.createSequentialGroup()
+					.addContainerGap(19, Short.MAX_VALUE)
+					.addGroup(gl_histogramConfigPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNumberOfBins)
-						.addComponent(textFieldNumberOfBins, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-					.addComponent(btnUpdateHistogram)
-					.addContainerGap())
+						.addComponent(textFieldNumberOfBins, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUpdateHistogram))
+					.addGap(53))
 		);
-		panel_1.setLayout(gl_panel_1);
+		histogramConfigPanel.setLayout(gl_histogramConfigPanel);
+		
+		sampleSizeValueLabel = new JLabel("10");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-					.addGap(49)
-					.addComponent(textFieldSampleSize, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblDurationmean, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-					.addGap(49)
-					.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-					.addGap(12)
-					.addComponent(label))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblDurationstdDeviation, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-					.addGap(50)
-					.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-					.addGap(11)
-					.addComponent(lblBusinesDays))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblBestFitProbability, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-					.addGap(49)
-					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(panelGraphic, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(120)
-					.addComponent(btnUseRepositoryDistribution))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(sampleSizeValueLabel))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(histogramConfigPanel, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(43, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(8)
 					.addComponent(lblProcessElement)
-					.addGap(2)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(11)
-							.addComponent(lblSampleSize))
-						.addComponent(textFieldSampleSize, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(25)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblDurationmean))
-						.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(6)
-							.addComponent(label)))
+					.addGap(13)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSampleSize)
+						.addComponent(sampleSizeValueLabel))
 					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblDurationstdDeviation))
-						.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(6)
-							.addComponent(lblBusinesDays)))
-					.addGap(12)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(10)
-							.addComponent(lblBestFitProbability))
-						.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(17)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
-					.addGap(8)
-					.addComponent(panelGraphic, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)
-					.addGap(12)
+					.addComponent(histogramConfigPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
+					.addGap(90)
 					.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-					.addGap(16)
-					.addComponent(btnUseRepositoryDistribution))
+					.addGap(45))
 		);
 		panel.setLayout(gl_panel);
 	}
@@ -256,34 +165,6 @@ public class RepositoryViewPanel {
 		return chartPanel;
 	}
 	
-	public double getSampleSize() {
-		return Double.parseDouble(textFieldSampleSize.getText());
-	}
-
-	public double getDurationMean() {
-		return Double.parseDouble(textFieldDurationMean.getText());
-	}
-
-	public double getDurationStdDeviation() {
-		return Double.parseDouble(textFieldDurationStdDeviation.getText());
-	}
-
-	public void setSampleSize(double sampleSize) {
-		textFieldSampleSize.setText("" + sampleSize);
-	}
-
-	public void setDurationMean(double durationMean) {
-		textFieldDurationMean.setText("" + durationMean);
-	}
-
-	public void setDurationStdDeviation(double durationStdDeviation) {
-		textFieldDurationStdDeviation.setText("" + durationStdDeviation);
-	}
-
-	public String getCBestDistribution() {
-		return (String) distributionJComboBox.getSelectedItem();
-	}
-
 	public void setTitle(String title) {
 		lblProcessElement.setText("Process element: " + title);
 	}
