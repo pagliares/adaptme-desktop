@@ -42,6 +42,7 @@ public class WorkProductResourcesPanel {
 	private WorkProductTableModel model;
  	private TableColumnModel modeloColuna;
 	private JComboBox<Policy> policyJComboBox;
+	private JComboBox<QueueType> queueTypeJComboBox;
 
 	private List<WorkProduct> workProducts = new ArrayList<>();
 	
@@ -53,6 +54,11 @@ public class WorkProductResourcesPanel {
 	
 	
 	public WorkProductResourcesPanel() {
+		
+		queueTypeJComboBox = new JComboBox<>();
+		queueTypeJComboBox.addItem(QueueType.QUEUE);
+		queueTypeJComboBox.addItem(QueueType.SET);
+		queueTypeJComboBox.addItem(QueueType.STACK);
 		
 		policyJComboBox = new JComboBox<>();
 		policyJComboBox.addItem(Policy.FIFO);
@@ -136,8 +142,7 @@ public class WorkProductResourcesPanel {
 				if ((indexSelectedRow > -1)) {
  					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
-					System.out.println(probabilityDistributionInnerPannel.getName());
-					outerProbabilityPanel.removeAll();
+ 					outerProbabilityPanel.removeAll();
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
 					outerProbabilityPanel.updateUI();
 
@@ -150,7 +155,10 @@ public class WorkProductResourcesPanel {
 	public void configuraColunas() { 
 		modeloColuna = tableWorkProduct.getColumnModel();
 
-		TableColumn colunaPolicy = modeloColuna.getColumn(4);
+		TableColumn colunaQueueType = modeloColuna.getColumn(2);
+		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
+		
+		TableColumn colunaPolicy = modeloColuna.getColumn(5);
 		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -160,6 +168,7 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
 
 		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
@@ -171,6 +180,7 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
 		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
+		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(7);
 	}
 
 	public List<WorkProduct> getWorkProducts() {

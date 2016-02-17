@@ -9,6 +9,7 @@ import javax.swing.table.TableModel;
 
 import model.spem.derived.BestFitDistribution;
 import simulator.base.Policy;
+import simulator.base.QueueType;
 import simulator.base.WorkProduct;
 
 public class WorkProductTableModel extends AbstractTableModel {
@@ -17,7 +18,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
 	
-	String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue name", 
+	String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
 									  "Capacity", "Policy", "Observer queue length name", "Observer queue lenght time name"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
@@ -43,14 +44,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return workProduct.isDemandWorkProduct();
 		case 2:
-			return workProduct.getQueueName();
+			return workProduct.getQueueType();
 		case 3:
-			return workProduct.getCapacity();
+			return workProduct.getQueueName();
 		case 4:
-			return workProduct.getPolicy();
+			return workProduct.getCapacity();
 		case 5:
-			return workProduct.getObserverQueueLenghtName();
+			return workProduct.getPolicy();
 		case 6:
+			return workProduct.getObserverQueueLenghtName();
+		case 7:
 			return workProduct.getObserverQueueLenghtTimeName();
 		default:
 			return null;
@@ -69,18 +72,21 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setDemandWorkProduct((boolean) aValue);
 			break;
 		case 2:
-			workProduct.setQueueName((String) aValue); 
+			workProduct.setQueueType((QueueType) aValue); 
 			break;
 		case 3:
-			workProduct.setCapacity((Integer) aValue);
+			workProduct.setQueueName((String) aValue); 
 			break;
 		case 4:
-			workProduct.setPolicy((Policy)aValue); 
+			workProduct.setCapacity((Integer) aValue);
 			break;
 		case 5:
-			workProduct.setObserverQueueLenghtName((String) aValue);
+			workProduct.setPolicy((Policy)aValue); 
 			break;
 		case 6:
+			workProduct.setObserverQueueLenghtName((String) aValue);
+			break;
+		case 7:
 			workProduct.setObserverQueueLenghtTimeName((String) aValue);
 			break;
 		} 
@@ -94,14 +100,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return Boolean.class;
 		case 2:
-			return String.class;
+			return QueueType.class;
 		case 3:
-			return Integer.class;
-		case 4:
-			return Policy.class;   
-		case 5:
 			return String.class;
+		case 4:
+			return Integer.class;
+		case 5:
+			return Policy.class;   
 		case 6:
+			return String.class;
+		case 7:
 			return String.class;
 		default:
 			return null;

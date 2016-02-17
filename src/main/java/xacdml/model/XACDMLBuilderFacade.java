@@ -48,6 +48,7 @@ import xacdml.model.generated.Simtime;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
 import simulator.base.ObserverType;
+import simulator.base.QueueObserverType;
 import simulator.base.Role;
 import simulator.base.Task;
 import simulator.base.WorkProduct;
@@ -179,7 +180,7 @@ public class XACDMLBuilderFacade {
             Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 4);
             if (isStationary) {
             	QueueObserver queueObserver = factory.createQueueObserver();
-            	queueObserver.setType("STATIONARY");
+            	queueObserver.setType(QueueObserverType.STATIONARY.toString());
             	deadPermanentEntity.getQueueObserver().add(queueObserver);
             }
             
@@ -195,8 +196,6 @@ public class XACDMLBuilderFacade {
 		for (int i = 0; i < workProducts.size(); i++) {  
 
 			WorkProduct workProduct = workProducts.get(i);
-			
-			
 			
 			generateActivity.setId("Generate activity for : " + workProduct.getName());
 			
@@ -257,94 +256,95 @@ public class XACDMLBuilderFacade {
 			}
 			
 			Dead deadTemporalEntity = factory.createDead();
-			
-			deadTemporalEntity.setId(workProduct.getQueueName());
+			String queueName = workProduct.getQueueName();
+			deadTemporalEntity.setId(queueName);
 			deadTemporalEntity.setClazz(temporalEntity);
-
+			
+			JTable tableWorkProduct = workProdutResourcesPanel.getTableWorkProduct();
+			// define o tipo da fila da entidade temporaria (QUEUE, STACK or SET)
+//			String queueType = (tableWorkProduct.getModel().getValueAt(i, 2)).toString();
+//			String queueCapacity = tableWorkProduct.getModel().getValueAt(i, 4).toString();
+//			
+			String queueType = "QUEUE";
+			String queueCapacity = "5";
+ 
 			Type queue = factory.createType();
-			queue.setStruct("QUEUE");
-			queue.setSize(Integer.toString(workProduct.getQuantity()));
+			queue.setStruct(queueType);
+			queue.setSize(queueCapacity);
 			queue.setInit("0"); // conferir
+			
 			deadTemporalEntity.setType(queue);
 
-			// Verificar a necessidade de colocar Graphic
-			//Graphic circle = factory.createGraphic();
-			//circle.setType("CIRCLE");
-			//circle.setX("198");
-			//circle.setY("349");
-			//deadTemporalEntity.setGraphic(circle);
-
 			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			QueueObserver queueObserver = factory.createQueueObserver();
-			queueObserver.setType("LENGTH");
-			queueObserver.setName("SERVICE_OBS");
-			deadTemporalEntity.getQueueObserver().add(queueObserver);
+			
+			String observerQueueLengthName = (tableWorkProduct.getModel().getValueAt(i, 6)).toString();
+			String observerQeueuLenghtTimeName = (tableWorkProduct.getModel().getValueAt(i, 7)).toString();
+			
+			if (observerQueueLengthName != null ) {
+				QueueObserver queueObserver = factory.createQueueObserver();
+				queueObserver.setType(QueueObserverType.LENGTH.toString());
+				queueObserver.setName(observerQueueLengthName);
+				deadTemporalEntity.getQueueObserver().add(queueObserver);
+			}
+			
 
+			if (observerQeueuLenghtTimeName != null) {
+				QueueObserver queueObserver = factory.createQueueObserver();
+				queueObserver.setType(QueueObserverType.LENGTH.toString());
+				queueObserver.setName(observerQeueuLenghtTimeName);
+				deadTemporalEntity.getQueueObserver().add(queueObserver);
+			}
+			
 			acd.getDead().add(deadTemporalEntity);
 			
 			Next nextDead = factory.createNext();
 			nextDead.setDead(deadTemporalEntity);
 			
- 			
-//			callGenerate.setGraphic(box);
 			generateActivity.setStat(distribution);
 			generateActivity.getNext().add(nextDead);
 
 			acd.getGenerate().add(generateActivity);
 			
-		 
 		// end build generate activities
 		
 		// begin destroy
-			Destroy destroyDep0 = factory.createDestroy();
-
-			destroyDep0.setId("Destroy : " + workProduct.getName());
-//			destroyDep0.setClazz(temporalEntity);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
-
-			Stat uniform2 = factory.createStat();
-			uniform2.setType("UNIFORM");
-			uniform2.setParm1("0.0");
-			uniform2.setParm2("10.0");
-
-//			Graphic box3 = factory.createGraphic();
-//			box3.setType("BOX");
-//			box3.setX("602");
-//			box3.setY("108");
-
-			//Prev previous = factory.createPrev();
-			//previous.setDead(dead);
-			//destroyDep0.getPrev().add(previous);
-//			destroyDep0.setGraphic(box3);
-			// esta faltando destroy.setStat no codigo
-			
-			acd.getDestroy().add(destroyDep0);
-			
-			generateActivity = factory.createGenerate();
-			destroyDep0 = factory.createDestroy();
+//			Destroy destroyDep0 = factory.createDestroy();
+//
+//			destroyDep0.setId("Destroy : " + workProduct.getName());
+////			destroyDep0.setClazz(temporalEntity);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
+//
+//			Stat uniform2 = factory.createStat();
+//			uniform2.setType("UNIFORM");
+//			uniform2.setParm1("0.0");
+//			uniform2.setParm2("10.0");
+//
+//			//Prev previous = factory.createPrev();
+//			//previous.setDead(dead);
+//			//destroyDep0.getPrev().add(previous);
+////			destroyDep0.setGraphic(box3);
+//			// esta faltando destroy.setStat no codigo
+//			
+//			acd.getDestroy().add(destroyDep0);
+//			
+//			generateActivity = factory.createGenerate();
+//			destroyDep0 = factory.createDestroy();
 		}
 			
 			// end destroy
 		
-		 
- 		
 		// begin buildActivities
 		
-         Act regularActivity = factory.createAct();
-		
-		for (String task: tasks){
-			
-			regularActivity.setId(task);
-
-			Stat uniform = factory.createStat();
-			uniform.setType("UNIFORM");
-			uniform.setParm1("1.0");
-			uniform.setParm2("5.0");
-
-			Graphic box = factory.createGraphic();
-			box.setType("BOX");
-			box.setX("319");
-			box.setY("110");
+//         Act regularActivity = factory.createAct();
+//		
+//		for (String task: tasks){
+//			
+//			regularActivity.setId(task);
 //
+//			Stat uniform = factory.createStat();
+//			uniform.setType("UNIFORM");
+//			uniform.setParm1("1.0");
+//			uniform.setParm2("5.0");
+
 //			EntityClass ec1 = factory.createEntityClass();
 //			 
 //			ec1.setPrev(dead);
@@ -356,18 +356,15 @@ public class XACDMLBuilderFacade {
 //		    ec2.setPrev(dead);
 //			ec2.setNext(dead);
 //
-			regularActivity.setStat(uniform);
-			regularActivity.setGraphic(box);
-//			regularActivity.getEntityClass().add(ec1);
+//			regularActivity.setStat(uniform);
+ //			regularActivity.getEntityClass().add(ec1);
 //			regularActivity.getEntityClass().add(ec2);
 			
-			acd.getAct().add(regularActivity);	
-			regularActivity = factory.createAct();
-		}
+//			acd.getAct().add(regularActivity);	
+//			regularActivity = factory.createAct();
+//		}
 		
 		// end buildActivities
-		
-		
 		
 		this.acd = acd;
 		String result = null;
@@ -383,20 +380,6 @@ public class XACDMLBuilderFacade {
 	
 	public void printProcessRepositoryForDebugPurposes() {
 		
-		
-//		MethodLibraryWrapper methodLibraryWrapper = new MethodLibraryWrapper();
-// 		methodLibraryWrapper.load(methodLibraryFile);
-// 		List<Process> processes = methodLibraryWrapper.getUMAProcesses();
-// 		System.out.println(processes.size());
- 		
-// 		List<ProcessRepository> processesRepository = new ArrayList<>();
-  		
-//  		for (Process p: processes) {
-//  			processesRepository.add(persistProcess.buildProcess(p, methodLibraryWrapper.methodLibraryHash));
-//  		}
-  		
-//  		ProcessRepository p = processesRepository.get(0);
-//  		p.imprimeTasks(p.getProcessContents());
  		ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
   		List<ProcessContentRepository> resultado = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
     		
@@ -434,11 +417,8 @@ public class XACDMLBuilderFacade {
 //  					System.out.print("\t" + d.getValue());
 //  				}
 //  				
-//   			}
-  			
-  			
+//   			}	
   		}
-
 	}
 
 	public Acd getAcd() {

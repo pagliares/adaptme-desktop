@@ -14,12 +14,13 @@ public class WorkProduct {
     private boolean lock;
     private String status;
     
-    private int quantity;
+//    private int quantity;
     private String queueName = "" ;
     private int capacity;
     private Policy policy;
     
 	private ObserverType observerType;
+	private QueueType queueType;
 
     private String observerQueueLenghtName = "";
     private String observerQueueLenghtTimeName = "";
@@ -72,13 +73,13 @@ public class WorkProduct {
 		this.demandWorkProduct = demandWorkProduct;
 	}
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+//	public int getQuantity() {
+//		return quantity;
+//	}
+//
+//	public void setQuantity(int quantity) {
+//		this.quantity = quantity;
+//	}
 
 	public String getQueueName() {
 		return queueName;
@@ -142,6 +143,14 @@ public class WorkProduct {
 
 	public void setObserverType(ObserverType observerType) {
 		this.observerType = observerType;
+	}
+
+	public QueueType getQueueType() {
+		return queueType;
+	}
+
+	public void setQueueType(QueueType queueType) {
+		this.queueType = queueType;
 	}
 	
 	
