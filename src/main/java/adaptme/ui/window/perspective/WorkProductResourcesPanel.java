@@ -114,16 +114,17 @@ public class WorkProductResourcesPanel {
 			workProducts.add(workProduct);
 			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + names[i]);
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
-
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 		}
+		
 		model = new WorkProductTableModel(workProducts);
 		tableWorkProduct.setModel(model);
+		configuraColunas();
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 		policyJComboBox.setSelectedItem(Policy.FIFO);
-		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
+ 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
 
 	}
 	
@@ -138,13 +139,11 @@ public class WorkProductResourcesPanel {
 				indexSelectedRow = tableWorkProduct.getSelectedRow();
  //				boolean isRowandCheckBoxSelected = (Boolean) model.getValueAt(tableWorkProduct.getSelectedRow(),1) == true;
 				 
-				if ((indexSelectedRow > -1)) {
- 					 
+				if ((indexSelectedRow > -1)) { 					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
  					outerProbabilityPanel.removeAll();
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
 					outerProbabilityPanel.updateUI();
-
 				}
 			}
 		});
