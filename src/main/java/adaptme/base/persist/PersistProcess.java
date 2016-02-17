@@ -450,7 +450,7 @@ public class PersistProcess {
 		TaskPanel taskPanel = new TaskPanel();
 		SessionPanel sessionPanel = new SessionPanel(repositoryViewPanel, content);
 //		sessionPanel.setDistribution(BestFitDistribution.getList());
-		sessionPanel.setMeasurementUnity(TimeEnum.getList());
+//		sessionPanel.setMeasurementUnity(TimeEnum.getList());
 		sessionPanel.setSessionTitle(content.getName());
 		taskPanel.addPanel(sessionPanel);
 		//buildGUITask(content, taskPanel, repositoryViewPanel);

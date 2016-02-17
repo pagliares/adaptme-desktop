@@ -19,6 +19,9 @@ import model.spem.derived.Parameters;
 public class ParametersPanel {
 	private JPanel panel;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public ParametersPanel(Parameters parameters, FocusListener focusListener) {
 		if (parameters == null) { // None foi selecionado no combobox
 			panel = new JPanel();
@@ -59,6 +62,12 @@ public class ParametersPanel {
 
 				titleText.setPreferredSize(new Dimension(58, 28));
 				panel.add(titleText, constraints);
+				
+//				constraints.fill = GridBagConstraints.NONE;
+//				constraints.gridx = 5;
+//				JLabel minutesJLabel = new JLabel("minutes");
+//				panel.add(minutesJLabel, constraints);
+				
 				gridy += 1;
 				weightx = 0.8;
 				weighty = 0.8;
@@ -67,6 +76,9 @@ public class ParametersPanel {
 		}
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public JPanel getPanel() {
 		return panel;
 	}

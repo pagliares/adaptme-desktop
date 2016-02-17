@@ -37,10 +37,6 @@ import javax.swing.UIManager;
 
 public class MeetingPanel implements UpdatePanel {
     private JLabel lblSession;
-    private JLabel lblDurationmean;
-    private JTextField textFieldDurationMean;
-    private JLabel lblDurationstdDeviation;
-    private JTextField textFieldDurationStdDeviation;
     private JLabel lblBestFitProbbility;
     private JComboBox<BestFitDistribution> distributionJComboBox;
     private ProcessContentRepository processContentRepository;
@@ -55,18 +51,6 @@ public class MeetingPanel implements UpdatePanel {
 	lblSession = new JLabel("Development session");
 	lblSession.setFont(new Font("SansSerif", Font.BOLD, 14));
 
-	lblDurationmean = new JLabel("Duration (mean)");
-
-	textFieldDurationMean = new JTextField();
-	textFieldDurationMean.setText("480");
-	textFieldDurationMean.setColumns(10);
-
-	lblDurationstdDeviation = new JLabel("Duration (Std. deviation)");
-
-	textFieldDurationStdDeviation = new JTextField();
-	textFieldDurationStdDeviation.setText("0");
-	textFieldDurationStdDeviation.setColumns(10);
-
 	lblBestFitProbbility = new JLabel("Best fit probability distribution");
 
 	distributionJComboBox = new JComboBox<>();
@@ -79,10 +63,6 @@ public class MeetingPanel implements UpdatePanel {
 	
 	panel.setBorder(
 		new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
-
-	lblBusinessDays = new JLabel("business days");
-
-	label = new JLabel("business days");
 
 	focusListener = new ProbabilityDistributionPanelListener();
 
@@ -112,84 +92,43 @@ public class MeetingPanel implements UpdatePanel {
 	});
 	
 	GroupLayout gl_panel = new GroupLayout(panel);
-	gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-		.addGroup(gl_panel.createSequentialGroup().addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup().addGap(6)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addComponent(lblSession)
+	gl_panel.setHorizontalGroup(
+		gl_panel.createParallelGroup(Alignment.LEADING)
+			.addGroup(gl_panel.createSequentialGroup()
+				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
-						.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175,
-							GroupLayout.PREFERRED_SIZE)
-						.addGap(69).addComponent(distributionJComboBox,
-							GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))))
-			.addGroup(gl_panel.createSequentialGroup().addContainerGap().addComponent(scrollPaneParameters,
-				GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
-			.addGroup(gl_panel.createSequentialGroup().addContainerGap().addGroup(gl_panel
-				.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup().addComponent(lblDurationmean).addGap(155)
-					.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE, 56,
-						GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblBusinessDays,
-						GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup().addComponent(lblDurationstdDeviation)
-					.addGap(113)
-					.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE, 56,
-						GroupLayout.PREFERRED_SIZE)
-					.addGap(12).addComponent(label, GroupLayout.PREFERRED_SIZE, 83,
-						GroupLayout.PREFERRED_SIZE)))))
-		.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+						.addGap(6)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblSession)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+								.addGap(69)
+								.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))))
+					.addGroup(gl_panel.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+	);
 	gl_panel.setVerticalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup().addGap(18).addComponent(lblSession).addGap(18)
+			.addGroup(gl_panel.createSequentialGroup()
+				.addGap(18)
+				.addComponent(lblSession)
+				.addGap(18)
 				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup().addGap(5)
+					.addGroup(gl_panel.createSequentialGroup()
+						.addGap(5)
 						.addComponent(lblBestFitProbbility))
-					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE,
-						GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(22)
-				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105,
-					GroupLayout.PREFERRED_SIZE)
-		.addPreferredGap(ComponentPlacement.RELATED)
-		.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addComponent(lblDurationmean)
-			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(lblBusinessDays)
-				.addComponent(textFieldDurationMean, GroupLayout.PREFERRED_SIZE,
-					GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-		.addGap(12)
-		.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(lblDurationstdDeviation))
-			.addComponent(textFieldDurationStdDeviation, GroupLayout.PREFERRED_SIZE,
-				GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(label))).addGap(285)));
+				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+				.addGap(69))
+	);
 	panel.setLayout(gl_panel);
-
-	
-	textFieldDurationMean.addFocusListener(focusListener);
-	textFieldDurationStdDeviation.addFocusListener(focusListener);
     }
 
     public String getDistribution() {
 	return (String) distributionJComboBox.getSelectedItem();
-    }
-
-//    public void setDistribution(List<String> list) {
-//	DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-//	distributionJComboBox.setModel(model);
-//	
-//    }
-
-    public double getDurationMean() {
-	return Double.parseDouble(textFieldDurationMean.getText());
-    }
-
-    public double getDurationStdDeviation() {
-	return Double.parseDouble(textFieldDurationStdDeviation.getText());
-    }
-
-    public void setDurationMean(double durationMean) {
-	textFieldDurationMean.setText("" + durationMean);
-    }
-
-    public void setDurationStdDeviation(double durationStdDeviation) {
-	textFieldDurationStdDeviation.setText("" + durationStdDeviation);
     }
 
     public void setSessionTitle(String title) {
@@ -198,8 +137,6 @@ public class MeetingPanel implements UpdatePanel {
     }
 
     private JPanel panel = new JPanel();
-    private JLabel lblBusinessDays;
-    private JLabel label;
     private String title;
     private JScrollPane scrollPaneParameters;
 
