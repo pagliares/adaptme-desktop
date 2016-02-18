@@ -41,6 +41,21 @@ public class ProcessContentRepository implements Serializable {
 
     @XmlAttribute
     private boolean repeatable;
+    
+    @XmlAttribute
+    private boolean hasMultipleOccurrences;
+    
+    @XmlAttribute
+    private boolean eventDriven;
+    
+    @XmlAttribute
+    private boolean ongoing;
+    
+    @XmlAttribute
+    private boolean optional;
+    
+    @XmlAttribute
+    private boolean planned;
 
     @XmlAttribute
     @Enumerated(EnumType.STRING)
@@ -223,5 +238,53 @@ public class ProcessContentRepository implements Serializable {
     public void setRepeatable(boolean repeatable) {
 	this.repeatable = repeatable;
     }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public boolean isHasMultipleOccurrences() {
+		return hasMultipleOccurrences;
+	}
+
+	public void setHasMultipleOccurrences(boolean hasMultipleOccurrences) {
+		this.hasMultipleOccurrences = hasMultipleOccurrences;
+	}
+
+	public boolean isEventDriven() {
+		return eventDriven;
+	}
+
+	public void setEventDriven(boolean eventDriven) {
+		this.eventDriven = eventDriven;
+	}
+
+	public boolean isOngoing() {
+		return ongoing;
+	}
+
+	public void setOngoing(boolean ongoing) {
+		this.ongoing = ongoing;
+	}
+
+	public boolean isOptional() {
+		return optional;
+	}
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
+	}
+
+	public boolean isPlanned() {
+		return planned;
+	}
+
+	public void setPlanned(boolean planned) {
+		this.planned = planned;
+	}
 
 }

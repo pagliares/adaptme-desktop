@@ -100,6 +100,8 @@ public class PersistProcess {
 				Milestone milestone = (Milestone) object;
 				ProcessContentRepository content = createProcessContentRepository(milestone,
 						ProcessContentType.MILESTONE, isNew, hash);
+				setBreadownElementsAttributes(milestone, content);
+				
 				content.setFather(father);
 				if (father != null) {
 					father.addChild(content);
@@ -112,6 +114,7 @@ public class PersistProcess {
 				Iteration iteration = (Iteration) object;
 				ProcessContentRepository content = createProcessContentRepository(iteration,
 						ProcessContentType.ITERATION, isNew, hash);
+				setBreadownElementsAttributes(iteration, content);
 				content.setFather(father);
 				if (father != null) {
 					father.addChild(content);
@@ -125,6 +128,7 @@ public class PersistProcess {
 				Phase phase = (Phase) object;
 				ProcessContentRepository content = createProcessContentRepository(phase, ProcessContentType.PHASE,
 						isNew, hash);
+				setBreadownElementsAttributes(phase, content);
 				content.setFather(father);
 				if (father != null) {
 					father.addChild(content);
@@ -138,6 +142,7 @@ public class PersistProcess {
 			} else if (object instanceof TaskDescriptor) {
 				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
 				ProcessContentRepository content = createTask(taskDescriptor, hash);
+				setBreadownElementsAttributes(taskDescriptor, content);
 				content.setFather(father);
 				if (father != null) {
 					father.addChild(content);
@@ -153,6 +158,7 @@ public class PersistProcess {
 				Activity activity = (Activity) object;
 				ProcessContentRepository content = createProcessContentRepository(activity, ProcessContentType.ACTIVITY,
 						isNew, hash);
+				setBreadownElementsAttributes(activity, content);
 				content.setFather(father);
 				if (father != null) {
 					father.addChild(content);
@@ -170,6 +176,16 @@ public class PersistProcess {
 				}
 			}
 		}
+	}
+	
+	public void setBreadownElementsAttributes(WorkBreakdownElement source, ProcessContentRepository target) {
+		target.setEventDriven(source.isIsEventDriven());
+		target.setHasMultipleOccurrences(source.isHasMultipleOccurrences());
+		target.setOngoing(source.isIsOngoing());
+		target.setOptional(source.isIsOptional());
+		target.setPlanned(source.isIsPlanned());
+		target.setRepeatable(source.isIsRepeatable());
+		
 	}
 	
 	// criado para tentar pegar apenas as tasks
