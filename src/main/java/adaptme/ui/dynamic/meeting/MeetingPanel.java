@@ -34,6 +34,7 @@ import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
 import model.spem.derived.gui.ParametersPanel;
 import javax.swing.UIManager;
+import java.awt.GridBagLayout;
 
 public class MeetingPanel implements UpdatePanel {
     private JLabel lblSession;
@@ -91,6 +92,13 @@ public class MeetingPanel implements UpdatePanel {
 		processContentRepository.getSample().setParameters(parameters);
 	});
 	
+	LocalViewBottomPanel localViewBottomPanel = new LocalViewBottomPanel();
+	GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
+	gridBagLayout.rowWeights = new double[]{0.0, 0.0};
+	gridBagLayout.rowHeights = new int[]{57, 150};
+	gridBagLayout.columnWeights = new double[]{0.0};
+	gridBagLayout.columnWidths = new int[]{549};
+	
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -106,8 +114,9 @@ public class MeetingPanel implements UpdatePanel {
 								.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))))
 					.addGroup(gl_panel.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
+					.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 541, GroupLayout.PREFERRED_SIZE))
+				.addContainerGap(13, Short.MAX_VALUE))
 	);
 	gl_panel.setVerticalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -122,7 +131,9 @@ public class MeetingPanel implements UpdatePanel {
 					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(22)
 				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-				.addGap(69))
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGap(36))
 	);
 	panel.setLayout(gl_panel);
     }

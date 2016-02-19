@@ -26,6 +26,8 @@ import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
+import adaptme.ui.dynamic.meeting.LocalViewBottomPanel;
+import java.awt.GridBagLayout;
 
 public class SessionPanel implements UpdatePanel {
 	private JLabel lblSession;
@@ -83,9 +85,16 @@ public class SessionPanel implements UpdatePanel {
 		textFieldNumberOfDevelopersNeeded = new JTextField();
 		textFieldNumberOfDevelopersNeeded.setText("1");
 		textFieldNumberOfDevelopersNeeded.setColumns(2);
+		
+		LocalViewBottomPanel localViewBottomPanel = new LocalViewBottomPanel();
+		GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0};
+		gridBagLayout.rowHeights = new int[]{57, 150};
+		gridBagLayout.columnWeights = new double[]{0.0};
+		gridBagLayout.columnWidths = new int[]{549};
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
@@ -102,7 +111,11 @@ public class SessionPanel implements UpdatePanel {
 							.addComponent(lblMinimumNumberOf)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(6, Short.MAX_VALUE))
+					.addContainerGap(125, Short.MAX_VALUE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(10)
+					.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 521, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -121,7 +134,9 @@ public class SessionPanel implements UpdatePanel {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblMinimumNumberOf)
 						.addComponent(textFieldNumberOfDevelopersNeeded, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(91))
+					.addGap(18)
+					.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(21))
 		);
 		panel.setLayout(gl_panel);
 
