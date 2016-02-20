@@ -1,6 +1,7 @@
 package adaptme.ui.dynamic.meeting;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -18,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import adaptme.ui.listener.ProbabilityDistributionPanelListener;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
@@ -36,7 +36,7 @@ import model.spem.derived.gui.ParametersPanel;
 import javax.swing.UIManager;
 import java.awt.GridBagLayout;
 
-public class MeetingPanel implements UpdatePanel {
+public class LocalViewPanel implements UpdatePanel {
     private JLabel lblSession;
     private JLabel lblBestFitProbbility;
     private JComboBox<BestFitDistribution> distributionJComboBox;
@@ -46,7 +46,7 @@ public class MeetingPanel implements UpdatePanel {
     private Parameters parameters;
 
 
-    public MeetingPanel(RepositoryViewPanel repositoryViewPanel, ProcessContentRepository processContentRepository) {
+    public LocalViewPanel(ProcessContentRepository processContentRepository) {
 
 	this.processContentRepository = processContentRepository;
 	lblSession = new JLabel("Development session");
@@ -64,8 +64,7 @@ public class MeetingPanel implements UpdatePanel {
 	
 	panel.setBorder(
 		new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
-
-	focusListener = new ProbabilityDistributionPanelListener();
+ 	focusListener = new ProbabilityDistributionPanelListener();
 
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
@@ -98,25 +97,21 @@ public class MeetingPanel implements UpdatePanel {
 	gridBagLayout.rowHeights = new int[]{57, 150};
 	gridBagLayout.columnWeights = new double[]{0.0};
 	gridBagLayout.columnWidths = new int[]{549};
-	
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
 			.addGroup(gl_panel.createSequentialGroup()
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(6)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(lblSession)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-								.addGap(69)
-								.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))))
-					.addGroup(gl_panel.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
-					.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 541, GroupLayout.PREFERRED_SIZE))
-				.addContainerGap(13, Short.MAX_VALUE))
+				.addGap(6)
+				.addComponent(lblSession))
+			.addGroup(gl_panel.createSequentialGroup()
+				.addGap(6)
+				.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+				.addGap(69)
+				.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
+			.addGroup(gl_panel.createSequentialGroup()
+				.addGap(6)
+				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
+			.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 522, GroupLayout.PREFERRED_SIZE)
 	);
 	gl_panel.setVerticalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -131,9 +126,8 @@ public class MeetingPanel implements UpdatePanel {
 					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(22)
 				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addGap(36))
+				.addGap(6)
+				.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 	);
 	panel.setLayout(gl_panel);
     }
@@ -143,8 +137,8 @@ public class MeetingPanel implements UpdatePanel {
     }
 
     public void setSessionTitle(String title) {
-	this.title = title;
-	lblSession.setText(title);
+    	this.title = title;
+    	lblSession.setText(title);
     }
 
     private JPanel panel = new JPanel();

@@ -66,10 +66,10 @@ import adaptme.ui.components.renderer.TreeCellRendererCustom;
 import adaptme.ui.dynamic.MainPanel;
 import adaptme.ui.dynamic.NumberCompontent;
 import adaptme.ui.dynamic.NumberTreeNode;
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.RunSimulationPanelXPThesis;
 import adaptme.ui.dynamic.TreePanel;
 import adaptme.ui.dynamic.UpdatePanel;
+import adaptme.ui.dynamic.meeting.IntegratedLocalAndRepositoryViewPanel;
 import adaptme.ui.panel.base.TabbedPanel;
 import adaptme.ui.panel.base.process.dnd.WBSTransferHandler;
 import adaptme.ui.panel.base.process.processcomponent.TabbedPanelProcessComponent;
@@ -583,13 +583,15 @@ public class AlternativeOfProcessPanel {
 		treePanel.getTree().addTreeSelectionListener(
 				evt -> mainPanel.changePanel((NumberCompontent) evt.getNewLeadSelectionPath().getLastPathComponent()));
 		
-		RepositoryViewPanel repositoryViewPanel = mainPanel.getRepositoryViewPanel();
-		List<String> keySet = new ArrayList<>();
-		HashMap<String, UpdatePanel> hashMap = persistProcess.buildGUI(processRepository, repositoryViewPanel, keySet);
+ 		List<String> keySet = new ArrayList<>();
+ 		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView = persistProcess.buildGUI(processRepository, keySet);
+		 
+		
+		// main panel é o painel do centro (que esta a local view aninhado)
 		for (String key : keySet) {
-			mainPanel.getPanelMainContent().add(hashMap.get(key).getPanel());
-			mainPanel.addLayoutComponent(hashMap.get(key), key);
-		}
+			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
+			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);
+ 		}
 		
 		tabbedPane.addTab("3.1. Adjust process parameters for the simulation model", mainPanel.getPanel());
 		

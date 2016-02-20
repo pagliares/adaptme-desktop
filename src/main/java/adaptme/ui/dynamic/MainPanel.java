@@ -11,13 +11,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import adaptme.ui.dynamic.meeting.IntegratedLocalAndRepositoryViewPanel;
+
+// neste panel, inserimos o panel integratedLocalAndRepositoryViewPanel
 public class MainPanel implements UpdatePanel {
 	private JPanel panel;
-	private JSplitPane splitPane2;
-	private JSplitPane splitPane;
+ 	private JSplitPane splitPane;
 	private JPanel panelLocal;
-	private RepositoryViewPanel panelRemote;
-	private JPanel panelMainContent;
+ 	private JPanel panelMainContent;
 	private JPanel panelNavigationControls;
 	private ActionListener actionListener;
 	private CardLayout cardLayout;
@@ -28,18 +29,18 @@ public class MainPanel implements UpdatePanel {
 	private int lastButtonNumber = 9;
 	private int quantityOfButtons = 0;
 	private List<NumberButton> numberButtons;
-	private List<UpdatePanel> updatePanels;
+	private List<IntegratedLocalAndRepositoryViewPanel> integratedLocalAndRepositoryViewPanel;
+	
 
 	public MainPanel(TreePanel treePanel) {
-		updatePanels = new ArrayList<>();
+		integratedLocalAndRepositoryViewPanel = new ArrayList<>();
 		numberButtons = new ArrayList<>();
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
-
-		splitPane2 = new JSplitPane();
-		splitPane2.setDividerLocation(200);
-		splitPane = new JSplitPane() {
-			private final int location = 500;
+	 
+		splitPane = new JSplitPane() 
+{
+			private final int location = 350;
 
 			{
 				setDividerLocation(location);
@@ -55,32 +56,24 @@ public class MainPanel implements UpdatePanel {
 				return location;
 			}
 		};
-		splitPane2.setLeftComponent(treePanel);
-		splitPane2.setRightComponent(splitPane);
+		 
+		panel.add(splitPane);
 		// splitPane.setDividerLocation(300);
 
 		panelLocal = new JPanel();
-		splitPane.setLeftComponent(panelLocal);
+		splitPane.setLeftComponent(treePanel);
 		panelLocal.setLayout(new BorderLayout(0, 0));
-
+		
 		panelMainContent = new JPanel();
+		splitPane.setRightComponent(panelLocal);
+		
 		panelLocal.add(panelMainContent, BorderLayout.CENTER);
 		cardLayout = new CardLayout(0, 0);
 		panelMainContent.setLayout(cardLayout);
 
 		panelNavigationControls = new JPanel();
 		panelLocal.add(panelNavigationControls, BorderLayout.SOUTH);
-
-		panelRemote = new RepositoryViewPanel();
-		splitPane.setRightComponent(panelRemote.getPanel());
-
-		panel.add(splitPane2, BorderLayout.CENTER);
-		// btnPreviews = new JButton("< Previews");
-		// panelNavigationControls.add(btnPreviews);
-		//
-		// btnNext = new JButton(" Next > ");
-		// panelNavigationControls.add(btnNext);
-
+		
 		actionListener = ae -> {
 			Object object = ae.getSource();
 			if (object instanceof NumberButton) {
@@ -138,17 +131,15 @@ public class MainPanel implements UpdatePanel {
 		// ((JComponent) numberButton).grabFocus();
 	}
 
-	public JComponent getPanelRemote() {
-		return panelRemote.getPanel();
-	}
+	 
 
 	public JPanel getPanelMainContent() {
 		return panelMainContent;
 	}
 
-	public void addLayoutComponent(UpdatePanel comp, Object constraints) {
-		cardLayout.addLayoutComponent(comp.getPanel(), constraints);
-		updatePanels.add(comp);
+	public void addLayoutComponent(IntegratedLocalAndRepositoryViewPanel comp, Object constraints) {
+		cardLayout.addLayoutComponent(comp, constraints);
+		integratedLocalAndRepositoryViewPanel.add(comp);
 		NumberButton numberButton = new NumberButton();
 		numberButton.setText("" + count);
 		numberButton.setKey((String) constraints);
@@ -164,28 +155,24 @@ public class MainPanel implements UpdatePanel {
 		count++;
 	}
 
-	public RepositoryViewPanel getRepositoryViewPanel() {
-		return panelRemote;
-	}
+	 
 
 	@Override
 	public JPanel getPanel() {
 		return panel;
 	}
 
-	public List<UpdatePanel> getUpdatePanels() {
-		return updatePanels;
+	public List<IntegratedLocalAndRepositoryViewPanel> getUpdatePanels() {
+		return integratedLocalAndRepositoryViewPanel;
 	}
 
-	public void setUpdatePanels(List<UpdatePanel> updatePanels) {
-		this.updatePanels = updatePanels;
+	public void setUpdatePanels(List<IntegratedLocalAndRepositoryViewPanel> updatePanels) {
+		this.integratedLocalAndRepositoryViewPanel = updatePanels;
 	}
 
 	@Override
 	public void updateContent() {
-		for (UpdatePanel updatePanel : updatePanels) {
-			updatePanel.updateContent();
-		}
+		 
 	}
 
 	public ActionListener getActionListener() {

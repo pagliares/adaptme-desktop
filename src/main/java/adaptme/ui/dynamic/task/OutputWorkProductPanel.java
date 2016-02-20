@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
 import model.spem.Sample;
@@ -37,7 +36,7 @@ public class OutputWorkProductPanel implements UpdatePanel {
     private MethodContentRepository methodContentRepository;
     private Parameters parameters;
 
-    public OutputWorkProductPanel(RepositoryViewPanel repositoryViewPanel,
+    public OutputWorkProductPanel(
 	    MethodContentRepository methodContentRepository) {
 
 	this.methodContentRepository = methodContentRepository;
@@ -80,20 +79,7 @@ public class OutputWorkProductPanel implements UpdatePanel {
 	    scrollPaneParameters.repaint();
 	});
 
-	FocusListener focusListener = new FocusListener() {
-
-	    @Override
-	    public void focusLost(FocusEvent e) {
-		repositoryViewPanel.setMessagem("");
-	    }
-
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
-	textFieldSizeMean.addFocusListener(focusListener);
-	textFieldSizeStdDeviation.addFocusListener(focusListener);
+	 
 	panel.setBorder(new TitledBorder(null, "Output", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	GroupLayout gl_panel = new GroupLayout(panel);
 	gl_panel.setHorizontalGroup(

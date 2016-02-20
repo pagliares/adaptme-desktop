@@ -29,9 +29,8 @@ import org.eclipse.epf.uma.WorkOrder;
 
 import adaptme.base.MethodLibraryHash;
 import adaptme.ui.dynamic.NumberTreeNode;
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
-import adaptme.ui.dynamic.meeting.MeetingPanel;
+import adaptme.ui.dynamic.meeting.IntegratedLocalAndRepositoryViewPanel;
 import adaptme.ui.dynamic.task.InputWorkProductPanel;
 import adaptme.ui.dynamic.task.OutputWorkProductPanel;
 import adaptme.ui.dynamic.task.RolePanel;
@@ -385,93 +384,29 @@ public class PersistProcess {
 	// persistProcess.persist(processRepository, "output.xml");
 	// }
 
-	public HashMap<String, UpdatePanel> buildGUI(ProcessRepository processRepository,
-			RepositoryViewPanel repositoryViewPanel, List<String> keySet) {
-		HashMap<String, UpdatePanel> hashMap = new HashMap<>();
+	public HashMap<String, IntegratedLocalAndRepositoryViewPanel> buildGUI(ProcessRepository processRepository,List<String> keySet) {
+		
+		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap = new HashMap<>();
 
 		for (ProcessContentRepository content : processRepository.getProcessContents()) {
-			if (content.getType() == ProcessContentType.ACTIVITY) {
-				buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-			} else if (content.getType() == ProcessContentType.ITERATION) {
-				buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-			} else if (content.getType() == ProcessContentType.PHASE) {
-				buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-			} else if (content.getType() == ProcessContentType.TASK) {
-				buildTaskPanel(content, hashMap, repositoryViewPanel, keySet);
-			} else if (content.getType() == ProcessContentType.MILESTONE) {
-				buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-			}
+			IntegratedLocalAndRepositoryViewPanel integratedLocalAndRepositoryViewPanel = new IntegratedLocalAndRepositoryViewPanel(content);
+			hashMap.put(content.getName(), integratedLocalAndRepositoryViewPanel);
+			keySet.add(content.getName());
+			buildGUISession(content, hashMap, keySet);
 		}
+		
 		return hashMap;
 	}
-
-	private void buildGUITask(ProcessContentRepository content, TaskPanel taskPanel,
-			RepositoryViewPanel repositoryViewPanel) {
-		for (MethodContentRepository methodContentRepository : content.getInputMethodContentsRepository()) {
-			InputWorkProductPanel inputWorkProductPanel = new InputWorkProductPanel(repositoryViewPanel,
-					methodContentRepository);
-			inputWorkProductPanel.setInputWorkProductLabel(methodContentRepository.getName());
-	//		inputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
-			taskPanel.addPanel(inputWorkProductPanel);
-		}
-		for (MethodContentRepository methodContentRepository : content.getOutputMethodContentsRepository()) {
-			OutputWorkProductPanel outputWorkProductPanel = new OutputWorkProductPanel(repositoryViewPanel,
-					methodContentRepository);
-			outputWorkProductPanel.setOutputWorkProductLabel(methodContentRepository.getName());
-
-		//	outputWorkProductPanel.setSizeDistribuiton(BestFitDistribution.getList());
-			taskPanel.addPanel(outputWorkProductPanel);
-		}
-		MethodContentRepository role = content.getMainRole();
-		RolePanel rolePanel = new RolePanel(repositoryViewPanel, role);
-		rolePanel.setRoleLabel(role.getName());
-	//	rolePanel.setDistribution(BestFitDistribution.getList());
-		taskPanel.addPanel(rolePanel);
-		for (MethodContentRepository methodContentRepository : content.getAdditionalRoles()) {
-			RolePanel panel = new RolePanel(repositoryViewPanel, methodContentRepository);
-			panel.setRoleLabel(methodContentRepository.getName());
-	//		panel.setDistribution(BestFitDistribution.getList());
-			taskPanel.addPanel(panel);
-		}
-
-	}
-
-	private void buildGUISession(ProcessContentRepository content, HashMap<String, UpdatePanel> hashMap,
-			RepositoryViewPanel repositoryViewPanel, List<String> keySet) {
-		MeetingPanel sessionPanel = new MeetingPanel(repositoryViewPanel, content);
-		sessionPanel.setSessionTitle(content.getName());
+	
+	private void buildGUISession(ProcessContentRepository content, HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap, List<String> keySet) {
+		IntegratedLocalAndRepositoryViewPanel sessionPanel = new IntegratedLocalAndRepositoryViewPanel(content);
+//		sessionPanel.setTitle(content.getName());
 		hashMap.put(content.getName(), sessionPanel);
 		keySet.add(content.getName());
 //		sessionPanel.setDistribution(BestFitDistribution.getList());
 		for (ProcessContentRepository processContentRepository : content.getChildren()) {
-			buildChildGUI(processContentRepository, hashMap, repositoryViewPanel, keySet);
+			buildGUISession(processContentRepository, hashMap,keySet);
 		}
-	}
-
-	private void buildChildGUI(ProcessContentRepository content, HashMap<String, UpdatePanel> hashMap,
-			RepositoryViewPanel repositoryViewPanel, List<String> keySet) {
-		if (content.getType() == ProcessContentType.ACTIVITY) {
-			buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-		} else if (content.getType() == ProcessContentType.ITERATION) {
-			buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-		} else if (content.getType() == ProcessContentType.PHASE) {
-			buildGUISession(content, hashMap, repositoryViewPanel, keySet);
-		} else if (content.getType() == ProcessContentType.TASK) {
-			buildTaskPanel(content, hashMap, repositoryViewPanel, keySet);
-		}
-	}
-
-	private void buildTaskPanel(ProcessContentRepository content, HashMap<String, UpdatePanel> hashMap,
-			RepositoryViewPanel repositoryViewPanel, List<String> keySet) {
-		TaskPanel taskPanel = new TaskPanel();
-		SessionPanel sessionPanel = new SessionPanel(repositoryViewPanel, content);
-//		sessionPanel.setDistribution(BestFitDistribution.getList());
-//		sessionPanel.setMeasurementUnity(TimeEnum.getList());
-		sessionPanel.setSessionTitle(content.getName());
-		taskPanel.addPanel(sessionPanel);
-		//buildGUITask(content, taskPanel, repositoryViewPanel);
-		hashMap.put(content.getName(), taskPanel);
-		keySet.add(content.getName());
 	}
 
 	public Set<String> getRolesList() {

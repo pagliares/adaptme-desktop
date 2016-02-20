@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
 import model.spem.Sample;
@@ -42,7 +41,7 @@ public class InputWorkProductPanel implements UpdatePanel {
     private JScrollPane scrollPaneParameters;
     private Parameters parameters;
 
-    public InputWorkProductPanel(RepositoryViewPanel repositoryViewPanel,
+    public InputWorkProductPanel(
 	    MethodContentRepository methodContentRepository) {
 
 	this.methodContentRepository = methodContentRepository;
@@ -86,20 +85,8 @@ public class InputWorkProductPanel implements UpdatePanel {
 	    scrollPaneParameters.revalidate();
 	    scrollPaneParameters.repaint();
 	});
-	FocusListener focusListener = new FocusListener() {
-
-	    @Override
-	    public void focusLost(FocusEvent e) {
-		repositoryViewPanel.setMessagem("");
-	    }
-
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
-	textFieldSizeMean.addFocusListener(focusListener);
-	textFieldSizeStdDeviation.addFocusListener(focusListener);
+	
+	 
 	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Input", TitledBorder.LEADING,
 		TitledBorder.TOP, null, new Color(59, 59, 59)));
 

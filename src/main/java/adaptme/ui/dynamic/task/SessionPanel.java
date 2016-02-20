@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import adaptme.ui.listener.ProbabilityDistributionPanelListener;
 import model.spem.ProcessContentRepository;
@@ -42,7 +41,7 @@ public class SessionPanel implements UpdatePanel {
 	private Parameters parameters;
 	private ProbabilityDistributionPanelListener probabilityDistributionPanelListener = new ProbabilityDistributionPanelListener();
 
-	public SessionPanel(RepositoryViewPanel repositoryViewPanel, ProcessContentRepository processContentRepository) {
+	public SessionPanel(ProcessContentRepository processContentRepository) {
 
 		this.processContentRepository = processContentRepository;
 		lblSession = new JLabel("Development session");

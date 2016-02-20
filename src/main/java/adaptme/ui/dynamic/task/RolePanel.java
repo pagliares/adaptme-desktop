@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import adaptme.ui.dynamic.RepositoryViewPanel;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.MethodContentRepository;
 import model.spem.derived.BestFitDistribution;
@@ -28,7 +27,7 @@ public class RolePanel implements UpdatePanel {
     private String title;
     private MethodContentRepository methodContentRepository;
 
-    public RolePanel(RepositoryViewPanel repositoryViewPanel, MethodContentRepository methodContentRepository) {
+    public RolePanel(MethodContentRepository methodContentRepository) {
 
 	this.methodContentRepository = methodContentRepository;
 	lblRole = new JLabel("RolePanel -");
@@ -71,21 +70,7 @@ public class RolePanel implements UpdatePanel {
 	panel.add(lblBestFitProbability);
 	panel.add(distributionJComboBox);
 
-	FocusListener focusListener = new FocusListener() {
-
-	    @Override
-	    public void focusLost(FocusEvent e) {
-		repositoryViewPanel.setMessagem("");
-	    }
-
-	    @Override
-	    public void focusGained(FocusEvent e) {
-		repositoryViewPanel.setMessagem("Não existe dados no servidor para " + title);
-	    }
-	};
-	textFieldExperience.addFocusListener(focusListener);
-	textFieldSkill.addFocusListener(focusListener);
-    }
+	 }
 
     public double getExperience() {
 	return Double.parseDouble(textFieldExperience.getText());

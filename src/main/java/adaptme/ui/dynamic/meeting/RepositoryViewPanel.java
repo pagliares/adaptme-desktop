@@ -1,4 +1,4 @@
-package adaptme.ui.dynamic;
+package adaptme.ui.dynamic.meeting;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -25,9 +25,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
+import adaptme.ui.dynamic.UpdatePanel;
+import model.spem.ProcessContentRepository;
 import model.spem.derived.BestFitDistribution;
 
-public class RepositoryViewPanel {
+public class RepositoryViewPanel implements UpdatePanel {
 
 	private JPanel panel;
 
@@ -37,16 +39,20 @@ public class RepositoryViewPanel {
 	private JLabel lblMessagem;
 	private JTextField textFieldNumberOfBins;
 	private JLabel sampleSizeValueLabel;
+	private String title;
+	
+    private ProcessContentRepository processContentRepository;
 
-	public RepositoryViewPanel() {
+
+	public RepositoryViewPanel(ProcessContentRepository processContentRepository) {
 
 		panel = new JPanel();
 
-		panel.setBorder(new TitledBorder(null, "Repository View", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(null);
 
 		lblSampleSize = new JLabel("Sample size :");
 
-		lblProcessElement = new JLabel("Process element: ");
+		lblProcessElement = new JLabel(title);
 		lblProcessElement.setFont(new Font("Tahoma", Font.BOLD, 13));
 
 		histogramChartPanel = new JPanel();
@@ -177,5 +183,15 @@ public class RepositoryViewPanel {
 
 	public void setMessagem(String string) {
 		lblMessagem.setText(string);
+	}
+
+	@Override
+	public void updateContent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getTitle() {
+		return title;
 	}
 }
