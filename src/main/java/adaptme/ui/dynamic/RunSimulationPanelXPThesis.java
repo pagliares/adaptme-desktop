@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import adaptme.ui.dynamic.simulation.alternative.process.MainPanelSimulationOfAlternativeOfProcess;
 import adaptme.util.SimulationSample;
 import model.spem.ProcessRepository;
 import model.spem.config.ContainerConfig;
@@ -39,9 +40,9 @@ public class RunSimulationPanelXPThesis {
     private JLabel lblNumberOfRuns;
     private JTextField textField;
     private ProcessRepository processRepository;
-    private MainPanel mainPanel;
+    private MainPanelSimulationOfAlternativeOfProcess mainPanel;
 
-    public RunSimulationPanelXPThesis(ProcessRepository processRepository, MainPanel mainPanel) {
+    public RunSimulationPanelXPThesis(ProcessRepository processRepository, MainPanelSimulationOfAlternativeOfProcess mainPanel) {
 	this.processRepository = processRepository;
 	this.mainPanel = mainPanel;
 	panel = new JPanel();

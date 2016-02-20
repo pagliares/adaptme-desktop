@@ -1,4 +1,4 @@
-package adaptme.ui.dynamic.meeting;
+package adaptme.ui.dynamic.simulation.alternative.process;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
@@ -14,6 +14,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import model.spem.ProcessContentRepository;
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
 
@@ -25,6 +26,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
+import javax.swing.border.LineBorder;
 
 public class LocalViewBottomPanel extends JPanel {
 	
@@ -34,12 +36,16 @@ public class LocalViewBottomPanel extends JPanel {
 	private JComboBox<ActiveObserverType> observerTypeJComboBox;
 	private ObserversTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
+ 	private int counter;
+ 	
+ 	private ProcessContentRepository processContentRepository;
 
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
 
 	 
-	public LocalViewBottomPanel() {
+	public LocalViewBottomPanel(ProcessContentRepository processContentRepository) {
+		this.processContentRepository = processContentRepository;
 		
 		observerTypeJComboBox = new JComboBox<>();
  		observerTypeJComboBox.addItem(ActiveObserverType.ACTIVE);
@@ -72,7 +78,7 @@ public class LocalViewBottomPanel extends JPanel {
 		activeObserverTopPanel.add(activityLabel);
 		
 		activityTextField = new JTextField();
-		activityTextField.setText("SPEM task name");
+		activityTextField.setText(processContentRepository.getName());
 		activityTextField.setColumns(10);
 		activeObserverTopPanel.add(activityTextField);
 		
@@ -80,7 +86,7 @@ public class LocalViewBottomPanel extends JPanel {
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ActObserver actObserver = new ActObserver();
-				actObserver.setName("SPEM task name");
+				actObserver.setName(processContentRepository.getName()+ " observer " + ++counter+"");
 				observersTableModel.addActObserver(actObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
@@ -112,7 +118,7 @@ public class LocalViewBottomPanel extends JPanel {
 		add(activeObserverBottomPanel, gbc_activeObserverBottomPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(300,100));
+		scrollPane.setPreferredSize(new Dimension(400,145));
 		scrollPane.setViewportView(tableObservers);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		

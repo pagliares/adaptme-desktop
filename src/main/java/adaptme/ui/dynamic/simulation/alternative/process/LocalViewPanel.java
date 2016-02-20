@@ -1,42 +1,29 @@
-package adaptme.ui.dynamic.meeting;
+package adaptme.ui.dynamic.simulation.alternative.process;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.List;
+import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import adaptme.ui.dynamic.UpdatePanel;
 import adaptme.ui.listener.ProbabilityDistributionPanelListener;
-import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.ProcessContentRepository;
-import model.spem.ProcessRepository;
 import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
-import model.spem.derived.ConstantParameters;
-import model.spem.derived.NegativeExponential;
-import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
-import model.spem.derived.PoissonParameters;
-import model.spem.derived.UniformParameters;
 import model.spem.derived.gui.ParametersPanel;
-import javax.swing.UIManager;
-import java.awt.GridBagLayout;
 
 public class LocalViewPanel implements UpdatePanel {
+	
     private JLabel lblSession;
     private JLabel lblBestFitProbbility;
     private JComboBox<BestFitDistribution> distributionJComboBox;
@@ -45,6 +32,9 @@ public class LocalViewPanel implements UpdatePanel {
     private ProbabilityDistributionPanelListener focusListener;
     private Parameters parameters;
 
+    private JPanel panel = new JPanel();
+    private String title;
+    private JScrollPane scrollPaneParameters;
 
     public LocalViewPanel(ProcessContentRepository processContentRepository) {
 
@@ -62,8 +52,7 @@ public class LocalViewPanel implements UpdatePanel {
 	distributionJComboBox.addItem(BestFitDistribution.POISSON);
 	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
 	
-	panel.setBorder(
-		new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
+	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
  	focusListener = new ProbabilityDistributionPanelListener();
 
 	scrollPaneParameters = new JScrollPane();
@@ -79,10 +68,7 @@ public class LocalViewPanel implements UpdatePanel {
 	scrollPaneParameters.setViewportView(parametersPanel.getPanel());
 	
 	distributionJComboBox.addItemListener(e -> {
-//	    String s = (String) distributionJComboBox.getSelectedItem();
-	    // scrollPaneParameters.removeAll();
-//	     parameters = Parameters.createParameter(BestFitDistribution.getDistributionByName(s));
-	     parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
+	    parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
 	    parametersPanel =  new ParametersPanel(parameters, focusListener);
 		focusListener.setParameters(parameters);
 	    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
@@ -91,7 +77,7 @@ public class LocalViewPanel implements UpdatePanel {
 		processContentRepository.getSample().setParameters(parameters);
 	});
 	
-	LocalViewBottomPanel localViewBottomPanel = new LocalViewBottomPanel();
+	LocalViewBottomPanel localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
 	GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
 	gridBagLayout.rowWeights = new double[]{0.0, 0.0};
 	gridBagLayout.rowHeights = new int[]{57, 150};
@@ -133,22 +119,14 @@ public class LocalViewPanel implements UpdatePanel {
     }
 
     public String getDistribution() {
-	return (String) distributionJComboBox.getSelectedItem();
+    	return (String) distributionJComboBox.getSelectedItem();
     }
 
     public void setSessionTitle(String title) {
     	this.title = title;
     	lblSession.setText(title);
     }
-
-    private JPanel panel = new JPanel();
-    private String title;
-    private JScrollPane scrollPaneParameters;
-
-    public void setTitle(String title) {
-	this.title = title;
-    }
-
+    
     @Override
     public JPanel getPanel() {
 	return panel;
@@ -156,12 +134,12 @@ public class LocalViewPanel implements UpdatePanel {
 
     @Override
     public void updateContent() {
-	// Parameters parameters = new Parameters();
-	// parameters.setMean(getDurationMean());
-	// parameters.setStandardDeviation(getDurationStdDeviation());
-	Sample sample = new Sample();
-	sample.setDistribution(BestFitDistribution.getDistributionByName(getDistribution()));
-	// sample.setParameters(parameters);
-	processContentRepository.setSample(sample);
+    	// Parameters parameters = new Parameters();
+    	// parameters.setMean(getDurationMean());
+    	// parameters.setStandardDeviation(getDurationStdDeviation());
+    	Sample sample = new Sample();
+    	sample.setDistribution(BestFitDistribution.getDistributionByName(getDistribution()));
+    	// sample.setParameters(parameters);
+    	processContentRepository.setSample(sample);
     }
 }

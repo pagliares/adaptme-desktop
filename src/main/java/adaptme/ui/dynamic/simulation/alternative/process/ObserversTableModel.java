@@ -1,4 +1,4 @@
-package adaptme.ui.dynamic.meeting;
+package adaptme.ui.dynamic.simulation.alternative.process;
 
 import java.util.ArrayList;
 import java.util.List;

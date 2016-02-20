@@ -1,4 +1,4 @@
-package adaptme.ui.dynamic;
+package adaptme.ui.dynamic.simulation.alternative.process;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -11,10 +11,13 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import adaptme.ui.dynamic.meeting.IntegratedLocalAndRepositoryViewPanel;
+import adaptme.ui.dynamic.NumberButton;
+import adaptme.ui.dynamic.NumberCompontent;
+import adaptme.ui.dynamic.TreePanel;
+import adaptme.ui.dynamic.UpdatePanel;
 
 // neste panel, inserimos o panel integratedLocalAndRepositoryViewPanel
-public class MainPanel implements UpdatePanel {
+public class MainPanelSimulationOfAlternativeOfProcess implements UpdatePanel {
 	private JPanel panel;
  	private JSplitPane splitPane;
 	private JPanel panelLocal;
@@ -32,7 +35,7 @@ public class MainPanel implements UpdatePanel {
 	private List<IntegratedLocalAndRepositoryViewPanel> integratedLocalAndRepositoryViewPanel;
 	
 
-	public MainPanel(TreePanel treePanel) {
+	public MainPanelSimulationOfAlternativeOfProcess(TreePanel treePanel) {
 		integratedLocalAndRepositoryViewPanel = new ArrayList<>();
 		numberButtons = new ArrayList<>();
 		panel = new JPanel();
