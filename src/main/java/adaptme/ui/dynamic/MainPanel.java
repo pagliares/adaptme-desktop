@@ -72,6 +72,7 @@ public class MainPanel implements UpdatePanel {
 		panelMainContent.setLayout(cardLayout);
 
 		panelNavigationControls = new JPanel();
+		panelNavigationControls.setVisible(false);
 		panelLocal.add(panelNavigationControls, BorderLayout.SOUTH);
 		
 		actionListener = ae -> {
