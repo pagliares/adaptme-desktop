@@ -124,7 +124,7 @@ public class LocalViewPanel implements UpdatePanel {
 
     public void setSessionTitle(String title) {
     	this.title = title;
-    	lblSession.setText(title);
+    	lblSession.setText("Duration time for " + title);
     }
     
     @Override
