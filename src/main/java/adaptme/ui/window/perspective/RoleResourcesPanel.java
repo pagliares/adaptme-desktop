@@ -65,35 +65,30 @@ public class RoleResourcesPanel {
 		scrollPane_1.setViewportBorder(null);
 		GroupLayout gl_outerPanel = new GroupLayout(outerPanel);
 		gl_outerPanel.setHorizontalGroup(
-			gl_outerPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_outerPanel.createSequentialGroup()
+			gl_outerPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_outerPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 568, Short.MAX_VALUE)
-					.addGap(3))
+					.addContainerGap())
 		);
 		gl_outerPanel.setVerticalGroup(
 			gl_outerPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_outerPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(15, Short.MAX_VALUE))
+					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		
 		RoleResourcesBottomPanel roleResourcesBottomPanel = new RoleResourcesBottomPanel((HashMap) null);
-		GridBagLayout gridBagLayout = (GridBagLayout) roleResourcesBottomPanel.getLayout();
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0};
-		gridBagLayout.rowHeights = new int[]{57, 150};
-		gridBagLayout.columnWeights = new double[]{0.0};
-		gridBagLayout.columnWidths = new int[]{549};
 		GroupLayout gl_roleResourcesPanel = new GroupLayout(roleResourcesPanel);
 		gl_roleResourcesPanel.setHorizontalGroup(
-			gl_roleResourcesPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_roleResourcesPanel.createSequentialGroup()
+			gl_roleResourcesPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_roleResourcesPanel.createSequentialGroup()
 					.addGroup(gl_roleResourcesPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
 						.addGroup(gl_roleResourcesPanel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 535, Short.MAX_VALUE)))
+							.addGap(0, 0, Short.MAX_VALUE)
+							.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 655, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE))
 					.addGap(15))
 		);
 		gl_roleResourcesPanel.setVerticalGroup(
@@ -101,9 +96,19 @@ public class RoleResourcesPanel {
 				.addGroup(gl_roleResourcesPanel.createSequentialGroup()
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(9, Short.MAX_VALUE))
+					.addComponent(roleResourcesBottomPanel, GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+					.addContainerGap())
 		);
+		GroupLayout gl_roleResourcesBottomPanel = new GroupLayout(roleResourcesBottomPanel);
+		gl_roleResourcesBottomPanel.setHorizontalGroup(
+			gl_roleResourcesBottomPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 535, Short.MAX_VALUE)
+		);
+		gl_roleResourcesBottomPanel.setVerticalGroup(
+			gl_roleResourcesBottomPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 191, Short.MAX_VALUE)
+		);
+		roleResourcesBottomPanel.setLayout(gl_roleResourcesBottomPanel);
 		roleResourcesPanel.setLayout(gl_roleResourcesPanel);
 		outerPanel.setLayout(gl_outerPanel);
 	}

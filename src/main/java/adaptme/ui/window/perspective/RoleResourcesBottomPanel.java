@@ -29,6 +29,8 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.awt.FlowLayout;
 import javax.swing.border.LineBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class RoleResourcesBottomPanel extends JPanel {
 	
@@ -60,31 +62,17 @@ public class RoleResourcesBottomPanel extends JPanel {
 		tableObservers = new JTable(observersTableModel);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
-		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{549, 0};
-		gridBagLayout.rowHeights = new int[]{57, 150, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
+		setLayout(null);
 		
 		JPanel activeObserverTopPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) activeObserverTopPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		GridBagConstraints gbc_activeObserverTopPanel = new GridBagConstraints();
-		gbc_activeObserverTopPanel.fill = GridBagConstraints.BOTH;
-		gbc_activeObserverTopPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_activeObserverTopPanel.gridx = 0;
-		gbc_activeObserverTopPanel.gridy = 0;
-		add(activeObserverTopPanel, gbc_activeObserverTopPanel);
+		activeObserverTopPanel.setBounds(16, 6, 682, 106);
+		add(activeObserverTopPanel);
 		
 		activityLabel = new JLabel("Activity name");
-		activeObserverTopPanel.add(activityLabel);
 		
 		activityTextField = new JTextField();
 //		activityTextField.setText(processContentRepository.getName());
 		activityTextField.setColumns(10);
-		activeObserverTopPanel.add(activityTextField);
 		
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {
@@ -96,7 +84,6 @@ public class RoleResourcesBottomPanel extends JPanel {
 				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 			}
 		});
-		activeObserverTopPanel.add(addObserverButton);
 		
 		removeObserverButton = new JButton("Remove observer");
 		removeObserverButton.addActionListener(new ActionListener() {
@@ -111,18 +98,47 @@ public class RoleResourcesBottomPanel extends JPanel {
 			}
 			}
 		});
-		activeObserverTopPanel.add(removeObserverButton);
+		GroupLayout gl_activeObserverTopPanel = new GroupLayout(activeObserverTopPanel);
+		gl_activeObserverTopPanel.setHorizontalGroup(
+			gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(activityLabel)
+							.addGap(5)
+							.addComponent(activityTextField, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+							.addGap(123)
+							.addComponent(addObserverButton)
+							.addGap(50)
+							.addComponent(removeObserverButton)))
+					.addGap(47))
+		);
+		gl_activeObserverTopPanel.setVerticalGroup(
+			gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+							.addGap(11)
+							.addComponent(activityLabel))
+						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(activityTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(22)
+					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(addObserverButton)
+						.addComponent(removeObserverButton)))
+		);
+		activeObserverTopPanel.setLayout(gl_activeObserverTopPanel);
 		
 		JPanel activeObserverBottomPanel = new JPanel();
+		activeObserverBottomPanel.setBounds(6, 124, 692, 150);
 		FlowLayout flowLayout_1 = (FlowLayout) activeObserverBottomPanel.getLayout();
-		GridBagConstraints gbc_activeObserverBottomPanel = new GridBagConstraints();
-		gbc_activeObserverBottomPanel.fill = GridBagConstraints.BOTH;
-		gbc_activeObserverBottomPanel.gridx = 0;
-		gbc_activeObserverBottomPanel.gridy = 1;
-		add(activeObserverBottomPanel, gbc_activeObserverBottomPanel);
+		add(activeObserverBottomPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(300,100));
+		scrollPane.setPreferredSize(new Dimension(600,100));
 		scrollPane.setViewportView(tableObservers);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
