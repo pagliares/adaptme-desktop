@@ -59,6 +59,7 @@ public class RepositoryViewPanel implements UpdatePanel {
 		panel.setBorder(null);
 
 		lblSampleSize = new JLabel("Sample size :");
+		sampleSizeValueLabel = new JLabel("");
 
 		lblProcessElement = new JLabel(title);
 		lblProcessElement.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -111,7 +112,7 @@ public class RepositoryViewPanel implements UpdatePanel {
 		);
 		histogramConfigPanel.setLayout(gl_histogramConfigPanel);
 		
-		sampleSizeValueLabel = new JLabel("10");
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -165,6 +166,7 @@ public class RepositoryViewPanel implements UpdatePanel {
 		}
 		
 		if (measurements.size() == 0) {
+			sampleSizeValueLabel.setText("0");
 			lblMessagem.setText("There are no measurements for this process content in the repository");
 			 
 			double[] values = new double[1];
@@ -184,7 +186,7 @@ public class RepositoryViewPanel implements UpdatePanel {
 					urls);
 			chartPanel = new ChartPanel(chart);
 		} else {
-//			sampleSizeValueLabel.setText(Integer.toString(measurements.size()));
+			sampleSizeValueLabel.setText(Integer.toString(measurements.size()));
 			DurationMeasurement durationMeasurement = null;
 			int arraySize = measurements.size();
 			double[] values = new double[arraySize];
