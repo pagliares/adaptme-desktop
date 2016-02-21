@@ -602,7 +602,7 @@ public class AlternativeOfProcessPanel {
 		
 		Set<String> taskList = persistProcess.getTaskList();
 		
-		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
+		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel(hashMapLocalView);
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
 		

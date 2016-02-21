@@ -3,6 +3,7 @@ package adaptme.ui.window.perspective;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -20,13 +21,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
+import model.spem.ProcessContentRepository;
 import simulator.base.QueueType;
 import simulator.base.Role;
 import simulator.gui.model.RoleTableModel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class RoleResourcesPanel {
 	
-	private JPanel panel;
+	private JPanel outerPanel;
 	private JScrollPane scrollPane;
 	
 	private JTable tableRole;
@@ -35,23 +39,26 @@ public class RoleResourcesPanel {
 	
  	private List<Role> roles = new ArrayList<>();
  	private JComboBox<QueueType> queueTypeJComboBox;
+ 	private JPanel roleResourcesBottomPanel;
+ 	private HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView;
 
-	public RoleResourcesPanel() {
+	public RoleResourcesPanel(HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView) {
+		this.hashMapLocalView = hashMapLocalView;
 		
 		queueTypeJComboBox = new JComboBox<>();
 		queueTypeJComboBox.addItem(QueueType.QUEUE);
 		queueTypeJComboBox.addItem(QueueType.SET);
 		queueTypeJComboBox.addItem(QueueType.STACK);
 
-		panel = new JPanel();
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
+		outerPanel = new JPanel();
+		JPanel roleResourcesPanel = new JPanel();
+		roleResourcesPanel.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
 
-		panel_1.setLayout(new BorderLayout(0, 0));
+		roleResourcesPanel.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		roleResourcesPanel.add(scrollPane, BorderLayout.CENTER);
 		tableRole = new JTable();
 		tableRole.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 
@@ -59,26 +66,33 @@ public class RoleResourcesPanel {
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
- 		GroupLayout gl_panel = new GroupLayout(panel);
-
-
-		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(6)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE).addGap(27)
-
-						.addGap(6)));
-						 
-		gl_panel.setVerticalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup().addGap(6)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-										.addGap(6))));
-		panel.setLayout(gl_panel);
+ 		
+ 		roleResourcesBottomPanel = new RoleResourcesBottomPanel(hashMapLocalView);
+		GroupLayout gl_outerPanel = new GroupLayout(outerPanel);
+		gl_outerPanel.setHorizontalGroup(
+			gl_outerPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_outerPanel.createSequentialGroup()
+					.addGap(6)
+					.addComponent(roleResourcesPanel, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+					.addGap(6))
+				.addGroup(gl_outerPanel.createSequentialGroup()
+					.addGap(12)
+					.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 547, Short.MAX_VALUE)
+					.addGap(6))
+		);
+		gl_outerPanel.setVerticalGroup(
+			gl_outerPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_outerPanel.createSequentialGroup()
+					.addGap(6)
+					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+		);
+		outerPanel.setLayout(gl_outerPanel);
 	}
 
 	public JPanel getPanel() {
-		return panel;
+		return outerPanel;
 	}
 
 	public void setComboBoxRole(Set<String> list) {
