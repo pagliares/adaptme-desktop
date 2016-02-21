@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.GroupLayout;
@@ -25,9 +26,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
+import adaptme.repository.web.client.RestClientProxy;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.ProcessContentRepository;
 import model.spem.derived.BestFitDistribution;
+import model.spem.measurement.DurationMeasurement;
+import model.spem.measurement.Measurement;
 
 public class RepositoryViewPanel implements UpdatePanel {
 
@@ -41,11 +45,15 @@ public class RepositoryViewPanel implements UpdatePanel {
 	private JLabel sampleSizeValueLabel;
 	private String title;
 	
+	private RestClientProxy restClientProxy;
+	private List<Measurement>  measurements;
+	
     private ProcessContentRepository processContentRepository;
 
 
 	public RepositoryViewPanel(ProcessContentRepository processContentRepository) {
 
+		this.processContentRepository = processContentRepository;
 		panel = new JPanel();
 
 		panel.setBorder(null);
@@ -149,25 +157,55 @@ public class RepositoryViewPanel implements UpdatePanel {
 	}
 
 	public ChartPanel getHistogram(int bins){
-		int arraySize = 1000;
-		double[] value = new double[arraySize];
-		Random generator = new Random();
-		for (int i = 1; i < arraySize; i++) {
-			value[i] = generator.nextDouble() * 10;
+		ChartPanel chartPanel = null;
+		restClientProxy = new RestClientProxy();
+		System.out.println(processContentRepository.getName());
+		if (measurements == null) {
+			 measurements = restClientProxy.listAllMeasurementsForSpecificContent(processContentRepository.getName());
 		}
-		HistogramDataset dataset = new HistogramDataset();
-		dataset.setType(HistogramType.FREQUENCY);
-		dataset.addSeries("Histogram", value, bins);
-		String plotTitle = "Histogram";
-		String xaxis = "number";
-		String yaxis = "value";
-		PlotOrientation orientation = PlotOrientation.VERTICAL;
-		boolean show = false;
-		boolean toolTips = false;
-		boolean urls = false;
-		JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis, yaxis, dataset, orientation, show, toolTips,
-				urls);
-		ChartPanel chartPanel = new ChartPanel(chart);
+		
+		if (measurements.size() == 0) {
+			lblMessagem.setText("There are no measurements for this process content in the repository");
+			 
+			double[] values = new double[1];
+			 values[0] = 1;
+			
+			HistogramDataset dataset = new HistogramDataset();
+			dataset.setType(HistogramType.FREQUENCY);
+//			dataset.addSeries("Histogram", values, bins);
+			String plotTitle = "Histogram";
+			String xaxis = "number";
+			String yaxis = "value";
+			PlotOrientation orientation = PlotOrientation.VERTICAL;
+			boolean show = false;
+			boolean toolTips = false;
+			boolean urls = false;
+			JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis, yaxis, dataset, orientation, show, toolTips,
+					urls);
+			chartPanel = new ChartPanel(chart);
+		} else {
+//			sampleSizeValueLabel.setText(Integer.toString(measurements.size()));
+			DurationMeasurement durationMeasurement = null;
+			int arraySize = measurements.size();
+			double[] values = new double[arraySize];
+			for (int i = 0; i < measurements.size(); i++) {
+				durationMeasurement = (DurationMeasurement) measurements.get(i);
+				values[i] = durationMeasurement.getValue();
+			}
+			HistogramDataset dataset = new HistogramDataset();
+			dataset.setType(HistogramType.FREQUENCY);
+			dataset.addSeries("Histogram", values, bins);
+			String plotTitle = "Histogram";
+			String xaxis = "number";
+			String yaxis = "value";
+			PlotOrientation orientation = PlotOrientation.VERTICAL;
+			boolean show = false;
+			boolean toolTips = false;
+			boolean urls = false;
+			JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis, yaxis, dataset, orientation, show, toolTips,
+					urls);
+			chartPanel = new ChartPanel(chart);
+		}
 		return chartPanel;
 	}
 	

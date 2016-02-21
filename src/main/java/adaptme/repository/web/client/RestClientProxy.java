@@ -151,7 +151,7 @@ public class RestClientProxy {
         printProcesses(result);
 	}
 	
-	public void listAllMeasurementsForSpecificContent(String content) {
+	public List<Measurement> listAllMeasurementsForSpecificContent(String content) {
 		
 		WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
 		WebTarget applicationDomainRestFacadeGetResource = applicationDomainRestDirectoryRestFacade.path("listAllMeasurementsForSpecificContent").queryParam("content", content);
@@ -165,6 +165,7 @@ public class RestClientProxy {
         	System.out.println(durationMeasurement.getValue());
         	System.out.println(durationMeasurement.getScale().toString());
         }
+		return measurements;
 	}
 	
 	
