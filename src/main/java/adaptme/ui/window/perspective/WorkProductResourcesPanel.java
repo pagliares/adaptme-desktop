@@ -34,8 +34,13 @@ public class WorkProductResourcesPanel {
 	private JPanel outerProbabilityPanel;
 	private ProbabilityDistributionInnerPanel probabilityDistributionInnerPannel;
  	private List<JPanel> listOfProbabilityDistributionsInnerPanels = new ArrayList<>();
+ 	
+ 	private WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
+ 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels = new ArrayList<>();
+ 	
+ 	
  	private GroupLayout gl_topPanel;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneTableWorkProduct;
  	
 	private JTable tableWorkProduct;
 	private WorkProductTableModel model;
@@ -66,14 +71,14 @@ public class WorkProductResourcesPanel {
 		
 		titledPanel.setLayout(new BorderLayout(0, 0));
 
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportBorder(null);
+		scrollPaneTableWorkProduct = new JScrollPane();
+		scrollPaneTableWorkProduct.setViewportBorder(null);
 		
-		titledPanel.add(scrollPane, BorderLayout.CENTER);
+		titledPanel.add(scrollPaneTableWorkProduct, BorderLayout.CENTER);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
-		scrollPane.setViewportView(tableWorkProduct);
+		scrollPaneTableWorkProduct.setViewportView(tableWorkProduct);
 		 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(null);
@@ -109,6 +114,12 @@ public class WorkProductResourcesPanel {
 			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + names[i]);
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+			
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, names[i]);
+			workProductResourcesBottomRightPanel.setQueueNameTextField(names[i]);
+			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
+			
+			
 		}
 		
 		model = new WorkProductTableModel(workProducts);
@@ -118,7 +129,8 @@ public class WorkProductResourcesPanel {
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 
- 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.SOUTH);
+ 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
+ 		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
 
 	}
 	
@@ -135,8 +147,11 @@ public class WorkProductResourcesPanel {
 				 
 				if ((indexSelectedRow > -1)) { 					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
+					workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(indexSelectedRow);
+
  					outerProbabilityPanel.removeAll();
-					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.SOUTH);
+					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
+					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.updateUI();
 				}
 			}
