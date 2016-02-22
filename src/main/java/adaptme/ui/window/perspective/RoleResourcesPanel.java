@@ -2,6 +2,7 @@ package adaptme.ui.window.perspective;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +18,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
 import model.spem.ProcessContentRepository;
+import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.Role;
 import simulator.gui.model.RoleTableModel;
@@ -31,91 +35,75 @@ import java.awt.GridBagLayout;
 
 public class RoleResourcesPanel {
 	
-	private JPanel outerPanel;
-	private JScrollPane scrollPane;
-	
+	private JPanel topPanel;
+	private JScrollPane scrollPaneTableRole;
+	private JPanel outerRoleResourcesBottomPanel;
 	private JTable tableRole;
  	private TableColumnModel modeloColuna;
  	private RoleTableModel roleTableModel;
+ 	private JPanel titlePanel;
 	
  	private List<Role> roles = new ArrayList<>();
  	private JComboBox<QueueType> queueTypeJComboBox;
- 	private HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView;
+ 	
+	private RoleResourcesBottomPanel roleResourcesBottomPannel;
 
-	public RoleResourcesPanel(HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView) {
-		this.hashMapLocalView = hashMapLocalView;
-		
+	private List<JPanel> listOfRoleResourcesBottomPanels = new ArrayList<>();
+	
+  	
+ 	private int indexSelectedRow;
+
+	public RoleResourcesPanel() {
+ 		
 		queueTypeJComboBox = new JComboBox<>();
 		queueTypeJComboBox.addItem(QueueType.QUEUE);
 		queueTypeJComboBox.addItem(QueueType.SET);
 		queueTypeJComboBox.addItem(QueueType.STACK);
 
-		outerPanel = new JPanel();
-		JPanel roleResourcesPanel = new JPanel();
-		roleResourcesPanel.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
+		topPanel = new JPanel();
+		topPanel.setLayout(new BorderLayout());
+		
+		titlePanel = new JPanel();
+		titlePanel.setLayout(new BorderLayout());
+		titlePanel.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
 
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportBorder(null);
-		tableRole = new JTable();
+		scrollPaneTableRole = new JScrollPane();
+ 		tableRole = new JTable();
 		tableRole.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 
-		scrollPane.setViewportView(tableRole);
+		scrollPaneTableRole.setPreferredSize(new Dimension(700, 200));
+		scrollPaneTableRole.setViewportView(tableRole);
+		
+ 		
+		titlePanel.add(scrollPaneTableRole, BorderLayout.NORTH);
+		
+	
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(null);
-		GroupLayout gl_outerPanel = new GroupLayout(outerPanel);
+		
+ 		GroupLayout gl_outerPanel = new GroupLayout(topPanel);
 		gl_outerPanel.setHorizontalGroup(
 			gl_outerPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_outerPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 568, Short.MAX_VALUE)
+					.addComponent(titlePanel, GroupLayout.PREFERRED_SIZE, 568, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_outerPanel.setVerticalGroup(
 			gl_outerPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_outerPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(roleResourcesPanel, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
+					.addComponent(titlePanel, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		
-		RoleResourcesBottomPanel roleResourcesBottomPanel = new RoleResourcesBottomPanel((HashMap) null);
-		GroupLayout gl_roleResourcesPanel = new GroupLayout(roleResourcesPanel);
-		gl_roleResourcesPanel.setHorizontalGroup(
-			gl_roleResourcesPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_roleResourcesPanel.createSequentialGroup()
-					.addGroup(gl_roleResourcesPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_roleResourcesPanel.createSequentialGroup()
-							.addGap(0, 0, Short.MAX_VALUE)
-							.addComponent(roleResourcesBottomPanel, GroupLayout.PREFERRED_SIZE, 655, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE))
-					.addGap(15))
-		);
-		gl_roleResourcesPanel.setVerticalGroup(
-			gl_roleResourcesPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_roleResourcesPanel.createSequentialGroup()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(roleResourcesBottomPanel, GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		GroupLayout gl_roleResourcesBottomPanel = new GroupLayout(roleResourcesBottomPanel);
-		gl_roleResourcesBottomPanel.setHorizontalGroup(
-			gl_roleResourcesBottomPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 535, Short.MAX_VALUE)
-		);
-		gl_roleResourcesBottomPanel.setVerticalGroup(
-			gl_roleResourcesBottomPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 191, Short.MAX_VALUE)
-		);
-		roleResourcesBottomPanel.setLayout(gl_roleResourcesBottomPanel);
-		roleResourcesPanel.setLayout(gl_roleResourcesPanel);
-		outerPanel.setLayout(gl_outerPanel);
+		
+		outerRoleResourcesBottomPanel = new JPanel();
+ 		outerRoleResourcesBottomPanel.setLayout(new BorderLayout());
+ 		outerRoleResourcesBottomPanel.setBorder(new TitledBorder(null, "outer", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
+ 		titlePanel.add(outerRoleResourcesBottomPanel, BorderLayout.CENTER);
 	}
 
-	public JPanel getPanel() {
-		return outerPanel;
-	}
+	
 
 	public void setComboBoxRole(Set<String> list) {
 		 
@@ -125,15 +113,47 @@ public class RoleResourcesPanel {
 			Role role = new Role();
 			role.setName(names[i]);
 			roles.add(role);
+			roleResourcesBottomPannel = new RoleResourcesBottomPanel(i, names[i]);
+			roleResourcesBottomPannel.setQueueNameTextField(names[i]);
+			listOfRoleResourcesBottomPanels.add(roleResourcesBottomPannel);
 		}
 
 		roleTableModel = new RoleTableModel(roles);
  		tableRole.setModel(roleTableModel);
  		configuraColunas();
  		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
- 		tableRole.setValueAt(QueueType.QUEUE, 0, 1);
+ 		
+ 		outerRoleResourcesBottomPanel.add((RoleResourcesBottomPanel) listOfRoleResourcesBottomPanels.get(0), BorderLayout.CENTER);
+
+ 		for (int i = 0; i < names.length; i++) {
+ 			tableRole.setValueAt(QueueType.QUEUE, i, 1);
+		}
+		
+		
+ 		
  	}
 	
+	public void configuraTableListener() { 
+
+		// Listener disparado ao selecionar uma linha da tabela
+		tableRole.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+
+				indexSelectedRow = tableRole.getSelectedRow();
+				//	boolean isRowandCheckBoxSelected = (Boolean) model.getValueAt(tableWorkProduct.getSelectedRow(),1) == true;
+
+				if ((indexSelectedRow > -1)) { 					 
+					roleResourcesBottomPannel = (RoleResourcesBottomPanel) listOfRoleResourcesBottomPanels.get(indexSelectedRow);
+					outerRoleResourcesBottomPanel.removeAll();
+					outerRoleResourcesBottomPanel.add(roleResourcesBottomPannel, BorderLayout.CENTER);
+					outerRoleResourcesBottomPanel.updateUI();
+				}
+			}
+		});
+
+		 
+ 	}
 	
 	public void configuraColunas() { 
 		
@@ -167,5 +187,9 @@ public class RoleResourcesPanel {
 
 	public JTable getTableRole() {
 		return tableRole;
+	}
+	
+	public JPanel getTopPanel() {
+		return topPanel;
 	}
 }

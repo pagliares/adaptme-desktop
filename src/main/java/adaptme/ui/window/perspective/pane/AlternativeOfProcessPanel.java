@@ -602,9 +602,9 @@ public class AlternativeOfProcessPanel {
 		
 		Set<String> taskList = persistProcess.getTaskList();
 		
-		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel(hashMapLocalView);
+		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
-		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getPanel());
+		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
 		
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());

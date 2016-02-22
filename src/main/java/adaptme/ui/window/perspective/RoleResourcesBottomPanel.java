@@ -1,59 +1,58 @@
 package adaptme.ui.window.perspective;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultCellEditor;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
 import model.spem.ProcessContentRepository;
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
 
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.awt.FlowLayout;
-import javax.swing.border.LineBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-
 public class RoleResourcesBottomPanel extends JPanel {
 	
-	private JLabel activityLabel;
-	private JTextField activityTextField;
+	private JLabel queueNameLabel;
+	private JTextField queueNameTextField;
 	private JTable tableObservers;
+	private JTable tableRole;
 	private JComboBox<ActiveObserverType> observerTypeJComboBox;
 	private RoleResourcesBottomPanelTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
  	private int counter;
+ 	private int roleResourcesBottomPanelNumber;
+ 	private int selectedRow;
+ 	private String roleName;
  	
  	private ProcessContentRepository processContentRepository;
 
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
-	private HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView;
-
+	private RoleResourcesPanel roleResourcesPanel;
+	private TableModel roleTableModel;
 	 
-	public RoleResourcesBottomPanel(HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView) {
-		this.hashMapLocalView = hashMapLocalView;
-		this.processContentRepository = processContentRepository;
-		
-		observerTypeJComboBox = new JComboBox<>();
+	public RoleResourcesBottomPanel(int i, String roleName) {
+		 this.roleResourcesBottomPanelNumber = i;
+		 this.roleName = roleName;
+		 
+ 		 
+ 		observerTypeJComboBox = new JComboBox<>();
  		observerTypeJComboBox.addItem(ActiveObserverType.ACTIVE);
 		observerTypeJComboBox.addItem(ActiveObserverType.DELAY);
 		observerTypeJComboBox.addItem(ActiveObserverType.PROCESSOR);
@@ -68,11 +67,11 @@ public class RoleResourcesBottomPanel extends JPanel {
 		activeObserverTopPanel.setBounds(16, 6, 682, 106);
 		add(activeObserverTopPanel);
 		
-		activityLabel = new JLabel("Activity name");
+		queueNameLabel = new JLabel("Queue name");
 		
-		activityTextField = new JTextField();
-//		activityTextField.setText(processContentRepository.getName());
-		activityTextField.setColumns(10);
+		queueNameTextField = new JTextField();
+		 
+ 		 
 		
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {
@@ -88,7 +87,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 		removeObserverButton = new JButton("Remove observer");
 		removeObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = tableObservers.getSelectedRow();
+				selectedRow = tableObservers.getSelectedRow();
 				if (observersTableModel.getRowCount() > 0){ 
 					observersTableModel.removeObserverAt(selectedRow);
 					if (selectedRow != 0) {
@@ -105,9 +104,9 @@ public class RoleResourcesBottomPanel extends JPanel {
 					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
 							.addGap(5)
-							.addComponent(activityLabel)
+							.addComponent(queueNameLabel)
 							.addGap(5)
-							.addComponent(activityTextField, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE))
+							.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
 							.addGap(123)
 							.addComponent(addObserverButton)
@@ -121,10 +120,10 @@ public class RoleResourcesBottomPanel extends JPanel {
 					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
 							.addGap(11)
-							.addComponent(activityLabel))
+							.addComponent(queueNameLabel))
 						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
 							.addGap(5)
-							.addComponent(activityTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGap(22)
 					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(addObserverButton)
@@ -168,5 +167,22 @@ public void configuraColunas() {
 		tableObservers.getColumnModel().getColumn(1).setPreferredWidth(23);
 	 
 		
+	}
+
+
+	public JLabel getQueueNameLabel() {
+		return queueNameLabel;
+	}
+
+	public void setQueueNameLabel(JLabel queueNameLabel) {
+		this.queueNameLabel = queueNameLabel;
+	}
+
+	public JTextField getQueueNameTextField() {
+		return queueNameTextField;
+	}
+
+	public void setQueueNameTextField(String queueNameTextField) {
+		this.queueNameTextField.setText(queueNameTextField);
 	}
 }
