@@ -7,12 +7,13 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
+import xacdml.model.generated.QueueObserver;
 
 public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -4739793782253876825L;
 
-	private List<ActObserver> observers;
+	private List<QueueObserver> observers;
 	private String[] headerObservers = new String[] {"Name","type"};
 
 	public RoleResourcesBottomPanelTableModel() {
@@ -31,7 +32,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ActObserver actObserver = observers.get(rowIndex);
+		QueueObserver actObserver = observers.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return actObserver.getName();
@@ -44,7 +45,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		ActObserver actObserver = observers.get(rowIndex);
+		QueueObserver actObserver = observers.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			actObserver.setName((String) aValue);
@@ -62,7 +63,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return ActObserver.class;
+			return QueueObserver.class;
 		default:
 			return null;
 		}
@@ -73,7 +74,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 		return headerObservers[col];
 	}
 	 
-	public ActObserver getObserverAt(int row) {
+	public QueueObserver getObserverAt(int row) {
 		return observers.get(row);
 	}
 
@@ -82,7 +83,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public void addActObserver(ActObserver actObserver) {
+	public void addQueueObserver(QueueObserver actObserver) {
 		observers.add(actObserver);
 		fireTableDataChanged();
 	}
@@ -92,7 +93,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 		return true;
 	}
 
-	public int getNumberOfActObservers() {
+	public int getNumberOfQueueObservers() {
 		return observers.size();
 	}
 

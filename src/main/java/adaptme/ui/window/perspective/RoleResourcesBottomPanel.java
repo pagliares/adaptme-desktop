@@ -25,6 +25,7 @@ import javax.swing.table.TableModel;
 import model.spem.ProcessContentRepository;
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
+import xacdml.model.generated.QueueObserver;
 
 public class RoleResourcesBottomPanel extends JPanel {
 	
@@ -76,9 +77,9 @@ public class RoleResourcesBottomPanel extends JPanel {
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ActObserver actObserver = new ActObserver();
-//				actObserver.setName(processContentRepository.getName()+ " observer " + ++counter+"");
-				observersTableModel.addActObserver(actObserver);
+				QueueObserver queueObserver = new QueueObserver();
+				queueObserver.setName(queueNameTextField.getText()+ " queue observer " + ++counter+"");
+				observersTableModel.addQueueObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 			}
