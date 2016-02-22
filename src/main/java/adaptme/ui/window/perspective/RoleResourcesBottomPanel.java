@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
 
 import model.spem.ProcessContentRepository;
 import simulator.base.ActiveObserverType;
+import simulator.base.QueueObserverType;
 import xacdml.model.generated.ActObserver;
 import xacdml.model.generated.QueueObserver;
 
@@ -33,7 +34,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 	private JTextField queueNameTextField;
 	private JTable tableObservers;
 	private JTable tableRole;
-	private JComboBox<ActiveObserverType> observerTypeJComboBox;
+	private JComboBox<QueueObserverType> observerTypeJComboBox;
 	private RoleResourcesBottomPanelTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
  	private int counter;
@@ -54,9 +55,10 @@ public class RoleResourcesBottomPanel extends JPanel {
 		 
  		 
  		observerTypeJComboBox = new JComboBox<>();
- 		observerTypeJComboBox.addItem(ActiveObserverType.ACTIVE);
-		observerTypeJComboBox.addItem(ActiveObserverType.DELAY);
-		observerTypeJComboBox.addItem(ActiveObserverType.PROCESSOR);
+ 		observerTypeJComboBox.addItem(QueueObserverType.NONE);
+		observerTypeJComboBox.addItem(QueueObserverType.LENGTH);
+		observerTypeJComboBox.addItem(QueueObserverType.TIME);
+		observerTypeJComboBox.addItem(QueueObserverType.STATIONARY);
 		
 		observersTableModel = new RoleResourcesBottomPanelTableModel();
 		tableObservers = new JTable(observersTableModel);
@@ -81,7 +83,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 				queueObserver.setName(queueNameTextField.getText()+ " queue observer " + ++counter+"");
 				observersTableModel.addQueueObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
-				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
+				tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
 			}
 		});
 		

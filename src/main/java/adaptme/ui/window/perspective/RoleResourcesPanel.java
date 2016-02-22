@@ -99,7 +99,7 @@ public class RoleResourcesPanel {
 		
 		outerRoleResourcesBottomPanel = new JPanel();
  		outerRoleResourcesBottomPanel.setLayout(new BorderLayout());
- 		outerRoleResourcesBottomPanel.setBorder(new TitledBorder(null, "outer", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
+ 		outerRoleResourcesBottomPanel.setBorder(new TitledBorder(null, "Configure observers", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
  		titlePanel.add(outerRoleResourcesBottomPanel, BorderLayout.CENTER);
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.base.ActiveObserverType;
+import simulator.base.QueueObserverType;
 import xacdml.model.generated.ActObserver;
 import xacdml.model.generated.QueueObserver;
 
@@ -51,7 +52,7 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 			actObserver.setName((String) aValue);
 			break;
 		case 1:
-			ActiveObserverType type = (ActiveObserverType)aValue;
+			QueueObserverType type = (QueueObserverType)aValue;
 			actObserver.setType(type.toString());
 			break;
 		}
