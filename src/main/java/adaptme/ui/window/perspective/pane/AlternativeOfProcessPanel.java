@@ -604,6 +604,7 @@ public class AlternativeOfProcessPanel {
 		
 		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
+		roleResourcePanel.configuraTableListener();
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
 		
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);

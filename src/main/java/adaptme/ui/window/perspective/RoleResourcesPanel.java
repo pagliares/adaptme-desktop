@@ -145,6 +145,8 @@ public class RoleResourcesPanel {
 
 				if ((indexSelectedRow > -1)) { 					 
 					roleResourcesBottomPannel = (RoleResourcesBottomPanel) listOfRoleResourcesBottomPanels.get(indexSelectedRow);
+					String roleName = (String)tableRole.getValueAt(indexSelectedRow, 0);
+					roleResourcesBottomPannel.setQueueNameTextField(roleName);
 					outerRoleResourcesBottomPanel.removeAll();
 					outerRoleResourcesBottomPanel.add(roleResourcesBottomPannel, BorderLayout.CENTER);
 					outerRoleResourcesBottomPanel.updateUI();
