@@ -194,4 +194,10 @@ public class RoleResourcesPanel {
 	public JPanel getTopPanel() {
 		return topPanel;
 	}
+
+
+
+	public RoleResourcesBottomPanel getRoleResourcesBottomPannel() {
+		return roleResourcesBottomPannel;
+	}
 }

@@ -131,9 +131,7 @@ public class XACDMLBuilderFacade {
 	
 	public String buildXACDML(String acdId, String simTime, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
 			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
-		
-//		printProcessRepositoryForDebugPurposes();
-		
+				
 		ObjectFactory factory = new ObjectFactory();
 		
 		Acd acd = factory.createAcd();
@@ -148,6 +146,8 @@ public class XACDMLBuilderFacade {
  		// Creation of dead resource queues necessary to the creation of regular activities
   	    // nao uso for each pois preciso do indice para pegar a quantidade digitada na coluna da JTable roles
   		
+  		 
+  		
   		for (int i = 0; i < roles.size(); i++) {  
 
 			Role role = roles.get(i);
@@ -157,9 +157,12 @@ public class XACDMLBuilderFacade {
  			permanentEntity.setId(role.getName());
 			acd.getClazz().add(permanentEntity);
 			
+			String resourceQueueName = roleResourcePanel.getRoleResourcesBottomPannel().getQueueNameTextField().getText();
+			
 			// cria a fila para armazenenar a entidade permanente
-			deadPermanentEntity.setId("Resource queue for permanent entity: " + role.getName());
+			deadPermanentEntity.setId(resourceQueueName);
 			deadPermanentEntity.setClazz(permanentEntity);
+			
 			
 			// pega atributos configurados na Jtable role, necessario tambem par o tipo de fila abaixo
 			
@@ -177,133 +180,134 @@ public class XACDMLBuilderFacade {
 			queue.setInit(Integer.toString(role.getIntialQuantity()));
 			deadPermanentEntity.setType(queue);
  		
-            Boolean isStationary = (Boolean)roleTable.getModel().getValueAt(i, 4);
-            if (isStationary) {
-            	QueueObserver queueObserver = factory.createQueueObserver();
-            	queueObserver.setType(QueueObserverType.STATIONARY.toString());
+			
+			List<QueueObserver> queueObservers = roleResourcePanel.getRoleResourcesBottomPannel().getObservers();
+			 
+            for (QueueObserver queueObserver: queueObservers) 
             	deadPermanentEntity.getQueueObserver().add(queueObserver);
-            }
+            
             
 			acd.getDead().add(deadPermanentEntity);
 			deadPermanentEntity = factory.createDead();
 		}
+
  		
 		// build generate activities
 		
-		Generate generateActivity = factory.createGenerate();
-		List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
-		
-		for (int i = 0; i < workProducts.size(); i++) {  
-
-			WorkProduct workProduct = workProducts.get(i);
-			
-			generateActivity.setId("Generate activity for : " + workProduct.getName());
-			
-			Class temporalEntity = factory.createClass();
-			temporalEntity.setId("Temporal entity " + workProduct.getName());
-			acd.getClazz().add(temporalEntity);
-	 		generateActivity.setClazz(temporalEntity);   
-	 		
-	 		// ate a linha 247, configura os dados da distribuicao selecionada
-	 		JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
-			// pega o painel x associado com o workproduct x
-			ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(i);
-		 
-			Parameters parameters = probabilityDistributionInnerPanel.getParameters();
-
-			Stat distribution = factory.createStat();
-			
-			if (parameters instanceof ConstantParameters) {
-				ConstantParameters constantParameters = (ConstantParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("CONSTANT");
-	 			distribution.setParm1(Double.toString(constantParameters.getValue()));
-	 			
-			} else if (parameters instanceof UniformParameters) {
-				UniformParameters UniformParameters = (UniformParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("UNIFORM");
-	 			distribution.setParm1(Double.toString(UniformParameters.getLow()));
-	 			distribution.setParm2(Double.toString(UniformParameters.getHigh()));
- 	 			
-			} else if (parameters instanceof NegativeExponential) {
-				NegativeExponential negativeExponential = (NegativeExponential)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("NEGEXP");
-	 			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
- 	 			
-			} else if (parameters instanceof NormalParameters) {
-				NormalParameters normalParameters = (NormalParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("NORMAL");
-	 			distribution.setParm1(Double.toString(normalParameters.getMean()));
-	 			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
-
-			} else if (parameters instanceof PoissonParameters) {
-				PoissonParameters poissonParameters = (PoissonParameters)parameters;
-				distribution = factory.createStat();
-	 			distribution.setType("POISSON");
-	 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
- 			}
-			
-			// Configura os observers da Generate Activity
-			JComboBox<ActiveObserverType> observerTypeComboBox = probabilityDistributionInnerPanel.getObserverTypeJComboBox();
-			if (!observerTypeComboBox.getSelectedItem().equals(ActiveObserverType.NONE)) {
-				ActObserver actObserver = factory.createActObserver();
-				actObserver.setType(observerTypeComboBox.getSelectedItem().toString());
-				actObserver.setName("Observer type " + observerTypeComboBox.getSelectedItem().toString());
-				generateActivity.getActObserver().add(actObserver);
-			}
-			
-			Dead deadTemporalEntity = factory.createDead();
-			String queueName = workProduct.getQueueName();
-			deadTemporalEntity.setId(queueName);
-			deadTemporalEntity.setClazz(temporalEntity);
-			
-			JTable tableWorkProduct = workProdutResourcesPanel.getTableWorkProduct();
-			// define o tipo da fila da entidade temporaria (QUEUE, STACK or SET)
-//			String queueType = (tableWorkProduct.getModel().getValueAt(i, 2)).toString();
-//			String queueCapacity = tableWorkProduct.getModel().getValueAt(i, 4).toString();
+//		Generate generateActivity = factory.createGenerate();
+//		List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
+//		
+//		for (int i = 0; i < workProducts.size(); i++) {  
+//
+//			WorkProduct workProduct = workProducts.get(i);
 //			
-			String queueType = "QUEUE";
-			String queueCapacity = "5";
- 
-			Type queue = factory.createType();
-			queue.setStruct(queueType);
-			queue.setSize(queueCapacity);
-			queue.setInit("0"); // conferir
-			
-			deadTemporalEntity.setType(queue);
-
-			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
-			
-			String observerQueueLengthName = (tableWorkProduct.getModel().getValueAt(i, 6)).toString();
-			String observerQeueuLenghtTimeName = (tableWorkProduct.getModel().getValueAt(i, 7)).toString();
-			
-			if (observerQueueLengthName != null ) {
-				QueueObserver queueObserver = factory.createQueueObserver();
-				queueObserver.setType(QueueObserverType.LENGTH.toString());
-				queueObserver.setName(observerQueueLengthName);
-				deadTemporalEntity.getQueueObserver().add(queueObserver);
-			}
-			
-
-			if (observerQeueuLenghtTimeName != null) {
-				QueueObserver queueObserver = factory.createQueueObserver();
-				queueObserver.setType(QueueObserverType.LENGTH.toString());
-				queueObserver.setName(observerQeueuLenghtTimeName);
-				deadTemporalEntity.getQueueObserver().add(queueObserver);
-			}
-			
-			acd.getDead().add(deadTemporalEntity);
-			
-			Next nextDead = factory.createNext();
-			nextDead.setDead(deadTemporalEntity);
-			
-			generateActivity.setStat(distribution);
-			generateActivity.getNext().add(nextDead);
-
-			acd.getGenerate().add(generateActivity);
+//			generateActivity.setId("Generate activity for : " + workProduct.getName());
+//			
+//			Class temporalEntity = factory.createClass();
+//			temporalEntity.setId("Temporal entity " + workProduct.getName());
+//			acd.getClazz().add(temporalEntity);
+//	 		generateActivity.setClazz(temporalEntity);   
+//	 		
+//	 		// ate a linha 247, configura os dados da distribuicao selecionada
+//	 		JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
+//			// pega o painel x associado com o workproduct x
+//			ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(i);
+//		 
+//			Parameters parameters = probabilityDistributionInnerPanel.getParameters();
+//
+//			Stat distribution = factory.createStat();
+//			
+//			if (parameters instanceof ConstantParameters) {
+//				ConstantParameters constantParameters = (ConstantParameters)parameters;
+//				distribution = factory.createStat();
+//	 			distribution.setType("CONSTANT");
+//	 			distribution.setParm1(Double.toString(constantParameters.getValue()));
+//	 			
+//			} else if (parameters instanceof UniformParameters) {
+//				UniformParameters UniformParameters = (UniformParameters)parameters;
+//				distribution = factory.createStat();
+//	 			distribution.setType("UNIFORM");
+//	 			distribution.setParm1(Double.toString(UniformParameters.getLow()));
+//	 			distribution.setParm2(Double.toString(UniformParameters.getHigh()));
+// 	 			
+//			} else if (parameters instanceof NegativeExponential) {
+//				NegativeExponential negativeExponential = (NegativeExponential)parameters;
+//				distribution = factory.createStat();
+//	 			distribution.setType("NEGEXP");
+//	 			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+// 	 			
+//			} else if (parameters instanceof NormalParameters) {
+//				NormalParameters normalParameters = (NormalParameters)parameters;
+//				distribution = factory.createStat();
+//	 			distribution.setType("NORMAL");
+//	 			distribution.setParm1(Double.toString(normalParameters.getMean()));
+//	 			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+//
+//			} else if (parameters instanceof PoissonParameters) {
+//				PoissonParameters poissonParameters = (PoissonParameters)parameters;
+//				distribution = factory.createStat();
+//	 			distribution.setType("POISSON");
+//	 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
+// 			}
+//			
+//			// Configura os observers da Generate Activity
+//			JComboBox<ActiveObserverType> observerTypeComboBox = probabilityDistributionInnerPanel.getObserverTypeJComboBox();
+//			if (!observerTypeComboBox.getSelectedItem().equals(ActiveObserverType.NONE)) {
+//				ActObserver actObserver = factory.createActObserver();
+//				actObserver.setType(observerTypeComboBox.getSelectedItem().toString());
+//				actObserver.setName("Observer type " + observerTypeComboBox.getSelectedItem().toString());
+//				generateActivity.getActObserver().add(actObserver);
+//			}
+//			
+//			Dead deadTemporalEntity = factory.createDead();
+//			String queueName = workProduct.getQueueName();
+//			deadTemporalEntity.setId(queueName);
+//			deadTemporalEntity.setClazz(temporalEntity);
+//			
+//			JTable tableWorkProduct = workProdutResourcesPanel.getTableWorkProduct();
+//			// define o tipo da fila da entidade temporaria (QUEUE, STACK or SET)
+////			String queueType = (tableWorkProduct.getModel().getValueAt(i, 2)).toString();
+////			String queueCapacity = tableWorkProduct.getModel().getValueAt(i, 4).toString();
+////			
+//			String queueType = "QUEUE";
+//			String queueCapacity = "5";
+// 
+//			Type queue = factory.createType();
+//			queue.setStruct(queueType);
+//			queue.setSize(queueCapacity);
+//			queue.setInit("0"); // conferir
+//			
+//			deadTemporalEntity.setType(queue);
+//
+//			// buscar valores do JTable 3.2 - Falta um tipo de observer - nem todos no xacdml da tese tem queuobserver
+//			
+//			String observerQueueLengthName = (tableWorkProduct.getModel().getValueAt(i, 6)).toString();
+//			String observerQeueuLenghtTimeName = (tableWorkProduct.getModel().getValueAt(i, 7)).toString();
+//			
+//			if (observerQueueLengthName != null ) {
+//				QueueObserver queueObserver = factory.createQueueObserver();
+//				queueObserver.setType(QueueObserverType.LENGTH.toString());
+//				queueObserver.setName(observerQueueLengthName);
+//				deadTemporalEntity.getQueueObserver().add(queueObserver);
+//			}
+//			
+//
+//			if (observerQeueuLenghtTimeName != null) {
+//				QueueObserver queueObserver = factory.createQueueObserver();
+//				queueObserver.setType(QueueObserverType.LENGTH.toString());
+//				queueObserver.setName(observerQeueuLenghtTimeName);
+//				deadTemporalEntity.getQueueObserver().add(queueObserver);
+//			}
+//			
+//			acd.getDead().add(deadTemporalEntity);
+//			
+//			Next nextDead = factory.createNext();
+//			nextDead.setDead(deadTemporalEntity);
+//			
+//			generateActivity.setStat(distribution);
+//			generateActivity.getNext().add(nextDead);
+//
+//			acd.getGenerate().add(generateActivity);
 			
 		// end build generate activities
 		
@@ -328,7 +332,7 @@ public class XACDMLBuilderFacade {
 //			
 //			generateActivity = factory.createGenerate();
 //			destroyDep0 = factory.createDestroy();
-		}
+//		}
 			
 			// end destroy
 		
@@ -370,6 +374,7 @@ public class XACDMLBuilderFacade {
 		String result = null;
 		try {
 			result = persistProcessInXMLWithJAXBOnlyString(acd);
+			System.out.println(result);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -378,48 +383,7 @@ public class XACDMLBuilderFacade {
 		}
  	}
 	
-	public void printProcessRepositoryForDebugPurposes() {
-		
- 		ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
-  		List<ProcessContentRepository> resultado = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
-    		
-  		for (ProcessContentRepository p1: resultado) {
-  			System.out.println("\n\n"+ p1.getType().toString() + "                 :  " + p1.getName());
-   			MethodContentRepository role = p1.getMainRole();
-  			System.out.print("Main Role            :  " + role.getName()+"\n");
-  			
-  			List<MethodContentRepository> additionalRoles = p1.getAdditionalRoles();
-  			for (MethodContentRepository additionalRole: additionalRoles) {
-  				System.out.println("Additional role      :  " + additionalRole.getName());
-  			}
-  			 
-  			System.out.print("Input work products  : " );
-  			Set<MethodContentRepository> inputWorkProducts = p1.getInputMethodContentsRepository();
-  			for (MethodContentRepository m: inputWorkProducts) {
-  				System.out.print("\t" + m.getName());
-  			}
-  			System.out.print("\nOutput work products : ");
-  			Set<MethodContentRepository> outputWorkProducts = p1.getOutputMethodContentsRepository();
-  			for (MethodContentRepository m: outputWorkProducts) {
-  				System.out.print("\t" + m.getName());
-   			}
-  			
-  			// Testar o codigo abaixo para  o repositorio que vem do web service
-//  			System.out.print("\nSample : ");
-//  			Sample sampleTask = p1.getSample();
-//  			System.out.println("Sample size  : "  + sampleTask.getSize());
-//  	
-//  			List<Measurement> measurements = sampleTask.getMeasurements();
-//  			System.out.println("measurements  : " );
-//  			for (Measurement m: measurements) {
-//  				if (m instanceof DurationMeasurement) {
-//  					DurationMeasurement d = (DurationMeasurement)m;
-//  					System.out.print("\t" + d.getValue());
-//  				}
-//  				
-//   			}	
-  		}
-	}
+	
 
 	public Acd getAcd() {
 		return acd;

@@ -98,4 +98,8 @@ public class RoleResourcesBottomPanelTableModel extends AbstractTableModel {
 		return observers.size();
 	}
 
+	public List<QueueObserver> getObservers() {
+		return observers;
+	}
+
 }
