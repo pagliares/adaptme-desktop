@@ -209,4 +209,8 @@ public class WorkProductResourcesPanel {
 	 public JPanel getPanel() {
 		 return topPanel;
 	 }
+
+	public WorkProductResourcesBottomRightPanel getWorkProductResourcesBottomRightPanel() {
+		return workProductResourcesBottomRightPanel;
+	}
 }

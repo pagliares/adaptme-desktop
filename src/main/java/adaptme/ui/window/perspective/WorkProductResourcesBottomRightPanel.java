@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
@@ -187,5 +188,9 @@ public void configuraColunas() {
 
 	public void setQueueNameTextField(String queueNameTextField) {
 		this.queueNameTextField.setText(queueNameTextField);
+	}
+	
+	public List<QueueObserver> getObservers() {
+		return observersTableModel.getObservers();
 	}
 }

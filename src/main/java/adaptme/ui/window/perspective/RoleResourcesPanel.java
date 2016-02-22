@@ -48,7 +48,7 @@ public class RoleResourcesPanel {
  	
 	private RoleResourcesBottomPanel roleResourcesBottomPannel;
 
-	private List<JPanel> listOfRoleResourcesBottomPanels = new ArrayList<>();
+	private List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanels = new ArrayList<>();
 	
   	
  	private int indexSelectedRow;
@@ -199,5 +199,11 @@ public class RoleResourcesPanel {
 
 	public RoleResourcesBottomPanel getRoleResourcesBottomPannel() {
 		return roleResourcesBottomPannel;
+	}
+
+
+
+	public List<RoleResourcesBottomPanel> getListOfRoleResourcesBottomPanels() {
+		return listOfRoleResourcesBottomPanels;
 	}
 }

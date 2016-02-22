@@ -84,8 +84,8 @@ public class WorkProductResourcesBottomRightPanelTableModel extends AbstractTabl
 		fireTableDataChanged();
 	}
 
-	public void addQueueObserver(QueueObserver actObserver) {
-		observers.add(actObserver);
+	public void addActObserver(QueueObserver queueObserver) {
+		observers.add(queueObserver);
 		fireTableDataChanged();
 	}
 
@@ -96,6 +96,10 @@ public class WorkProductResourcesBottomRightPanelTableModel extends AbstractTabl
 
 	public int getNumberOfQueueObservers() {
 		return observers.size();
+	}
+
+	public List<QueueObserver> getObservers() {
+		return observers;
 	}
 
 }
