@@ -32,6 +32,7 @@ import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
+import model.spem.util.ProcessContentType;
 import xacdml.model.generated.Acd;
 import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
@@ -307,65 +308,90 @@ public class XACDMLBuilderFacade {
 			
 		// end build generate activities
 		
-		// begin destroy
-//			Destroy destroyDep0 = factory.createDestroy();
-//
-//			destroyDep0.setId("Destroy : " + workProduct.getName());
-////			destroyDep0.setClazz(temporalEntity);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
-//
-//			Stat uniform2 = factory.createStat();
-//			uniform2.setType("UNIFORM");
-//			uniform2.setParm1("0.0");
-//			uniform2.setParm2("10.0");
-//
-//			//Prev previous = factory.createPrev();
-//			//previous.setDead(dead);
-//			//destroyDep0.getPrev().add(previous);
-////			destroyDep0.setGraphic(box3);
-//			// esta faltando destroy.setStat no codigo
-//			
-//			acd.getDestroy().add(destroyDep0);
-//			
-//			generateActivity = factory.createGenerate();
-//			destroyDep0 = factory.createDestroy();
-//		}
+			// begin buildActivities
 			
-			// end destroy
-		
-		// begin buildActivities
-		
-//         Act regularActivity = factory.createAct();
-//		
-//		for (String task: tasks){
+	         Act regularActivity = factory.createAct();
+	        ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
+//	        List<ProcessContentRepository> list = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
+	        List<ProcessContentRepository> list = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
+	        Set<MethodContentRepository> list2 = null;
+	        for (ProcessContentRepository pcr: list) {
+	        	if (pcr.getType().equals(ProcessContentType.TASK)) {
+	        		// primeiramente, pegando da incoming queues of work products, generate by generate activities
+	        		list2 = pcr.getInputMethodContentsRepository();
+	        		for (MethodContentRepository mcr: list2) {
+//	        			if (mcr.getName().equals(workProduct.getName())) {  // A fila gerada bate com o metodo
+	        				regularActivity.setId(pcr.getName());
+	        				EntityClass ec1 = factory.createEntityClass();
+	       				    
+	        				Prev previous = new Prev();
+	        				previous.setId("previousID");
+	        				previous.setDead(deadTemporalEntity);
+	        				ec1.setPrev(previous);
+	        				  
+	        				regularActivity.getEntityClass().add(ec1);
+	        				acd.getAct().add(regularActivity);	
+	        				regularActivity = factory.createAct();
+	       				
+//	       			    ec1.setNext(dead);
+	       				
+//	       				EntityClass ec2 = factory.createEntityClass();
+	       		 
+//	       			    ec2.setPrev(dead);
+//	       				ec2.setNext(dead);
+	        				
+//	        			}
+	        		}
+	        		
+	        	}
+	        	   regularActivity = factory.createAct(); 
+	        }
+	        
+	        
 //			
-//			regularActivity.setId(task);
-//
-//			Stat uniform = factory.createStat();
-//			uniform.setType("UNIFORM");
-//			uniform.setParm1("1.0");
-//			uniform.setParm2("5.0");
+//			for (String task: tasks){
+//				
+//				
+	//
+//				Stat uniform = factory.createStat();
+//				uniform.setType("UNIFORM");
+//				uniform.setParm1("1.0");
+//				uniform.setParm2("5.0");
 
-//			EntityClass ec1 = factory.createEntityClass();
-//			 
-//			ec1.setPrev(dead);
-//			
-//		    ec1.setNext(dead);
-//			
-//			EntityClass ec2 = factory.createEntityClass();
-//	 
-//		    ec2.setPrev(dead);
-//			ec2.setNext(dead);
-//
-//			regularActivity.setStat(uniform);
- //			regularActivity.getEntityClass().add(ec1);
-//			regularActivity.getEntityClass().add(ec2);
+
+	//
+//				regularActivity.setStat(uniform);
+	 //			regularActivity.getEntityClass().add(ec1);
+//				regularActivity.getEntityClass().add(ec2);
+				
+
+//			}
 			
-//			acd.getAct().add(regularActivity);	
-//			regularActivity = factory.createAct();
-//		}
+			// end buildActivities
 		
-		// end buildActivities
 		}
+			
+			
+		
+		
+		
+		// begin destroy
+//					Destroy destroyDep0 = factory.createDestroy();
+
+//					destroyDep0.setId("Destroy : " + workProduct.getName());
+////					destroyDep0.setClazz(temporalEntity);  (vou precisar colocar isso dentro do laco de roles, para cada iteracao, tenho que fazer tudo)
+		 
+//					Prev previous = factory.createPrev();
+//					previous.setDead(dead);
+					//destroyDep0.getPrev().add(previous);
+		 			// esta faltando destroy.setStat no codigo
+					
+//					acd.getDestroy().add(destroyDep0);
+//					
+//					generateActivity = factory.createGenerate();
+//					destroyDep0 = factory.createDestroy();
+		// end destroy
+//		}
 		this.acd = acd;
 		String result = null;
 		try {

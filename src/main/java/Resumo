@@ -42,6 +42,16 @@ Geracao automatica de classes a partir de um dtd
  
  Muito simples. Basta colocar a anotacao @XmlID antes do campo protected String id das classes Class,Dead; (classe gerada automaticamente com xjc)
  
+ Aconteceu algo similar com a classe Prev e nao foi tao facil a solucao
+ 
+ Solucao:
+ 
+ tive que criar o atributo id na classe Prev
+ 
+  @XmlAttribute(name = "id", required = true)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlID
+    protected String id;
  
  3 - Como deixar um item de um JComboBox selecionado por default quando ele está dentro de um JTable (Horas para resolver)
  

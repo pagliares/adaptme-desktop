@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -584,6 +585,8 @@ public class AlternativeOfProcessPanel {
 				evt -> mainPanel.changePanel((NumberCompontent) evt.getNewLeadSelectionPath().getLastPathComponent()));
 		
  		List<String> keySet = new ArrayList<>();
+
+ 		
  		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView = persistProcess.buildGUI(processRepository, keySet);
 		 
 		
@@ -591,6 +594,20 @@ public class AlternativeOfProcessPanel {
 		for (String key : keySet) {
 			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
 			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);
+			
+//	 		for (int i=0; i< keySet.size(); i++) {
+// 			HashMap<String,Element> hash = methodLibraryHash.getHashMap();
+// 			hash.values();
+// 			System.out.println(hash.get(keySet.get(i)));
+// 		}
+	 		
+	 		 
+//	 			HashMap<String,Element> hash = methodLibraryHash.getHashMap();
+//	 			Collection<Element> elementos = hash.get
+//	 			elementos.g
+//	 			System.out.println(elementos.size());
+	 		 
+//	 		}
  		}
 		
 		tabbedPane.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
