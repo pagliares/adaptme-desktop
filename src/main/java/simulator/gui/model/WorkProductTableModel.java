@@ -14,7 +14,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private List<WorkProduct> workProducts;
 	
 	private String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
-									  "Capacity", "Policy", "Observer queue length name", "Observer queue lenght time name"};
+									  "Capacity", "Policy"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts) {
 		this.workProducts = workProducts;
@@ -46,10 +46,6 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return workProduct.getCapacity();
 		case 5:
 			return workProduct.getPolicy();
-		case 6:
-			return workProduct.getObserverQueueLenghtName();
-		case 7:
-			return workProduct.getObserverQueueLenghtTimeName();
 		default:
 			return null;
 		}
@@ -78,12 +74,6 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 5:
 			workProduct.setPolicy((Policy)aValue); 
 			break;
-		case 6:
-			workProduct.setObserverQueueLenghtName((String) aValue);
-			break;
-		case 7:
-			workProduct.setObserverQueueLenghtTimeName((String) aValue);
-			break;
 		} 
 	}
 
@@ -102,10 +92,6 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return Integer.class;
 		case 5:
 			return Policy.class;   
-		case 6:
-			return String.class;
-		case 7:
-			return String.class;
 		default:
 			return null;
 		}

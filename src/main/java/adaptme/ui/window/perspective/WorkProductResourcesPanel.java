@@ -185,8 +185,6 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
 
 		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
@@ -197,8 +195,6 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(3).setPreferredWidth(14);
 		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
-		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(14);
-		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(7);
 	}
 
 	public List<WorkProduct> getWorkProducts() {

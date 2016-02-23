@@ -14,16 +14,12 @@ public class WorkProduct {
     private boolean lock;
     private String status;
     
-//    private int quantity;
     private String queueName = "" ;
     private int capacity;
     private Policy policy;
     
 	private ActiveObserverType observerType;
 	private QueueType queueType;
-
-    private String observerQueueLenghtName = "";
-    private String observerQueueLenghtTimeName = "";
 
     public String getName() {
 	return name;
@@ -73,14 +69,6 @@ public class WorkProduct {
 		this.demandWorkProduct = demandWorkProduct;
 	}
 
-//	public int getQuantity() {
-//		return quantity;
-//	}
-//
-//	public void setQuantity(int quantity) {
-//		this.quantity = quantity;
-//	}
-
 	public String getQueueName() {
 		return queueName;
 	}
@@ -105,21 +93,6 @@ public class WorkProduct {
 		this.policy = policy;
 	}
 
-	public String getObserverQueueLenghtName() {
-		return observerQueueLenghtName;
-	}
-
-	public void setObserverQueueLenghtName(String observerQueueLenghtName) {
-		this.observerQueueLenghtName = observerQueueLenghtName;
-	}
-
-	public String getObserverQueueLenghtTimeName() {
-		return observerQueueLenghtTimeName;
-	}
-
-	public void setObserverQueueLenghtTimeName(String observerQueueLenghtTimeName) {
-		this.observerQueueLenghtTimeName = observerQueueLenghtTimeName;
-	}
 
 	public BestFitDistribution getBestFitDistribution() {
 		return bestFitDistribution;
@@ -128,15 +101,7 @@ public class WorkProduct {
 	public void setBestFitDistribution(BestFitDistribution bestFitDistribution) {
 		this.bestFitDistribution = bestFitDistribution;
 	}
-
-	@Override
-	public String toString() {
-		return "WorkProduct [name=" + name + ", demandWorkProduct=" + demandWorkProduct
-				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
-				+ ", capacity=" + capacity + ", policy=" + policy + ", observerQueueLenghtName="
-				+ observerQueueLenghtName + ", observerQueueLenghtTimeName=" + observerQueueLenghtTimeName + "]";
-	}
-
+	
 	public ActiveObserverType getObserverType() {
 		return observerType;
 	}
@@ -152,7 +117,11 @@ public class WorkProduct {
 	public void setQueueType(QueueType queueType) {
 		this.queueType = queueType;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "WorkProduct [name=" + name + ", demandWorkProduct=" + demandWorkProduct
+				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
+				+ ", capacity=" + capacity + ", policy=" + policy + "]";
+	}
 }
