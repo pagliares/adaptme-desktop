@@ -108,9 +108,11 @@ public class WorkProductResourcesPanel {
 		String[] names = list.toArray(new String[list.size()]);
 		
 		for (int i = 0; i < names.length; i++) {
+			
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(names[i]);
 			workProducts.add(workProduct);
+			
 			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + names[i]);
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
@@ -131,6 +133,11 @@ public class WorkProductResourcesPanel {
 
  		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
  		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
+ 		
+ 		for (int i = 0; i < names.length; i++) {
+ 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 2);
+ 			tableWorkProduct.setValueAt(Policy.FIFO, i, 5);
+		}
 
 	}
 	
@@ -157,8 +164,8 @@ public class WorkProductResourcesPanel {
 			}
 		});
 		
-		tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
-		tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
+//		tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
+//		tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  	}
 	
 	public void configuraColunas() { 
