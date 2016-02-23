@@ -144,57 +144,47 @@ public class XACDMLBuilderFacade {
 		simulationTime.setTime(simTime);
 		acd.setSimtime(simulationTime);
 		
-  		Dead deadPermanentEntity = factory.createDead();
-
  		// Creation of dead resource queues necessary to the creation of regular activities
   	    // nao uso for each pois preciso do indice para pegar a quantidade digitada na coluna da JTable roles
   		
-  		Class permanentEntity = factory.createClass();
-  		
   		for (int i = 0; i < roles.size(); i++) {  
-
-			Role role = roles.get(i);
+  			Role role = roles.get(i);
+  			
+  			Class permanentEntity = factory.createClass();
+  			Dead deadPermanentEntity = factory.createDead();
+  			Type queue = factory.createType();
 			
 			// cria a entidade permanente
- 			
  			permanentEntity.setId(role.getName());
 			acd.getClazz().add(permanentEntity);
 			
+			// cria a fila para armazenenar a entidade permanente - cada role vira uma entidade permanente
 			String resourceQueueName = listOfRoleResourcesBottomPanel.get(i).getQueueNameTextField().getText();
-
-//			String resourceQueueName = roleResourcePanel.getRoleResourcesBottomPannel().getQueueNameTextField().getText();
-			
-			// cria a fila para armazenenar a entidade permanente
 			deadPermanentEntity.setId(resourceQueueName);
 			deadPermanentEntity.setClazz(permanentEntity);
 			
-			
-			// pega atributos configurados na Jtable role, necessario tambem par o tipo de fila abaixo
+			// pega atributos configurados na Jtable role, necessario tambem par o tipo da fila abaixo
 			
 			JTable roleTable = roleResourcePanel.getTableRole();
-			Integer initialQuantity = (Integer)roleTable.getModel().getValueAt(i, 3);
-			role.setIntialQuantity(initialQuantity);
+			Integer queueInitialQuantity = (Integer)roleTable.getModel().getValueAt(i, 4);
+			role.setIntialQuantity(queueInitialQuantity);
 			
-			// define o tipo da fila da entidade permanente (QUEUE, STACK or SET)
-			String queueType = (roleTable.getModel().getValueAt(i, 1)).toString();
-			String queueSize = roleTable.getModel().getValueAt(i, 2).toString();
-			Type queue = factory.createType();
+			// define o tipo da fila da entidade permanente (QUEUE, STACK or SET) e associa com o dead state
+			String queueType = (roleTable.getModel().getValueAt(i, 2)).toString();
+			String queueSize = roleTable.getModel().getValueAt(i, 3).toString();
 			
 			queue.setStruct(queueType);
 			queue.setSize(queueSize);
-			queue.setInit(Integer.toString(role.getIntialQuantity()));
+			queue.setInit(Integer.toString(role.getIntialQuantity()));  // mesmo que pegar de queueInitialQuantity definido acima?
 			deadPermanentEntity.setType(queue);
  		
-			
-			List<QueueObserver> queueObservers = listOfRoleResourcesBottomPanel.get(i).getObservers();
-			 
+			// configura os observer para o dead state
+			List<QueueObserver> queueObservers = listOfRoleResourcesBottomPanel.get(i).getObservers();	 
             for (QueueObserver queueObserver: queueObservers) 
             	deadPermanentEntity.getQueueObserver().add(queueObserver);
             
-            
+            // insere o dead state no acd
 			acd.getDead().add(deadPermanentEntity);
-			deadPermanentEntity = factory.createDead();
-			 permanentEntity = factory.createClass();
 		}
 
  		
@@ -256,6 +246,7 @@ public class XACDMLBuilderFacade {
 	 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
  			}
 			
+ 			
 //			// Configura os observers da Generate Activity
 //			List<QueuObserver> queueObservers = workProdutResourcesPanel.getWorkProductResourcesBottomRightPanel().getObservers();
 //			 
@@ -350,24 +341,57 @@ public class XACDMLBuilderFacade {
 						
 					}
 					acd.getAct().add(regularActivity);
+					
+					Parameters pararmeters = pcr.getSample().getParameters();
+
+					distribution = factory.createStat();
+					
+					if (parameters instanceof ConstantParameters) {
+						ConstantParameters constantParameters = (ConstantParameters)parameters;
+						distribution = factory.createStat();
+			 			distribution.setType("CONSTANT");
+			 			distribution.setParm1(Double.toString(constantParameters.getValue()));
+			 			
+					} else if (parameters instanceof UniformParameters) {
+						UniformParameters UniformParameters = (UniformParameters)parameters;
+						distribution = factory.createStat();
+			 			distribution.setType("UNIFORM");
+			 			distribution.setParm1(Double.toString(UniformParameters.getLow()));
+			 			distribution.setParm2(Double.toString(UniformParameters.getHigh()));
+		 	 			
+					} else if (parameters instanceof NegativeExponential) {
+						NegativeExponential negativeExponential = (NegativeExponential)parameters;
+						distribution = factory.createStat();
+			 			distribution.setType("NEGEXP");
+			 			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+		 	 			
+					} else if (parameters instanceof NormalParameters) {
+						NormalParameters normalParameters = (NormalParameters)parameters;
+						distribution = factory.createStat();
+			 			distribution.setType("NORMAL");
+			 			distribution.setParm1(Double.toString(normalParameters.getMean()));
+			 			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+					} else if (parameters instanceof PoissonParameters) {
+						PoissonParameters poissonParameters = (PoissonParameters)parameters;
+						distribution = factory.createStat();
+			 			distribution.setType("POISSON");
+			 			distribution.setParm1(Double.toString(poissonParameters.getMean()));
+		 			}
+					
+					regularActivity.setStat(distribution);
+					
+					
+					
 					regularActivity = factory.createAct();
-	        				
-	        				
-	        				
-	       				
-//	       			    ec1.setNext(dead);
-	       				
-//	       				EntityClass ec2 = factory.createEntityClass();
-	       		 
-//	       			    ec2.setPrev(dead);
-//	       				ec2.setNext(dead);
-	        				
-//	        			}
-	        		
 	        		
 	        	}
 	        	   regularActivity = factory.createAct(); 
 	        }
+	        
+	       
+		 
+			
 	        
 	        
 //			
