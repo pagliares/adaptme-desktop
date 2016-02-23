@@ -117,8 +117,8 @@ public class WorkProductResourcesPanel {
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, names[i]);
-			workProductResourcesBottomRightPanel.setQueueNameTextField(names[i]);
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, names[i] + " queue");
+			workProductResourcesBottomRightPanel.setQueueNameTextField(names[i] + " queue");
 			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
 			
 			
@@ -156,10 +156,21 @@ public class WorkProductResourcesPanel {
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
 					workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(indexSelectedRow);
 
+					
  					outerProbabilityPanel.removeAll();
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
 					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.updateUI();
+					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 3);
+					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
+					
+					if ((queueName == null) || (queueName.trim().isEmpty())) {
+						workProductResourcesBottomRightPanel.setQueueNameTextField(queueNameEmpty + " queue");
+
+					} else {
+						workProductResourcesBottomRightPanel.setQueueNameTextField(queueName);
+					}
+					
 				}
 			}
 		});
