@@ -74,6 +74,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 		queueNameLabel = new JLabel("Queue name");
 		
 		queueNameTextField = new JTextField();
+		queueNameTextField.setEditable(false);
 		 
  		 
 		

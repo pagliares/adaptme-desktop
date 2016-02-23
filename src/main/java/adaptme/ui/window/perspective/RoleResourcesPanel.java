@@ -113,8 +113,8 @@ public class RoleResourcesPanel {
 			Role role = new Role();
 			role.setName(names[i]);
 			roles.add(role);
-			roleResourcesBottomPannel = new RoleResourcesBottomPanel(i, names[i]);
-			roleResourcesBottomPannel.setQueueNameTextField(names[i]);
+			roleResourcesBottomPannel = new RoleResourcesBottomPanel(i, names[i] + " queue");
+			roleResourcesBottomPannel.setQueueNameTextField(names[i] + " queue");
 			listOfRoleResourcesBottomPanels.add(roleResourcesBottomPannel);
 		}
 
@@ -122,6 +122,9 @@ public class RoleResourcesPanel {
  		tableRole.setModel(roleTableModel);
  		configuraColunas();
  		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
+ 		
+ 		
+ 	
  		
  		outerRoleResourcesBottomPanel.add((RoleResourcesBottomPanel) listOfRoleResourcesBottomPanels.get(0), BorderLayout.CENTER);
 
@@ -150,6 +153,16 @@ public class RoleResourcesPanel {
 					outerRoleResourcesBottomPanel.removeAll();
 					outerRoleResourcesBottomPanel.add(roleResourcesBottomPannel, BorderLayout.CENTER);
 					outerRoleResourcesBottomPanel.updateUI();
+					
+					String queueName = (String)tableRole.getValueAt(indexSelectedRow, 1);
+					String queueNameEmpty = (String)tableRole.getValueAt(indexSelectedRow, 0);
+					
+					if ((queueName == null) || (queueName.trim().isEmpty())) {
+						roleResourcesBottomPannel.setQueueNameTextField(queueNameEmpty + " queue");
+
+					} else {
+						roleResourcesBottomPannel.setQueueNameTextField(queueName);
+					}
 				}
 			}
 		});
@@ -161,7 +174,7 @@ public class RoleResourcesPanel {
 		
 		modeloColuna = tableRole.getColumnModel(); 
 		
-		TableColumn colunaQueueType = modeloColuna.getColumn(1);
+		TableColumn colunaQueueType = modeloColuna.getColumn(2);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
 		 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
