@@ -11,7 +11,7 @@ public class RoleTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -4739793782253876825L;
 
 	private List<Role> roles;
-	private String[] headersRole = new String[] { "Name", "Queue type", "Queue size", "Queue initial quantity", "Observe stationary time" };
+	private String[] headersRole = new String[] { "Name", "Queue name", "Queue type", "Queue size", "Queue initial quantity"};
 
 	public RoleTableModel(List<Role> roles) {
 		this.roles = roles;
@@ -34,13 +34,13 @@ public class RoleTableModel extends AbstractTableModel {
 		case 0:
 			return role.getName();
 		case 1:
-			return role.getQueueType();
+			return role.getQueueName();
 		case 2:
-			return role.getQueueSize();
+			return role.getQueueType();
  		case 3:
- 			return role.getIntialQuantity();
+ 			return role.getQueueSize();
 		case 4:
-			return role.isObserveStationaryTime();
+			return role.getIntialQuantity();
 		default:
 			return null;
 		}
@@ -54,16 +54,16 @@ public class RoleTableModel extends AbstractTableModel {
 			role.setName((String) aValue);
 			break;
 		case 1:
-			role.setQueueType((QueueType) aValue);
+			role.setQueueName((String) aValue);
 			break;
 		case 2:
-			role.setQueueSize((int) aValue);
+			role.setQueueType((QueueType) aValue);
 			break;
 		case 3:
-			role.setIntialQuantity((int) aValue);
+			role.setQueueSize((int) aValue);
 			break;
 		case 4:
-			role.setObserveStationaryTime((boolean) aValue);
+			role.setIntialQuantity((int) aValue); 
 			break;
 		}
 	}
@@ -74,13 +74,13 @@ public class RoleTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return QueueType.class;
+			return String.class;
 		case 2:
-			return Integer.class;
+			return QueueType.class;
 		case 3:
 			return Integer.class;
 		case 4:
-			return Boolean.class;
+			return Integer.class;
 		default:
 			return null;
 		}

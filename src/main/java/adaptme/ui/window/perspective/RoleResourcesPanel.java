@@ -65,7 +65,7 @@ public class RoleResourcesPanel {
 		
 		titlePanel = new JPanel();
 		titlePanel.setLayout(new BorderLayout());
-		titlePanel.setBorder(new TitledBorder(null, "Role resources", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
+		titlePanel.setBorder(new TitledBorder(null, "Mapping SPEM roles to queues", TitledBorder.LEADING, TitledBorder.TOP, null,new Color(59, 59, 59)));
 
 		scrollPaneTableRole = new JScrollPane();
  		tableRole = new JTable();
@@ -126,7 +126,7 @@ public class RoleResourcesPanel {
  		outerRoleResourcesBottomPanel.add((RoleResourcesBottomPanel) listOfRoleResourcesBottomPanels.get(0), BorderLayout.CENTER);
 
  		for (int i = 0; i < names.length; i++) {
- 			tableRole.setValueAt(QueueType.QUEUE, i, 1);
+ 			tableRole.setValueAt(QueueType.QUEUE, i, 2);
 		}
 		
 		

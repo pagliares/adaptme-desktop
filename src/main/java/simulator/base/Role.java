@@ -4,6 +4,8 @@ public class Role {
 	
 	private String name;
 	private int intialQuantity;
+	
+	private String queueName;
 	private QueueType queueType;
 	private int queueSize;
 	
@@ -38,6 +40,12 @@ public class Role {
 	}
 	public void setQueueSize(int queueSize) {
 		this.queueSize = queueSize;
+	}
+	public String getQueueName() {
+		return queueName;
+	}
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
 	}
 
 }
