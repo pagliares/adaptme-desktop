@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "prev")
 public class Prev {
 
-//	Tentei, mas nao funcionou (nao existe no original)
-	 @XmlAttribute(name = "id", required = true)
-	    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	    @XmlID
-	    protected String id;
+    //	Esta propriedade id nao existe no original
+	@XmlAttribute(name = "id", required = true)
+	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	@XmlID
+	protected String id;
 	
     @XmlAttribute(name = "dead", required = true)
     @XmlIDREF

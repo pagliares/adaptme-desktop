@@ -315,23 +315,45 @@ public class XACDMLBuilderFacade {
 //	        List<ProcessContentRepository> list = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
 	        List<ProcessContentRepository> list = p.getListProcessContentRepositoryWithTasksOnly(p.getProcessContents());
 	        Set<MethodContentRepository> list2 = null;
+	        Set<MethodContentRepository> list3 = null;
 	        for (ProcessContentRepository pcr: list) {
 	        	if (pcr.getType().equals(ProcessContentType.TASK)) {
 	        		// primeiramente, pegando da incoming queues of work products, generate by generate activities
 	        		list2 = pcr.getInputMethodContentsRepository();
+	        		regularActivity.setId(pcr.getName());
 	        		for (MethodContentRepository mcr: list2) {
 //	        			if (mcr.getName().equals(workProduct.getName())) {  // A fila gerada bate com o metodo
-	        				regularActivity.setId(pcr.getName());
+	        				
 	        				EntityClass ec1 = factory.createEntityClass();
 	       				    
 	        				Prev previous = new Prev();
 	        				previous.setId("previousID");
 	        				previous.setDead(deadTemporalEntity);
+	        				
 	        				ec1.setPrev(previous);
-	        				  
 	        				regularActivity.getEntityClass().add(ec1);
-	        				acd.getAct().add(regularActivity);	
-	        				regularActivity = factory.createAct();
+	        				 
+	        		}
+	        				list3 = pcr.getOutputMethodContentsRepository();
+					for (MethodContentRepository mcr : list3) {
+						// if (mcr.getName().equals(workProduct.getName())) { //
+						// A fila gerada bate com o metodo
+						 
+						EntityClass ec2 = factory.createEntityClass();
+
+						Next next = factory.createNext();
+						next.setId("next id");
+        				nextDead.setDead(deadTemporalEntity);
+
+						ec2.setNext(next);
+						regularActivity.getEntityClass().add(ec2);
+						
+					}
+					acd.getAct().add(regularActivity);
+					regularActivity = factory.createAct();
+	        				
+	        				
+	        				
 	       				
 //	       			    ec1.setNext(dead);
 	       				
@@ -341,7 +363,7 @@ public class XACDMLBuilderFacade {
 //	       				ec2.setNext(dead);
 	        				
 //	        			}
-	        		}
+	        		
 	        		
 	        	}
 	        	   regularActivity = factory.createAct(); 
