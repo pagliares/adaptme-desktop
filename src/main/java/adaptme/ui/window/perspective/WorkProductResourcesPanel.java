@@ -74,7 +74,7 @@ public class WorkProductResourcesPanel {
 		scrollPaneTableWorkProduct = new JScrollPane();
 		scrollPaneTableWorkProduct.setViewportBorder(null);
 		
-		titledPanel.add(scrollPaneTableWorkProduct, BorderLayout.CENTER);
+		titledPanel.add(scrollPaneTableWorkProduct, BorderLayout.NORTH);
 		tableWorkProduct = new JTable();
 		tableWorkProduct.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
@@ -99,7 +99,7 @@ public class WorkProductResourcesPanel {
 										.addGap(6))));
 		
 		outerProbabilityPanel = new JPanel();
-		titledPanel.add(outerProbabilityPanel, BorderLayout.SOUTH);
+		titledPanel.add(outerProbabilityPanel, BorderLayout.CENTER);
 		outerProbabilityPanel.setLayout(new BorderLayout(0, 0));
 	}
 
