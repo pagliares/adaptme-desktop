@@ -217,7 +217,7 @@ public class XACDMLBuilderFacade {
 				
 				JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
 				
-				ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(i);
+				ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(j);
 				Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
 
 				if (parametersDistributionGenerateActivity instanceof ConstantParameters) {
