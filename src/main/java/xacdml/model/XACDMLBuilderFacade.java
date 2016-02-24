@@ -34,6 +34,7 @@ import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
 import xacdml.model.generated.Class;
 import xacdml.model.generated.Dead;
+import xacdml.model.generated.Destroy;
 import xacdml.model.generated.EntityClass;
 import xacdml.model.generated.Generate;
 import xacdml.model.generated.Next;
@@ -203,6 +204,7 @@ public class XACDMLBuilderFacade {
 				EntityClass ec2 = factory.createEntityClass();
 				Prev previous = factory.createPrev();
 				Next next = factory.createNext();
+				Destroy destroyActivity = factory.createDestroy();
 				
 				// primeiramente, crio e configuro a entidade temporaria criada acima
 				generateActivity.setId("Generate activity for : " + workProduct.getName());
@@ -378,26 +380,15 @@ public class XACDMLBuilderFacade {
 					 
 				}
 
-				// begin destroy
-				// Destroy destroyDep0 = factory.createDestroy();
-
-				// destroyDep0.setId("Destroy : " + workProduct.getName());
-				//// destroyDep0.setClazz(temporalEntity); (vou precisar colocar
-				// isso dentro do laco de roles, para cada iteracao, tenho que
-				// fazer tudo)
-
-				// Prev previous = factory.createPrev();
-				// previous.setDead(dead);
-				// destroyDep0.getPrev().add(previous);
-				// esta faltando destroy.setStat no codigo
-
-				// acd.getDestroy().add(destroyDep0);
-				//
-				// generateActivity = factory.createGenerate();
-				// destroyDep0 = factory.createDestroy();
-				// end destroy
-				// }
+				// NONO: Configurar destroy activities
 				 
+				destroyActivity.setId("Destroy : " + workProduct.getName());
+				destroyActivity.setClazz(temporaryEntity);  
+
+				previous.setDead(deadTemporalEntity);
+				destroyActivity.getPrev().add(previous);
+				 
+				acd.getDestroy().add(destroyActivity);	 
 			}
 		}
 			
