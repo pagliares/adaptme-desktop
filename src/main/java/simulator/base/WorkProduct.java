@@ -8,7 +8,8 @@ public class WorkProduct {
     
     private int done;
     private boolean demandWorkProduct;
-    
+	private int intialQuantity;
+
     private BestFitDistribution bestFitDistribution;
 
     private boolean lock;
@@ -123,5 +124,13 @@ public class WorkProduct {
 		return "WorkProduct [name=" + name + ", demandWorkProduct=" + demandWorkProduct
 				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
 				+ ", capacity=" + capacity + ", policy=" + policy + "]";
+	}
+
+	public int getIntialQuantity() {
+		return intialQuantity;
+	}
+
+	public void setIntialQuantity(int intialQuantity) {
+		this.intialQuantity = intialQuantity;
 	}
 }
