@@ -179,11 +179,11 @@ public class XACDMLBuilderFacade {
 			// insere o dead state no acd
 			acd.getDead().add(deadPermanentEntity);
 
-			// build generate activities
-
 			
-			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel
-					.getListOfProbabilityDistributionPanels();
+
+		}
+		// build generate activities
+			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
 
 			for (int j = 0; j < workProducts.size(); j++) {
 
@@ -269,8 +269,8 @@ public class XACDMLBuilderFacade {
 				// Quarto: configuracao da fila para entidade temporaria incluindo seu tipo (QUEUE, STACK or SET) e observers
 				
 				String queueName = workProduct.getQueueName();
-				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(i, 2)).toString();
-				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(i, 4).toString();
+				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 2)).toString();
+				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 4).toString();
 				
 				queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
 				queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
@@ -280,7 +280,7 @@ public class XACDMLBuilderFacade {
 				deadTemporalEntity.setClazz(temporaryEntity);
 				deadTemporalEntity.setType(queueTypeTemporaryEntity);
 
-				queueObservers = workProdutResourcesPanel.getWorkProductResourcesBottomRightPanel().getObservers();
+				List<QueueObserver> queueObservers = workProdutResourcesPanel.getWorkProductResourcesBottomRightPanel().getObservers();
 
 				for (QueueObserver queueObserver : queueObservers)
 					deadTemporalEntity.getQueueObserver().add(queueObserver);
@@ -390,7 +390,7 @@ public class XACDMLBuilderFacade {
 				 
 				acd.getDestroy().add(destroyActivity);	 
 			}
-		}
+		
 			
 		this.acd = acd;
 		String result = null;

@@ -14,8 +14,7 @@ xacdml_models/
 input/
  
 # OS Files #
-.DS_Store
- 
+.DS_Store 
 *.class
 *.out
 *.log

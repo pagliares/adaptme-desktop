@@ -61,5 +61,9 @@ Geracao automatica de classes a partir de um dtd
 tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  
  
+ Bug: o primeiro processo do plugin process_alternatives_adaptme nao esta abrindo para simulacao
  
+ Bug: ao importar o processo, as tarefas não estão aparecendo no method content
+ 
+ Bug: input/output nao aparecendo na work product resources view do adaptme (Processo thesis_xp)
  
