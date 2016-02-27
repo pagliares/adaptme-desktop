@@ -207,8 +207,8 @@ public class XACDMLBuilderFacade {
 				Destroy destroyActivity = factory.createDestroy();
 				
 				// primeiramente, crio e configuro a entidade temporaria criada acima
-				generateActivity.setId("Generate activity for : " + workProduct.getName());
-				temporaryEntity.setId("Temporary entity " + workProduct.getName());
+				generateActivity.setId(workProduct.getName());
+				temporaryEntity.setId(workProduct.getName());
 				generateActivity.setClazz(temporaryEntity);
 				acd.getClazz().add(temporaryEntity);
 				
@@ -292,11 +292,12 @@ public class XACDMLBuilderFacade {
 
 				// sexto: a fila de entidade temporaria deve ser adicionada na generate activity
 				
-				nextDeadTemporaryEntityByRegularActivity.setDead(deadTemporalEntity);
+ 				nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity);  // chamando deadTemporalEntity.getId() esta dando erro - estranho
+			
 
 				// setimo: termino da configuracao de generate activity, inserindo-a no acd
 				
-				generateActivity.getNext().add(nextDeadTemporaryEntityByRegularActivity);
+				generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
 				acd.getGenerate().add(generateActivity);
 			
 				// Oitavo:  configuracao de regular activities
