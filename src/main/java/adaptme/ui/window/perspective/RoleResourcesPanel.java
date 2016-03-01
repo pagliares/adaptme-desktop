@@ -130,6 +130,7 @@ public class RoleResourcesPanel {
 
  		for (int i = 0; i < names.length; i++) {
  			tableRole.setValueAt(QueueType.QUEUE, i, 2);
+ 			tableRole.setValueAt(names[i] + " queue", i, 1);
 		}
 		
 		

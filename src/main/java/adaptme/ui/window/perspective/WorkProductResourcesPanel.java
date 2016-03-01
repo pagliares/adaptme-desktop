@@ -137,6 +137,7 @@ public class WorkProductResourcesPanel {
  		for (int i = 0; i < names.length; i++) {
  			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 2);
  			tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
+ 			tableWorkProduct.setValueAt(names[i] + " queue", i, 3);
 		}
 
 	}
