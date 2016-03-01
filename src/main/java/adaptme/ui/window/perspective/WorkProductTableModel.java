@@ -16,7 +16,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private List<WorkProduct> workProducts;
 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
-	private String[] headers = new String[] { "Work product", "Queue type", "Queue name", 
+	private String[] headers = new String[] { "Work product", "Queue name", "Queue type", 
 									  "Queue size", "Queue initial quantity", "Policy"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
@@ -41,9 +41,9 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 0:
 			return workProduct.getName();
 		case 1:
-			return workProduct.getQueueType();
-		case 2:
 			return workProduct.getQueueName();
+		case 2:
+			return workProduct.getQueueType();
 		case 3:
 			return workProduct.getCapacity();
 		case 4:
@@ -64,13 +64,13 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setName((String) aValue);
 			break;
 		case 1:
-			workProduct.setQueueType((QueueType) aValue); 
-			break;
-		case 2:
 			workProduct.setQueueName((String) aValue); 
 			WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
 			workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel)listOfWorkProductResourcesBottomRightPanels.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
+			break;
+		case 2:
+			workProduct.setQueueType((QueueType) aValue); 
 			break;
 		case 3:
 			workProduct.setCapacity((Integer) aValue);
@@ -90,9 +90,9 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return QueueType.class;
-		case 2:
 			return String.class;
+		case 2:
+			return QueueType.class;
 		case 3:
 			return Integer.class;
 		case 4:

@@ -134,9 +134,9 @@ public class WorkProductResourcesPanel {
  		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
  		
  		for (int i = 0; i < names.length; i++) {
- 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 1);
+ 			tableWorkProduct.setValueAt(names[i] + " queue", i, 1);
+ 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 2);
  			tableWorkProduct.setValueAt(Policy.FIFO, i, 5);
- 			tableWorkProduct.setValueAt(names[i] + " queue", i, 2);
 		}
 
 	}
@@ -159,7 +159,7 @@ public class WorkProductResourcesPanel {
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
 					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.updateUI();
-					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 2);
+					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 1);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
 					
 					if ((queueName == null) || (queueName.trim().isEmpty())) {
@@ -179,7 +179,7 @@ public class WorkProductResourcesPanel {
 		
 		modeloColuna = tableWorkProduct.getColumnModel();
 
-		TableColumn colunaQueueType = modeloColuna.getColumn(1);
+		TableColumn colunaQueueType = modeloColuna.getColumn(2);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
 		
 		TableColumn colunaPolicy = modeloColuna.getColumn(5);
