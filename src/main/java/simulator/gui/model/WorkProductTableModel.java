@@ -2,7 +2,10 @@ package simulator.gui.model;
 
 import java.util.List;
 
+import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
+
+import adaptme.ui.window.perspective.WorkProductResourcesBottomRightPanel;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
@@ -12,12 +15,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private List<WorkProduct> workProducts;
+	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
 	private String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
 									  "Queue size", "Queue initial quantity", "Policy"};
 
-	public WorkProductTableModel(List<WorkProduct> workProducts) {
+	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
 		this.workProducts = workProducts;
+		this.listOfWorkProductResourcesBottomRightPanels = listOfWorkProductResourcesBottomRightPanels;
 	}
 
 	@Override
@@ -69,6 +74,9 @@ public class WorkProductTableModel extends AbstractTableModel {
 			break;
 		case 3:
 			workProduct.setQueueName((String) aValue); 
+			WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
+			workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel)listOfWorkProductResourcesBottomRightPanels.get(rowIndex);
+			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			break;
 		case 4:
 			workProduct.setCapacity((Integer) aValue);

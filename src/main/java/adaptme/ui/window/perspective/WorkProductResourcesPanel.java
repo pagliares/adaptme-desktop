@@ -124,7 +124,7 @@ public class WorkProductResourcesPanel {
 			
 		}
 		
-		model = new WorkProductTableModel(workProducts);
+		model = new WorkProductTableModel(workProducts, listOfWorkProductResourcesBottomRightPanels);
 		tableWorkProduct.setModel(model);
 		configuraColunas();
 		topPanel.setLayout(gl_topPanel);
