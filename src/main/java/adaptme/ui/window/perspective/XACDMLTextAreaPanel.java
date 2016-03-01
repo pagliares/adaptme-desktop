@@ -87,7 +87,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				textArea.setText("");
 				if(acdIDTextField.getText().trim().isEmpty()){
 					JOptionPane.showMessageDialog(getPanel(), "The ACD Id is required");
 					return; 
