@@ -4,13 +4,15 @@ import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import adaptme.ui.window.perspective.DeveloperEditorTableModel;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import simulator.base.Developer;
-import simulator.gui.model.DeveloperEditorTableModel;
 
 public class PanelDeveloperEditor extends JPanel {
 

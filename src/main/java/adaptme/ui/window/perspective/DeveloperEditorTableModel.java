@@ -1,4 +1,4 @@
-package simulator.gui.model;
+package adaptme.ui.window.perspective;
 
 import java.util.List;
 

@@ -29,7 +29,7 @@ import model.spem.ProcessContentRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.Role;
-import simulator.gui.model.RoleTableModel;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.GridBagLayout;
 

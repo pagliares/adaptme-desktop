@@ -25,7 +25,6 @@ import javax.swing.table.TableColumnModel;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
-import simulator.gui.model.WorkProductTableModel;
 
 public class WorkProductResourcesPanel {
 	
@@ -135,9 +134,9 @@ public class WorkProductResourcesPanel {
  		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
  		
  		for (int i = 0; i < names.length; i++) {
- 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 2);
- 			tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
- 			tableWorkProduct.setValueAt(names[i] + " queue", i, 3);
+ 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 1);
+ 			tableWorkProduct.setValueAt(Policy.FIFO, i, 5);
+ 			tableWorkProduct.setValueAt(names[i] + " queue", i, 2);
 		}
 
 	}
@@ -151,18 +150,16 @@ public class WorkProductResourcesPanel {
 			public void valueChanged(ListSelectionEvent event) {
 				
 				indexSelectedRow = tableWorkProduct.getSelectedRow();
- //				boolean isRowandCheckBoxSelected = (Boolean) model.getValueAt(tableWorkProduct.getSelectedRow(),1) == true;
-				 
+ 				 
 				if ((indexSelectedRow > -1)) { 					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
 					workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(indexSelectedRow);
 
-					
  					outerProbabilityPanel.removeAll();
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
 					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.updateUI();
-					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 3);
+					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 2);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
 					
 					if ((queueName == null) || (queueName.trim().isEmpty())) {
@@ -176,28 +173,27 @@ public class WorkProductResourcesPanel {
 			}
 		});
 		
-//		tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
-//		tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  	}
 	
 	public void configuraColunas() { 
 		
 		modeloColuna = tableWorkProduct.getColumnModel();
 
-		TableColumn colunaQueueType = modeloColuna.getColumn(2);
+		TableColumn colunaQueueType = modeloColuna.getColumn(1);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
 		
-		TableColumn colunaPolicy = modeloColuna.getColumn(6);
+		TableColumn colunaPolicy = modeloColuna.getColumn(5);
 		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		
+		tableWorkProduct.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		 
 
 
 		((DefaultTableCellRenderer)tableWorkProduct.getTableHeader().getDefaultRenderer())
@@ -208,7 +204,7 @@ public class WorkProductResourcesPanel {
 		tableWorkProduct.getColumnModel().getColumn(3).setPreferredWidth(14);
 		tableWorkProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
 		tableWorkProduct.getColumnModel().getColumn(5).setPreferredWidth(8);
-		tableWorkProduct.getColumnModel().getColumn(6).setPreferredWidth(8);
+		 
 	}
 
 	public List<WorkProduct> getWorkProducts() {

@@ -1,10 +1,9 @@
-package simulator.gui.model;
+package adaptme.ui.window.perspective;
 
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import simulator.base.QueueType;
 import simulator.base.Role;
 

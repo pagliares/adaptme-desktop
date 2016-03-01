@@ -1,11 +1,10 @@
-package simulator.gui.model;
+package adaptme.ui.window.perspective;
 
 import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
 
-import adaptme.ui.window.perspective.WorkProductResourcesBottomRightPanel;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
@@ -17,7 +16,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private List<WorkProduct> workProducts;
 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
-	private String[] headers = new String[] { "Work product", "Demand Work Product?", "Queue type", "Queue name", 
+	private String[] headers = new String[] { "Work product", "Queue type", "Queue name", 
 									  "Queue size", "Queue initial quantity", "Policy"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
@@ -42,16 +41,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 0:
 			return workProduct.getName();
 		case 1:
-			return workProduct.isDemandWorkProduct();
-		case 2:
 			return workProduct.getQueueType();
-		case 3:
+		case 2:
 			return workProduct.getQueueName();
-		case 4:
+		case 3:
 			return workProduct.getCapacity();
-		case 5:
+		case 4:
 			return workProduct.getIntialQuantity();
-		case 6:
+		case 5:
 			return workProduct.getPolicy();
 		default:
 			return null;
@@ -67,24 +64,21 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setName((String) aValue);
 			break;
 		case 1:
-			workProduct.setDemandWorkProduct((boolean) aValue);
-			break;
-		case 2:
 			workProduct.setQueueType((QueueType) aValue); 
 			break;
-		case 3:
+		case 2:
 			workProduct.setQueueName((String) aValue); 
 			WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
 			workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel)listOfWorkProductResourcesBottomRightPanels.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			break;
-		case 4:
+		case 3:
 			workProduct.setCapacity((Integer) aValue);
 			break;
-		case 5:
+		case 4:
 			workProduct.setIntialQuantity((Integer) aValue); 
 			break;
-		case 6:
+		case 5:
 			workProduct.setPolicy((Policy)aValue); 
 			break;
 		} 
@@ -96,16 +90,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return Boolean.class;
-		case 2:
 			return QueueType.class;
-		case 3:
+		case 2:
 			return String.class;
-		case 4:
+		case 3:
 			return Integer.class;
-		case 5:
+		case 4:
 			return Integer.class;   
-		case 6:
+		case 5:
 			return Policy.class; 
 		default:
 			return null;

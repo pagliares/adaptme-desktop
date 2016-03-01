@@ -4,11 +4,9 @@ import model.spem.derived.BestFitDistribution;
 
 public class WorkProduct {
 	
-    private String name;
-    
+    private String name; 
     private int done;
-    private boolean demandWorkProduct;
-	private int intialQuantity;
+ 	private int intialQuantity;
 
     private BestFitDistribution bestFitDistribution;
 
@@ -29,8 +27,6 @@ public class WorkProduct {
     public void setName(String name) {
 	this.name = name;
     }
-
-     
 
     public String getStatus() {
 	return status;
@@ -59,16 +55,6 @@ public class WorkProduct {
     public void setLock(boolean lock) {
 	this.lock = lock;
     }
-
-     
-
-	public boolean isDemandWorkProduct() {
-		return demandWorkProduct;
-	}
-
-	public void setDemandWorkProduct(boolean demandWorkProduct) {
-		this.demandWorkProduct = demandWorkProduct;
-	}
 
 	public String getQueueName() {
 		return queueName;
@@ -121,8 +107,7 @@ public class WorkProduct {
 
 	@Override
 	public String toString() {
-		return "WorkProduct [name=" + name + ", demandWorkProduct=" + demandWorkProduct
-				+ ", bestFitDistribution=" + bestFitDistribution + ", queueName=" + queueName
+		return "WorkProduct [name=" + name + bestFitDistribution +"=" + bestFitDistribution + ", queueName=" + queueName
 				+ ", capacity=" + capacity + ", policy=" + policy + "]";
 	}
 
