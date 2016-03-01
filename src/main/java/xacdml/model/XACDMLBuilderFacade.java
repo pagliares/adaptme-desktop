@@ -48,6 +48,38 @@ import xacdml.model.generated.Type;
 public class XACDMLBuilderFacade {
 
 	private Acd acd;
+	private ObjectFactory factory;
+	private Role role;
+	private Class permanentEntity;
+	private Dead deadPermanentEntity;
+    private Type queueTypePermanentEntity;
+    private List<QueueObserver> queueObservers;
+    private QueueObserver queueObserver;
+    
+    private WorkProduct workProduct;
+	
+	private Generate generateActivity;
+	private Class temporaryEntity;
+	private Stat distribution;
+	private Dead deadTemporalEntity;
+	private Type queueTypeTemporaryEntity;
+	private Next nextDeadTemporaryEntityByGenerateActivity;
+	private Next nextDeadTemporaryEntityByRegularActivity;
+	private Act regularActivity;
+	private EntityClass ec1;
+	private EntityClass ec2;
+	private Prev previous;
+	private Next next;
+	private Destroy destroyActivity;
+	
+	private ConstantParameters constantParameters;
+	private UniformParameters uniformParameters;
+	private NegativeExponential negativeExponential;
+	private NormalParameters normalParameters;
+	private PoissonParameters poissonParameters;
+	
+	private ProcessRepository calibratedProcessRepository;
+	private Parameters parametersDistributionRegularActivity;
 	 
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 
@@ -124,9 +156,9 @@ public class XACDMLBuilderFacade {
 							  RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
 				
 		List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanel = roleResourcePanel.getListOfRoleResourcesBottomPanels();
-		ObjectFactory factory = new ObjectFactory();
+		factory = new ObjectFactory();
 		
-		Acd acd = factory.createAcd();
+		acd = factory.createAcd();
 		acd.setId(acdId);
 		
 		Simtime simulationTime = new Simtime();
@@ -138,11 +170,11 @@ public class XACDMLBuilderFacade {
 		// Este laço engloba todos os outros na criação do XACDML
   		
 		for (int i = 0; i < roles.size(); i++) {
-			Role role = roles.get(i);
+			role = roles.get(i);
 
-			Class permanentEntity = factory.createClass();
-			Dead deadPermanentEntity = factory.createDead();
-			Type queueTypePermanentEntity = factory.createType();
+			permanentEntity = factory.createClass();
+			deadPermanentEntity = factory.createDead();
+			queueTypePermanentEntity = factory.createType();
 
 			// cria a entidade permanente
 			permanentEntity.setId(role.getName());
@@ -172,7 +204,7 @@ public class XACDMLBuilderFacade {
 			deadPermanentEntity.setType(queueTypePermanentEntity);
 
 			// configura os observer para o dead state
-			List<QueueObserver> queueObservers = listOfRoleResourcesBottomPanel.get(i).getObservers();
+			queueObservers = listOfRoleResourcesBottomPanel.get(i).getObservers();
 			for (QueueObserver queueObserver : queueObservers)
 				deadPermanentEntity.getQueueObserver().add(queueObserver);
 
@@ -190,21 +222,21 @@ public class XACDMLBuilderFacade {
 				// Para cada demand work product devo gerar: 
 				// temporary entity, generate activity (e observers), queue for temporary entity (e observers), regular activities and destroy activities
 				
-				WorkProduct workProduct = workProducts.get(j);
+				workProduct = workProducts.get(j);
 				
-				Generate generateActivity = factory.createGenerate();
-				Class temporaryEntity = factory.createClass();
-				Stat distribution = factory.createStat();
-				Dead deadTemporalEntity = factory.createDead();
-				Type queueTypeTemporaryEntity = factory.createType();
-				Next nextDeadTemporaryEntityByGenerateActivity = factory.createNext();
-				Next nextDeadTemporaryEntityByRegularActivity = factory.createNext();
-				Act regularActivity = factory.createAct();
-				EntityClass ec1 = factory.createEntityClass();
-				EntityClass ec2 = factory.createEntityClass();
-				Prev previous = factory.createPrev();
-				Next next = factory.createNext();
-				Destroy destroyActivity = factory.createDestroy();
+				generateActivity = factory.createGenerate();
+				temporaryEntity = factory.createClass();
+				distribution = factory.createStat();
+				deadTemporalEntity = factory.createDead();
+				queueTypeTemporaryEntity = factory.createType();
+				nextDeadTemporaryEntityByGenerateActivity = factory.createNext();
+				nextDeadTemporaryEntityByRegularActivity = factory.createNext();
+				regularActivity = factory.createAct();
+				ec1 = factory.createEntityClass();
+				ec2 = factory.createEntityClass();
+				previous = factory.createPrev();
+				next = factory.createNext();
+				destroyActivity = factory.createDestroy();
 				
 				// primeiramente, crio e configuro a entidade temporaria criada acima
 				generateActivity.setId(workProduct.getName());
@@ -221,33 +253,33 @@ public class XACDMLBuilderFacade {
 				Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
 
 				if (parametersDistributionGenerateActivity instanceof ConstantParameters) {
-					ConstantParameters constantParameters = (ConstantParameters) parametersDistributionGenerateActivity;
+					constantParameters = (ConstantParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("CONSTANT");
 					distribution.setParm1(Double.toString(constantParameters.getValue()));
 
 				} else if (parametersDistributionGenerateActivity instanceof UniformParameters) {
-					UniformParameters UniformParameters = (UniformParameters) parametersDistributionGenerateActivity;
+					uniformParameters = (UniformParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("UNIFORM");
-					distribution.setParm1(Double.toString(UniformParameters.getLow()));
-					distribution.setParm2(Double.toString(UniformParameters.getHigh()));
+					distribution.setParm1(Double.toString(uniformParameters.getLow()));
+					distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
 				} else if (parametersDistributionGenerateActivity instanceof NegativeExponential) {
-					NegativeExponential negativeExponential = (NegativeExponential) parametersDistributionGenerateActivity;
+					negativeExponential = (NegativeExponential) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("NEGEXP");
 					distribution.setParm1(Double.toString(negativeExponential.getAverage()));
 
 				} else if (parametersDistributionGenerateActivity instanceof NormalParameters) {
-					NormalParameters normalParameters = (NormalParameters) parametersDistributionGenerateActivity;
+					normalParameters = (NormalParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("NORMAL");
 					distribution.setParm1(Double.toString(normalParameters.getMean()));
 					distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
 
 				} else if (parametersDistributionGenerateActivity instanceof PoissonParameters) {
-					PoissonParameters poissonParameters = (PoissonParameters) parametersDistributionGenerateActivity;
+					poissonParameters = (PoissonParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("POISSON");
 					distribution.setParm1(Double.toString(poissonParameters.getMean()));
@@ -299,10 +331,10 @@ public class XACDMLBuilderFacade {
 				
 				generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
 				acd.getGenerate().add(generateActivity);
-			
+			}
 				// Oitavo:  configuracao de regular activities
 
-				ProcessRepository calibratedProcessRepository = SPEMDrivenPerspectivePanel.processRepository;			
+				calibratedProcessRepository = SPEMDrivenPerspectivePanel.processRepository;			
 				List<ProcessContentRepository> listOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
 				Set<MethodContentRepository> setOfInputMethodContentRepository = null;
 				Set<MethodContentRepository> setOfOutputMethodContentRepository = null;
@@ -340,38 +372,38 @@ public class XACDMLBuilderFacade {
 
 						}
 						
-						Parameters parametersDistributionRegularActivity = processContentRepository.getSample().getParameters();
+						parametersDistributionRegularActivity = processContentRepository.getSample().getParameters();
 
 						distribution = factory.createStat();
 
 						if (parametersDistributionRegularActivity instanceof ConstantParameters) {
-							ConstantParameters constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
+							constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("CONSTANT");
 							distribution.setParm1(Double.toString(constantParameters.getValue()));
 
 						} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
-							UniformParameters UniformParameters = (UniformParameters) parametersDistributionRegularActivity;
+							uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("UNIFORM");
-							distribution.setParm1(Double.toString(UniformParameters.getLow()));
-							distribution.setParm2(Double.toString(UniformParameters.getHigh()));
+							distribution.setParm1(Double.toString(uniformParameters.getLow()));
+							distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
 						} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-							NegativeExponential negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+							negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("NEGEXP");
 							distribution.setParm1(Double.toString(negativeExponential.getAverage()));
 
 						} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
-							NormalParameters normalParameters = (NormalParameters) parametersDistributionRegularActivity;
+							normalParameters = (NormalParameters) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("NORMAL");
 							distribution.setParm1(Double.toString(normalParameters.getMean()));
 							distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
 
 						} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
-							PoissonParameters poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
+							poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("POISSON");
 							distribution.setParm1(Double.toString(poissonParameters.getMean()));
@@ -380,7 +412,7 @@ public class XACDMLBuilderFacade {
 						acd.getAct().add(regularActivity);
 					}
 					 
-				}
+				
 
 				// NONO: Configurar destroy activities
 				 
