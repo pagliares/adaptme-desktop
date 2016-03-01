@@ -118,7 +118,7 @@ public class RoleResourcesPanel {
 			listOfRoleResourcesBottomPanels.add(roleResourcesBottomPannel);
 		}
 
-		roleTableModel = new RoleTableModel(roles);
+		roleTableModel = new RoleTableModel(roles, listOfRoleResourcesBottomPanels);
  		tableRole.setModel(roleTableModel);
  		configuraColunas();
  		tableRole.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default

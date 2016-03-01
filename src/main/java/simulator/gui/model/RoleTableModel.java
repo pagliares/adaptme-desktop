@@ -3,6 +3,8 @@ package simulator.gui.model;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+
+import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import simulator.base.QueueType;
 import simulator.base.Role;
 
@@ -11,10 +13,13 @@ public class RoleTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -4739793782253876825L;
 
 	private List<Role> roles;
+	private List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanels;
+	
 	private String[] headersRole = new String[] { "Name", "Queue name", "Queue type", "Queue size", "Queue initial quantity"};
 
-	public RoleTableModel(List<Role> roles) {
+	public RoleTableModel(List<Role> roles, List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanels) {
 		this.roles = roles;
+		this.listOfRoleResourcesBottomPanels = listOfRoleResourcesBottomPanels;
 	}
 
 	@Override
@@ -55,6 +60,8 @@ public class RoleTableModel extends AbstractTableModel {
 			break;
 		case 1:
 			role.setQueueName((String) aValue);
+			RoleResourcesBottomPanel roleResourcesBottomPanel = listOfRoleResourcesBottomPanels.get(rowIndex);
+			roleResourcesBottomPanel.setQueueNameTextField((String) aValue); 
 			break;
 		case 2:
 			role.setQueueType((QueueType) aValue);
