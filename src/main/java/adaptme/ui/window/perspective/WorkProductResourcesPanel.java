@@ -60,8 +60,7 @@ public class WorkProductResourcesPanel {
 		
 		policyJComboBox = new JComboBox<>();
 		policyJComboBox.addItem(Policy.FIFO);
-		policyJComboBox.addItem(Policy.STACK);
-		policyJComboBox.addItem(Policy.PRIORITY_QUEUE);
+		 
 		
 		topPanel = new JPanel();
 	    titledPanel = new JPanel();

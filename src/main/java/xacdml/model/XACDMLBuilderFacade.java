@@ -296,12 +296,13 @@ public class XACDMLBuilderFacade {
 				
 				String queueName = workProduct.getQueueName();
 				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 2)).toString();
-				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 4).toString();
-				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
+				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 3).toString();
+				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 4).toString();
 				
 				queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
 				queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
 				queueTypeTemporaryEntity.setInit(queueInitialQuantityTemporaryEntityString); 
+				 
 				
 				deadTemporalEntity.setId(queueName);
 				deadTemporalEntity.setClazz(temporaryEntity);

@@ -5,8 +5,9 @@ import java.util.List;
 
 public enum Policy {
 	
-	FIFO("Fifo"), STACK("Stack"), PRIORITY_QUEUE("Priority queue");  // observe que na tese do Jose Nilton, tudo e gerado como fifo (nao existe policy no dtd
+//	FIFO("Fifo"), STACK("Stack"), PRIORITY_QUEUE("Priority queue");  // observe que na tese do Jose Nilton, tudo e gerado como fifo (nao existe policy no dtd
 	
+	FIFO("Fifo");
 	private String name;
 
 	private Policy(String name) {
