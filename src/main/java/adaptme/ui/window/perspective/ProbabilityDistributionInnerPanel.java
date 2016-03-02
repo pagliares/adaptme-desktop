@@ -30,7 +30,7 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	private JLabel selectedDemandWorkProductLabel;
 	private Parameters parameters;
 	private ProbabilityDistributionPanelListener focusListener;
-	 private ParametersPanel parametersPanel;
+	private ParametersPanel parametersPanel;
 	
 	public ProbabilityDistributionInnerPanel(int i, String title) { 
 		 
@@ -40,21 +40,22 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
  		JLabel label = new JLabel("Best fit probability distribution");
 		
  		distributionJComboBox  = new JComboBox<>();
- 		distributionJComboBox.addItem(BestFitDistribution.NONE);
  		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
  		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
  		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
  		distributionJComboBox.addItem(BestFitDistribution.POISSON);
  		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
- 
+ 		
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		// teste
+		
+		distributionJComboBox.setSelectedIndex(0);
 		focusListener = new ProbabilityDistributionPanelListener();
-		parametersPanel =  new ParametersPanel(parameters, focusListener);
+		parameters = Parameters.createParameter((BestFitDistribution) distributionJComboBox.getSelectedItem());
+		parametersPanel = new ParametersPanel(parameters, focusListener);
 		focusListener.setParameters(parameters);
-
+		scrollPane.setViewportView(new ParametersPanel(parameters, focusListener).getPanel());
 		
 		panelTitleLabel = new JLabel(title);
 		
@@ -89,17 +90,14 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 		setLayout(groupLayout);
  		
 		distributionJComboBox.addItemListener(e -> {
- 
+			
 		    parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
 		    parametersPanel =  new ParametersPanel(parameters, focusListener);
 			focusListener.setParameters(parameters);
-		  
-			// teste
 			scrollPane.setViewportView(new ParametersPanel(parameters, focusListener).getPanel());
-//		    scrollPane.setViewportView(new ParametersPanel(parameters, null).getPanel()); // null, pois aqui diferentemente do meeting panel, nao estou
-		    																			  // populando processRepository on the fly
 		    scrollPane.revalidate();
 		    scrollPane.repaint();
+		    
 		});
 	}
 	

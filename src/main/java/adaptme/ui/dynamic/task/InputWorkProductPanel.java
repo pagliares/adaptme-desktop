@@ -67,7 +67,6 @@ public class InputWorkProductPanel implements UpdatePanel {
 	scrollPaneParameters.setViewportBorder(null);
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	distributionJComboBox = new JComboBox<>();
-	distributionJComboBox.addItem(BestFitDistribution.NONE);
 	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
 	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);

@@ -52,7 +52,6 @@ public class RolePanel implements UpdatePanel {
 	lblBestFitProbability.setBounds(12, 122, 143, 14);
 
 	distributionJComboBox = new JComboBox<>();
-	distributionJComboBox.addItem(BestFitDistribution.NONE);
 	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
 	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);

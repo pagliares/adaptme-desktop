@@ -45,7 +45,6 @@ public class LocalViewPanel implements UpdatePanel {
 	lblBestFitProbbility = new JLabel("Best fit probability distribution");
 
 	distributionJComboBox = new JComboBox<>();
-	distributionJComboBox.addItem(BestFitDistribution.NONE);
 	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
 	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
