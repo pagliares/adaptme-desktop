@@ -146,4 +146,8 @@ public class LocalViewPanel implements UpdatePanel {
 	public LocalViewBottomPanel getLocalViewBottomPanel() {
 		return localViewBottomPanel;
 	}
+
+	public String getTitle() {
+		return title;
+	}
 }

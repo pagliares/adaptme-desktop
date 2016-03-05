@@ -390,7 +390,7 @@ public class XACDMLBuilderFacade {
 					regularActivity.getEntityClass().add(ec2);
 
 				}
-
+			
 				parametersDistributionRegularActivity = processContentRepository.getSample().getParameters();
 
 				distribution = factory.createStat();
@@ -429,7 +429,7 @@ public class XACDMLBuilderFacade {
 				}
 				regularActivity.setStat(distribution);
 				// configura os observer para as regular activities
-				
+				// Configruando os observers
 				List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = 
 						mainPanelSimulationOfAlternativeOfProcess.getListIntegratedLocalAndRepositoryViewPanel();
 				
@@ -439,29 +439,17 @@ public class XACDMLBuilderFacade {
 					ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
 					List<ActObserver> listOfActivityObservers = activityObserversTableModel.getObservers();
 					for (ActObserver actObserver : listOfActivityObservers) {
-						regularActivity.getActObserver().add(actObserver);
+						// meio gambiarra, mas permite identificar se o observador é da tarefa ou nao, nao adicionanado observadores que nao sejam de task
+						if (processContentRepository.getName().equals(localViewPanel.getTitle())) {
+							regularActivity.getActObserver().add(actObserver);
+						}
+						
 					}
 					
 				}
-				
-				 
-//				List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = 
-//						mainPanelSimulationOfAlternativeOfProcess.getListIntegratedLocalAndRepositoryViewPanel();
-//				
-//				for (int j=0; j <  listOfIntegratedLocalandRepositoryViewPanels.size(); j+=2){ // Maior gambiarra do mundo
-//					IntegratedLocalAndRepositoryViewPanel i = listOfIntegratedLocalandRepositoryViewPanels.get((j));
-//					LocalViewPanel localViewPanel = i.getLocalViewPanel();
-//					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
-//					ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
-//					List<ActObserver> listOfActivityObservers = activityObserversTableModel.getObservers();
-//					for (ActObserver actObserver : listOfActivityObservers) {
-//						regularActivity.getActObserver().add(actObserver);
-//					}
-//					
-//				}
-				
 				acd.getAct().add(regularActivity);
 			}
+			
 		}
 					 
 				
