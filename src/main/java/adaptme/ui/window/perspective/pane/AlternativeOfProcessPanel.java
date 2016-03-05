@@ -593,21 +593,10 @@ public class AlternativeOfProcessPanel {
 		// main panel é o painel do centro (que esta a local view aninhado)
 		for (String key : keySet) {
 			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
+//			mainPanel.getListIntegratedLocalAndRepositoryViewPanel().add(hashMapLocalView.get(key));  // teste
 			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);
 			
-//	 		for (int i=0; i< keySet.size(); i++) {
-// 			HashMap<String,Element> hash = methodLibraryHash.getHashMap();
-// 			hash.values();
-// 			System.out.println(hash.get(keySet.get(i)));
-// 		}
-	 		
-	 		 
-//	 			HashMap<String,Element> hash = methodLibraryHash.getHashMap();
-//	 			Collection<Element> elementos = hash.get
-//	 			elementos.g
-//	 			System.out.println(elementos.size());
-	 		 
-//	 		}
+
  		}
 		
 		tabbedPane.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());

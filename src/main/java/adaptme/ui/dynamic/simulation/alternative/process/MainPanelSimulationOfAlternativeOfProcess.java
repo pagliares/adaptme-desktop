@@ -170,9 +170,6 @@ public class MainPanelSimulationOfAlternativeOfProcess implements UpdatePanel {
 		return integratedLocalAndRepositoryViewPanel;
 	}
 
-	public void setUpdatePanels(List<IntegratedLocalAndRepositoryViewPanel> updatePanels) {
-		this.integratedLocalAndRepositoryViewPanel = updatePanels;
-	}
 
 	@Override
 	public void updateContent() {

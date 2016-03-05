@@ -387,7 +387,9 @@ public class PersistProcess {
 		
 		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap = new HashMap<>();
 
-		for (ProcessContentRepository content : processRepository.getProcessContents()) {
+		 
+		for (ProcessContentRepository content : processRepository.getProcessContents()) { // ainda nao sei se vou precisar das activities
+//		for (ProcessContentRepository content : processRepository.getListProcessContentRepositoryWithTasksOnly(processRepository.getProcessContents())) {
 			IntegratedLocalAndRepositoryViewPanel integratedLocalAndRepositoryViewPanel = new IntegratedLocalAndRepositoryViewPanel(content);
 			hashMap.put(content.getName(), integratedLocalAndRepositoryViewPanel);
 			keySet.add(content.getName());

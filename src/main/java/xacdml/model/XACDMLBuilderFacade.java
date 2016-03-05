@@ -340,6 +340,8 @@ public class XACDMLBuilderFacade {
 				.getProcessContents();
 		Set<MethodContentRepository> setOfInputMethodContentRepository = null;
 		Set<MethodContentRepository> setOfOutputMethodContentRepository = null;
+		
+		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(listOfProcessContentRepository);
 
 		for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
 			
@@ -442,8 +444,25 @@ public class XACDMLBuilderFacade {
 					
 				}
 				
+				 
+//				List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = 
+//						mainPanelSimulationOfAlternativeOfProcess.getListIntegratedLocalAndRepositoryViewPanel();
+//				
+//				for (int j=0; j <  listOfIntegratedLocalandRepositoryViewPanels.size(); j+=2){ // Maior gambiarra do mundo
+//					IntegratedLocalAndRepositoryViewPanel i = listOfIntegratedLocalandRepositoryViewPanels.get((j));
+//					LocalViewPanel localViewPanel = i.getLocalViewPanel();
+//					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
+//					ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
+//					List<ActObserver> listOfActivityObservers = activityObserversTableModel.getObservers();
+//					for (ActObserver actObserver : listOfActivityObservers) {
+//						regularActivity.getActObserver().add(actObserver);
+//					}
+//					
+//				}
+				
 				acd.getAct().add(regularActivity);
 			}
+		}
 					 
 				
 
@@ -458,7 +477,7 @@ public class XACDMLBuilderFacade {
 				destroyActivity.getPrev().add(previous);
 				 
 				acd.getDestroy().add(destroyActivity);	 
-			}
+			
 		
 			
 		this.acd = acd;
