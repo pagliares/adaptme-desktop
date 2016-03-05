@@ -20,7 +20,6 @@ public class JavaProgramTextAreaPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private XACDMLTextAreaPanel defineXACDMLTextAreaPanel;
-    private String xacdmlFile;
 
 	public JavaProgramTextAreaPanel(XACDMLTextAreaPanel defineXACDMLTextAreaPanel) {
 		
@@ -80,8 +79,8 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		
 		northPanel.add(generateJavaProgramButton);	 
 
-		JButton runJavaProgramButton = new JButton("Save Java program");
-		runJavaProgramButton.addActionListener(new ActionListener() {
+		JButton saveJavaProgramButton = new JButton("Save Java program");
+		saveJavaProgramButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileContent = textArea.getText();
 				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
@@ -90,7 +89,7 @@ public class JavaProgramTextAreaPanel extends JPanel {
 				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");
 			}
 		});
-		panel.add(runJavaProgramButton);
+		panel.add(saveJavaProgramButton);
 	}	
 	
 	public void saveXML(String fileName, String fileContent) {

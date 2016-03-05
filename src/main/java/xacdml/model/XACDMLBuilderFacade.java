@@ -249,7 +249,7 @@ public class XACDMLBuilderFacade {
 				if (parametersDistributionGenerateActivity instanceof ConstantParameters) {
 					constantParameters = (ConstantParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
-					distribution.setType("CONSTANT");
+					distribution.setType("CONST");
 					distribution.setParm1(Double.toString(constantParameters.getValue()));
 
 				} else if (parametersDistributionGenerateActivity instanceof UniformParameters) {
@@ -390,7 +390,7 @@ public class XACDMLBuilderFacade {
 				if (parametersDistributionRegularActivity instanceof ConstantParameters) {
 					constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
 					distribution = factory.createStat();
-					distribution.setType("CONSTANT");
+					distribution.setType("CONST");
 					distribution.setParm1(Double.toString(constantParameters.getValue()));
 
 				} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
