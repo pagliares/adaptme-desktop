@@ -12,6 +12,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import adaptme.ui.dynamic.simulation.alternative.process.ActivityObserversTableModel;
+import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
+import adaptme.ui.dynamic.simulation.alternative.process.LocalViewBottomPanel;
+import adaptme.ui.dynamic.simulation.alternative.process.LocalViewPanel;
+import adaptme.ui.dynamic.simulation.alternative.process.MainPanelSimulationOfAlternativeOfProcess;
 import adaptme.ui.window.perspective.ProbabilityDistributionInnerPanel;
 import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
@@ -152,10 +157,12 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	public String buildXACDML(String acdId, String simTime, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
+	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,String acdId, String simTime, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
 							  RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
 				
 		List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanel = roleResourcePanel.getListOfRoleResourcesBottomPanels();
+		
+		 
 		factory = new ObjectFactory();
 		
 		acd = factory.createAcd();
@@ -214,8 +221,7 @@ public class XACDMLBuilderFacade {
 			
 
 		}
-		// build generate activities
-			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
+ 			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
 
 			for (int j = 0; j < workProducts.size(); j++) {
 
@@ -362,8 +368,8 @@ public class XACDMLBuilderFacade {
 					// (mcr.getName().equals(workProduct.getName())) A fila
 					// gerada bate com o metodo
 
-					previous.setId("previousID");
-					previous.setDead(deadTemporalEntity);
+					previous.setId(inputMethodContentRepository.getName()); 
+					previous.setDead(acd.getDead().get(0)); // generalizar depois
 					ec1.setPrev(previous);
 					regularActivity.getEntityClass().add(ec1);
 				}
@@ -375,8 +381,8 @@ public class XACDMLBuilderFacade {
 					// (mcr.getName().equals(workProduct.getName())) A fila
 					// gerada bate com o metodo
 
-					nextDeadTemporaryEntityByRegularActivity.setId("next id");
-					nextDeadTemporaryEntityByRegularActivity.setDead(deadTemporalEntity);
+					nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName());
+					nextDeadTemporaryEntityByRegularActivity.setDead(acd.getDead().get(0));
 
 					ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
 					regularActivity.getEntityClass().add(ec2);
@@ -420,12 +426,30 @@ public class XACDMLBuilderFacade {
 					distribution.setParm1(Double.toString(poissonParameters.getMean()));
 				}
 				regularActivity.setStat(distribution);
+				// configura os observer para as regular activities
+				
+				List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = 
+						mainPanelSimulationOfAlternativeOfProcess.getListIntegratedLocalAndRepositoryViewPanel();
+				
+				for (IntegratedLocalAndRepositoryViewPanel i: listOfIntegratedLocalandRepositoryViewPanels){
+					LocalViewPanel localViewPanel = i.getLocalViewPanel();
+					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
+					ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
+					List<ActObserver> listOfActivityObservers = activityObserversTableModel.getObservers();
+					for (ActObserver actObserver : listOfActivityObservers) {
+						regularActivity.getActObserver().add(actObserver);
+					}
+					
+				}
+				
 				acd.getAct().add(regularActivity);
 			}
 					 
 				
 
 				// NONO: Configurar destroy activities
+			    // Algorithm used - Cannot be input to any regular activity
+			    //                - Must be in a queue identified by next in a regular activity
 				destroyActivity = factory.createDestroy();
 				destroyActivity.setId("Destroy : " + workProduct.getName());
 				destroyActivity.setClazz(temporaryEntity);  

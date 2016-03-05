@@ -8,14 +8,14 @@ import javax.swing.table.AbstractTableModel;
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
 
-public class ObserversTableModel extends AbstractTableModel {
+public class ActivityObserversTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -4739793782253876825L;
 
 	private List<ActObserver> observers;
 	private String[] headerObservers = new String[] {"Name","type"};
 
-	public ObserversTableModel() {
+	public ActivityObserversTableModel() {
 		this.observers = new ArrayList<>();
 	}
 
@@ -94,6 +94,10 @@ public class ObserversTableModel extends AbstractTableModel {
 
 	public int getNumberOfActObservers() {
 		return observers.size();
+	}
+
+	public List<ActObserver> getObservers() {
+		return observers;
 	}
 
 }

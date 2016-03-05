@@ -14,6 +14,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import adaptme.ui.components.CustomFileChooser;
+import adaptme.ui.dynamic.simulation.alternative.process.LocalViewPanel;
+import adaptme.ui.dynamic.simulation.alternative.process.MainPanelSimulationOfAlternativeOfProcess;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import adaptme.util.RestoreMe;
 
@@ -47,6 +49,7 @@ import javax.swing.SwingConstants;
 
 public class XACDMLTextAreaPanel extends JPanel {
 
+	private MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess;
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private WorkProductResourcesPanel workProdutResourcesPanel;
 	private RoleResourcesPanel roleResourcePanel;
@@ -57,10 +60,10 @@ public class XACDMLTextAreaPanel extends JPanel {
 	private JTextArea textArea;
 	private JTextField simulationTimeJTextField;
 	
-	public XACDMLTextAreaPanel(AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
+	public XACDMLTextAreaPanel(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
 			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
 		
-	
+	    this.mainPanelSimulationOfAlternativeOfProcess = mainPanelSimulationOfAlternativeOfProcess;
 		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		this.workProdutResourcesPanel = workProdutResourcesPanel;
@@ -95,7 +98,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				String result = xACDMLBuilderFacade.buildXACDML(acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
+				String result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
 						workProdutResourcesPanel);
 				textArea.append(result);
 			}

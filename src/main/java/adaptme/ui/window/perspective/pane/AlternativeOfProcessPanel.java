@@ -624,7 +624,7 @@ public class AlternativeOfProcessPanel {
 		roleResourcePanel.configuraTableListener();
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
 		
-		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(this, taskList, workProductResourcesPanel, roleResourcePanel);
+		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 	

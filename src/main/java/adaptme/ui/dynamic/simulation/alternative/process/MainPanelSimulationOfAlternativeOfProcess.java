@@ -166,7 +166,7 @@ public class MainPanelSimulationOfAlternativeOfProcess implements UpdatePanel {
 		return panel;
 	}
 
-	public List<IntegratedLocalAndRepositoryViewPanel> getUpdatePanels() {
+	public List<IntegratedLocalAndRepositoryViewPanel> getListIntegratedLocalAndRepositoryViewPanel() {
 		return integratedLocalAndRepositoryViewPanel;
 	}
 

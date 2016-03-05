@@ -31,8 +31,11 @@ public class LocalViewBottomPanel extends JPanel {
 	private JTextField activityTextField;
 	private JTable tableObservers;
 	private JComboBox<ActiveObserverType> observerTypeJComboBox;
-	private ObserversTableModel observersTableModel ;
- 	private TableColumnModel modeloColuna;
+	private ActivityObserversTableModel observersTableModel ;
+	
+ 	
+
+	private TableColumnModel modeloColuna;
  	private int counter;
  	
  	private ProcessContentRepository processContentRepository;
@@ -49,7 +52,7 @@ public class LocalViewBottomPanel extends JPanel {
 		observerTypeJComboBox.addItem(ActiveObserverType.DELAY);
 		observerTypeJComboBox.addItem(ActiveObserverType.PROCESSOR);
 		
-		observersTableModel = new ObserversTableModel();
+		observersTableModel = new ActivityObserversTableModel();
 		tableObservers = new JTable(observersTableModel);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
@@ -162,5 +165,9 @@ public class LocalViewBottomPanel extends JPanel {
 
 		tableObservers.getColumnModel().getColumn(0).setPreferredWidth(15);
 		tableObservers.getColumnModel().getColumn(1).setPreferredWidth(23);
+	}
+	
+	public ActivityObserversTableModel getObserversTableModel() {
+		return observersTableModel;
 	}
 }

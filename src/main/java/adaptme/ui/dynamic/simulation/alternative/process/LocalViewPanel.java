@@ -31,6 +31,7 @@ public class LocalViewPanel implements UpdatePanel {
     private ParametersPanel parametersPanel;
     private ProbabilityDistributionPanelListener focusListener;
     private Parameters parameters;
+    private LocalViewBottomPanel localViewBottomPanel;
 
     private JPanel panel = new JPanel();
     private String title;
@@ -76,7 +77,7 @@ public class LocalViewPanel implements UpdatePanel {
 		processContentRepository.getSample().setParameters(parameters);
 	});
 	
-	LocalViewBottomPanel localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
+	localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
 	GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
 	gridBagLayout.rowWeights = new double[]{0.0, 0.0};
 	gridBagLayout.rowHeights = new int[]{57, 150};
@@ -141,4 +142,8 @@ public class LocalViewPanel implements UpdatePanel {
     	// sample.setParameters(parameters);
     	processContentRepository.setSample(sample);
     }
+
+	public LocalViewBottomPanel getLocalViewBottomPanel() {
+		return localViewBottomPanel;
+	}
 }
