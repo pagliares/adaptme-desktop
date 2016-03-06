@@ -61,6 +61,9 @@ public class XACDMLBuilderFacade {
     private List<QueueObserver> queueObservers;
     private QueueObserver queueObserver;
     
+    private ActObserver actObserver;
+    private List<ActObserver> listOfActivityObservers;
+    
     private WorkProduct workProduct;
 	
 	private Generate generateActivity;
@@ -434,18 +437,19 @@ public class XACDMLBuilderFacade {
 						mainPanelSimulationOfAlternativeOfProcess.getListIntegratedLocalAndRepositoryViewPanel();
 				
 				for (IntegratedLocalAndRepositoryViewPanel i: listOfIntegratedLocalandRepositoryViewPanels){
-					LocalViewPanel localViewPanel = i.getLocalViewPanel();
-					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
-					ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
-					List<ActObserver> listOfActivityObservers = activityObserversTableModel.getObservers();
-					for (ActObserver actObserver : listOfActivityObservers) {
-						// meio gambiarra, mas permite identificar se o observador é da tarefa ou nao, nao adicionanado observadores que nao sejam de task
-						if (processContentRepository.getName().equals(localViewPanel.getTitle())) {
-							regularActivity.getActObserver().add(actObserver);
+					if (processContentRepository.getName().equals(i.getName())) {
+						listOfActivityObservers = null;
+						LocalViewPanel localViewPanel = i.getLocalViewPanel();
+						LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
+						ActivityObserversTableModel activityObserversTableModel = localViewBottomPanel.getObserversTableModel();
+						listOfActivityObservers = activityObserversTableModel.getObservers();
+						for (ActObserver actObserver : listOfActivityObservers) {
+							// meio gambiarra, mas permite identificar se o observador é da tarefa ou nao, nao adicionanado observadores que nao sejam de task
+							if (processContentRepository.getName().equals(localViewPanel.getTitle())) {
+								regularActivity.getActObserver().add(actObserver);
+							}
 						}
-						
 					}
-					
 				}
 				acd.getAct().add(regularActivity);
 			}

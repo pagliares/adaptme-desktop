@@ -19,7 +19,8 @@ public class IntegratedLocalAndRepositoryViewPanel extends JPanel {
 	private LocalViewPanel localViewPanel;
 	
 	
-	public IntegratedLocalAndRepositoryViewPanel(ProcessContentRepository processContentRepository) {
+	public IntegratedLocalAndRepositoryViewPanel(String title, ProcessContentRepository processContentRepository) {
+		this.setName(title);
 		this.processContentRepository = processContentRepository;
 		splitPane = new JSplitPane();
 		 

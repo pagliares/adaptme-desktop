@@ -390,7 +390,7 @@ public class PersistProcess {
 		 
 		for (ProcessContentRepository content : processRepository.getProcessContents()) { // ainda nao sei se vou precisar das activities
 //		for (ProcessContentRepository content : processRepository.getListProcessContentRepositoryWithTasksOnly(processRepository.getProcessContents())) {
-			IntegratedLocalAndRepositoryViewPanel integratedLocalAndRepositoryViewPanel = new IntegratedLocalAndRepositoryViewPanel(content);
+			IntegratedLocalAndRepositoryViewPanel integratedLocalAndRepositoryViewPanel = new IntegratedLocalAndRepositoryViewPanel(content.getName(), content);
 			hashMap.put(content.getName(), integratedLocalAndRepositoryViewPanel);
 			keySet.add(content.getName());
 			buildGUISession(content, hashMap, keySet);
@@ -400,7 +400,7 @@ public class PersistProcess {
 	}
 	
 	private void buildGUISession(ProcessContentRepository content, HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap, List<String> keySet) {
-		IntegratedLocalAndRepositoryViewPanel sessionPanel = new IntegratedLocalAndRepositoryViewPanel(content);
+		IntegratedLocalAndRepositoryViewPanel sessionPanel = new IntegratedLocalAndRepositoryViewPanel(content.getName(),content);
 //		sessionPanel.setTitle(content.getName());
 		hashMap.put(content.getName(), sessionPanel);
 		keySet.add(content.getName());
