@@ -88,6 +88,10 @@ public class XACDMLBuilderFacade {
 	
 	private ProcessRepository calibratedProcessRepository;
 	private Parameters parametersDistributionRegularActivity;
+	
+	public XACDMLBuilderFacade(ProcessRepository calibratedProcessRepository) {
+		this.calibratedProcessRepository = calibratedProcessRepository;
+ 	}
 	 
 	public void persistProcessInXMLWithJAXB(Acd acd, String fileName) throws IOException {
 
@@ -338,7 +342,7 @@ public class XACDMLBuilderFacade {
 			}
 		// Oitavo: configuracao de regular activities
 
-		calibratedProcessRepository = SPEMDrivenPerspectivePanel.processRepository;
+//		calibratedProcessRepository = SPEMDrivenPerspectivePanel.processRepository;
 		List<ProcessContentRepository> listOfProcessContentRepository = calibratedProcessRepository
 				.getProcessContents();
 		Set<MethodContentRepository> setOfInputMethodContentRepository = null;

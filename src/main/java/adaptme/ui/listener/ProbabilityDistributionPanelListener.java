@@ -17,12 +17,18 @@ import model.spem.derived.UniformParameters;
 public class ProbabilityDistributionPanelListener implements FocusListener {
 	
 	private Parameters parameters;
-	
+//	private ProcessRepository processRepository;
+//	
+//	public ProbabilityDistributionPanelListener(ProcessRepository processRepository) {
+//		this.processRepository = processRepository;
+//		
+//	}
+//	
 	 @Override
 	    public void focusLost(FocusEvent e) { 	    
-		        ProcessRepository pr = SPEMDrivenPerspectivePanel.processRepository;  // teste breakpoint
+//		        ProcessRepository pr = SPEMDrivenPerspectivePanel.processRepository;  // teste breakpoint
 //	    		String s = (String) comboBoxDistribution.getSelectedItem();
-	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
+//	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
 	    	    JTextField textField = (JTextField) e.getSource();
 	    		if (parameters instanceof ConstantParameters) {
 					

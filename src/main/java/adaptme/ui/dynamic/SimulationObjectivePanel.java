@@ -43,7 +43,8 @@ public class SimulationObjectivePanel {
 				JOptionPane.showMessageDialog(panel, "The objective field is required");
 				return; 
 			}
-			SPEMDrivenPerspectivePanel.processRepository.setSimulationObjective(textArea.getText());
+//			SPEMDrivenPerspectivePanel.processRepository.setSimulationObjective(textArea.getText());
+			alternativeOfProcessPanel.setSimulationObjective(textArea.getText());
 			tabbedPane.addTab("2. Identification of alternative of process", null, alternativeOfProcessPanel.getPanel(), null);
 			tabbedPane.setSelectedIndex(1);
 		}

@@ -90,6 +90,7 @@ import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
+import model.spem.SimulationFacade;
 import model.spem.util.ProcessContentType;
  
 public class AlternativeOfProcessPanel {
@@ -133,6 +134,8 @@ public class AlternativeOfProcessPanel {
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
  	
 	private ProcessRepository processRepository;
+	private SimulationFacade simulationFacade = new SimulationFacade();
+	private String simulationObjective;
  	
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
@@ -573,6 +576,8 @@ public class AlternativeOfProcessPanel {
 
 		PersistProcess persistProcess = new PersistProcess();
 		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
+		 
+		simulationFacade.addProcessAlternative(processRepository);
 		
 		// tentando criar um ProcessRepository apenas com tasks
 //		processRepositoryTask = persistProcess.buildProcessOnlyTasks(process, methodLibraryHash);
@@ -613,7 +618,7 @@ public class AlternativeOfProcessPanel {
 		roleResourcePanel.configuraTableListener();
 		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
 		
-		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
+		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(processRepository, mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
 	
@@ -658,5 +663,13 @@ public class AlternativeOfProcessPanel {
 	
 	public JPanel getPanel() {
 		return alternativeOfProcessPanel;
+	}
+
+	public String getSimulationObjective() {
+		return simulationObjective;
+	}
+
+	public void setSimulationObjective(String simulationObjective) {
+		this.simulationObjective = simulationObjective;
 	}
 }

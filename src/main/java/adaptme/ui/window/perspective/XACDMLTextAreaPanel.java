@@ -18,6 +18,7 @@ import adaptme.ui.dynamic.simulation.alternative.process.LocalViewPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.MainPanelSimulationOfAlternativeOfProcess;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import adaptme.util.RestoreMe;
+import model.spem.ProcessRepository;
 
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -59,10 +60,11 @@ public class XACDMLTextAreaPanel extends JPanel {
 	private JTextField acdIDTextField;
 	private JTextArea textArea;
 	private JTextField simulationTimeJTextField;
+	private ProcessRepository processRepository;
 	
-	public XACDMLTextAreaPanel(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
+	public XACDMLTextAreaPanel(ProcessRepository processRepository, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
 			WorkProductResourcesPanel workProdutResourcesPanel, RoleResourcesPanel roleResourcePanel) {
-		
+		this.processRepository = processRepository;
 	    this.mainPanelSimulationOfAlternativeOfProcess = mainPanelSimulationOfAlternativeOfProcess;
 		this.taskList = taskList;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
@@ -135,7 +137,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 		 textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 
-		xACDMLBuilderFacade = new XACDMLBuilderFacade();
+		xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository);
 	}
 
 	public JPanel getPanel() {

@@ -68,8 +68,8 @@ public class PersistProcess {
 
 	public ProcessRepository buildProcess(Process process, MethodLibraryHash methodLibraryHash) {
 		this.methodLibraryHash = methodLibraryHash;
-//		root = new ProcessRepository();
-		root = SPEMDrivenPerspectivePanel.processRepository;
+		root = new ProcessRepository();
+//		root = SPEMDrivenPerspectivePanel.processRepository;
 		root.setName(process.getPresentationName());
 
 		buildChildren(process, root, root, null);
