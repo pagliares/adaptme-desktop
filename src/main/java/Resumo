@@ -62,8 +62,17 @@ tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  
  
  Bug: o primeiro processo do plugin process_alternatives_adaptme nao esta abrindo para simulacao
+ - o problema é que nao esta primeira opcao nao possui nenhum produto de trabalho. Assim, ao ler o produto de trabalho em WorkProductResourcesPanel, dá index
+ outOfBoundsException (0)
+  		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
+ 
  
  Bug: ao importar o processo, as tarefas não estão aparecendo no method content
  
  Bug: input/output nao aparecendo na work product resources view do adaptme (Processo thesis_xp)
+ 
+ Pause nos Bs
+ 
+ usar a versao do AdaptMe de 19/05/2015 (a ideia e em cada classe chamar um metodos estaticos da classe XP para controlar o pause. Se fosse fazer isso no
+ AdaptMe atual, teriamos que implementar isso no codigo de Simulation Manager do Wladimir)
  
