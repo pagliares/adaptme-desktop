@@ -463,7 +463,8 @@ public class XACDMLBuilderFacade {
 				
 
 				// NONO: Configurar destroy activities
-			    // Algorithm used - Cannot be input to any regular activity
+			    // Algorithm used - Cannot be input to any regular activity AND must be output of any activity (since the when input/output is the same
+	            // only the output must be destroyed
 			 
 		listOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
 		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(listOfProcessContentRepository);
@@ -471,7 +472,7 @@ public class XACDMLBuilderFacade {
 
 		List<Class> listOfTemporaryEntities = acd.getClazz();
 		boolean mayBeDestroyed = true;
-		 
+		boolean isPermanenteEntity = false;
 		for (Class clazz: listOfTemporaryEntities) {
 			
 			for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
@@ -490,8 +491,15 @@ public class XACDMLBuilderFacade {
 					}
 				}
 			}
-			if (mayBeDestroyed == true) {
-				// posso destruir
+			
+			for (Role role : roles) {
+				if (role.getName().equals(clazz.getId())) {  // nao posso destruir
+					isPermanenteEntity = true;
+				}
+			}
+			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
+				// posso destruir apenas se nao for role
+				
 				destroyActivity = factory.createDestroy();
 				destroyActivity.setClazz(clazz);
 				System.out.println("destroying ...: " + clazz.getId());
@@ -500,6 +508,7 @@ public class XACDMLBuilderFacade {
 				acd.getDestroy().add(destroyActivity);
 			}
 			mayBeDestroyed = true;
+			isPermanenteEntity = false;
 		}
 		
 		 
