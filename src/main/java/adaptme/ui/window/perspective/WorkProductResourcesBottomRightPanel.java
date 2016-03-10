@@ -41,7 +41,7 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
  	private int counter;
  	private int roleResourcesBottomPanelNumber;
  	private int selectedRow;
- 	private String roleName;
+ 	private String workProductName;
  	
  	private ProcessContentRepository processContentRepository;
 
@@ -50,9 +50,9 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 	private RoleResourcesPanel roleResourcesPanel;
 	private TableModel roleTableModel;
 	 
-	public WorkProductResourcesBottomRightPanel(int i, String roleName) {
+	public WorkProductResourcesBottomRightPanel(int i, String workProductName) {
 		 this.roleResourcesBottomPanelNumber = i;
-		 this.roleName = roleName;
+		 this.workProductName = workProductName;
 		 
  		 
  		observerTypeJComboBox = new JComboBox<>();
@@ -65,6 +65,10 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		tableObservers = new JTable(observersTableModel);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
+		
+		
+		
+		
 		setLayout(null);
 		
 		JPanel activeObserverTopPanel = new JPanel();
@@ -75,6 +79,15 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		
 		queueNameTextField = new JTextField();
 		queueNameTextField.setEditable(false);
+		
+		
+		// configuring a queuobserver by Default
+		QueueObserver queueObserver = new QueueObserver();
+ 		queueObserver.setName(workProductName+ " observer " + ++counter+"");
+		observersTableModel.addQueueObserver(queueObserver);
+		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
+		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
+				
 		 
  		 
 		
@@ -82,7 +95,7 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				QueueObserver queueObserver = new QueueObserver();
-				queueObserver.setName(queueNameTextField.getText()+ " queue observer " + ++counter+"");
+				queueObserver.setName(queueNameTextField.getText()+ " observer " + ++counter+"");
 				observersTableModel.addQueueObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 				tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
@@ -97,7 +110,7 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 					observersTableModel.removeObserverAt(selectedRow);
 					if (selectedRow != 0) {
 						tableObservers.changeSelection(selectedRow-1, 0, false, false);  // seleciona a primeira linha da tabela por default
-						tableObservers.setValueAt(ActiveObserverType.ACTIVE, selectedRow-1, 1);
+						tableObservers.setValueAt(QueueObserverType.STATIONARY, selectedRow-1, 1);
 				}
 			}
 			}

@@ -75,6 +75,15 @@ public class RoleResourcesBottomPanel extends JPanel {
 		
 		queueNameTextField = new JTextField();
 		queueNameTextField.setEditable(false);
+		
+		
+		// Setting by default a queue observer 
+		QueueObserver queueObserver = new QueueObserver();
+//		queueObserver.setName(queueNameTextField.getText()+ " queue observer " + ++counter+"");
+		queueObserver.setName(roleName+ "  observer " + ++counter+"");
+		observersTableModel.addQueueObserver(queueObserver);
+		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
+		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
 		 
  		 
 		
@@ -82,7 +91,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				QueueObserver queueObserver = new QueueObserver();
-				queueObserver.setName(queueNameTextField.getText()+ " queue observer " + ++counter+"");
+				queueObserver.setName(queueNameTextField.getText()+ " observer " + ++counter+"");
 				observersTableModel.addQueueObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 				tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
@@ -97,7 +106,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 					observersTableModel.removeObserverAt(selectedRow);
 					if (selectedRow != 0) {
 						tableObservers.changeSelection(selectedRow-1, 0, false, false);  // seleciona a primeira linha da tabela por default
-						tableObservers.setValueAt(ActiveObserverType.ACTIVE, selectedRow-1, 1);
+						tableObservers.setValueAt(QueueObserverType.STATIONARY, selectedRow-1, 1);
 				}
 			}
 			}

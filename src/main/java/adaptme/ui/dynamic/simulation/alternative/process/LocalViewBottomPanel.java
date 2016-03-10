@@ -56,6 +56,15 @@ public class LocalViewBottomPanel extends JPanel {
 		tableObservers = new JTable(observersTableModel);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
+		
+		// Set an activity observer by default
+		ActObserver actObserver = new ActObserver();
+		actObserver.setName(processContentRepository.getName()+ " observer " + ++counter+"");
+		observersTableModel.addActObserver(actObserver);
+		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
+		tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
+		
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{549, 0};
 		gridBagLayout.rowHeights = new int[]{86, 206, 0};
