@@ -84,7 +84,7 @@ public class WorkProductResourcesBottomRightPanelTableModel extends AbstractTabl
 		fireTableDataChanged();
 	}
 
-	public void addActObserver(QueueObserver queueObserver) {
+	public void addQueueObserver(QueueObserver queueObserver) {
 		observers.add(queueObserver);
 		fireTableDataChanged();
 	}

@@ -34,12 +34,11 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 	private JLabel queueNameLabel;
 	private JTextField queueNameTextField;
 	private JTable tableObservers;
-	private JTable tableRole;
-	private JComboBox<QueueObserverType> observerTypeJComboBox;
-	private RoleResourcesBottomPanelTableModel observersTableModel ;
+ 	private JComboBox<QueueObserverType> observerTypeJComboBox;
+ 	private WorkProductResourcesBottomRightPanelTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
  	private int counter;
- 	private int roleResourcesBottomPanelNumber;
+ 	private int workProductResourcesBottomPanelNumber;
  	private int selectedRow;
  	private String workProductName;
  	
@@ -47,11 +46,9 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
-	private RoleResourcesPanel roleResourcesPanel;
-	private TableModel roleTableModel;
-	 
+ 
 	public WorkProductResourcesBottomRightPanel(int i, String workProductName) {
-		 this.roleResourcesBottomPanelNumber = i;
+		 this.workProductResourcesBottomPanelNumber = i;
 		 this.workProductName = workProductName;
 		 
  		 
@@ -61,13 +58,11 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		observerTypeJComboBox.addItem(QueueObserverType.TIME);
 		observerTypeJComboBox.addItem(QueueObserverType.STATIONARY);
 		
-		observersTableModel = new RoleResourcesBottomPanelTableModel();
+		observersTableModel = new WorkProductResourcesBottomRightPanelTableModel();
 		tableObservers = new JTable(observersTableModel);
+		
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
-		
-		
-		
 		
 		setLayout(null);
 		
@@ -88,9 +83,6 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
 				
-		 
- 		 
-		
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
