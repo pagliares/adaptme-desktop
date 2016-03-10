@@ -464,16 +464,46 @@ public class XACDMLBuilderFacade {
 
 				// NONO: Configurar destroy activities
 			    // Algorithm used - Cannot be input to any regular activity
-			    //                - Must be in a queue identified by next in a regular activity
-				destroyActivity = factory.createDestroy();
-				destroyActivity.setId("Destroy : " + workProduct.getName());
-				destroyActivity.setClazz(temporaryEntity);  
+			 
+		listOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
+		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(listOfProcessContentRepository);
+		 
 
-				previous.setDead(deadTemporalEntity);
-				destroyActivity.getPrev().add(previous);
-				 
-				acd.getDestroy().add(destroyActivity);	 
+		List<Class> listOfTemporaryEntities = acd.getClazz();
+		boolean mayBeDestroyed = true;
+		 
+		for (Class clazz: listOfTemporaryEntities) {
 			
+			for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
+				
+				if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
+					
+					setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
+					
+					for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
+						
+						if (inputMethodContentRepository.getName().equals(clazz.getId())) {  // nao posso destruir
+							mayBeDestroyed = false;
+						}
+						
+						
+					}
+				}
+			}
+			if (mayBeDestroyed == true) {
+				// posso destruir
+				destroyActivity = factory.createDestroy();
+				destroyActivity.setClazz(clazz);
+				System.out.println("destroying ...: " + clazz.getId());
+//				previous.setDead(deadTemporalEntity);
+//				destroyActivity.getPrev().add(previous);
+				acd.getDestroy().add(destroyActivity);
+			}
+			mayBeDestroyed = true;
+		}
+		
+		 
+		 
 		
 			
 		this.acd = acd;
