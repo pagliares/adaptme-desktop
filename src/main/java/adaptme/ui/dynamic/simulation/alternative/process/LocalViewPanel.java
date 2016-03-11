@@ -52,16 +52,24 @@ public class LocalViewPanel implements UpdatePanel {
 	distributionJComboBox.addItem(BestFitDistribution.POISSON);
 	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
 	
-	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
- 	focusListener = new ProbabilityDistributionPanelListener();
-
+	
+	Sample sample = new Sample();
+	processContentRepository.setSample(sample);
 	scrollPaneParameters = new JScrollPane();
 	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 	scrollPaneParameters.setViewportBorder(null);
-	parameters = Parameters.createParameter(BestFitDistribution.CONSTANT);
-	Sample sample = new Sample();
-	processContentRepository.setSample(sample);
+	focusListener = new ProbabilityDistributionPanelListener();
+	distributionJComboBox.setSelectedIndex(1); // normal select by default with lines below setting initial values
+	parameters = Parameters.createParameter(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+    parametersPanel =  new ParametersPanel(parameters, focusListener);
+	focusListener.setParameters(parameters);
+    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
+    scrollPaneParameters.revalidate();
+    scrollPaneParameters.repaint();
 	processContentRepository.getSample().setParameters(parameters);
+	
+	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
+ 	
 	parametersPanel =  new ParametersPanel(parameters, focusListener);
 	focusListener.setParameters(parameters);
 

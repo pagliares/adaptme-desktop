@@ -56,7 +56,7 @@ public class ParametersPanel {
 				constraints.fill = GridBagConstraints.NONE;
 				constraints.gridx = 5;
 
-				JTextField titleText = new JTextField("0");
+				JTextField titleText = new JTextField("30");  // 30 minutes by default
 				titleText.setName(name);
 				titleText.addFocusListener(focusListener);
 
