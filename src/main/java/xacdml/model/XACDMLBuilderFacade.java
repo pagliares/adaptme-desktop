@@ -21,6 +21,7 @@ import adaptme.ui.window.perspective.ProbabilityDistributionInnerPanel;
 import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
+import adaptme.ui.window.perspective.WorkProductResourcesBottomRightPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
@@ -229,6 +230,8 @@ public class XACDMLBuilderFacade {
 
 		}
  			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
+			List<JPanel> listOfWorkProductResourcesBottomRightPanel= workProdutResourcesPanel.getListOfWorkProductResourcesBottomRightPanels();
+
 
 			for (int j = 0; j < workProducts.size(); j++) {
 
@@ -321,25 +324,26 @@ public class XACDMLBuilderFacade {
 				deadTemporalEntity.setClazz(temporaryEntity);
 				deadTemporalEntity.setType(queueTypeTemporaryEntity);
 
-				List<QueueObserver> queueObservers = workProdutResourcesPanel.getWorkProductResourcesBottomRightPanel().getObservers();
-
+				WorkProductResourcesBottomRightPanel wprbrp = (WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanel.get(j);
+				
+				List<QueueObserver> queueObservers = wprbrp.getObservers();
 				for (QueueObserver queueObserver : queueObservers)
 					deadTemporalEntity.getQueueObserver().add(queueObserver);
-
+			 
 				// quinto: adiciona a fila de entidade temporaria no acd
 				
 				acd.getDead().add(deadTemporalEntity);
 
 				// sexto: a fila de entidade temporaria deve ser adicionada na generate activity
 				
- 				nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity);  // chamando deadTemporalEntity.getId() esta dando erro - estranho
+				nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity);  // chamando deadTemporalEntity.getId() esta dando erro - estranho
 			
-
 				// setimo: termino da configuracao de generate activity, inserindo-a no acd
 				
 				generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
 				acd.getGenerate().add(generateActivity);
 			}
+			
 		// Oitavo: configuracao de regular activities
 
 //		calibratedProcessRepository = SPEMDrivenPerspectivePanel.processRepository;

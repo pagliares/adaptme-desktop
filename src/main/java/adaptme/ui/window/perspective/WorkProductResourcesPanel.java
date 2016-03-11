@@ -36,9 +36,8 @@ public class WorkProductResourcesPanel {
  	
  	private WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
  	private List<JPanel> listOfWorkProductResourcesBottomRightPanels = new ArrayList<>();
- 	
- 	
- 	private GroupLayout gl_topPanel;
+
+	private GroupLayout gl_topPanel;
 	private JScrollPane scrollPaneTableWorkProduct;
  	
 	private JTable tableWorkProduct;
@@ -224,5 +223,9 @@ public class WorkProductResourcesPanel {
 
 	public WorkProductResourcesBottomRightPanel getWorkProductResourcesBottomRightPanel() {
 		return workProductResourcesBottomRightPanel;
+	}
+	
+	public List<JPanel> getListOfWorkProductResourcesBottomRightPanels() {
+		return listOfWorkProductResourcesBottomRightPanels;
 	}
 }
