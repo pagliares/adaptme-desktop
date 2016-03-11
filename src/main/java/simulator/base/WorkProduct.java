@@ -14,7 +14,7 @@ public class WorkProduct {
     private String status;
     
     private String queueName = "" ;
-    private int capacity;
+    private int capacity = 50;
     private Policy policy;
     
 	private ActiveObserverType observerType;
