@@ -66,7 +66,7 @@ public class RunSimulationPanel extends JPanel {
 						textArea.append(s + "\n");
 					}
 					
-					Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ "+ xacdmlFile);
+					Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ "+ "xacdml_models/"+xacdmlFile);
 
 					 stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					 stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -94,8 +94,10 @@ public class RunSimulationPanel extends JPanel {
 					
  
 				} catch (IOException e1) {
+					textArea.append(e1.getMessage());
 					System.out.println("exception happened - here's what I know: ");
 					e1.printStackTrace();
+					
 					System.exit(-1);
 				}
 			}
