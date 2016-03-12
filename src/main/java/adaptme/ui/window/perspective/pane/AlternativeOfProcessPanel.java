@@ -598,6 +598,7 @@ public class AlternativeOfProcessPanel {
 		
 		// main panel é o painel do centro (que esta a local view aninhado)
 		for (String key : keySet) {
+			System.out.println(key);
 			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
 //			mainPanel.getListIntegratedLocalAndRepositoryViewPanel().add(hashMapLocalView.get(key));  // teste
 			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);

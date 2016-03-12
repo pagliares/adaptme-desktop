@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -178,5 +179,9 @@ public class LocalViewBottomPanel extends JPanel {
 	
 	public ActivityObserversTableModel getObserversTableModel() {
 		return observersTableModel;
+	}
+	
+	public List<ActObserver> getObservers() {
+		return observersTableModel.getObservers();
 	}
 }
