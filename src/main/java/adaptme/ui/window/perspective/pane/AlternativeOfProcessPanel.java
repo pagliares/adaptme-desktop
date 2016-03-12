@@ -573,6 +573,7 @@ public class AlternativeOfProcessPanel {
 	public void openProcessToSimulate(Process process, MethodLibraryHash methodLibraryHash) {
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
+		JTabbedPane tabbedPaneActivity4 = new JTabbedPane();
 
 		PersistProcess persistProcess = new PersistProcess();
 		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
@@ -621,17 +622,18 @@ public class AlternativeOfProcessPanel {
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(processRepository, mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPane.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
-	
-		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
-		tabbedPane.addTab("3.5. Generate Java program", javaProgramTextAreaPanel.getPanel());
- 		
-		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
-		tabbedPane.addTab("3.6. Run Java program", runSimulationPanel.getPanel());
-		
 		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2); // exibe as subtabs da tab 3, deixando a 3.1 selecionada por default
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
+		
+		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
+		tabbedPaneActivity4.addTab("4.1. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
+ 		
+		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
+		tabbedPaneActivity4.addTab("4.2. Run experiment", runSimulationPanel.getPanel());
+		
+		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
 	}
 
 	private int count = 0;
