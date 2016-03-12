@@ -21,28 +21,18 @@ import org.eclipse.epf.uma.MethodElement;
 import org.eclipse.epf.uma.Milestone;
 import org.eclipse.epf.uma.Phase;
 import org.eclipse.epf.uma.Process;
-import org.eclipse.epf.uma.Task;
 import org.eclipse.epf.uma.TaskDescriptor;
 import org.eclipse.epf.uma.VariabilityType;
 import org.eclipse.epf.uma.WorkBreakdownElement;
 import org.eclipse.epf.uma.WorkOrder;
 
 import adaptme.base.MethodLibraryHash;
-import adaptme.ui.dynamic.NumberTreeNode;
-import adaptme.ui.dynamic.UpdatePanel;
 import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
-import adaptme.ui.dynamic.task.InputWorkProductPanel;
-import adaptme.ui.dynamic.task.OutputWorkProductPanel;
-import adaptme.ui.dynamic.task.RolePanel;
-import adaptme.ui.dynamic.task.TaskPanel;
-import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
-import model.spem.derived.BestFitDistribution;
 import model.spem.util.MethodContentType;
 import model.spem.util.ProcessContentType;
-import model.spem.util.TimeEnum;
 
 public class PersistProcess {
 
@@ -69,24 +59,11 @@ public class PersistProcess {
 	public ProcessRepository buildProcess(Process process, MethodLibraryHash methodLibraryHash) {
 		this.methodLibraryHash = methodLibraryHash;
 		root = new ProcessRepository();
-//		root = SPEMDrivenPerspectivePanel.processRepository;
 		root.setName(process.getPresentationName());
-
 		buildChildren(process, root, root, null);
-
 		return root;
 	}
 	
-	// criado para tentar pegar apenas as tasks
-//	public ProcessRepository buildProcessOnlyTasks(Process process, MethodLibraryHash methodLibraryHash) {
-//		this.methodLibraryHash = methodLibraryHash;
-//		root = new ProcessRepository();
-//		root.setName(process.getPresentationName());
-//
-//		buildChildrenTask(process, root, root, null);
-//
-//		return root;
-//	}
 
 	private void buildChildren(Activity process, ProcessRepository root, ProcessRepository processRepository,
 			ProcessContentRepository father) {
@@ -186,30 +163,6 @@ public class PersistProcess {
 		
 	}
 	
-	// criado para tentar pegar apenas as tasks
-//	private void buildChildrenTask(Activity process, ProcessRepository root, ProcessRepository processRepository,
-//			ProcessContentRepository father) {
-//		Map<String, MethodElement> hash = new HashMap<>();
-//		buildHash(process, hash);
-//		Boolean isNew = new Boolean(false);
-//		for (Object object : process.getBreakdownElementOrRoadmap()) {
-//			 
-//			 if (object instanceof TaskDescriptor) {
-//				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
-//				ProcessContentRepository content = createTask(taskDescriptor, hash);
-//				content.setFather(father);
-//				if (father != null) {
-//					father.addChild(content);
-//				}
-//				if (root != null) {
-//					processRepository.addProcessElement(content);
-//				}
-//				content.setProcessRepository(processRepository);
-//			}  
-//		}
-//	}
-
-
 	private void buildHash(Activity process, Map<String, MethodElement> hash) {
 		for (Object object : process.getBreakdownElementOrRoadmap()) {
 			MethodElement element = (MethodElement) object;
@@ -242,13 +195,7 @@ public class PersistProcess {
 		List<String> outputNames = new ArrayList<>();
 		List<String> performedPrimarilyBy = new ArrayList<>();
 		List<String> additionallyPerformedBy = new ArrayList<>();
-		// "AssistedBy"
-		// AdditionallyPerformedBy"
-		// "OptionalInput"
-		// "MandatoryInput"
-		// "Output"
-		// "ExternalInput"
-		// "PerformedPrimarilyBy"
+		
 		for (JAXBElement<String> jaxbElement : list) {
 			QName qName = jaxbElement.getName();
 			String localPart = qName.getLocalPart();
@@ -369,29 +316,13 @@ public class PersistProcess {
 		return methodContentRepository;
 	}
 
-	// public static void main(String[] args) throws IOException {
-	// PersistProcess persistProcess = new PersistProcess();
-	// MethodLibraryWrapper methodLibraryWrapper = new MethodLibraryWrapper();
-	// methodLibraryWrapper.load(new
-	// File("input/process_alternatives_epf/xp_base.xml"));
-	// MethodPackage methodPackage =
-	// methodLibraryWrapper.getMethodLibrary().getMethodPlugin().get(0)
-	// .getMethodPackage().get(1);
-	// Process process = ((ProcessComponent) methodPackage).getProcess();
-	// ProcessRepository processRepository =
-	// persistProcess.buildProcess(process);
-	// persistProcess.persist(processRepository, "output.xml");
-	// }
-
 	public HashMap<String, IntegratedLocalAndRepositoryViewPanel> buildGUI(ProcessRepository processRepository,List<String> keySet) {
 		
 		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap = new HashMap<>();
 
-		 
 		for (ProcessContentRepository content : processRepository.getProcessContents()) { // ainda nao sei se vou precisar das activities
 			IntegratedLocalAndRepositoryViewPanel integratedLocalAndRepositoryViewPanel = new IntegratedLocalAndRepositoryViewPanel(content.getName(), content);
 			hashMap.put(content.getName(), integratedLocalAndRepositoryViewPanel);
-//			keySet.add(content.getName());
 			buildGUISession(content, hashMap, keySet);
 		}
 		
@@ -400,11 +331,9 @@ public class PersistProcess {
 	
 	private void buildGUISession(ProcessContentRepository content, HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMap, List<String> keySet) {
 		IntegratedLocalAndRepositoryViewPanel sessionPanel = new IntegratedLocalAndRepositoryViewPanel(content.getName(),content);
-//		sessionPanel.setTitle(content.getName());
 		hashMap.put(content.getName(), sessionPanel);
 		keySet.add(content.getName());
-//		sessionPanel.setDistribution(BestFitDistribution.getList());
-		for (ProcessContentRepository processContentRepository : content.getChildren()) {
+ 		for (ProcessContentRepository processContentRepository : content.getChildren()) {
 			buildGUISession(processContentRepository, hashMap,keySet);
 		}
 	}
