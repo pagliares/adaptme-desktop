@@ -69,13 +69,15 @@ public class ExperimentationPanel extends JPanel {
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Line chart for run-in period (Welch's method)", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setBounds(584, 95, 495, 295);
+		 
 		add(panel_3);
 		panel_3.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("/Users/pagliares/Dropbox/projetosEclipse/workspaceHirata/Adaptme_Experimentation/src/main/java/LineChart.png"));
-		lblNewLabel.setBounds(6, 23, 483, 266);
-		panel_3.add(lblNewLabel);
+		JPanel welchChartPanel = new WelchChartPanel().createChartPanel();
+		welchChartPanel.setBounds(6, 23, 483, 266);
+		panel_3.add(welchChartPanel);
+		 
+		 
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "Run control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
