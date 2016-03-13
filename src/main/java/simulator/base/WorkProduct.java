@@ -1,5 +1,6 @@
 package simulator.base;
 
+import adaptme.ui.window.perspective.VariableType;
 import model.spem.derived.BestFitDistribution;
 
 public class WorkProduct {
@@ -7,6 +8,7 @@ public class WorkProduct {
     private String name; 
     private int done;
  	private int intialQuantity;
+ 	private VariableType variableType;
 
     private BestFitDistribution bestFitDistribution;
 
@@ -117,5 +119,13 @@ public class WorkProduct {
 
 	public void setIntialQuantity(int intialQuantity) {
 		this.intialQuantity = intialQuantity;
+	}
+	
+	public VariableType getVariableType() {
+		return variableType;
+	}
+
+	public void setVariableType(VariableType variableType) {
+		this.variableType = variableType;
 	}
 }

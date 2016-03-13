@@ -81,6 +81,7 @@ import adaptme.ui.panel.base.workproduct.deliverable.TabbedPanelDeliverable;
 import adaptme.ui.panel.base.workproduct.outcome.TabbedPanelOutcome;
 import adaptme.ui.window.AdaptMeUI;
 import adaptme.ui.window.perspective.XACDMLTextAreaPanel;
+import adaptme.ui.window.perspective.ExperimentationPanel;
 import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.RunSimulationPanel;
@@ -629,14 +630,17 @@ public class AlternativeOfProcessPanel {
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
 		
+		ExperimentationPanel experimentationPanel = new ExperimentationPanel();
+		tabbedPaneActivity4.addTab("4.1. Configuring experimentation program", experimentationPanel);
+		
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
-		tabbedPaneActivity4.addTab("4.1. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
+		tabbedPaneActivity4.addTab("4.2. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
  		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
-		tabbedPaneActivity4.addTab("4.2. Run experiment", runSimulationPanel.getPanel());
+		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
 		
 		ShowResultsPanel showResultsPanel = new ShowResultsPanel();
-		tabbedPaneActivity4.addTab("4.3. Showing results of alternatives of process", showResultsPanel);
+		tabbedPaneActivity4.addTab("4.4. Showing results of alternatives of process", showResultsPanel);
 		
 		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
 	}
