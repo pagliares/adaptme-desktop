@@ -17,9 +17,13 @@ public class ShowResultsTableModel extends AbstractTableModel {
 
 	private List<ProcessRepository> listOfProcessAlternatives = new ArrayList<>();
 	
-	private String[] headers = new String[] { "Process alternative name", "Project duration", "Dependent variable 1", 
-									  "Dependent variable 2", "Dependent variable n", "Chosen alternative?"};
-
+	private List<String> headers;
+	
+	public ShowResultsTableModel() {
+		headers = new ArrayList<>();
+		headers.add("Process alternative name");
+		headers.add("Project duration");
+	}
 	 
 
 	@Override
@@ -29,7 +33,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return headers.length;
+		return headers.size();
 	}
 
 	@Override
@@ -101,7 +105,12 @@ public class ShowResultsTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		return headers[col];
+		return headers.get(col);
+	}
+	
+	public void addColumn(String column) {
+		headers.add(column);
+//		fireTableStructureChanged();
 	}
 
 	public ProcessRepository getProcessAlternativeAt(int row) {

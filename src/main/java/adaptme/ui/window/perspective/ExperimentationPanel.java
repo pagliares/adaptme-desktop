@@ -193,4 +193,8 @@ public class ExperimentationPanel extends JPanel {
 		((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
 
+	public JTable getTable() {
+		return table;
+	}
+
 }

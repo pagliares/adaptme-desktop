@@ -9,11 +9,13 @@ import javax.swing.JTable;
 public class ShowResultsPanel extends JPanel {
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
-
-	/**
-	 * Create the panel.
-	 */
-	public ShowResultsPanel() {
+	private ExperimentationPanel experimentationPanel;
+	 
+	public ShowResultsPanel(ExperimentationPanel experimentationPanel) {
+		this.experimentationPanel =  experimentationPanel;
+		
+		
+		
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -28,6 +30,16 @@ public class ShowResultsPanel extends JPanel {
 		
 		table = new JTable();
 		showResultsTableModel = new ShowResultsTableModel();
+		
+		JTable variableTypeTable = experimentationPanel.getTable();
+		int numberOfLines = variableTypeTable.getRowCount();
+		for (int i=0; i< numberOfLines; i++) {
+			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 1);
+			if (variableType.equals(VariableType.INDEPENDENT)) {
+				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
+			}
+		}
+		
 		table.setModel(showResultsTableModel);
 		scrollPaneTableResults.setViewportView(table);
 		

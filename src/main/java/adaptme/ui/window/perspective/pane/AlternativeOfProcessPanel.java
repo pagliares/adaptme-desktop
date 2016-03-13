@@ -639,7 +639,7 @@ public class AlternativeOfProcessPanel {
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
 		
-		ShowResultsPanel showResultsPanel = new ShowResultsPanel();
+		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel);
 		tabbedPaneActivity4.addTab("4.4. Showing results of alternatives of process", showResultsPanel);
 		
 		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
