@@ -20,12 +20,12 @@ public class ShowResultsPanel extends JPanel {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Process alternatives results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(6, 6, 945, 167);
+		panel.setBounds(6, 6, 1430, 167);
 		add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPaneTableResults = new JScrollPane();
-		scrollPaneTableResults.setBounds(0, 32, 939, 129);
+		scrollPaneTableResults.setBounds(6, 32, 1404, 129);
 		panel.add(scrollPaneTableResults);
 		
 		table = new JTable();
