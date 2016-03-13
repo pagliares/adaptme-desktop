@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import simulator.base.Policy;
+import simulator.base.QueueType;
 import simulator.base.WorkProduct;
 
 import javax.swing.JButton;
@@ -149,45 +151,21 @@ public class ExperimentationPanel extends JPanel {
 		
 		table = new JTable();
 		
+		List<WorkProduct> list = workProductResourcesPanel.getWorkProducts();
+		table.setModel(new WorkProductTableModelExperimentation(list));
 		
-		table.setModel(new WorkProductTableModelExperimentation(createWorkProducts()));
+		for (int i=0; i< list.size(); i++) {
+ 			table.setValueAt(VariableType.INDEPENDENT, i, 1);
+ 		 
+		}
 		configuraColunas();
-//		List<WorkProduct> list = createWorkProducts();
-//		for (int i =0; i< list.size(); i++) {
-//		    WorkProduct wp = list.get(i);
-//			table.setValueAt(wp.getName(), i, 0);
-//		}
+ 
 		scrollPane.setViewportView(table);
 
 	}
 	
-	public List<WorkProduct> createWorkProducts() {
-		return workProductResourcesPanel.getWorkProducts();
-//		List<WorkProduct> list = new ArrayList<>();
-//		WorkProduct wp1 = new WorkProduct();
-//		wp1.setName("User story");
-//		list.add(wp1);
-//		
-//		WorkProduct wp2 = new WorkProduct();
-//		wp2.setName("Methods");
-//		list.add(wp2);
-//		
-//		WorkProduct wp3 = new WorkProduct();
-//		wp3.setName("Lines of code");
-//		list.add(wp3);
-//		
-//		WorkProduct wp4 = new WorkProduct();
-//		wp4.setName("Classes");
-//		list.add(wp4);
-//		
-//		WorkProduct wp5 = new WorkProduct();
-//		wp5.setName("Bug");
-//		list.add(wp5);
-//		return list;
-		
-	}
-	
-	
+	 
+
 public void configuraColunas() { 
 		
 		modeloColuna = table.getColumnModel();
