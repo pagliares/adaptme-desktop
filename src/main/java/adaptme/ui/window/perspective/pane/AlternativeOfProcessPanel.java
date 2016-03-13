@@ -85,6 +85,7 @@ import adaptme.ui.window.perspective.JavaProgramTextAreaPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.RunSimulationPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
+import adaptme.ui.window.perspective.ShowResultsPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
@@ -633,6 +634,9 @@ public class AlternativeOfProcessPanel {
  		
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.2. Run experiment", runSimulationPanel.getPanel());
+		
+		ShowResultsPanel showResultsPanel = new ShowResultsPanel();
+		tabbedPaneActivity4.addTab("4.3. Showing results of alternatives of process", showResultsPanel);
 		
 		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
 	}
