@@ -130,14 +130,6 @@ public class ExperimentationPanel extends JPanel {
 		panel_7.add(lblWorkProductFinishes);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.addItem("User story");
-		comboBox.addItem("Methods");
-		comboBox.addItem("Lines of code");
-		comboBox.addItem("Classes");
-		comboBox.addItem("Bug");
-		
-		
-		
 		comboBox.setBounds(362, 28, 156, 27);
 		panel_7.add(comboBox);
 		
@@ -156,7 +148,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		for (int i=0; i< list.size(); i++) {
  			table.setValueAt(VariableType.INDEPENDENT, i, 1);
- 		 
+ 			comboBox.addItem(list.get(i).getName());
 		}
 		configuraColunas();
  
@@ -164,28 +156,19 @@ public class ExperimentationPanel extends JPanel {
 
 	}
 	
-	 
+	public void configuraColunas() {
 
-public void configuraColunas() { 
-		
 		modeloColuna = table.getColumnModel();
 
 		TableColumn colunaQueueType = modeloColuna.getColumn(1);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(comboBoxVariableType));
-	
+
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		
- 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		 
-		 
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 
-		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer())
-		.setHorizontalAlignment(JLabel.CENTER);
-
-	 
-		 
+		((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
 
 }
