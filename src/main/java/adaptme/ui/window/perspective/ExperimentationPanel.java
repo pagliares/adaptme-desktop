@@ -40,7 +40,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Run-in period. Welch's method (non-terminating systems)", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(32, 316, 630, 69);
+		panel_1.setBounds(566, 23, 495, 69);
 		add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -64,18 +64,18 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Line chart for run-in period (Welch's method)", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(32, 389, 630, 295);
+		panel_3.setBounds(566, 96, 495, 295);
 		add(panel_3);
 		panel_3.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("/Users/pagliares/Dropbox/projetosEclipse/workspaceHirata/Adaptme_Experimentation/src/main/java/LineChart.png"));
-		lblNewLabel.setBounds(37, 23, 530, 266);
+		lblNewLabel.setBounds(6, 23, 530, 266);
 		panel_3.add(lblNewLabel);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "Run control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(32, 692, 630, 69);
+		panel_4.setBounds(32, 322, 522, 69);
 		add(panel_4);
 		panel_4.setLayout(null);
 		
@@ -94,7 +94,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "System type", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_6.setBounds(32, 249, 630, 61);
+		panel_6.setBounds(32, 249, 522, 61);
 		add(panel_6);
 		panel_6.setLayout(null);
 		
@@ -103,12 +103,12 @@ public class ExperimentationPanel extends JPanel {
 		panel_6.add(chckbxStopOnB);
 		
 		JCheckBox chckbxStopOnEnd = new JCheckBox("Terminating");
-		chckbxStopOnEnd.setBounds(435, 23, 189, 23);
+		chckbxStopOnEnd.setBounds(195, 23, 189, 23);
 		panel_6.add(chckbxStopOnEnd);
 		
 		JPanel panel_7 = new JPanel();
 		panel_7.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Project ending condition", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_7.setBounds(32, 177, 630, 69);
+		panel_7.setBounds(32, 177, 522, 69);
 		add(panel_7);
 		panel_7.setLayout(null);
 		
@@ -122,7 +122,7 @@ public class ExperimentationPanel extends JPanel {
 		textField.setColumns(10);
 		
 		JLabel lblWorkProductFinishes = new JLabel("No more work product");
-		lblWorkProductFinishes.setBounds(292, 31, 165, 16);
+		lblWorkProductFinishes.setBounds(204, 32, 165, 16);
 		panel_7.add(lblWorkProductFinishes);
 		
 		JComboBox comboBox = new JComboBox();
@@ -134,7 +134,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		
 		
-		comboBox.setBounds(450, 27, 156, 27);
+		comboBox.setBounds(362, 28, 156, 27);
 		panel_7.add(comboBox);
 		
 		comboBoxVariableType.addItem(VariableType.INDEPENDENT);
@@ -142,7 +142,7 @@ public class ExperimentationPanel extends JPanel {
 		comboBoxVariableType.addItem(VariableType.INTERMEDIATE);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(32, 22, 630, 143);
+		scrollPane.setBounds(32, 22, 522, 143);
 		add(scrollPane);
 		
 		table = new JTable();
