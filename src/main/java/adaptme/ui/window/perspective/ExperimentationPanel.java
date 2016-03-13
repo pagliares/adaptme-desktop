@@ -34,6 +34,7 @@ public class ExperimentationPanel extends JPanel {
 	private JTextField textField_3;
 	
 	private WorkProductResourcesPanel workProductResourcesPanel;
+	private JTextField textField_4;
 
 	/**
 	 * Create the panel.
@@ -68,7 +69,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Line chart for run-in period (Welch's method)", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(584, 95, 495, 295);
+		panel_3.setBounds(584, 191, 495, 295);
 		 
 		add(panel_3);
 		panel_3.setLayout(null);
@@ -155,6 +156,25 @@ public class ExperimentationPanel extends JPanel {
 		configuraColunas();
  
 		scrollPane.setViewportView(table);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Pilot run control", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(584, 103, 496, 69);
+		add(panel);
+		
+		JLabel label = new JLabel("Number of replications");
+		label.setBounds(6, 29, 145, 16);
+		panel.add(label);
+		
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(163, 23, 66, 28);
+		panel.add(textField_4);
+		
+		JButton btnSimulatePilot = new JButton("Simulate pilot");
+		btnSimulatePilot.setBounds(256, 24, 137, 29);
+		panel.add(btnSimulatePilot);
 
 	}
 	
