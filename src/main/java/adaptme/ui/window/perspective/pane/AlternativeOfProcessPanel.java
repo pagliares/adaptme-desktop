@@ -630,7 +630,7 @@ public class AlternativeOfProcessPanel {
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
 		
-		ExperimentationPanel experimentationPanel = new ExperimentationPanel();
+		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel);
 		tabbedPaneActivity4.addTab("4.1. Configuring experimentation program", experimentationPanel);
 		
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);

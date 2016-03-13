@@ -30,12 +30,14 @@ public class ExperimentationPanel extends JPanel {
 	private TableColumnModel modeloColuna;
 	private JComboBox<VariableType> comboBoxVariableType = new JComboBox<>();
 	private JTextField textField_3;
+	
+	private WorkProductResourcesPanel workProductResourcesPanel;
 
 	/**
 	 * Create the panel.
 	 */
-	public ExperimentationPanel() {
-		setBorder(new TitledBorder(null, "Experimentation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel) {
+		this.workProductResourcesPanel = workProductResourcesPanel;
 		setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -75,7 +77,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "Run control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(32, 322, 522, 69);
+		panel_4.setBounds(32, 417, 522, 69);
 		add(panel_4);
 		panel_4.setLayout(null);
 		
@@ -94,7 +96,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "System type", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_6.setBounds(32, 249, 522, 61);
+		panel_6.setBounds(32, 344, 522, 61);
 		add(panel_6);
 		panel_6.setLayout(null);
 		
@@ -108,7 +110,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		JPanel panel_7 = new JPanel();
 		panel_7.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Project ending condition", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_7.setBounds(32, 177, 522, 69);
+		panel_7.setBounds(32, 272, 522, 69);
 		add(panel_7);
 		panel_7.setLayout(null);
 		
@@ -142,7 +144,7 @@ public class ExperimentationPanel extends JPanel {
 		comboBoxVariableType.addItem(VariableType.INTERMEDIATE);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(32, 22, 522, 143);
+		scrollPane.setBounds(32, 22, 522, 238);
 		add(scrollPane);
 		
 		table = new JTable();
@@ -160,27 +162,28 @@ public class ExperimentationPanel extends JPanel {
 	}
 	
 	public List<WorkProduct> createWorkProducts() {
-		List<WorkProduct> list = new ArrayList<>();
-		WorkProduct wp1 = new WorkProduct();
-		wp1.setName("User story");
-		list.add(wp1);
-		
-		WorkProduct wp2 = new WorkProduct();
-		wp2.setName("Methods");
-		list.add(wp2);
-		
-		WorkProduct wp3 = new WorkProduct();
-		wp3.setName("Lines of code");
-		list.add(wp3);
-		
-		WorkProduct wp4 = new WorkProduct();
-		wp4.setName("Classes");
-		list.add(wp4);
-		
-		WorkProduct wp5 = new WorkProduct();
-		wp5.setName("Bug");
-		list.add(wp5);
-		return list;
+		return workProductResourcesPanel.getWorkProducts();
+//		List<WorkProduct> list = new ArrayList<>();
+//		WorkProduct wp1 = new WorkProduct();
+//		wp1.setName("User story");
+//		list.add(wp1);
+//		
+//		WorkProduct wp2 = new WorkProduct();
+//		wp2.setName("Methods");
+//		list.add(wp2);
+//		
+//		WorkProduct wp3 = new WorkProduct();
+//		wp3.setName("Lines of code");
+//		list.add(wp3);
+//		
+//		WorkProduct wp4 = new WorkProduct();
+//		wp4.setName("Classes");
+//		list.add(wp4);
+//		
+//		WorkProduct wp5 = new WorkProduct();
+//		wp5.setName("Bug");
+//		list.add(wp5);
+//		return list;
 		
 	}
 	
