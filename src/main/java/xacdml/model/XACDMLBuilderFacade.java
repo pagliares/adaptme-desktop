@@ -88,6 +88,10 @@ public class XACDMLBuilderFacade {
 	private PoissonParameters poissonParameters;
 	
 	private ProcessRepository calibratedProcessRepository;
+	private List<ProcessContentRepository> completeListOfProcessContentRepository;
+	private List<ProcessContentRepository> listOfProcessContentRepository;
+	
+	
 	private Parameters parametersDistributionRegularActivity;
 	
 	public XACDMLBuilderFacade(ProcessRepository calibratedProcessRepository) {
@@ -337,13 +341,17 @@ public class XACDMLBuilderFacade {
 			}
 			
 		// Oitavo: configuracao de regular activities
-
- 		List<ProcessContentRepository> listOfProcessContentRepository = calibratedProcessRepository
-				.getProcessContents();
+		 
+					 
+		
+ 
 		Set<MethodContentRepository> setOfInputMethodContentRepository = null;
 		Set<MethodContentRepository> setOfOutputMethodContentRepository = null;
 		
-		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(listOfProcessContentRepository);
+		completeListOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
+		calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
+		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
+ 
 
 		for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
 			
@@ -455,16 +463,10 @@ public class XACDMLBuilderFacade {
 			
 		}
 					 
-				
-
-				// NONO: Configurar destroy activities
-			    // Algorithm used - Cannot be input to any regular activity AND must be output of any activity (since the when input/output is the same
-	            // only the output must be destroyed
+		// NONO: Configurar destroy activities
+	    // Algorithm used - Cannot be input to any regular activity AND must be output of any activity (since the when input/output is the same
+	    // only the output must be destroyed
 			 
-		listOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
-		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(listOfProcessContentRepository);
-		 
-
 		List<Class> listOfTemporaryEntities = acd.getClazz();
 		boolean mayBeDestroyed = true;
 		boolean isPermanenteEntity = false;
@@ -488,9 +490,9 @@ public class XACDMLBuilderFacade {
 			}
 			
 			for (Role role : roles) {
-				if (role.getName().equals(clazz.getId())) {  // nao posso destruir
+				if (role.getName().equals(clazz.getId()))  // nao posso destruir
 					isPermanenteEntity = true;
-				}
+				
 			}
 			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
 				// posso destruir apenas se nao for role
@@ -506,12 +508,10 @@ public class XACDMLBuilderFacade {
 			isPermanenteEntity = false;
 		}
 		
-		 
-		 
-		
-			
 		this.acd = acd;
 		String result = null;
+		completeListOfProcessContentRepository = null;
+		listOfProcessContentRepository  = null;
 		try {
 			result = persistProcessInXMLWithJAXBOnlyString(acd);
 			System.out.println(result);
@@ -520,6 +520,7 @@ public class XACDMLBuilderFacade {
 		} finally {
 			return result;
 		}
+	
  	}
 	
 	public Acd getAcd() {

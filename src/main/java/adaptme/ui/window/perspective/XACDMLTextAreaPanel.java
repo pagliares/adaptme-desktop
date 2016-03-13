@@ -92,6 +92,9 @@ public class XACDMLTextAreaPanel extends JPanel {
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository);
+
+				String result = null;
 				textArea.setText("");
 				if(acdIDTextField.getText().trim().isEmpty()){
 					JOptionPane.showMessageDialog(getPanel(), "The ACD Id is required");
@@ -100,7 +103,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				String result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
+				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
 						workProdutResourcesPanel);
 				textArea.append(result);
 			}
@@ -137,7 +140,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 		 textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 
-		xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository);
+//		xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository);
 	}
 
 	public JPanel getPanel() {

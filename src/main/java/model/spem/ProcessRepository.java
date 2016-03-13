@@ -122,6 +122,11 @@ public class ProcessRepository implements Serializable {
 		}
 	}
 	
+	// Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
+	public void clearListOfTasks() {
+		listTasks.clear();
+	}
+	
 	public void imprimeTasks(List<ProcessContentRepository> listOfProcessContentRepository) {
 		 
 		if (listOfProcessContentRepository == null) {
