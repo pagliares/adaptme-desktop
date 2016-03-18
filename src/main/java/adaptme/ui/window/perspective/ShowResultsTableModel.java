@@ -110,7 +110,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 	
 	public void addColumn(String column) {
 		headers.add(column);
-//		fireTableStructureChanged();
+		fireTableStructureChanged();
 	}
 
 	public ProcessRepository getProcessAlternativeAt(int row) {
@@ -128,6 +128,14 @@ public class ShowResultsTableModel extends AbstractTableModel {
 	
 	public void addProcessAlternative(ProcessRepository processRepository) {
 		this.listOfProcessAlternatives.add(processRepository);
+	}
+	
+	public boolean removeAllColumns() {
+		headers.clear();
+		headers.add("Process alternative name");
+		headers.add("Project duration");
+		fireTableStructureChanged();
+		return true;
 	}
 
 	 

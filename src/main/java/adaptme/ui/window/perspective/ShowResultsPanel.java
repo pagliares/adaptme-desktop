@@ -2,11 +2,16 @@ package adaptme.ui.window.perspective;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 
 public class ShowResultsPanel extends JPanel {
+	
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
 	private ExperimentationPanel experimentationPanel;
@@ -14,7 +19,7 @@ public class ShowResultsPanel extends JPanel {
 	public ShowResultsPanel(ExperimentationPanel experimentationPanel) {
 		this.experimentationPanel =  experimentationPanel;
 		
-		
+		experimentationPanel.setListener(this);
 		
 		setLayout(null);
 		
@@ -33,15 +38,16 @@ public class ShowResultsPanel extends JPanel {
 		
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();
+		
 		for (int i=0; i< numberOfLines; i++) {
 			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 1);
-			if (variableType.equals(VariableType.INDEPENDENT)) {
+			if (variableType.equals(VariableType.DEPENDENT)) {
 				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
 			}
 		}
 		
 		table.setModel(showResultsTableModel);
-		scrollPaneTableResults.setViewportView(table);
+ 		scrollPaneTableResults.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(6, 186, 945, 91);
@@ -53,4 +59,18 @@ public class ShowResultsPanel extends JPanel {
 		panel_1.add(btnSimulateAnotherAlternative);
 
 	}
+	
+	public void updateShowResultsPanelTable() {
+		 
+		JTable variableTypeTable = experimentationPanel.getTable();
+		int numberOfLines = variableTypeTable.getRowCount();
+		System.out.println(showResultsTableModel.removeAllColumns());
+		
+		for (int i=0; i< numberOfLines; i++) {
+			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 1);
+			if (variableType.equals(VariableType.DEPENDENT)) {
+				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
+			}
+		}
+ 	}
 }

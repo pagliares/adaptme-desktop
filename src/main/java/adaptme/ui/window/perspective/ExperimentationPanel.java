@@ -1,6 +1,10 @@
 package adaptme.ui.window.perspective;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -12,6 +16,8 @@ import simulator.base.WorkProduct;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.border.EtchedBorder;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +29,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ExperimentationPanel extends JPanel {
+	
 	private JTextField textField;
 	private JTable table;
 	private JTextField textField_1;
@@ -33,12 +42,11 @@ public class ExperimentationPanel extends JPanel {
 	private JComboBox<VariableType> comboBoxVariableType = new JComboBox<>();
 	private JTextField textField_3;
 	
+	private ShowResultsPanel showResultsPanel;
+	
 	private WorkProductResourcesPanel workProductResourcesPanel;
 	private JTextField textField_4;
 
-	/**
-	 * Create the panel.
-	 */
 	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel) {
 		this.workProductResourcesPanel = workProductResourcesPanel;
 		setLayout(null);
@@ -96,6 +104,11 @@ public class ExperimentationPanel extends JPanel {
 		textField_1.setColumns(10);
 		
 		JButton btnSimulate = new JButton("Simulate");
+		btnSimulate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showResultsPanel.updateShowResultsPanelTable();
+			}
+		});
 		btnSimulate.setBounds(256, 24, 98, 29);
 		panel_4.add(btnSimulate);
 		
@@ -191,10 +204,16 @@ public class ExperimentationPanel extends JPanel {
 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 
 		((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+		
 	}
+	
 
 	public JTable getTable() {
 		return table;
+	}
+
+	public void setListener(ShowResultsPanel listener) {
+		this.showResultsPanel = listener;
 	}
 
 }
