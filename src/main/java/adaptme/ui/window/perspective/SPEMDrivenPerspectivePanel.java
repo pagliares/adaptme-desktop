@@ -80,6 +80,11 @@ public class SPEMDrivenPerspectivePanel implements PerspectivePanel {
 	public void addTab(String title, Component component) {
 		tabbedPane.addTab(title, component);
 	}
+	
+	public void removeTab(Component component) {
+		tabbedPane.remove(component);
+ 	}
+	
 	public JTabbedPane getTabbedPane(){
 		return tabbedPane;
 	}

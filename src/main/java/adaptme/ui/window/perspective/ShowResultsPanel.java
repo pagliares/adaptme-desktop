@@ -7,11 +7,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ShowResultsPanel extends JPanel {
 	
@@ -19,10 +22,12 @@ public class ShowResultsPanel extends JPanel {
 	private ShowResultsTableModel showResultsTableModel;
 	private ExperimentationPanel experimentationPanel;
 	private ProcessRepository processRepository;
+	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	 
-	public ShowResultsPanel(ExperimentationPanel experimentationPanel, ProcessRepository processRepository) {
+	public ShowResultsPanel(ExperimentationPanel experimentationPanel, ProcessRepository processRepository, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 		this.experimentationPanel =  experimentationPanel;
 		this.processRepository = processRepository;
+		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		
 		experimentationPanel.setListener(this);
 		
@@ -61,7 +66,12 @@ public class ShowResultsPanel extends JPanel {
 		panel_1.setLayout(null);
 		
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
-		btnSimulateAnotherAlternative.setBounds(195, 31, 290, 29);
+		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				alternativeOfProcessPanel.closeTabbedPane();
+			}
+		});
+		btnSimulateAnotherAlternative.setBounds(459, 31, 290, 29);
 		panel_1.add(btnSimulateAnotherAlternative);
 
 	}

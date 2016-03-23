@@ -100,8 +100,14 @@ public class AlternativeOfProcessPanel {
 	private JPanel alternativeOfProcessPanel;
 	private AdaptMeUI adaptMeUI;
 	private TreeModel leftTreeModel;
-	private JTabbedPane tabbedPanePrincipal;
+	
 	private JTree leftTree;
+	
+	private JTabbedPane tabbedPanePrincipal;
+	private JTabbedPane tabbedPaneActivity3;
+	private JTabbedPane tabbedPaneActivity4;
+	private JTabbedPane leftTreeTabbedPane;
+
 
 	private List<JMenuItem> listMenuItems;
 	private JMenuItem menuItemNewArtifact;
@@ -132,7 +138,6 @@ public class AlternativeOfProcessPanel {
 	private JMenu newMenu;
 	private JMenu fileMenu;
 
-	private JTabbedPane leftTreeTabbedPane;
 	private SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel;
  	
 	private ProcessRepository processRepository;
@@ -574,8 +579,9 @@ public class AlternativeOfProcessPanel {
 
 	public void openProcessToSimulate(Process process, MethodLibraryHash methodLibraryHash) {
 		
-		JTabbedPane tabbedPane = new JTabbedPane();
-		JTabbedPane tabbedPaneActivity4 = new JTabbedPane();
+//		tabbedPaneActivity3 = new JTabbedPane();
+		tabbedPaneActivity3 = new TabbedPanelClossable();
+		tabbedPaneActivity4 = new JTabbedPane();
 
 		PersistProcess persistProcess = new PersistProcess();
 		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
@@ -608,24 +614,24 @@ public class AlternativeOfProcessPanel {
 
  		}
 		
-		tabbedPane.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
+		tabbedPaneActivity3.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
 		
 		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
 		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
 		workProductResourcesPanel.configuraTableListener();
-		tabbedPane.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
+		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
 		
 		Set<String> taskList = persistProcess.getTaskList();
 		
 		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
 		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
 		roleResourcePanel.configuraTableListener();
-		tabbedPane.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
+		tabbedPaneActivity3.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
 		
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(processRepository, mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
-		tabbedPane.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
+		tabbedPaneActivity3.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
-		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPane);
+		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPaneActivity3);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2); // exibe as subtabs da tab 3, deixando a 3.1 selecionada por default
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
@@ -639,7 +645,7 @@ public class AlternativeOfProcessPanel {
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
 		
-		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, processRepository);  // talvez tenha que passar a lista de process
+		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, processRepository, this);  // talvez tenha que passar a lista de process
 																											// repository dentro de simulation facade
 		tabbedPaneActivity4.addTab("4.4. Showing results of alternatives of process", showResultsPanel);
 		
@@ -683,5 +689,10 @@ public class AlternativeOfProcessPanel {
 
 	public void setSimulationObjective(String simulationObjective) {
 		this.simulationObjective = simulationObjective;
+	}
+	
+	public void closeTabbedPane() {
+		spemDrivenPerspectivePanel.removeTab(tabbedPaneActivity4);
+		spemDrivenPerspectivePanel.removeTab(tabbedPaneActivity3);
 	}
 }
