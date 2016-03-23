@@ -9,6 +9,7 @@ import javax.swing.event.TableColumnModelListener;
 
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
+import model.spem.SimulationFacade;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -21,12 +22,12 @@ public class ShowResultsPanel extends JPanel {
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
 	private ExperimentationPanel experimentationPanel;
-	private ProcessRepository processRepository;
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
+	private SimulationFacade simulationFacade;
 	 
-	public ShowResultsPanel(ExperimentationPanel experimentationPanel, ProcessRepository processRepository, AlternativeOfProcessPanel alternativeOfProcessPanel) {
+	public ShowResultsPanel(ExperimentationPanel experimentationPanel, SimulationFacade simulationFacade, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 		this.experimentationPanel =  experimentationPanel;
-		this.processRepository = processRepository;
+		this.simulationFacade = simulationFacade;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		
 		experimentationPanel.setListener(this);
@@ -45,7 +46,8 @@ public class ShowResultsPanel extends JPanel {
 		
 		table = new JTable();
 		showResultsTableModel = new ShowResultsTableModel();
-		showResultsTableModel.addProcessAlternative(processRepository);
+//		showResultsTableModel.addProcessAlternative(processRepository);
+		showResultsTableModel.setListOfProcessAlternatives(simulationFacade.getProcessAlternatives());
 		
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();

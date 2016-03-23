@@ -138,6 +138,16 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		return true;
 	}
 
+
+	public List<ProcessRepository> getListOfProcessAlternatives() {
+		return listOfProcessAlternatives;
+	}
+
+
+	public void setListOfProcessAlternatives(List<ProcessRepository> listOfProcessAlternatives) {
+		this.listOfProcessAlternatives = listOfProcessAlternatives;
+	}
+
 	 
 
 }

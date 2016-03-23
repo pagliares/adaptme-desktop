@@ -645,7 +645,7 @@ public class AlternativeOfProcessPanel {
 		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
 		
-		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, processRepository, this);  // talvez tenha que passar a lista de process
+		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, simulationFacade, this);  // talvez tenha que passar a lista de process
 																											// repository dentro de simulation facade
 		tabbedPaneActivity4.addTab("4.4. Showing results of alternatives of process", showResultsPanel);
 		
@@ -694,5 +694,7 @@ public class AlternativeOfProcessPanel {
 	public void closeTabbedPane() {
 		spemDrivenPerspectivePanel.removeTab(tabbedPaneActivity4);
 		spemDrivenPerspectivePanel.removeTab(tabbedPaneActivity3);
+		spemDrivenPerspectivePanel.resetXPProcess(); // para limpar a method library. Nao funcionou
+		 
 	}
 }
