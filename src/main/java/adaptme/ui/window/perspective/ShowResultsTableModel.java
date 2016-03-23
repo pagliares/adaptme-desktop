@@ -41,7 +41,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		ProcessRepository processRepository = listOfProcessAlternatives.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return processRepository.getName();
+			return listOfProcessAlternatives.get(rowIndex).getName();
 		case 1:
 			return " ";
 		case 2:

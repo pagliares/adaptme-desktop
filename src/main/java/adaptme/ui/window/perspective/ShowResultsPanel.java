@@ -6,6 +6,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
+
+import model.spem.ProcessRepository;
+
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -15,9 +18,11 @@ public class ShowResultsPanel extends JPanel {
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
 	private ExperimentationPanel experimentationPanel;
+	private ProcessRepository processRepository;
 	 
-	public ShowResultsPanel(ExperimentationPanel experimentationPanel) {
+	public ShowResultsPanel(ExperimentationPanel experimentationPanel, ProcessRepository processRepository) {
 		this.experimentationPanel =  experimentationPanel;
+		this.processRepository = processRepository;
 		
 		experimentationPanel.setListener(this);
 		
@@ -35,6 +40,7 @@ public class ShowResultsPanel extends JPanel {
 		
 		table = new JTable();
 		showResultsTableModel = new ShowResultsTableModel();
+		showResultsTableModel.addProcessAlternative(processRepository);
 		
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();
