@@ -372,8 +372,7 @@ public class XACDMLBuilderFacade {
 			setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
 			regularActivity.setId(processContentRepository.getName());
 
-			// cada input de um processContentRepository é uma fila previa
-			// de uma atividade XACDML
+			// cada input de um processContentRepository é uma fila previa de uma atividade XACDML
 			for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
                  System.out.println("INPUT: " + inputMethodContentRepository.getName());
 				 
@@ -382,18 +381,19 @@ public class XACDMLBuilderFacade {
 				
 				for (Dead d: acd.getDead() ) {
 					if (d.getId().equals(inputMethodContentRepository.getName() + " queue")) {
-						previous.setDead(d); // generalizar depois
+						previous.setDead(d);  
+						ec1.setPrev(previous);
+						regularActivity.getEntityClass().add(ec1);
 						 System.out.println("QUEUE: " + d.getId());
+						 previous = factory.createPrev();
+						 ec1 = factory.createEntityClass();
 					}
-				}
-				 
-						
-				ec1.setPrev(previous);
-				regularActivity.getEntityClass().add(ec1);
+				}				
 			}
 
 			setOfOutputMethodContentRepository = processContentRepository.getOutputMethodContentsRepository();
 			 
+			// cada output de um processContentRepository é uma fila de saida de uma atividade XACDML
 			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
 				 System.out.println("OUTPUT: " + mcr.getName());
 				nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName() + " queue");
@@ -408,11 +408,6 @@ public class XACDMLBuilderFacade {
 						 ec2 = factory.createEntityClass();
 					}
 				}
-
- 
-//				ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
-//				regularActivity.getEntityClass().add(ec2);
-
 			}
 
 			parametersDistributionRegularActivity = processContentRepository.getSample().getParameters(); // talvez pegar direto do painel
