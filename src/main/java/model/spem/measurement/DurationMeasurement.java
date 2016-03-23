@@ -19,7 +19,7 @@ public class DurationMeasurement extends Measurement implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private double duration;
+	private double value;
 	
  
 	@Enumerated(EnumType.STRING)
@@ -27,11 +27,11 @@ public class DurationMeasurement extends Measurement implements Serializable {
 
  
 	public double getValue() {
-		return duration;
+		return value;
 	}
 
 	public void setValue(double value) {
-		this.duration = value;
+		this.value = value;
 	}
 
  
@@ -45,6 +45,6 @@ public class DurationMeasurement extends Measurement implements Serializable {
 	
 	@Override
 		public String toString() {
-			return Double.toString(duration) + " " + scale;
+			return Double.toString(value) + " " + scale;
 		}
 }
