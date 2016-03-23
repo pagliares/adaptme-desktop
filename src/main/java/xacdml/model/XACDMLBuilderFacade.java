@@ -89,7 +89,7 @@ public class XACDMLBuilderFacade {
 	
 	private ProcessRepository calibratedProcessRepository;
 	private List<ProcessContentRepository> completeListOfProcessContentRepository;
-	private List<ProcessContentRepository> listOfProcessContentRepository;
+	private List<ProcessContentRepository> listOfProcessContentRepositoryTasks;
 	
 	
 	private Parameters parametersDistributionRegularActivity;
@@ -350,13 +350,13 @@ public class XACDMLBuilderFacade {
 		
 		completeListOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
 		calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
-		listOfProcessContentRepository = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
+		listOfProcessContentRepositoryTasks = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
  
 
-		for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
+		for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
 			
 			regularActivity = factory.createAct();
-			ec1 = factory.createEntityClass();
+			ec1 = factory.createEntityClass();  // preciso dos dois entity classes ou crio dinamicamente
 			ec2 = factory.createEntityClass();
 			previous = factory.createPrev();
 			next = factory.createNext();
@@ -375,29 +375,43 @@ public class XACDMLBuilderFacade {
 			// cada input de um processContentRepository é uma fila previa
 			// de uma atividade XACDML
 			for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
-
-				// Refatorar: if
-				// (mcr.getName().equals(workProduct.getName())) A fila
-				// gerada bate com o metodo
-
-				previous.setId(inputMethodContentRepository.getName());
-				previous.setDead(acd.getDead().get(0)); // generalizar depois
+                 System.out.println("INPUT: " + inputMethodContentRepository.getName());
+				 
+				previous.setId(inputMethodContentRepository.getName() + " queue");
+				
+				
+				for (Dead d: acd.getDead() ) {
+					if (d.getId().equals(inputMethodContentRepository.getName() + " queue")) {
+						previous.setDead(d); // generalizar depois
+						 System.out.println("QUEUE: " + d.getId());
+					}
+				}
+				 
+						
 				ec1.setPrev(previous);
 				regularActivity.getEntityClass().add(ec1);
 			}
 
 			setOfOutputMethodContentRepository = processContentRepository.getOutputMethodContentsRepository();
+			 
 			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
+				 System.out.println("OUTPUT: " + mcr.getName());
+				nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName() + " queue");
 
-				// Refatorar: if
-				// (mcr.getName().equals(workProduct.getName())) A fila
-				// gerada bate com o metodo
+				for (Dead d: acd.getDead() ) {
+					if (d.getId().equals(mcr.getName() + " queue")) {
+						nextDeadTemporaryEntityByRegularActivity.setDead(d);  
+						ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
+						regularActivity.getEntityClass().add(ec2);
+						 System.out.println("QUEUE: " + d.getId());
+						 nextDeadTemporaryEntityByRegularActivity = factory.createNext();
+						 ec2 = factory.createEntityClass();
+					}
+				}
 
-				nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName());
-				nextDeadTemporaryEntityByRegularActivity.setDead(acd.getDead().get(0));
-
-				ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
-				regularActivity.getEntityClass().add(ec2);
+ 
+//				ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
+//				regularActivity.getEntityClass().add(ec2);
 
 			}
 
@@ -472,7 +486,7 @@ public class XACDMLBuilderFacade {
 		boolean isPermanenteEntity = false;
 		for (Class clazz: listOfTemporaryEntities) {
 			
-			for (ProcessContentRepository processContentRepository : listOfProcessContentRepository) {
+			for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
 				
 				if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
 					
@@ -511,7 +525,7 @@ public class XACDMLBuilderFacade {
 		this.acd = acd;
 		String result = null;
 		completeListOfProcessContentRepository = null;
-		listOfProcessContentRepository  = null;
+		listOfProcessContentRepositoryTasks  = null;
 		try {
 			result = persistProcessInXMLWithJAXBOnlyString(acd);
 			System.out.println(result);
