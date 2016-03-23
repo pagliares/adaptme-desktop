@@ -9,6 +9,7 @@ public class WorkProduct {
     private int done;
  	private int intialQuantity;
  	private VariableType variableType;
+ 	private String inputOrOutput = "Input";
 
     private BestFitDistribution bestFitDistribution;
 
@@ -128,4 +129,13 @@ public class WorkProduct {
 	public void setVariableType(VariableType variableType) {
 		this.variableType = variableType;
 	}
-}
+
+	public String getInputOrOutput() {
+		return inputOrOutput;
+	}
+
+	public void setInputOrOutput(String inputOrOutput) {
+		this.inputOrOutput = inputOrOutput;
+	}
+	
+ }

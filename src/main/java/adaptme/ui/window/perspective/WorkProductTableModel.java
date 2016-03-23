@@ -16,7 +16,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private List<WorkProduct> workProducts;
 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
-	private String[] headers = new String[] { "Work product", "Queue name", "Queue type", 
+	private String[] headers = new String[] { "Work product", "Input/output","Queue name", "Queue type", 
 									  "Queue size", "Queue initial quantity", "Policy"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
@@ -41,14 +41,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 0:
 			return workProduct.getName();
 		case 1:
-			return workProduct.getQueueName();
+			return workProduct.getInputOrOutput();
 		case 2:
-			return workProduct.getQueueType();
+			return workProduct.getQueueName();
 		case 3:
-			return workProduct.getCapacity();
+			return workProduct.getQueueType();
 		case 4:
-			return workProduct.getIntialQuantity();
+			return workProduct.getCapacity();
 		case 5:
+			return workProduct.getIntialQuantity();
+		case 6:
 			return workProduct.getPolicy();
 		default:
 			return null;
@@ -64,21 +66,24 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setName((String) aValue);
 			break;
 		case 1:
+			workProduct.setInputOrOutput((String) aValue);
+			break;
+		case 2:
 			workProduct.setQueueName((String) aValue); 
 			WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
 			workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel)listOfWorkProductResourcesBottomRightPanels.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			break;
-		case 2:
+		case 3:
 			workProduct.setQueueType((QueueType) aValue); 
 			break;
-		case 3:
+		case 4:
 			workProduct.setCapacity((Integer) aValue);
 			break;
-		case 4:
+		case 5:
 			workProduct.setIntialQuantity((Integer) aValue); 
 			break;
-		case 5:
+		case 6:
 			workProduct.setPolicy((Policy)aValue); 
 			break;
 		} 
@@ -92,12 +97,14 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return String.class;
 		case 2:
-			return QueueType.class;
+			return String.class;
 		case 3:
-			return Integer.class;
+			return QueueType.class;
 		case 4:
-			return Integer.class;   
+			return Integer.class;
 		case 5:
+			return Integer.class;   
+		case 6:
 			return Policy.class; 
 		default:
 			return null;
@@ -123,7 +130,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if (column == 0) {
+		if ((column == 0) || (column == 1)){
 			return false;
 		}
 		return true;
