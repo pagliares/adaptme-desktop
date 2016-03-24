@@ -52,7 +52,6 @@ public class WorkProductResourcesPanel {
 	private JComboBox<QueueType> queueTypeJComboBox;
 
 	private List<WorkProduct> workProducts = new ArrayList<>();
-//	private Set<WorkProduct> workProducts = new HashSet<>();
 	private int indexSelectedRow;
 	
 	public WorkProductResourcesPanel() {
@@ -232,40 +231,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
     	    	tableWorkProduct.setValueAt(QueueType.QUEUE, w, 3);
     	    	tableWorkProduct.setValueAt(Policy.FIFO, w, 6);
     	 }
-
-     }
-//}
-//    i = 0;
-//	for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
-//		setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
-//	    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
-//	 
-//	
-//	    for (MethodContentRepository mcr: setOfInputMethodContentRepository) {
-//	    	tableWorkProduct.setValueAt(mcr.getName() + " input queue", i, 2);
-//	    	tableWorkProduct.setValueAt(QueueType.QUEUE, i, 3);
-//	    	tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
-//	    	i++;
-//	    }
-//	}
-//	  System.out.println("value of i after all setvalue input" + i);
-//	
-//	 
-//		for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
-//			setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
-//		    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
-//		 
-//		
-//		    for (MethodContentRepository mcr: setOfOutputMethodContentRepository) {
-//		    	tableWorkProduct.setValueAt(mcr.getName() + " output queue", i, 2);
-//		    	tableWorkProduct.setValueAt(QueueType.QUEUE, i, 3);
-//		    	tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
-//		    	i++;
-//		    }
-//		}
-//		System.out.println("value of i after all setvalue output" + i);
-	
-	
+     }	
 }
 	public void configuraTableListener() { 
 		
@@ -314,9 +280,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		
-		tableWorkProduct.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+ 		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
@@ -337,10 +301,6 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
 	}
-	
-//	public Set<WorkProduct> getWorkProducts() {
-//		return workProducts;
-//	}
 
 	public JTable getTableWorkProduct() {
 		return tableWorkProduct;
