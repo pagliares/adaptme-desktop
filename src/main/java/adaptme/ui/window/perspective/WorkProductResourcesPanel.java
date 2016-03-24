@@ -168,7 +168,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " queue");
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " input queue");
 			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
 			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
 			
@@ -194,7 +194,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " queue");
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " output queue");
 			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
 			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
 			
@@ -283,7 +283,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
 					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.updateUI();
-					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 1);
+					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 2);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
 					
 					if ((queueName == null) || (queueName.trim().isEmpty())) {
