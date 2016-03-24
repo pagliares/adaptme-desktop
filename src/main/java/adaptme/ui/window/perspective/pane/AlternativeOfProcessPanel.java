@@ -143,6 +143,9 @@ public class AlternativeOfProcessPanel {
 	private ProcessRepository processRepository;
 	private SimulationFacade simulationFacade = new SimulationFacade();
 	private String simulationObjective;
+	
+	private List<ProcessContentRepository> completeListOfProcessContentRepository;
+	private List<ProcessContentRepository> listOfProcessContentRepositoryTasks;
  	
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
@@ -617,7 +620,15 @@ public class AlternativeOfProcessPanel {
 		tabbedPaneActivity3.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
 		
 		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
-		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
+		
+		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
+		completeListOfProcessContentRepository = processRepository.getProcessContents();
+		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
+		
+		
+//		workProductResourcesPanel.setModelComboBoxWorkProduct(persistProcess.getWordProductList());	// configura JTable dentro da aba 3.2
+		workProductResourcesPanel.setModelComboBoxWorkProduct2(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
+		
 		workProductResourcesPanel.configuraTableListener();
 		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
 		

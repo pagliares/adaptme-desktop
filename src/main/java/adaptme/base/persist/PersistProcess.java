@@ -41,7 +41,8 @@ public class PersistProcess {
 
 	// futuramente precisando de novos dados do processo exportado do EPF, alterar o tipo String para Role, WorkProduct and TaskDescriptor
 	private Set<String> rolesList;
-	private Set<String> wordProductList;
+//	private Set<String> wordProductList;
+	private List<String> wordProductList;
 	private Set<String> taskList;
 
 	private ProcessRepository root;
@@ -52,7 +53,8 @@ public class PersistProcess {
 		processContentRepositoryHashMap = new HashMap<>();
 		methodContentRepositoryHashMap = new HashMap<>();
 		rolesList = new HashSet<>();
-		wordProductList = new HashSet<>();
+//		wordProductList = new HashSet<>();
+		wordProductList = new ArrayList<>();
 		taskList = new HashSet<>();
 	}
 
@@ -193,6 +195,7 @@ public class PersistProcess {
 		List<JAXBElement<String>> list = taskDescriptor.getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
 		List<String> inputNames = new ArrayList<>();
 		List<String> outputNames = new ArrayList<>();
+		
 		List<String> performedPrimarilyBy = new ArrayList<>();
 		List<String> additionallyPerformedBy = new ArrayList<>();
 		
@@ -342,7 +345,12 @@ public class PersistProcess {
 		return rolesList;
 	}
 
-	public Set<String> getWordProductList() {
+//	public Set<String> getWordProductList() {
+//		return wordProductList;
+//	}
+	
+
+	public List<String> getWordProductList() {
 		return wordProductList;
 	}
 	

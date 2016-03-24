@@ -255,7 +255,19 @@ public class XACDMLBuilderFacade {
 				generateActivity.setId(workProduct.getName());
 				temporaryEntity.setId(workProduct.getName());
 				generateActivity.setClazz(temporaryEntity);
-				acd.getClazz().add(temporaryEntity);
+				
+				boolean found = false;
+				for (Class clazz: acd.getClazz()) {
+					
+					if (clazz.getId().equals(workProduct.getName()))
+						found = true;
+						
+				}
+				
+				if (!found) {
+					acd.getClazz().add(temporaryEntity);
+				}
+				
 				
 				// Em segundo lugar, configuro a distribuicao de probabilidade criada acima para a generate activity
 				// (panel probability distribution parameters - painel x associado com o workproduct x)
@@ -376,11 +388,11 @@ public class XACDMLBuilderFacade {
 			for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
                  System.out.println("INPUT: " + inputMethodContentRepository.getName());
 				 
-				previous.setId(inputMethodContentRepository.getName() + " queue");
+				previous.setId(inputMethodContentRepository.getName() + " input queue");
 				
 				
 				for (Dead d: acd.getDead() ) {
-					if (d.getId().equals(inputMethodContentRepository.getName() + " queue")) {
+					if (d.getId().equals(inputMethodContentRepository.getName() + " input queue")) {
 						previous.setDead(d);  
 						ec1.setPrev(previous);
 						regularActivity.getEntityClass().add(ec1);
@@ -396,10 +408,10 @@ public class XACDMLBuilderFacade {
 			// cada output de um processContentRepository é uma fila de saida de uma atividade XACDML
 			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
 				 System.out.println("OUTPUT: " + mcr.getName());
-				nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName() + " queue");
+				nextDeadTemporaryEntityByRegularActivity.setId(mcr.getName() + " output queue");
 
 				for (Dead d: acd.getDead() ) {
-					if (d.getId().equals(mcr.getName() + " queue")) {
+					if (d.getId().equals(mcr.getName() + " output queue")) {
 						nextDeadTemporaryEntityByRegularActivity.setDead(d);  
 						ec2.setNext(nextDeadTemporaryEntityByRegularActivity);
 						regularActivity.getEntityClass().add(ec2);

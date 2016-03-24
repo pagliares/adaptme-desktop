@@ -3,6 +3,7 @@ package adaptme.ui.window.perspective;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import model.spem.MethodContentRepository;
+import model.spem.ProcessContentRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
@@ -48,6 +51,7 @@ public class WorkProductResourcesPanel {
 	private JComboBox<QueueType> queueTypeJComboBox;
 
 	private List<WorkProduct> workProducts = new ArrayList<>();
+//	private Set<WorkProduct> workProducts = new HashSet<>();
 	private int indexSelectedRow;
 	
 	public WorkProductResourcesPanel() {
@@ -100,7 +104,7 @@ public class WorkProductResourcesPanel {
 		outerProbabilityPanel.setLayout(new BorderLayout(0, 0));
 	}
 
-	public void setModelComboBoxWorkProduct(Set<String> list) {
+	public void setModelComboBoxWorkProduct(List<String> list) {
 		
 		String[] names = list.toArray(new String[list.size()]);
 		
@@ -139,6 +143,128 @@ public class WorkProductResourcesPanel {
 
 	}
 	
+	
+public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfProcessContentRepositoryTasks) {
+	int i = 0;
+	Set<MethodContentRepository> setOfInputMethodContentRepository;
+	Set<MethodContentRepository> setOfOutputMethodContentRepository;
+	
+	for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
+		setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
+	    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
+	 
+	
+	    for (MethodContentRepository mcr: setOfInputMethodContentRepository) {
+	    	 
+	       
+			WorkProduct workProduct = new WorkProduct();
+			workProduct.setName(mcr.getName());
+			workProduct.setInputOrOutput("INPUT");
+			if (!workProducts.contains(workProduct)) {
+				workProducts.add(workProduct);
+				i++;
+			}
+			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
+			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
+			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+			
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " queue");
+			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
+			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
+			
+		 
+			
+			
+	    }	
+	    System.out.println("value of i after all input" + i);
+	    
+	    for (MethodContentRepository mcr: setOfOutputMethodContentRepository) {
+	    	 
+		    
+			WorkProduct workProduct = new WorkProduct();
+			workProduct.setName(mcr.getName());
+			workProduct.setInputOrOutput("OUTPUT");
+			if (!workProducts.contains(workProduct)) {
+				workProducts.add(workProduct);
+				i++;
+			}
+		 
+			
+			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
+			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
+			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+			
+			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " queue");
+			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
+			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
+			
+	    }	
+	    System.out.println("value of i after all output" + i);
+		 
+		
+		model = new WorkProductTableModel(workProducts, listOfWorkProductResourcesBottomRightPanels);
+		tableWorkProduct.setModel(model);
+		configuraColunas();
+		topPanel.setLayout(gl_topPanel);
+		
+		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
+
+ 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
+ 		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
+	}
+	
+	
+ 	
+     for (int j = 0; j < workProducts.size(); j++) {
+    	 if (workProducts.get(j).getInputOrOutput().equals("INPUT")) {
+    	    	tableWorkProduct.setValueAt(workProducts.get(j).getName() + " input queue", j, 2);
+    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, j, 3);
+    	    	tableWorkProduct.setValueAt(Policy.FIFO, j, 6);
+    	 }
+
+     }
+     
+     for (int w = 0; w < workProducts.size(); w++) {
+    	 if (workProducts.get(w).getInputOrOutput().equals("OUTPUT")) {
+    	    	tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue", w, 2);
+    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, w, 3);
+    	    	tableWorkProduct.setValueAt(Policy.FIFO, w, 6);
+    	 }
+
+     }
+//}
+//    i = 0;
+//	for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
+//		setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
+//	    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
+//	 
+//	
+//	    for (MethodContentRepository mcr: setOfInputMethodContentRepository) {
+//	    	tableWorkProduct.setValueAt(mcr.getName() + " input queue", i, 2);
+//	    	tableWorkProduct.setValueAt(QueueType.QUEUE, i, 3);
+//	    	tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
+//	    	i++;
+//	    }
+//	}
+//	  System.out.println("value of i after all setvalue input" + i);
+//	
+//	 
+//		for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
+//			setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
+//		    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
+//		 
+//		
+//		    for (MethodContentRepository mcr: setOfOutputMethodContentRepository) {
+//		    	tableWorkProduct.setValueAt(mcr.getName() + " output queue", i, 2);
+//		    	tableWorkProduct.setValueAt(QueueType.QUEUE, i, 3);
+//		    	tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
+//		    	i++;
+//		    }
+//		}
+//		System.out.println("value of i after all setvalue output" + i);
+	
+	
+}
 	public void configuraTableListener() { 
 		
 		// Listener disparado ao selecionar uma linha da tabela
@@ -209,6 +335,10 @@ public class WorkProductResourcesPanel {
 	public List<WorkProduct> getWorkProducts() {
 		return workProducts;
 	}
+	
+//	public Set<WorkProduct> getWorkProducts() {
+//		return workProducts;
+//	}
 
 	public JTable getTableWorkProduct() {
 		return tableWorkProduct;

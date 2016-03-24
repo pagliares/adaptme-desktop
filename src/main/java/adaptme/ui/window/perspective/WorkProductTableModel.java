@@ -1,6 +1,9 @@
 package adaptme.ui.window.perspective;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
@@ -14,6 +17,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private List<WorkProduct> workProducts;
+	private Set<WorkProduct> workProductsSet;
 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
 	private String[] headers = new String[] { "Work product", "Input/output","Queue name", "Queue type", 
@@ -23,6 +27,17 @@ public class WorkProductTableModel extends AbstractTableModel {
 		this.workProducts = workProducts;
 		this.listOfWorkProductResourcesBottomRightPanels = listOfWorkProductResourcesBottomRightPanels;
 	}
+	
+//	public WorkProductTableModel(Set<WorkProduct> workProductsSet, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
+//		workProducts = new ArrayList<>();
+//		this.workProductsSet = workProductsSet;
+//		Iterator i = workProductsSet.iterator();
+//		while (i.hasNext() ) {
+//			workProducts.add((WorkProduct)i.next());
+//			
+//		}
+//		this.listOfWorkProductResourcesBottomRightPanels = listOfWorkProductResourcesBottomRightPanels;
+//	}
 
 	@Override
 	public int getRowCount() {
