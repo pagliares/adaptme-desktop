@@ -3,7 +3,7 @@ package simulator.base;
 import adaptme.ui.window.perspective.VariableType;
 import model.spem.derived.BestFitDistribution;
 
-public class WorkProduct {
+public class WorkProduct implements Comparable<WorkProduct>{
 	
     private String name; 
     private int done;
@@ -167,6 +167,11 @@ public class WorkProduct {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(WorkProduct o) {
+		return this.getName().compareTo(o.getName());
 	}
 	
 	 

@@ -3,6 +3,7 @@ package adaptme.ui.window.perspective;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -201,6 +202,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 	    }	
 	    System.out.println("value of i after all output" + i);
 		 
+		Collections.sort(workProducts);  // ordenando para facilitar a visualizacao nas tabelas da atividade 3.1 e 4.1
 		
 		model = new WorkProductTableModel(workProducts, listOfWorkProductResourcesBottomRightPanels);
 		tableWorkProduct.setModel(model);
