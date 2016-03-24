@@ -104,47 +104,9 @@ public class WorkProductResourcesPanel {
 		outerProbabilityPanel.setLayout(new BorderLayout(0, 0));
 	}
 
-	public void setModelComboBoxWorkProduct(List<String> list) {
-		
-		String[] names = list.toArray(new String[list.size()]);
-		
-		for (int i = 0; i < names.length; i++) {
-			
-			WorkProduct workProduct = new WorkProduct();
-			workProduct.setName(names[i]);
-			workProducts.add(workProduct);
-			
-			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + names[i]);
-			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(names[i] + " " + probabilityDistributionInnerPannel.getName()));
-			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
-			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, names[i] + " queue");
-			workProductResourcesBottomRightPanel.setQueueNameTextField(names[i] + " queue");
-			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
-			
-			
-		}
-		
-		model = new WorkProductTableModel(workProducts, listOfWorkProductResourcesBottomRightPanels);
-		tableWorkProduct.setModel(model);
-		configuraColunas();
-		topPanel.setLayout(gl_topPanel);
-		
-		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
-
- 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
- 		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
- 		
- 		for (int i = 0; i < names.length; i++) {
- 			tableWorkProduct.setValueAt(names[i] + " queue", i, 2);
- 			tableWorkProduct.setValueAt(QueueType.QUEUE, i, 3);
- 			tableWorkProduct.setValueAt(Policy.FIFO, i, 6);
-		}
-
-	}
 	
 	
-public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfProcessContentRepositoryTasks) {
+public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfProcessContentRepositoryTasks) {
 	int i = 0;
 	Set<MethodContentRepository> setOfInputMethodContentRepository;
 	Set<MethodContentRepository> setOfOutputMethodContentRepository;
@@ -170,10 +132,7 @@ public void setModelComboBoxWorkProduct2(List<ProcessContentRepository> listOfPr
 			
 			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " input queue");
 			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
-			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
-			
-		 
-			
+			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);	
 			
 	    }	
 	    System.out.println("value of i after all input" + i);
