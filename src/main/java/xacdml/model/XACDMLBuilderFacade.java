@@ -17,7 +17,7 @@ import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepos
 import adaptme.ui.dynamic.simulation.alternative.process.LocalViewBottomPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.LocalViewPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.MainPanelSimulationOfAlternativeOfProcess;
-import adaptme.ui.window.perspective.ProbabilityDistributionInnerPanel;
+import adaptme.ui.window.perspective.GenerateActivityProbabilityDistributionPanel;
 import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
@@ -279,7 +279,7 @@ public class XACDMLBuilderFacade {
 				
 				JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
 				
-				ProbabilityDistributionInnerPanel probabilityDistributionInnerPanel = (ProbabilityDistributionInnerPanel) listProbabilityDistributionPanel.get(j);
+				GenerateActivityProbabilityDistributionPanel probabilityDistributionInnerPanel = (GenerateActivityProbabilityDistributionPanel) listProbabilityDistributionPanel.get(j);
 				Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
 
 				if (parametersDistributionGenerateActivity instanceof ConstantParameters) {

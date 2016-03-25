@@ -35,8 +35,8 @@ public class WorkProductResourcesPanel {
 	private JPanel topPanel;
 	private JPanel titledPanel;
 	private JPanel outerProbabilityPanel;
-	private ProbabilityDistributionInnerPanel probabilityDistributionInnerPannel;
- 	private List<JPanel> listOfProbabilityDistributionsInnerPanels = new ArrayList<>();
+	private GenerateActivityProbabilityDistributionPanel generateActivityProbabilityDistributionPanel;
+ 	private List<JPanel> listOfGenerateActivityProbabilityDistributionPanels = new ArrayList<>();
  	
  	private WorkProductResourcesObserversPanel queueWorkProductResourcesObserversPanel;
  	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel = new ArrayList<>();
@@ -131,9 +131,9 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			
 		 
 			
-			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
-			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
-			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+			generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i, "Generate activity for demand work product : " + mcr.getName());
+			generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
+			listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
 			
 			queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " output queue", "queue observers");
 			queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
@@ -159,9 +159,9 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			workProducts.add(workProduct);
 			i++;
 		}
-		probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
-		probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
-		listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+		generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i, "Generate activity for demand work product : " + mcr.getName());
+		generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
+		listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
 		
 		queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "queue observers");
 		queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
@@ -186,7 +186,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 
 		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0), BorderLayout.WEST);
-		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.CENTER);
+		outerProbabilityPanel.add((GenerateActivityProbabilityDistributionPanel) listOfGenerateActivityProbabilityDistributionPanels.get(0), BorderLayout.CENTER);
  		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(0), BorderLayout.EAST);
 	}
 	
@@ -220,7 +220,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 				indexSelectedRow = tableWorkProduct.getSelectedRow();
  				 
 				if ((indexSelectedRow > -1)) { 					 
-					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
+					generateActivityProbabilityDistributionPanel = (GenerateActivityProbabilityDistributionPanel) listOfGenerateActivityProbabilityDistributionPanels.get(indexSelectedRow);
 					queueWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(indexSelectedRow);
 					generateActivityWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(indexSelectedRow);
 
@@ -228,7 +228,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
  					outerProbabilityPanel.removeAll();
  					
  					outerProbabilityPanel.add(queueWorkProductResourcesObserversPanel, BorderLayout.WEST);
- 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.CENTER);
+ 					outerProbabilityPanel.add(generateActivityProbabilityDistributionPanel, BorderLayout.CENTER);
 					outerProbabilityPanel.add(generateActivityWorkProductResourcesObserversPanel, BorderLayout.EAST);
 					
 					outerProbabilityPanel.updateUI();
@@ -291,7 +291,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 	}
 	
 	 public List<JPanel> getListOfProbabilityDistributionPanels() {
-		 return listOfProbabilityDistributionsInnerPanels;
+		 return listOfGenerateActivityProbabilityDistributionPanels;
 	 }
 	 
 	 public JPanel getPanel() {

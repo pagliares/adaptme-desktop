@@ -21,7 +21,7 @@ import model.spem.derived.UniformParameters;
 import model.spem.derived.gui.ParametersPanel;
 import simulator.base.ActiveObserverType;
 
-public class ProbabilityDistributionInnerPanel extends JPanel {
+public class GenerateActivityProbabilityDistributionPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JComboBox<BestFitDistribution> distributionJComboBox;
@@ -32,10 +32,10 @@ public class ProbabilityDistributionInnerPanel extends JPanel {
 	private ProbabilityDistributionPanelListener focusListener;
 	private ParametersPanel parametersPanel;
 	
-	public ProbabilityDistributionInnerPanel(int i, String title) { 
+	public GenerateActivityProbabilityDistributionPanel(int i, String title) { 
 		 
 		this.setName("panel.:" + i);
-		this.setBorder(new TitledBorder(null, "Probability distribution parameters", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.setBorder(new TitledBorder(null, "Distribution parameters for generate activity", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
  		JLabel label = new JLabel("Best fit probability distribution");
 		
