@@ -38,8 +38,11 @@ public class WorkProductResourcesPanel {
 	private ProbabilityDistributionInnerPanel probabilityDistributionInnerPannel;
  	private List<JPanel> listOfProbabilityDistributionsInnerPanels = new ArrayList<>();
  	
- 	private WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
- 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels = new ArrayList<>();
+ 	private WorkProductResourcesObserversPanel queueWorkProductResourcesObserversPanel;
+ 	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel = new ArrayList<>();
+ 	
+ 	private WorkProductResourcesObserversPanel generateActivityWorkProductResourcesObserversPanel;
+ 	private List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel = new ArrayList<>();
 
 	private GroupLayout gl_topPanel;
 	private JScrollPane scrollPaneTableWorkProduct;
@@ -100,7 +103,7 @@ public class WorkProductResourcesPanel {
 										.addGap(6))));
 		
 		outerProbabilityPanel = new JPanel();
-		titledPanel.add(outerProbabilityPanel, BorderLayout.CENTER);
+		titledPanel.add(outerProbabilityPanel, BorderLayout.WEST);  //AQUI
 		outerProbabilityPanel.setLayout(new BorderLayout(0, 0));
 	}
 
@@ -130,9 +133,15 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " input queue");
-			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
-			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);	
+			queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "queue observers");
+			queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+			
+			generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "generate activity observers");
+			generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+			
+			
+			listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);	
+			listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
 			
 	    }	
 	    System.out.println("value of i after all input" + i);
@@ -153,24 +162,30 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
 			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
 			
-			workProductResourcesBottomRightPanel = new WorkProductResourcesBottomRightPanel(i, mcr.getName() + " output queue");
-			workProductResourcesBottomRightPanel.setQueueNameTextField(mcr.getName() + " queue");
-			listOfWorkProductResourcesBottomRightPanels.add(workProductResourcesBottomRightPanel);
+			queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " output queue", "queue observers");
+			queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+			listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
+			
+			generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " output queue", "generate activity observers");
+			generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+			listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
+
 			
 	    }	
 	    System.out.println("value of i after all output" + i);
 		 
 		Collections.sort(workProducts);  // ordenando para facilitar a visualizacao nas tabelas da atividade 3.1 e 4.1
 		
-		model = new WorkProductTableModel(workProducts, listOfWorkProductResourcesBottomRightPanels);
+		model = new WorkProductTableModel(workProducts, listOfQueueWorkProductResourcesObserversPanel, listOfGenerateActivityWorkProductResourcesObserversPanel);
 		tableWorkProduct.setModel(model);
 		configuraColunas();
 		topPanel.setLayout(gl_topPanel);
 		
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 
- 		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
- 		outerProbabilityPanel.add((WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(0), BorderLayout.CENTER);
+		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0), BorderLayout.WEST);
+		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.CENTER);
+ 		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(0), BorderLayout.EAST);
 	}
 	
 	
@@ -204,20 +219,27 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
  				 
 				if ((indexSelectedRow > -1)) { 					 
 					probabilityDistributionInnerPannel = (ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(indexSelectedRow);
-					workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel) listOfWorkProductResourcesBottomRightPanels.get(indexSelectedRow);
+					queueWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(indexSelectedRow);
+					generateActivityWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(indexSelectedRow);
 
+					
  					outerProbabilityPanel.removeAll();
-					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.WEST);
-					outerProbabilityPanel.add(workProductResourcesBottomRightPanel, BorderLayout.CENTER);
+ 					
+ 					outerProbabilityPanel.add(queueWorkProductResourcesObserversPanel, BorderLayout.WEST);
+ 					outerProbabilityPanel.add(probabilityDistributionInnerPannel, BorderLayout.CENTER);
+					outerProbabilityPanel.add(generateActivityWorkProductResourcesObserversPanel, BorderLayout.EAST);
+					
 					outerProbabilityPanel.updateUI();
 					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 2);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
 					
 					if ((queueName == null) || (queueName.trim().isEmpty())) {
-						workProductResourcesBottomRightPanel.setQueueNameTextField(queueNameEmpty + " queue");
+						queueWorkProductResourcesObserversPanel.setQueueNameTextField(queueNameEmpty + " queue");
+						generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(queueNameEmpty + " queue");
 
 					} else {
-						workProductResourcesBottomRightPanel.setQueueNameTextField(queueName);
+						queueWorkProductResourcesObserversPanel.setQueueNameTextField(queueName);
+						generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(queueName);
 					}
 					
 				}
@@ -274,11 +296,11 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		 return topPanel;
 	 }
 
-	public WorkProductResourcesBottomRightPanel getWorkProductResourcesBottomRightPanel() {
-		return workProductResourcesBottomRightPanel;
+	public WorkProductResourcesObserversPanel getWorkProductResourcesBottomRightPanel() {
+		return queueWorkProductResourcesObserversPanel;
 	}
 	
 	public List<JPanel> getListOfWorkProductResourcesBottomRightPanels() {
-		return listOfWorkProductResourcesBottomRightPanels;
+		return listOfQueueWorkProductResourcesObserversPanel;
 	}
 }

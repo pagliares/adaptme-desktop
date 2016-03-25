@@ -18,26 +18,19 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
 	private Set<WorkProduct> workProductsSet;
-	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
+	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel;
+	private List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel;
 	
 	private String[] headers = new String[] { "Work product", "Input/output","Queue name", "Queue type", 
 									  "Queue size", "Queue initial quantity", "Policy", "Generate activity?"};
 
-	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
+	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels, 
+			List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
 		this.workProducts = workProducts;
-		this.listOfWorkProductResourcesBottomRightPanels = listOfWorkProductResourcesBottomRightPanels;
+		this.listOfQueueWorkProductResourcesObserversPanel = listOfWorkProductResourcesBottomRightPanels;
+		this.listOfGenerateActivityWorkProductResourcesObserversPanel = listOfGenerateActivityWorkProductResourcesObserversPanel;
 	}
 	
-//	public WorkProductTableModel(Set<WorkProduct> workProductsSet, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
-//		workProducts = new ArrayList<>();
-//		this.workProductsSet = workProductsSet;
-//		Iterator i = workProductsSet.iterator();
-//		while (i.hasNext() ) {
-//			workProducts.add((WorkProduct)i.next());
-//			
-//		}
-//		this.listOfWorkProductResourcesBottomRightPanels = listOfWorkProductResourcesBottomRightPanels;
-//	}
 
 	@Override
 	public int getRowCount() {
@@ -87,8 +80,11 @@ public class WorkProductTableModel extends AbstractTableModel {
 			break;
 		case 2:
 			workProduct.setQueueName((String) aValue); 
-			WorkProductResourcesBottomRightPanel workProductResourcesBottomRightPanel;
-			workProductResourcesBottomRightPanel = (WorkProductResourcesBottomRightPanel)listOfWorkProductResourcesBottomRightPanels.get(rowIndex);
+			WorkProductResourcesObserversPanel workProductResourcesBottomRightPanel;
+			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfQueueWorkProductResourcesObserversPanel.get(rowIndex);
+			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
+			
+			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			break;
 		case 3:

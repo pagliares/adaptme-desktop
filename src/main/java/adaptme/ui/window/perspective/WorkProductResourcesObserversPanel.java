@@ -28,8 +28,10 @@ import simulator.base.ActiveObserverType;
 import simulator.base.QueueObserverType;
 import xacdml.model.generated.ActObserver;
 import xacdml.model.generated.QueueObserver;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.TitledBorder;
 
-public class WorkProductResourcesBottomRightPanel extends JPanel {
+public class WorkProductResourcesObserversPanel extends JPanel {
 	
 	private JLabel queueNameLabel;
 	private JTextField queueNameTextField;
@@ -47,7 +49,8 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
  
-	public WorkProductResourcesBottomRightPanel(int i, String workProductName) {
+	public WorkProductResourcesObserversPanel(int i, String workProductName, String borderTitle) {
+		setBorder(new TitledBorder(null, borderTitle, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		 this.workProductResourcesBottomPanelNumber = i;
 		 this.workProductName = workProductName;
 		 
@@ -64,11 +67,7 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		configuraColunas();
 		
-		setLayout(null);
-		
 		JPanel activeObserverTopPanel = new JPanel();
-		activeObserverTopPanel.setBounds(16, 6, 682, 106);
-		add(activeObserverTopPanel);
 		
 		queueNameLabel = new JLabel("Queue name");
 		
@@ -111,30 +110,26 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		gl_activeObserverTopPanel.setHorizontalGroup(
 			gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
-					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
-							.addGap(5)
-							.addComponent(queueNameLabel)
-							.addGap(5)
-							.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, 539, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
-							.addGap(123)
-							.addComponent(addObserverButton)
-							.addGap(50)
-							.addComponent(removeObserverButton)))
-					.addGap(47))
+					.addGap(5)
+					.addComponent(queueNameLabel)
+					.addGap(5)
+					.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+					.addGap(59)
+					.addComponent(addObserverButton)
+					.addGap(41)
+					.addComponent(removeObserverButton))
 		);
 		gl_activeObserverTopPanel.setVerticalGroup(
 			gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
+					.addGap(5)
 					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
-							.addGap(11)
+							.addGap(6)
 							.addComponent(queueNameLabel))
-						.addGroup(gl_activeObserverTopPanel.createSequentialGroup()
-							.addGap(5)
-							.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(22)
+						.addComponent(queueNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
 					.addGroup(gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(addObserverButton)
 						.addComponent(removeObserverButton)))
@@ -142,17 +137,42 @@ public class WorkProductResourcesBottomRightPanel extends JPanel {
 		activeObserverTopPanel.setLayout(gl_activeObserverTopPanel);
 		
 		JPanel activeObserverBottomPanel = new JPanel();
-		activeObserverBottomPanel.setBounds(6, 124, 692, 150);
-		FlowLayout flowLayout_1 = (FlowLayout) activeObserverBottomPanel.getLayout();
-		add(activeObserverBottomPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(600,100));
 		scrollPane.setViewportView(tableObservers);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		
-		
-		activeObserverBottomPanel.add(scrollPane);
+		GroupLayout gl_activeObserverBottomPanel = new GroupLayout(activeObserverBottomPanel);
+		gl_activeObserverBottomPanel.setHorizontalGroup(
+			gl_activeObserverBottomPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_activeObserverBottomPanel.createSequentialGroup()
+					.addGap(16)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_activeObserverBottomPanel.setVerticalGroup(
+			gl_activeObserverBottomPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_activeObserverBottomPanel.createSequentialGroup()
+					.addGap(22)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		activeObserverBottomPanel.setLayout(gl_activeObserverBottomPanel);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(activeObserverTopPanel, GroupLayout.PREFERRED_SIZE, 427, GroupLayout.PREFERRED_SIZE))
+				.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, 437, GroupLayout.PREFERRED_SIZE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(6)
+					.addComponent(activeObserverTopPanel, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+		);
+		setLayout(groupLayout);
 
 	}
 	
