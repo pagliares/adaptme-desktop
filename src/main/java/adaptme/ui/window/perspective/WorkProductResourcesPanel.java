@@ -176,7 +176,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 	
  	
      for (int j = 0; j < workProducts.size(); j++) {
-    	 if (workProducts.get(j).getInputOrOutput().equals("INPUT")) {
+    	 if (workProducts.get(j).getInputOrOutput().equalsIgnoreCase("Input")) {
     	    	tableWorkProduct.setValueAt(workProducts.get(j).getName() + " input queue", j, 2);
     	    	tableWorkProduct.setValueAt(QueueType.QUEUE, j, 3);
     	    	tableWorkProduct.setValueAt(Policy.FIFO, j, 6);
@@ -185,8 +185,8 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
      }
      
      for (int w = 0; w < workProducts.size(); w++) {
-    	 if (workProducts.get(w).getInputOrOutput().equals("OUTPUT")) {
-    	    	tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue", w, 2);
+    	 if (workProducts.get(w).getInputOrOutput().equalsIgnoreCase("Output")) {
+    	    	tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue" + w, w, 2);
     	    	tableWorkProduct.setValueAt(QueueType.QUEUE, w, 3);
     	    	tableWorkProduct.setValueAt(Policy.FIFO, w, 6);
     	 }
@@ -243,6 +243,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+//		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 		 
 
 

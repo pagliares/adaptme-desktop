@@ -76,3 +76,6 @@ tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  usar a versao do AdaptMe de 19/05/2015 (a ideia e em cada classe chamar um metodos estaticos da classe XP para controlar o pause. Se fosse fazer isso no
  AdaptMe atual, teriamos que implementar isso no codigo de Simulation Manager do Wladimir)
  
+ JCheckbox not being rendered in JTable cells. True or false being rendered instead
+ Sollution. Tirei a linha : tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+ 

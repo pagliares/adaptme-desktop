@@ -10,6 +10,7 @@ public class WorkProduct implements Comparable<WorkProduct>{
  	private int intialQuantity;
  	private VariableType variableType;
  	private String inputOrOutput = "Input";
+ 	private boolean generateActivity;
 
     private BestFitDistribution bestFitDistribution;
 
@@ -136,6 +137,14 @@ public class WorkProduct implements Comparable<WorkProduct>{
 
 	public void setInputOrOutput(String inputOrOutput) {
 		this.inputOrOutput = inputOrOutput;
+	}
+
+	public boolean isGenerateActivity() {
+		return generateActivity;
+	}
+
+	public void setGenerateActivity(boolean generateActivity) {
+		this.generateActivity = generateActivity;
 	}
 
 	@Override

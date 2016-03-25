@@ -21,7 +21,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private List<JPanel> listOfWorkProductResourcesBottomRightPanels;
 	
 	private String[] headers = new String[] { "Work product", "Input/output","Queue name", "Queue type", 
-									  "Queue size", "Queue initial quantity", "Policy"};
+									  "Queue size", "Queue initial quantity", "Policy", "Generate activity?"};
 
 	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels) {
 		this.workProducts = workProducts;
@@ -67,6 +67,8 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return workProduct.getIntialQuantity();
 		case 6:
 			return workProduct.getPolicy();
+		case 7:
+			return workProduct.isGenerateActivity();
 		default:
 			return null;
 		}
@@ -101,6 +103,9 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 6:
 			workProduct.setPolicy((Policy)aValue); 
 			break;
+		case 7:
+			workProduct.setGenerateActivity((Boolean)aValue); 
+			break;
 		} 
 	}
 
@@ -121,6 +126,8 @@ public class WorkProductTableModel extends AbstractTableModel {
 			return Integer.class;   
 		case 6:
 			return Policy.class; 
+		case 7:
+			return Boolean.class;
 		default:
 			return null;
 		}
@@ -145,7 +152,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if ((column == 0) || (column == 1)){
+		if ((column == 0) || (column == 1) || (column == 2)){
 			return false;
 		}
 		return true;
