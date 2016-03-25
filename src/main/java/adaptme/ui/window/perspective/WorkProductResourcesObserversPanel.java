@@ -106,6 +106,13 @@ public class WorkProductResourcesObserversPanel extends JPanel {
 			}
 			}
 		});
+		
+		JPanel activeObserverBottomPanel = new JPanel();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(600,100));
+		scrollPane.setViewportView(tableObservers);
+		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		GroupLayout gl_activeObserverTopPanel = new GroupLayout(activeObserverTopPanel);
 		gl_activeObserverTopPanel.setHorizontalGroup(
 			gl_activeObserverTopPanel.createParallelGroup(Alignment.LEADING)
@@ -135,24 +142,17 @@ public class WorkProductResourcesObserversPanel extends JPanel {
 						.addComponent(removeObserverButton)))
 		);
 		activeObserverTopPanel.setLayout(gl_activeObserverTopPanel);
-		
-		JPanel activeObserverBottomPanel = new JPanel();
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(600,100));
-		scrollPane.setViewportView(tableObservers);
-		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		GroupLayout gl_activeObserverBottomPanel = new GroupLayout(activeObserverBottomPanel);
 		gl_activeObserverBottomPanel.setHorizontalGroup(
 			gl_activeObserverBottomPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_activeObserverBottomPanel.createSequentialGroup()
-					.addGap(16)
+					.addGap(6)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_activeObserverBottomPanel.setVerticalGroup(
 			gl_activeObserverBottomPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_activeObserverBottomPanel.createSequentialGroup()
-					.addGap(22)
+					.addGap(6)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
 		activeObserverBottomPanel.setLayout(gl_activeObserverBottomPanel);
@@ -170,7 +170,7 @@ public class WorkProductResourcesObserversPanel extends JPanel {
 					.addGap(6)
 					.addComponent(activeObserverTopPanel, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
 					.addGap(12)
-					.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+					.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
 		);
 		setLayout(groupLayout);
 

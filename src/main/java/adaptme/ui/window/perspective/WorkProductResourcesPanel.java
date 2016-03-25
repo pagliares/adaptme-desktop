@@ -186,8 +186,16 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		tableWorkProduct.changeSelection(0, 0, false, false);  // seleciona a primeira linha da tabela por default
 
 		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0), BorderLayout.WEST);
-		outerProbabilityPanel.add((GenerateActivityProbabilityDistributionPanel) listOfGenerateActivityProbabilityDistributionPanels.get(0), BorderLayout.CENTER);
- 		outerProbabilityPanel.add((WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(0), BorderLayout.EAST);
+		
+		 
+		GenerateActivityProbabilityDistributionPanel tmp = (GenerateActivityProbabilityDistributionPanel) listOfGenerateActivityProbabilityDistributionPanels.get(0);
+		//	tmp.setEnabled(false);  // nao torna os componentes internos disabled, unfortunately
+		tmp.setVisible(false);
+		outerProbabilityPanel.add(tmp, BorderLayout.CENTER);
+
+		WorkProductResourcesObserversPanel wprop = (WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(0);
+		wprop.setVisible(false);
+		outerProbabilityPanel.add(wprop, BorderLayout.EAST);
 	}
 	
 	
@@ -228,9 +236,11 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
  					outerProbabilityPanel.removeAll();
  					
  					outerProbabilityPanel.add(queueWorkProductResourcesObserversPanel, BorderLayout.WEST);
- 					outerProbabilityPanel.add(generateActivityProbabilityDistributionPanel, BorderLayout.CENTER);
-					outerProbabilityPanel.add(generateActivityWorkProductResourcesObserversPanel, BorderLayout.EAST);
-					
+ 					// teste com este if para ver se exibo os paineis apenas se o checkbox estiver selecionado
+ 				    if ((Boolean)model.getValueAt(indexSelectedRow, 8)) {
+ 				    	outerProbabilityPanel.add(generateActivityProbabilityDistributionPanel, BorderLayout.CENTER);
+ 				    	outerProbabilityPanel.add(generateActivityWorkProductResourcesObserversPanel, BorderLayout.EAST);
+ 				    }
 					outerProbabilityPanel.updateUI();
 					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 3);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
@@ -254,10 +264,10 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		
 		modeloColuna = tableWorkProduct.getColumnModel();
 
-		TableColumn colunaQueueType = modeloColuna.getColumn(3);
+		TableColumn colunaQueueType = modeloColuna.getColumn(4);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(queueTypeJComboBox));
 		
-		TableColumn colunaPolicy = modeloColuna.getColumn(6);
+		TableColumn colunaPolicy = modeloColuna.getColumn(7);
 		colunaPolicy.setCellEditor(new DefaultCellEditor(policyJComboBox));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

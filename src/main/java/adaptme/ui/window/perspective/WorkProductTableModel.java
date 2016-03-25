@@ -105,7 +105,13 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setPolicy((Policy)aValue); 
 			break;
 		case 8:
+			// TODO Arrumar
 			workProduct.setGenerateActivity((Boolean)aValue); 
+			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
+			if (workProduct.isGenerateActivity() == true)
+				workProductResourcesBottomRightPanel.setVisible(true);
+			else
+				workProductResourcesBottomRightPanel.setVisible(true);
 			break;
 		} 
 	}
