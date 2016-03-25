@@ -118,44 +118,16 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
 	    setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
 	 
-	
-	    for (MethodContentRepository mcr: setOfInputMethodContentRepository) {
-	    	 
-	       
-			WorkProduct workProduct = new WorkProduct();
-			workProduct.setName(mcr.getName());
-			workProduct.setInputOrOutput("INPUT");
-			if (!workProducts.contains(workProduct)) {
-				workProducts.add(workProduct);
-				i++;
-			}
-			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
-			probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
-			listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
-			
-			queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "queue observers");
-			queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
-			
-			generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "generate activity observers");
-			generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
-			
-			
-			listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);	
-			listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
-			
-	    }	
-	    System.out.println("value of i after all input" + i);
-	    
 	    for (MethodContentRepository mcr: setOfOutputMethodContentRepository) {
 	    	 
 		    
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(mcr.getName());
 			workProduct.setInputOrOutput("OUTPUT");
-			if (!workProducts.contains(workProduct)) {
-				workProducts.add(workProduct);
-				i++;
-			}
+			 
+			workProducts.add(workProduct);  // colocamos todos produtos de trabalho de saida
+			i++;
+			
 		 
 			
 			probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
@@ -173,6 +145,33 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			
 	    }	
 	    System.out.println("value of i after all output" + i);
+	    
+	    for (MethodContentRepository mcr: setOfInputMethodContentRepository) {
+   	 
+      
+		WorkProduct workProduct = new WorkProduct();
+		workProduct.setName(mcr.getName());
+		workProduct.setInputOrOutput("INPUT");
+		if (!workProducts.contains(workProduct)) {
+			workProducts.add(workProduct);
+			i++;
+		}
+		probabilityDistributionInnerPannel = new ProbabilityDistributionInnerPanel(i, "Generate activity for demand work product : " + mcr.getName());
+		probabilityDistributionInnerPannel.setSelectedDemandWorkProductLabel(new JLabel(mcr.getName() + " " + probabilityDistributionInnerPannel.getName()));
+		listOfProbabilityDistributionsInnerPanels.add(probabilityDistributionInnerPannel);
+		
+		queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "queue observers");
+		queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+		
+		generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i, mcr.getName() + " input queue", "generate activity observers");
+		generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+		
+		
+		listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);	
+		listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
+		
+   }	
+   System.out.println("value of i after all input" + i);
 		 
 		Collections.sort(workProducts);  // ordenando para facilitar a visualizacao nas tabelas da atividade 3.1 e 4.1
 		
