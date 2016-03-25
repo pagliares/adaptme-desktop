@@ -16,7 +16,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	private List<WorkProduct> workProducts;
  	
-	private String[] headers = new String[] { "Work product", "Variable type"};
+	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Variable type"};
 
 	public WorkProductTableModelExperimentation(List<WorkProduct> workProducts) {
 		this.workProducts = workProducts;
@@ -39,6 +39,10 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		case 0:
 			return workProduct.getName();
 		case 1:
+			return workProduct.getInputOrOutput();
+		case 2:
+			return workProduct.getTaskName();
+		case 3:
 			return workProduct.getVariableType();
 		
 		default:
@@ -55,8 +59,13 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 			workProduct.setName((String) aValue);
 			break;
 		case 1:
-			workProduct.setVariableType((VariableType) aValue); 
-			 
+			workProduct.setInputOrOutput((String) aValue);  
+			break;
+		case 2:
+			workProduct.setTaskName((String) aValue);  
+			break;
+		case 3:
+			workProduct.setVariableType((VariableType) aValue);  
 			break;
 		
 		} 
@@ -68,6 +77,10 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
+			return String.class;
+		case 2:
+			return String.class;
+		case 3:
 			return VariableType.class;
 		
 		default:
@@ -94,7 +107,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if (column == 0) {
+		if ((column == 0) || (column == 1) || (column == 2)){
 			return false;
 		}
 		return true;

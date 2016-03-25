@@ -53,7 +53,7 @@ public class ShowResultsPanel extends JPanel {
 		int numberOfLines = variableTypeTable.getRowCount();
 		
 		for (int i=0; i< numberOfLines; i++) {
-			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 1);
+			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
 			if (variableType.equals(VariableType.DEPENDENT)) {
 				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
 			}
@@ -85,7 +85,7 @@ public class ShowResultsPanel extends JPanel {
 		System.out.println(showResultsTableModel.removeAllColumns());
 		
 		for (int i=0; i< numberOfLines; i++) {
-			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 1);
+			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
 			if (variableType.equals(VariableType.DEPENDENT)) {
 				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
 			}

@@ -163,7 +163,7 @@ public class ExperimentationPanel extends JPanel {
 		table.setModel(new WorkProductTableModelExperimentation(list));
 		
 		for (int i=0; i< list.size(); i++) {
- 			table.setValueAt(VariableType.INDEPENDENT, i, 1);
+ 			table.setValueAt(VariableType.INDEPENDENT, i, 3);
  			comboBox.addItem(list.get(i).getName());
 		}
 		configuraColunas();
@@ -195,7 +195,7 @@ public class ExperimentationPanel extends JPanel {
 
 		modeloColuna = table.getColumnModel();
 
-		TableColumn colunaQueueType = modeloColuna.getColumn(1);
+		TableColumn colunaQueueType = modeloColuna.getColumn(3);
 		colunaQueueType.setCellEditor(new DefaultCellEditor(comboBoxVariableType));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
