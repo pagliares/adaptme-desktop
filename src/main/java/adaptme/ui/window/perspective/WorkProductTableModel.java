@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
 
+import model.spem.ProcessContentRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProduct;
@@ -20,12 +21,11 @@ public class WorkProductTableModel extends AbstractTableModel {
 	private Set<WorkProduct> workProductsSet;
 	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel;
 	private List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel;
-	
-	private String[] headers = new String[] { "Work product", "Input/output","Queue name", "Queue type", 
+ 	
+	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Queue name", "Queue type", 
 									  "Queue size", "Queue initial quantity", "Policy", "Generate activity?"};
 
-	public WorkProductTableModel(List<WorkProduct> workProducts, List<JPanel> listOfWorkProductResourcesBottomRightPanels, 
-			List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
+	public WorkProductTableModel(List<WorkProduct> workProducts,  List<JPanel> listOfWorkProductResourcesBottomRightPanels, List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
 		this.workProducts = workProducts;
 		this.listOfQueueWorkProductResourcesObserversPanel = listOfWorkProductResourcesBottomRightPanels;
 		this.listOfGenerateActivityWorkProductResourcesObserversPanel = listOfGenerateActivityWorkProductResourcesObserversPanel;
@@ -51,16 +51,18 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 1:
 			return workProduct.getInputOrOutput();
 		case 2:
-			return workProduct.getQueueName();
+			return workProduct.getTaskName();
 		case 3:
-			return workProduct.getQueueType();
+			return workProduct.getQueueName();
 		case 4:
-			return workProduct.getCapacity();
+			return workProduct.getQueueType();
 		case 5:
-			return workProduct.getIntialQuantity();
+			return workProduct.getCapacity();
 		case 6:
-			return workProduct.getPolicy();
+			return workProduct.getIntialQuantity();
 		case 7:
+			return workProduct.getPolicy();
+		case 8:
 			return workProduct.isGenerateActivity();
 		default:
 			return null;
@@ -79,6 +81,9 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setInputOrOutput((String) aValue);
 			break;
 		case 2:
+			workProduct.setTaskName((String) aValue);
+			break;
+		case 3:
 			workProduct.setQueueName((String) aValue); 
 			WorkProductResourcesObserversPanel workProductResourcesBottomRightPanel;
 			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfQueueWorkProductResourcesObserversPanel.get(rowIndex);
@@ -87,19 +92,19 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			break;
-		case 3:
+		case 4:
 			workProduct.setQueueType((QueueType) aValue); 
 			break;
-		case 4:
+		case 5:
 			workProduct.setCapacity((Integer) aValue);
 			break;
-		case 5:
+		case 6:
 			workProduct.setIntialQuantity((Integer) aValue); 
 			break;
-		case 6:
+		case 7:
 			workProduct.setPolicy((Policy)aValue); 
 			break;
-		case 7:
+		case 8:
 			workProduct.setGenerateActivity((Boolean)aValue); 
 			break;
 		} 
@@ -115,14 +120,16 @@ public class WorkProductTableModel extends AbstractTableModel {
 		case 2:
 			return String.class;
 		case 3:
-			return QueueType.class;
+			return String.class;
 		case 4:
-			return Integer.class;
+			return QueueType.class;
 		case 5:
-			return Integer.class;   
+			return Integer.class;
 		case 6:
-			return Policy.class; 
+			return Integer.class;   
 		case 7:
+			return Policy.class; 
+		case 8:
 			return Boolean.class;
 		default:
 			return null;
@@ -148,7 +155,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if ((column == 0) || (column == 1) || (column == 2)){
+		if ((column == 0) || (column == 1) || (column == 2) || (column == 3)){
 			return false;
 		}
 		return true;

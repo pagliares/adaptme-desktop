@@ -124,6 +124,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 			WorkProduct workProduct = new WorkProduct();
 			workProduct.setName(mcr.getName());
 			workProduct.setInputOrOutput("OUTPUT");
+			workProduct.setTaskName(pcr.getName());
 			 
 			workProducts.add(workProduct);  // colocamos todos produtos de trabalho de saida
 			i++;
@@ -152,6 +153,8 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		WorkProduct workProduct = new WorkProduct();
 		workProduct.setName(mcr.getName());
 		workProduct.setInputOrOutput("INPUT");
+		workProduct.setTaskName(pcr.getName());
+
 		if (!workProducts.contains(workProduct)) {
 			workProducts.add(workProduct);
 			i++;
@@ -175,7 +178,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		 
 		Collections.sort(workProducts);  // ordenando para facilitar a visualizacao nas tabelas da atividade 3.1 e 4.1
 		
-		model = new WorkProductTableModel(workProducts, listOfQueueWorkProductResourcesObserversPanel, listOfGenerateActivityWorkProductResourcesObserversPanel);
+		model = new WorkProductTableModel(workProducts,listOfQueueWorkProductResourcesObserversPanel, listOfGenerateActivityWorkProductResourcesObserversPanel);
 		tableWorkProduct.setModel(model);
 		configuraColunas();
 		topPanel.setLayout(gl_topPanel);
@@ -191,18 +194,18 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
  	
      for (int j = 0; j < workProducts.size(); j++) {
     	 if (workProducts.get(j).getInputOrOutput().equalsIgnoreCase("Input")) {
-    	    	tableWorkProduct.setValueAt(workProducts.get(j).getName() + " input queue", j, 2);
-    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, j, 3);
-    	    	tableWorkProduct.setValueAt(Policy.FIFO, j, 6);
+    	    	tableWorkProduct.setValueAt(workProducts.get(j).getName() + " input queue", j, 3);
+    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, j, 4);
+    	    	tableWorkProduct.setValueAt(Policy.FIFO, j, 7);
     	 }
 
      }
      
      for (int w = 0; w < workProducts.size(); w++) {
     	 if (workProducts.get(w).getInputOrOutput().equalsIgnoreCase("Output")) {
-    	    	tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue" + w, w, 2);
-    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, w, 3);
-    	    	tableWorkProduct.setValueAt(Policy.FIFO, w, 6);
+    	    	tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue" + w, w, 3);
+    	    	tableWorkProduct.setValueAt(QueueType.QUEUE, w, 4);
+    	    	tableWorkProduct.setValueAt(Policy.FIFO, w, 7);
     	 }
      }	
 }
@@ -229,7 +232,7 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 					outerProbabilityPanel.add(generateActivityWorkProductResourcesObserversPanel, BorderLayout.EAST);
 					
 					outerProbabilityPanel.updateUI();
-					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 2);
+					String queueName = (String)tableWorkProduct.getValueAt(indexSelectedRow, 3);
 					String queueNameEmpty = (String)tableWorkProduct.getValueAt(indexSelectedRow, 0);
 					
 					if ((queueName == null) || (queueName.trim().isEmpty())) {
@@ -260,10 +263,10 @@ public void setModelComboBoxWorkProduct(List<ProcessContentRepository> listOfPro
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		
- 		tableWorkProduct.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+ 		tableWorkProduct.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		tableWorkProduct.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 //		tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 		 
 

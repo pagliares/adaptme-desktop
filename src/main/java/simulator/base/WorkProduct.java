@@ -11,6 +11,7 @@ public class WorkProduct implements Comparable<WorkProduct>{
  	private VariableType variableType;
  	private String inputOrOutput = "Input";
  	private boolean generateActivity;
+ 	private String taskName;
 
     private BestFitDistribution bestFitDistribution;
 
@@ -145,6 +146,14 @@ public class WorkProduct implements Comparable<WorkProduct>{
 
 	public void setGenerateActivity(boolean generateActivity) {
 		this.generateActivity = generateActivity;
+	}
+
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 	@Override
