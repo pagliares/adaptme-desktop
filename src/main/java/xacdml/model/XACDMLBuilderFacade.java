@@ -21,7 +21,7 @@ import adaptme.ui.window.perspective.GenerateActivityProbabilityDistributionPane
 import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
-import adaptme.ui.window.perspective.WorkProductResourcesObserversPanel;
+import adaptme.ui.window.perspective.WorkProductResourcesQueueObserversPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
@@ -337,7 +337,7 @@ public class XACDMLBuilderFacade {
 				deadTemporalEntity.setClazz(temporaryEntity);
 				deadTemporalEntity.setType(queueTypeTemporaryEntity);
 
-				WorkProductResourcesObserversPanel wprbrp = (WorkProductResourcesObserversPanel) listOfWorkProductResourcesBottomRightPanel.get(j);
+				WorkProductResourcesQueueObserversPanel wprbrp = (WorkProductResourcesQueueObserversPanel) listOfWorkProductResourcesBottomRightPanel.get(j);
 				
 				List<QueueObserver> queueObservers = wprbrp.getObservers();
 				for (QueueObserver queueObserver : queueObservers)

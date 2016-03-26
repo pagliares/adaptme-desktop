@@ -31,7 +31,7 @@ import xacdml.model.generated.QueueObserver;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
-public class WorkProductResourcesObserversPanel extends JPanel {
+public class WorkProductResourcesQueueObserversPanel extends JPanel {
 	
 	private JLabel queueNameLabel;
 	private JTextField queueNameTextField;
@@ -49,7 +49,7 @@ public class WorkProductResourcesObserversPanel extends JPanel {
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
  
-	public WorkProductResourcesObserversPanel(int i, String workProductName, String borderTitle) {
+	public WorkProductResourcesQueueObserversPanel(int i, String workProductName, String borderTitle) {
 		setBorder(new TitledBorder(null, borderTitle, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		 this.workProductResourcesBottomPanelNumber = i;
 		 this.workProductName = workProductName;

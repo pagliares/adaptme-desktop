@@ -85,12 +85,13 @@ public class WorkProductTableModel extends AbstractTableModel {
 			break;
 		case 3:
 			workProduct.setQueueName((String) aValue); 
-			WorkProductResourcesObserversPanel workProductResourcesBottomRightPanel;
-			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfQueueWorkProductResourcesObserversPanel.get(rowIndex);
+			WorkProductResourcesQueueObserversPanel workProductResourcesBottomRightPanel;
+			WorkProductResourcesGenerateActivityObserversPanel workProductResourcesGenerateActivityObserversPanel;
+			workProductResourcesBottomRightPanel = (WorkProductResourcesQueueObserversPanel)listOfQueueWorkProductResourcesObserversPanel.get(rowIndex);
 			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
 			
-			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
-			workProductResourcesBottomRightPanel.setQueueNameTextField((String) aValue);
+			workProductResourcesGenerateActivityObserversPanel = (WorkProductResourcesGenerateActivityObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
+			workProductResourcesGenerateActivityObserversPanel.setQueueNameTextField((String) aValue);
 			break;
 		case 4:
 			workProduct.setQueueType((QueueType) aValue); 

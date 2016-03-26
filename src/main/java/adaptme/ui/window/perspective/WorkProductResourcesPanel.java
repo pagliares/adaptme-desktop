@@ -38,10 +38,10 @@ public class WorkProductResourcesPanel {
 	private GenerateActivityProbabilityDistributionPanel generateActivityProbabilityDistributionPanel;
  	private List<JPanel> listOfGenerateActivityProbabilityDistributionPanels = new ArrayList<>();
  	
- 	private WorkProductResourcesObserversPanel queueWorkProductResourcesObserversPanel;
+ 	private WorkProductResourcesQueueObserversPanel queueWorkProductResourcesObserversPanel;
  	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel = new ArrayList<>();
  	
- 	private WorkProductResourcesObserversPanel generateActivityWorkProductResourcesObserversPanel;
+ 	private WorkProductResourcesGenerateActivityObserversPanel generateActivityWorkProductResourcesObserversPanel;
  	private List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel = new ArrayList<>();
 
 	private GroupLayout gl_topPanel;
@@ -135,12 +135,12 @@ public class WorkProductResourcesPanel {
 						new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
 				listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
 
-				queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i,
+				queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
 						mcr.getName() + " output queue", "queue observers");
 				queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
 				listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
 
-				generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i,
+				generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
 						mcr.getName() + " output queue", "generate activity observers");
 				generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
 				listOfGenerateActivityWorkProductResourcesObserversPanel
@@ -167,12 +167,12 @@ public class WorkProductResourcesPanel {
 
 					listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
 
-					queueWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i,
+					queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
 							mcr.getName() + " input queue", "queue observers");
 					queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
 					listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
 
-					generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesObserversPanel(i,
+					generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
 							mcr.getName() + " input queue", "generate activity observers");
 					generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
 					listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
@@ -194,7 +194,7 @@ public class WorkProductResourcesPanel {
 																	 
 			// adiciono inicialmente apenas o panel para configuracao de observers de queue. Nao adiciono observers e distributions de generate activities
 			outerProbabilityPanel.add(
-					(WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0),
+					(WorkProductResourcesQueueObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0),
 					BorderLayout.WEST);
 		}
 
@@ -227,8 +227,8 @@ public class WorkProductResourcesPanel {
  				 
 				if ((indexSelectedRow > -1)) { 					 
 					generateActivityProbabilityDistributionPanel = (GenerateActivityProbabilityDistributionPanel) listOfGenerateActivityProbabilityDistributionPanels.get(indexSelectedRow);
-					queueWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(indexSelectedRow);
-					generateActivityWorkProductResourcesObserversPanel = (WorkProductResourcesObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(indexSelectedRow);
+					queueWorkProductResourcesObserversPanel = (WorkProductResourcesQueueObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(indexSelectedRow);
+					generateActivityWorkProductResourcesObserversPanel = (WorkProductResourcesGenerateActivityObserversPanel) listOfGenerateActivityWorkProductResourcesObserversPanel.get(indexSelectedRow);
 
 					
  					outerProbabilityPanel.removeAll();
@@ -307,7 +307,7 @@ public class WorkProductResourcesPanel {
 		 return topPanel;
 	 }
 
-	public WorkProductResourcesObserversPanel getWorkProductResourcesBottomRightPanel() {
+	public WorkProductResourcesQueueObserversPanel getWorkProductResourcesBottomRightPanel() {
 		return queueWorkProductResourcesObserversPanel;
 	}
 	
