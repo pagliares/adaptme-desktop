@@ -105,13 +105,13 @@ public class WorkProductTableModel extends AbstractTableModel {
 			workProduct.setPolicy((Policy)aValue); 
 			break;
 		case 8:
-			// TODO Arrumar
+			// TODO Arrumar para tentar exibir os paineis no momento de selecao do checkbox
 			workProduct.setGenerateActivity((Boolean)aValue); 
-			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
-			if (workProduct.isGenerateActivity() == true)
-				workProductResourcesBottomRightPanel.setVisible(true);
-			else
-				workProductResourcesBottomRightPanel.setVisible(true);
+//			workProductResourcesBottomRightPanel = (WorkProductResourcesObserversPanel)listOfGenerateActivityWorkProductResourcesObserversPanel.get(rowIndex);
+//			if (workProduct.isGenerateActivity() == true)
+//				workProductResourcesBottomRightPanel.setVisible(true);
+//			else
+//				workProductResourcesBottomRightPanel.setVisible(true);
 			break;
 		} 
 	}
