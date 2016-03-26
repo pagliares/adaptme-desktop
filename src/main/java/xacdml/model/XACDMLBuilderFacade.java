@@ -328,9 +328,9 @@ public class XACDMLBuilderFacade {
 				// Quarto: configuracao da fila para entidade temporaria incluindo seu tipo (QUEUE, STACK or SET) e observers
 				
 				String queueName = workProduct.getQueueName();
-				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 2)).toString();
-				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 3).toString();
-				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 4).toString();
+				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 4)).toString();
+				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
+				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 6).toString();
 				
 				queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
 				queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
