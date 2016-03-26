@@ -37,7 +37,7 @@ public class WorkProductResourcesQueueObserversPanel extends JPanel {
 	private JTextField queueNameTextField;
 	private JTable tableObservers;
  	private JComboBox<QueueObserverType> observerTypeJComboBox;
- 	private WorkProductResourcesBottomRightPanelTableModel observersTableModel ;
+ 	private WorkProductResourcesQueueObserversTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
  	private int counter;
  	private int workProductResourcesBottomPanelNumber;
@@ -61,7 +61,7 @@ public class WorkProductResourcesQueueObserversPanel extends JPanel {
 		observerTypeJComboBox.addItem(QueueObserverType.TIME);
 		observerTypeJComboBox.addItem(QueueObserverType.STATIONARY);
 		
-		observersTableModel = new WorkProductResourcesBottomRightPanelTableModel();
+		observersTableModel = new WorkProductResourcesQueueObserversTableModel();
 		tableObservers = new JTable(observersTableModel);
 		
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));

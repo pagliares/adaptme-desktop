@@ -10,14 +10,14 @@ import simulator.base.QueueObserverType;
 import xacdml.model.generated.ActObserver;
 import xacdml.model.generated.QueueObserver;
 
-public class WorkProductResourcesBottomRightPanelTableModel extends AbstractTableModel {
+public class WorkProductResourcesQueueObserversTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -4739793782253876825L;
 
 	private List<QueueObserver> observers;
 	private String[] headerObservers = new String[] {"Name","type"};
 
-	public WorkProductResourcesBottomRightPanelTableModel() {
+	public WorkProductResourcesQueueObserversTableModel() {
 		this.observers = new ArrayList<>();
 	}
 

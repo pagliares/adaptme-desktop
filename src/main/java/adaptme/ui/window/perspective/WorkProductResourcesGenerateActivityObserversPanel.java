@@ -36,8 +36,8 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 	private JLabel queueNameLabel;
 	private JTextField queueNameTextField;
 	private JTable tableObservers;
- 	private JComboBox<QueueObserverType> observerTypeJComboBox;
- 	private WorkProductResourcesBottomRightPanelTableModel observersTableModel ;
+ 	private JComboBox<ActiveObserverType> observerTypeJComboBox;
+ 	private WorkProductResourcesGenerateActivityTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
  	private int counter;
  	private int workProductResourcesBottomPanelNumber;
@@ -56,12 +56,12 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 		 
  		 
  		observerTypeJComboBox = new JComboBox<>();
- 		observerTypeJComboBox.addItem(QueueObserverType.NONE);
-		observerTypeJComboBox.addItem(QueueObserverType.LENGTH);
-		observerTypeJComboBox.addItem(QueueObserverType.TIME);
-		observerTypeJComboBox.addItem(QueueObserverType.STATIONARY);
+ 		observerTypeJComboBox.addItem(ActiveObserverType.NONE);
+		observerTypeJComboBox.addItem(ActiveObserverType.ACTIVE);
+		observerTypeJComboBox.addItem(ActiveObserverType.DELAY);
+		observerTypeJComboBox.addItem(ActiveObserverType.PROCESSOR);
 		
-		observersTableModel = new WorkProductResourcesBottomRightPanelTableModel();
+		observersTableModel = new WorkProductResourcesGenerateActivityTableModel();
 		tableObservers = new JTable(observersTableModel);
 		
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -76,20 +76,20 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 		
 		
 		// configuring a queuobserver by Default
-		QueueObserver queueObserver = new QueueObserver();
+		ActObserver queueObserver = new ActObserver();
  		queueObserver.setName(workProductName+ " observer " + ++counter+"");
-		observersTableModel.addQueueObserver(queueObserver);
+		observersTableModel.addActObserver(queueObserver);
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
-		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
+		tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 				
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				QueueObserver queueObserver = new QueueObserver();
+				ActObserver queueObserver = new ActObserver();
 				queueObserver.setName(queueNameTextField.getText()+ " observer " + ++counter+"");
-				observersTableModel.addQueueObserver(queueObserver);
+				observersTableModel.addActObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
-				tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
+				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 			}
 		});
 		
@@ -101,7 +101,7 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 					observersTableModel.removeObserverAt(selectedRow);
 					if (selectedRow != 0) {
 						tableObservers.changeSelection(selectedRow-1, 0, false, false);  // seleciona a primeira linha da tabela por default
-						tableObservers.setValueAt(QueueObserverType.STATIONARY, selectedRow-1, 1);
+						tableObservers.setValueAt(ActiveObserverType.ACTIVE, selectedRow-1, 1);
 				}
 			}
 			}
@@ -216,7 +216,7 @@ public void configuraColunas() {
 		this.queueNameTextField.setText(queueNameTextField);
 	}
 	
-	public List<QueueObserver> getObservers() {
+	public List<ActObserver> getObservers() {
 		return observersTableModel.getObservers();
 	}
 }
