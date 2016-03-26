@@ -273,11 +273,15 @@ public class XACDMLBuilderFacade {
 				// Em segundo lugar, configuro a distribuicao de probabilidade criada acima para a generate activity
 				// (panel probability distribution parameters - painel x associado com o workproduct x)
 				
-				generateActivity.setId(workProduct.getName());
-				
-				generateActivity.setClazz(temporaryEntity);
-				
 				JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
+				
+				if (workProduct.isGenerateActivity()) {
+					generateActivity.setId(workProduct.getName());
+				
+					generateActivity.setClazz(temporaryEntity);
+				
+				
+			
 				
 				GenerateActivityProbabilityDistributionPanel probabilityDistributionInnerPanel = (GenerateActivityProbabilityDistributionPanel) listProbabilityDistributionPanel.get(j);
 				Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
@@ -319,7 +323,7 @@ public class XACDMLBuilderFacade {
 				
 				generateActivity.setStat(distribution);
 				
-              
+				
 
 				// Quarto: configuracao da fila para entidade temporaria incluindo seu tipo (QUEUE, STACK or SET) e observers
 				
@@ -356,6 +360,7 @@ public class XACDMLBuilderFacade {
 				if (workProduct.getInputOrOutput().equalsIgnoreCase("INPUT")) {
 					generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
 					acd.getGenerate().add(generateActivity);
+				}
 				}
 			}
 			
