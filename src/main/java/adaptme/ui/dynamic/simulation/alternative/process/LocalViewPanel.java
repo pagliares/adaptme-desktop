@@ -30,101 +30,97 @@ public class LocalViewPanel implements UpdatePanel {
     private ProcessContentRepository processContentRepository;
     private ParametersPanel parametersPanel;
     private ProbabilityDistributionPanelListener focusListener;
-    private Parameters parameters;
+    private Parameters bestFitDistributionParameters;
     private LocalViewBottomPanel localViewBottomPanel;
 
     private JPanel panel = new JPanel();
     private String title;
     private JScrollPane scrollPaneParameters;
 
-    public LocalViewPanel(ProcessContentRepository processContentRepository) {
+	public LocalViewPanel(ProcessContentRepository processContentRepository) {
 
-	this.processContentRepository = processContentRepository;
-	lblSession = new JLabel("Development session");
-	lblSession.setFont(new Font("SansSerif", Font.BOLD, 14));
+		this.processContentRepository = processContentRepository;
+		lblSession = new JLabel("Development session");
+		lblSession.setFont(new Font("SansSerif", Font.BOLD, 14));
 
-	lblBestFitProbbility = new JLabel("Best fit probability distribution");
+		lblBestFitProbbility = new JLabel("Best fit probability distribution");
 
-	distributionJComboBox = new JComboBox<>();
-	distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
-	distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
-	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
-	distributionJComboBox.addItem(BestFitDistribution.POISSON);
-	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
-	
-	
-	Sample sample = new Sample();
-	processContentRepository.setSample(sample);
-	scrollPaneParameters = new JScrollPane();
-	scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
-	scrollPaneParameters.setViewportBorder(null);
-	focusListener = new ProbabilityDistributionPanelListener();
-	distributionJComboBox.setSelectedIndex(1); // normal select by default with lines below setting initial values
-	parameters = Parameters.createParameter(BestFitDistribution.NEGATIVE_EXPONENTIAL);
-    parametersPanel =  new ParametersPanel(parameters, focusListener);
-	focusListener.setParameters(parameters);
-    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
-    scrollPaneParameters.revalidate();
-    scrollPaneParameters.repaint();
-	processContentRepository.getSample().setParameters(parameters);
-	
-	panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
- 	
-	parametersPanel =  new ParametersPanel(parameters, focusListener);
-	focusListener.setParameters(parameters);
+		distributionJComboBox = new JComboBox<>();
+		distributionJComboBox.addItem(BestFitDistribution.CONSTANT);
+		distributionJComboBox.addItem(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
+		distributionJComboBox.addItem(BestFitDistribution.POISSON);
+		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
 
-	scrollPaneParameters.setViewportView(parametersPanel.getPanel());
-	
-	distributionJComboBox.addItemListener(e -> {
-	    parameters = Parameters.createParameter((BestFitDistribution)distributionJComboBox.getSelectedItem());
-	    parametersPanel =  new ParametersPanel(parameters, focusListener);
-		focusListener.setParameters(parameters);
-	    scrollPaneParameters.setViewportView(parametersPanel.getPanel());
-	    scrollPaneParameters.revalidate();
-	    scrollPaneParameters.repaint();
-		processContentRepository.getSample().setParameters(parameters);
-	});
-	
-	localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
-	GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
-	gridBagLayout.rowWeights = new double[]{0.0, 0.0};
-	gridBagLayout.rowHeights = new int[]{57, 150};
-	gridBagLayout.columnWeights = new double[]{0.0};
-	gridBagLayout.columnWidths = new int[]{549};
-	GroupLayout gl_panel = new GroupLayout(panel);
-	gl_panel.setHorizontalGroup(
-		gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(6)
-				.addComponent(lblSession))
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(6)
-				.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-				.addGap(69)
-				.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(6)
-				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
-			.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 522, GroupLayout.PREFERRED_SIZE)
-	);
-	gl_panel.setVerticalGroup(
-		gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-				.addGap(18)
-				.addComponent(lblSession)
-				.addGap(18)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel.createSequentialGroup()
-						.addGap(5)
-						.addComponent(lblBestFitProbbility))
-					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(22)
-				.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-				.addGap(6)
-				.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-	);
-	panel.setLayout(gl_panel);
-    }
+		Sample sample = new Sample();
+		processContentRepository.setSample(sample);
+		scrollPaneParameters = new JScrollPane();
+		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
+		scrollPaneParameters.setViewportBorder(null);
+		focusListener = new ProbabilityDistributionPanelListener();
+		distributionJComboBox.setSelectedIndex(1); // normal select by default
+													// with lines below setting
+													// initial values
+		bestFitDistributionParameters = Parameters.createParameter(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+		parametersPanel = new ParametersPanel(bestFitDistributionParameters, focusListener);
+		focusListener.setParameters(bestFitDistributionParameters);
+		scrollPaneParameters.setViewportView(parametersPanel.getPanel());
+		scrollPaneParameters.revalidate();
+		scrollPaneParameters.repaint();
+		processContentRepository.getSample().setParameters(bestFitDistributionParameters);
+
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Local View", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(59, 59, 59)));
+
+		parametersPanel = new ParametersPanel(bestFitDistributionParameters, focusListener);
+		focusListener.setParameters(bestFitDistributionParameters);
+
+		scrollPaneParameters.setViewportView(parametersPanel.getPanel());
+
+		distributionJComboBox.addItemListener(e -> {
+			bestFitDistributionParameters = Parameters.createParameter((BestFitDistribution) distributionJComboBox.getSelectedItem());
+			parametersPanel = new ParametersPanel(bestFitDistributionParameters, focusListener);
+			focusListener.setParameters(bestFitDistributionParameters);
+			scrollPaneParameters.setViewportView(parametersPanel.getPanel());
+			scrollPaneParameters.revalidate();
+			scrollPaneParameters.repaint();
+			processContentRepository.getSample().setParameters(bestFitDistributionParameters);
+		});
+
+		localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
+		GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0 };
+		gridBagLayout.rowHeights = new int[] { 57, 150 };
+		gridBagLayout.columnWeights = new double[] { 0.0 };
+		gridBagLayout.columnWidths = new int[] { 549 };
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(lblSession))
+						.addGroup(gl_panel.createSequentialGroup().addGap(6)
+								.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE,
+										175, GroupLayout.PREFERRED_SIZE)
+								.addGap(69).addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186,
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup().addGap(6).addComponent(scrollPaneParameters,
+								GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
+						.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 522,
+								GroupLayout.PREFERRED_SIZE));
+		gl_panel.setVerticalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup().addGap(18).addComponent(lblSession).addGap(18)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panel.createSequentialGroup().addGap(5)
+												.addComponent(lblBestFitProbbility))
+										.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(22)
+								.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(6).addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
+		panel.setLayout(gl_panel);
+	}
 
     public String getDistribution() {
     	return (String) distributionJComboBox.getSelectedItem();

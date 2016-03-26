@@ -16,28 +16,20 @@ import model.spem.derived.UniformParameters;
 
 public class ProbabilityDistributionPanelListener implements FocusListener {
 	
-	private Parameters parameters;
-//	private ProcessRepository processRepository;
-//	
-//	public ProbabilityDistributionPanelListener(ProcessRepository processRepository) {
-//		this.processRepository = processRepository;
-//		
-//	}
-//	
+	private Parameters distributionParameters;  
+ 
 	 @Override
 	    public void focusLost(FocusEvent e) { 	    
-//		        ProcessRepository pr = SPEMDrivenPerspectivePanel.processRepository;  // teste breakpoint
-//	    		String s = (String) comboBoxDistribution.getSelectedItem();
-//	    	    ProcessRepository p = SPEMDrivenPerspectivePanel.processRepository;
+ 
 	    	    JTextField textField = (JTextField) e.getSource();
-	    		if (parameters instanceof ConstantParameters) {
+	    		if (distributionParameters instanceof ConstantParameters) {
 					
-					ConstantParameters constantParameters = (ConstantParameters)parameters;
+					ConstantParameters constantParameters = (ConstantParameters)distributionParameters;
 					constantParameters.setValue(Double.parseDouble(textField.getText()));
 		 			 
-				} else if (parameters instanceof UniformParameters) {
+				} else if (distributionParameters instanceof UniformParameters) {
 					
-					UniformParameters UniformParameters = (UniformParameters)parameters;
+					UniformParameters UniformParameters = (UniformParameters)distributionParameters;
 					if (textField.getName().equals("high")) {
 						UniformParameters.setHigh(Double.parseDouble(textField.getText()));
 					} else {
@@ -46,15 +38,15 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 					
 				
 
-				} else if (parameters instanceof NegativeExponential) {
+				} else if (distributionParameters instanceof NegativeExponential) {
 					
-					NegativeExponential negativeExponential = (NegativeExponential)parameters;
+					NegativeExponential negativeExponential = (NegativeExponential)distributionParameters;
 					negativeExponential.setAverage(Double.parseDouble(textField.getText()));
 					 
 	 	 			
-				} else if (parameters instanceof NormalParameters) {
+				} else if (distributionParameters instanceof NormalParameters) {
 					
-					NormalParameters normalParameters = (NormalParameters)parameters;
+					NormalParameters normalParameters = (NormalParameters)distributionParameters;
 					
 					if (textField.getName().equals("average")) {
 						normalParameters.setMean(Double.parseDouble(textField.getText()));
@@ -63,9 +55,9 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 					}
 
 
-				} else if (parameters instanceof PoissonParameters) {
+				} else if (distributionParameters instanceof PoissonParameters) {
 					
-					PoissonParameters poissonParameters = (PoissonParameters)parameters;
+					PoissonParameters poissonParameters = (PoissonParameters)distributionParameters;
 					poissonParameters.setMean(Double.parseDouble(textField.getText()));
 	 			}
 	    	
@@ -78,7 +70,7 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 	    }
 
 		public void setParameters(Parameters parameters) {
-			this.parameters = parameters;
+			this.distributionParameters = parameters;
 		}
 	
 
