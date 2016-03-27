@@ -21,6 +21,7 @@ import adaptme.ui.window.perspective.GenerateActivityProbabilityDistributionPane
 import adaptme.ui.window.perspective.RoleResourcesBottomPanel;
 import adaptme.ui.window.perspective.RoleResourcesPanel;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
+import adaptme.ui.window.perspective.WorkProductResourcesGenerateActivityObserversPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesQueueObserversPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import model.spem.MethodContentRepository;
@@ -234,6 +235,7 @@ public class XACDMLBuilderFacade {
 		
  			List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel.getListOfProbabilityDistributionPanels();
 			List<JPanel> listOfWorkProductResourcesBottomRightPanel= workProdutResourcesPanel.getListOfWorkProductResourcesBottomRightPanels();
+			List<JPanel> listOfGenerateActivityObserversPanel= workProdutResourcesPanel.getListOfGenerateActivityWorkProductResourcesObserversPanel();
 
 
 			for (int j = 0; j < workProducts.size(); j++) {
@@ -355,6 +357,19 @@ public class XACDMLBuilderFacade {
 				
 				nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity);  // chamando deadTemporalEntity.getId() esta dando erro - estranho
 			
+				
+				// 6 e meio - observers for generate activity
+				WorkProductResourcesGenerateActivityObserversPanel lgaop = (WorkProductResourcesGenerateActivityObserversPanel) listOfGenerateActivityObserversPanel.get(j);
+				List<ActObserver> actObservers = lgaop.getObservers();
+				 
+				 
+				for (ActObserver generateActivityObserver : actObservers)
+					generateActivity.getActObserver().add(generateActivityObserver);
+					 
+
+				// insere o dead state no acd
+				acd.getDead().add(deadPermanentEntity);
+				
 				// setimo: termino da configuracao de generate activity, inserindo-a no acd
 				
 				if (workProduct.getInputOrOutput().equalsIgnoreCase("INPUT")) {

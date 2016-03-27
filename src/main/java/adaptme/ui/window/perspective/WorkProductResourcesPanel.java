@@ -314,4 +314,17 @@ public class WorkProductResourcesPanel {
 	public List<JPanel> getListOfWorkProductResourcesBottomRightPanels() {
 		return listOfQueueWorkProductResourcesObserversPanel;
 	}
+
+
+
+	public List<JPanel> getListOfGenerateActivityWorkProductResourcesObserversPanel() {
+		return listOfGenerateActivityWorkProductResourcesObserversPanel;
+	}
+
+
+
+	public void setListOfGenerateActivityWorkProductResourcesObserversPanel(
+			List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
+		this.listOfGenerateActivityWorkProductResourcesObserversPanel = listOfGenerateActivityWorkProductResourcesObserversPanel;
+	}
 }
