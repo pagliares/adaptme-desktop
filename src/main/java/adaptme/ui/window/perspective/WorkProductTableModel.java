@@ -162,7 +162,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if ((column == 0) || (column == 1) || (column == 2) || (column == 3)){
+		if ((column == 0) || (column == 1) || (column == 2)){
 			return false;
 		}
 		return true;
