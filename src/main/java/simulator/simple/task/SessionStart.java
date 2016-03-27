@@ -9,7 +9,7 @@ import model.spem.config.TaskConfig;
 import model.spem.derived.Parameters;
 import model.spem.util.FinishType;
 import model.spem.util.ProcessContentType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import simulator.base.event.Event;
 import simulator.simple.Simple;
 import simulator.simple.entity.Developer;
@@ -92,7 +92,7 @@ public class SessionStart extends Event {
 		if (entity == null) {
 		    return;
 		}
-		WorkProduct workProduct = project.getWorkProductToImplement(content);
+		WorkProductXACDML workProduct = project.getWorkProductToImplement(content);
 		if (workProduct == null) {
 		    return;
 		}

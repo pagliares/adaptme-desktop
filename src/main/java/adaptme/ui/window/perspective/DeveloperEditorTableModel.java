@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.base.Developer;
 import simulator.base.Role;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
 public class DeveloperEditorTableModel extends AbstractTableModel {
 

@@ -3,64 +3,34 @@ package simulator.base;
 import adaptme.ui.window.perspective.VariableType;
 import model.spem.derived.BestFitDistribution;
 
-public class WorkProduct implements Comparable<WorkProduct>{
+public class WorkProductXACDML implements Comparable<WorkProductXACDML>{
 	
-    private String name; 
-    private int done;
- 	private int intialQuantity;
- 	private VariableType variableType;
+    private String name;  // workproduct and ACD clazz
  	private String inputOrOutput = "Input";
- 	private boolean generateActivity;
  	private String taskName;
-
-    private BestFitDistribution bestFitDistribution;
-
-    private boolean lock;
-    private String status;
+ 	private String queueName = "" ;
+ 	private QueueType queueType;
+ 	private int queueSize = 50;
+	private int intialQuantity; 
+ 	private Policy policy;
+ 	private boolean generateActivity;
     
-    private String queueName = "" ;
-    private int capacity = 50;
-    private Policy policy;
-    
-	private ActiveObserverType observerType;
-	private QueueType queueType;
+ 	
+	private boolean lock; // usado pelo simulador xp
+	private String status; // usado pelo simulador xp
+	private VariableType variableType;  // panel experimentation - verificar refactoring
+	private int done;
+	
 
-    public String getName() {
-	return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getStatus() {
-	return status;
-    }
-
-    public void setStatus(String status) {
-	this.status = status;
-    }
-
-    public int getDone() {
-	return done;
-    }
-
-    public void setDone(int done) {
-	this.done = done;
-    }
-
-    public void addDone(int value) {
-	done += value;
-    }
-
-    public boolean isLock() {
-	return lock;
-    }
-
-    public void setLock(boolean lock) {
-	this.lock = lock;
-    }
-
+	
 	public String getQueueName() {
 		return queueName;
 	}
@@ -70,11 +40,11 @@ public class WorkProduct implements Comparable<WorkProduct>{
 	}
 
 	public int getCapacity() {
-		return capacity;
+		return queueSize;
 	}
 
 	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+		this.queueSize = capacity;
 	}
 
 	public Policy getPolicy() {
@@ -86,34 +56,12 @@ public class WorkProduct implements Comparable<WorkProduct>{
 	}
 
 
-	public BestFitDistribution getBestFitDistribution() {
-		return bestFitDistribution;
-	}
-
-	public void setBestFitDistribution(BestFitDistribution bestFitDistribution) {
-		this.bestFitDistribution = bestFitDistribution;
-	}
-	
-	public ActiveObserverType getObserverType() {
-		return observerType;
-	}
-
-	public void setObserverType(ActiveObserverType observerType) {
-		this.observerType = observerType;
-	}
-
 	public QueueType getQueueType() {
 		return queueType;
 	}
 
 	public void setQueueType(QueueType queueType) {
 		this.queueType = queueType;
-	}
-
-	@Override
-	public String toString() {
-		return "WorkProduct [name=" + name + bestFitDistribution +"=" + bestFitDistribution + ", queueName=" + queueName
-				+ ", capacity=" + capacity + ", policy=" + policy + "]";
 	}
 
 	public int getIntialQuantity() {
@@ -155,6 +103,34 @@ public class WorkProduct implements Comparable<WorkProduct>{
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getDone() {
+		return done;
+	}
+
+	public void setDone(int done) {
+		this.done = done;
+	}
+
+	public void addDone(int value) {
+		done += value;
+	}
+
+	public boolean isLock() {
+		return lock;
+	}
+
+	public void setLock(boolean lock) {
+		this.lock = lock;
+	}
 
 	@Override
 	public int hashCode() {
@@ -173,7 +149,7 @@ public class WorkProduct implements Comparable<WorkProduct>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		WorkProduct other = (WorkProduct) obj;
+		WorkProductXACDML other = (WorkProductXACDML) obj;
 		if (inputOrOutput == null) {
 			if (other.inputOrOutput != null)
 				return false;
@@ -188,10 +164,13 @@ public class WorkProduct implements Comparable<WorkProduct>{
 	}
 
 	@Override
-	public int compareTo(WorkProduct o) {
+	public int compareTo(WorkProductXACDML o) {
 		return this.getName().compareTo(o.getName());
 	}
 	
-	 
-	
+	@Override
+	public String toString() {
+		return "WorkProduct [name=" + name +  ", queueName=" + queueName
+				+ ", capacity=" + queueSize + ", policy=" + policy + "]";
+	}
  }

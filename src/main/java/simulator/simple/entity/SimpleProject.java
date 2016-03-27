@@ -9,14 +9,14 @@ import model.spem.config.ContainerConfig;
 import model.spem.config.RoleConfig;
 import model.spem.config.TaskConfig;
 import model.spem.util.FinishType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import simulator.base.entity.Project;
 import simulator.simple.Simple;
 
 public class SimpleProject extends Project {
 
     private long duration;
-    private HashMap<String, List<WorkProduct>> workProductHash;
+    private HashMap<String, List<WorkProductXACDML>> workProductHash;
     private HashMap<String, ContainerConfig> sessionMeasurementConfigHash;
     private HashMap<String, Entity> conteinerEntityHash;
     private HashMap<String, TaskConfig> taskMeasurementConfigHash;
@@ -38,8 +38,8 @@ public class SimpleProject extends Project {
 
     public boolean hasWorkProductToImplementInThePredecessorContainer(ProcessContentRepository predecessor) {
 	for (ProcessContentRepository processContentRepository : predecessor.getChildren()) {
-	    List<WorkProduct> list = workProductHash.get(processContentRepository.getName());
-	    for (WorkProduct workProduct : list) {
+	    List<WorkProductXACDML> list = workProductHash.get(processContentRepository.getName());
+	    for (WorkProductXACDML workProduct : list) {
 		TaskConfig taskConfig = taskMeasurementConfigHash.get(processContentRepository.getName());
 		if (taskConfig.getFinishType() == FinishType.STATUS) {
 		    ContainerConfig containerConfig = sessionMeasurementConfigHash.get(predecessor.getName());
@@ -73,11 +73,11 @@ public class SimpleProject extends Project {
 	return conteinerEntityHash;
     }
 
-    public HashMap<String, List<WorkProduct>> getWorkProductHash() {
+    public HashMap<String, List<WorkProductXACDML>> getWorkProductHash() {
 	return workProductHash;
     }
 
-    public void setWorkProductHash(HashMap<String, List<WorkProduct>> workProductHash) {
+    public void setWorkProductHash(HashMap<String, List<WorkProductXACDML>> workProductHash) {
 	this.workProductHash = workProductHash;
     }
 
@@ -105,9 +105,9 @@ public class SimpleProject extends Project {
 	return roleMeasurementConfigHash;
     }
 
-    public WorkProduct getWorkProductToImplement(ProcessContentRepository content) {
-	List<WorkProduct> workProducts = getWorkProductHash().get(content.getName());
-	for (WorkProduct workProduct : workProducts) {
+    public WorkProductXACDML getWorkProductToImplement(ProcessContentRepository content) {
+	List<WorkProductXACDML> workProducts = getWorkProductHash().get(content.getName());
+	for (WorkProductXACDML workProduct : workProducts) {
 	    if (!workProduct.isLock() && workProduct.getDone() < workProduct.getCapacity()) {
 		return workProduct;
 	    }

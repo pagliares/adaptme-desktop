@@ -14,7 +14,7 @@ import model.spem.config.WorkProductConfig;
 import model.spem.derived.Parameters;
 import model.spem.util.FinishType;
 import model.spem.util.ProcessContentType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import simulator.simple.entity.Developer;
 import simulator.simple.entity.SimpleProject;
 import simulator.simple.task.SessionEnd;
@@ -35,7 +35,7 @@ public class Simple implements Logger {
     private HashMap<String, ContainerConfig> containerMeasurementConfigHash;
     private HashMap<String, TaskConfig> taskMeasurementConfigHash;
 
-    private HashMap<String, List<WorkProduct>> workProductHash;
+    private HashMap<String, List<WorkProductXACDML>> workProductHash;
     private HashMap<String, List<Developer>> developersHash;
 
     // public static void main(String[] args) throws IOException {
@@ -317,11 +317,11 @@ public class Simple implements Logger {
     public void update(Object object) {
     }
 
-    public HashMap<String, List<WorkProduct>> getWorkProductHash() {
+    public HashMap<String, List<WorkProductXACDML>> getWorkProductHash() {
 	return workProductHash;
     }
 
-    public void setWorkProductHash(HashMap<String, List<WorkProduct>> workProductHash) {
+    public void setWorkProductHash(HashMap<String, List<WorkProductXACDML>> workProductHash) {
 	this.workProductHash = workProductHash;
     }
 

@@ -11,21 +11,21 @@ import javax.swing.table.AbstractTableModel;
 import model.spem.ProcessContentRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
 public class WorkProductTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<WorkProduct> workProducts;
-	private Set<WorkProduct> workProductsSet;
+	private List<WorkProductXACDML> workProducts;
+	private Set<WorkProductXACDML> workProductsSet;
 	private List<JPanel> listOfQueueWorkProductResourcesObserversPanel;
 	private List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel;
  	
 	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Queue name", "Queue type", 
 									  "Queue size", "Queue initial quantity", "Policy", "Generate activity?"};
 
-	public WorkProductTableModel(List<WorkProduct> workProducts,  List<JPanel> listOfWorkProductResourcesBottomRightPanels, List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
+	public WorkProductTableModel(List<WorkProductXACDML> workProducts,  List<JPanel> listOfWorkProductResourcesBottomRightPanels, List<JPanel> listOfGenerateActivityWorkProductResourcesObserversPanel) {
 		this.workProducts = workProducts;
 		this.listOfQueueWorkProductResourcesObserversPanel = listOfWorkProductResourcesBottomRightPanels;
 		this.listOfGenerateActivityWorkProductResourcesObserversPanel = listOfGenerateActivityWorkProductResourcesObserversPanel;
@@ -44,7 +44,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		WorkProduct workProduct = workProducts.get(rowIndex);
+		WorkProductXACDML workProduct = workProducts.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return workProduct.getName();
@@ -72,7 +72,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		 
-		WorkProduct workProduct = getWorkProductAt(rowIndex);
+		WorkProductXACDML workProduct = getWorkProductAt(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			workProduct.setName((String) aValue);
@@ -148,7 +148,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 		return headers[col];
 	}
 
-	public WorkProduct getWorkProductAt(int row) {
+	public WorkProductXACDML getWorkProductAt(int row) {
 		return workProducts.get(row);
 	}
 
@@ -156,7 +156,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 		workProducts.remove(row);
 	}
 
-	public void addDeveloper(WorkProduct developer) {
+	public void addDeveloper(WorkProductXACDML developer) {
 		workProducts.add(developer);
 	}
 
@@ -168,7 +168,7 @@ public class WorkProductTableModel extends AbstractTableModel {
 		return true;
 	}
 
-	public List<WorkProduct> getWorkProducts() {
+	public List<WorkProductXACDML> getWorkProducts() {
 		return workProducts;
 	}
 

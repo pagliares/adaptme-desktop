@@ -20,7 +20,7 @@ import model.spem.config.TaskConfig;
 import model.spem.config.WorkProductConfig;
 import model.spem.util.FinishType;
 import model.spem.util.PredecessorType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import simulator.simple.Simple;
 import simulator.simple.entity.Developer;
 import javax.swing.GroupLayout;
@@ -150,7 +150,7 @@ public class RunSimulationPanelXPThesis {
 	HashMap<String, WorkProductConfig> workProductMeasurementConfigHash = new HashMap<>();
 	HashMap<String, ContainerConfig> containerMeasurementConfigHash = new HashMap<>();
 	HashMap<String, TaskConfig> taskMeasurementConfigHash = new HashMap<>();
-	HashMap<String, List<WorkProduct>> workProductHash = new HashMap<>();
+	HashMap<String, List<WorkProductXACDML>> workProductHash = new HashMap<>();
 	HashMap<String, List<Developer>> developersHash = new HashMap<>();
 
 	List<Developer> developersList = new ArrayList<>();
@@ -212,9 +212,9 @@ public class RunSimulationPanelXPThesis {
 	soloTestAfter.setPredecessorType(PredecessorType.SIZE);
 	taskMeasurementConfigHash.put(soloTestAfter.getName(), soloTestAfter);
 
-	List<WorkProduct> listWorkProduct = new ArrayList<WorkProduct>();
+	List<WorkProductXACDML> listWorkProduct = new ArrayList<WorkProductXACDML>();
 	for (int i = 0; i < 10; i++) {
-	    WorkProduct workProduct = new WorkProduct();
+	    WorkProductXACDML workProduct = new WorkProductXACDML();
 	    workProduct.setName("User Story " + i);
 	    workProduct.setCapacity((int) SimulationSample.getSampleFromLogNormalDistribution(60, 5));
 	    workProduct.setStatus("");

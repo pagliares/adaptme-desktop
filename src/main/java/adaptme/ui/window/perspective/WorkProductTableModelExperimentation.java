@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
 
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
  
 
@@ -14,11 +14,11 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<WorkProduct> workProducts;
+	private List<WorkProductXACDML> workProducts;
  	
 	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Variable type"};
 
-	public WorkProductTableModelExperimentation(List<WorkProduct> workProducts) {
+	public WorkProductTableModelExperimentation(List<WorkProductXACDML> workProducts) {
 		this.workProducts = workProducts;
  	}
 
@@ -34,7 +34,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		WorkProduct workProduct = workProducts.get(rowIndex);
+		WorkProductXACDML workProduct = workProducts.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return workProduct.getName();
@@ -53,7 +53,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		 
-		WorkProduct workProduct = getWorkProductAt(rowIndex);
+		WorkProductXACDML workProduct = getWorkProductAt(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			workProduct.setName((String) aValue);
@@ -93,7 +93,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		return headers[col];
 	}
 
-	public WorkProduct getWorkProductAt(int row) {
+	public WorkProductXACDML getWorkProductAt(int row) {
 		return workProducts.get(row);
 	}
 
@@ -101,7 +101,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		workProducts.remove(row);
 	}
 
-	public void addDeveloper(WorkProduct developer) {
+	public void addDeveloper(WorkProductXACDML developer) {
 		workProducts.add(developer);
 	}
 
@@ -113,7 +113,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		return true;
 	}
 
-	public List<WorkProduct> getWorkProducts() {
+	public List<WorkProductXACDML> getWorkProducts() {
 		return workProducts;
 	}
 

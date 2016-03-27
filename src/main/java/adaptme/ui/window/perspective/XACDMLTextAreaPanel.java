@@ -37,7 +37,7 @@ import java.awt.event.ActionEvent;
 
 import simulator.base.Role;
 import simulator.base.Task;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import xacdml.model.XACDMLBuilderFacade;
 import xacdml.model.generated.Acd;
 import javax.swing.JLabel;
@@ -101,7 +101,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 					return; 
 				}
 				List<Role> roles = roleResourcePanel.getRoles();
-				List<WorkProduct> workProducts = workProdutResourcesPanel.getWorkProducts();
+				List<WorkProductXACDML> workProducts = workProdutResourcesPanel.getWorkProducts();
 
 				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
 						workProdutResourcesPanel);

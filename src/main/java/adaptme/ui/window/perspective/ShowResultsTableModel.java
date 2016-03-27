@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import model.spem.ProcessRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
 public class ShowResultsTableModel extends AbstractTableModel {
 

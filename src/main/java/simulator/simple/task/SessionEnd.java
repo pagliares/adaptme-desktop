@@ -8,7 +8,7 @@ import model.spem.ProcessContentRepository;
 import model.spem.config.TaskConfig;
 import model.spem.util.FinishType;
 import model.spem.util.ProcessContentType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import simulator.base.event.Event;
 import simulator.simple.Simple;
 import simulator.simple.entity.SimpleProject;
@@ -20,7 +20,7 @@ public class SessionEnd extends Event {
     private long duration;
     private long finishAt;
     private ProcessContentRepository content;
-    private WorkProduct workProduct;
+    private WorkProductXACDML workProduct;
 
     public SessionEnd(ApplicationContext applicationContext, ProcessContentRepository content, long duration,
 	    long finishAt) {
@@ -52,9 +52,9 @@ public class SessionEnd extends Event {
 	    if (taskConfig.getFinishType() == FinishType.STATUS) {
 		String identetion = Simple.getIndentation(content);
 		getLogger().println(identetion + name + " is finishing now at " + getExecutive().getCurrentClockTime());
-		List<WorkProduct> list = projet.getWorkProductHash().get(name);
+		List<WorkProductXACDML> list = projet.getWorkProductHash().get(name);
 		if (list != null) {
-		    for (WorkProduct workProduct : list) {
+		    for (WorkProductXACDML workProduct : list) {
 			TaskConfig config = projet.getTaskMeasurementConfigHash().get(name);
 			if (config.getFinishType() == FinishType.STATUS) {
 			    workProduct.setStatus(name);
@@ -89,11 +89,11 @@ public class SessionEnd extends Event {
 	this.finishAt = finishAt;
     }
 
-    public WorkProduct getWorkProduct() {
+    public WorkProductXACDML getWorkProduct() {
 	return workProduct;
     }
 
-    public void setWorkProduct(WorkProduct workProduct) {
+    public void setWorkProduct(WorkProductXACDML workProduct) {
 	this.workProduct = workProduct;
     }
 

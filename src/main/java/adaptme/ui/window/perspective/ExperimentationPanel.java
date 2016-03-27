@@ -11,7 +11,7 @@ import javax.swing.table.TableColumnModel;
 
 import simulator.base.Policy;
 import simulator.base.QueueType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -159,7 +159,7 @@ public class ExperimentationPanel extends JPanel {
 		
 		table = new JTable();
 		
-		List<WorkProduct> list = workProductResourcesPanel.getWorkProducts();
+		List<WorkProductXACDML> list = workProductResourcesPanel.getWorkProducts();
 		table.setModel(new WorkProductTableModelExperimentation(list));
 		
 		for (int i=0; i< list.size(); i++) {

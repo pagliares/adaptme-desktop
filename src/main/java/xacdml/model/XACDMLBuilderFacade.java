@@ -35,7 +35,7 @@ import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
 import model.spem.util.ProcessContentType;
 import simulator.base.Role;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 import xacdml.model.generated.Acd;
 import xacdml.model.generated.Act;
 import xacdml.model.generated.ActObserver;
@@ -66,7 +66,7 @@ public class XACDMLBuilderFacade {
     private ActObserver actObserver;
     private List<ActObserver> listOfActivityObservers;
     
-    private WorkProduct workProduct;
+    private WorkProductXACDML workProduct;
 	
 	private Generate generateActivity;
 	private Class temporaryEntity;
@@ -170,7 +170,7 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,String acdId, String simTime, List<Role> roles, List<WorkProduct> workProducts, Set<String> tasks, 
+	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,String acdId, String simTime, List<Role> roles, List<WorkProductXACDML> workProducts, Set<String> tasks, 
 							  RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel){
 				
 		List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanel = roleResourcePanel.getListOfRoleResourcesBottomPanels();
@@ -519,7 +519,7 @@ public class XACDMLBuilderFacade {
 		boolean mayBeDestroyed = true;
 		boolean isPermanenteEntity = false;
 		for (Class clazz: listOfTemporaryEntities) {
-			
+			 
 			for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
 				
 				if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
@@ -539,16 +539,19 @@ public class XACDMLBuilderFacade {
 			
 			for (Role role : roles) {
 				if (role.getName().equals(clazz.getId()))  // nao posso destruir
-					isPermanenteEntity = true;
-				
+					isPermanenteEntity = true;	
+					mayBeDestroyed = false;
 			}
+			
+			
+			
 			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
 				// posso destruir apenas se nao for role
 				
 				destroyActivity = factory.createDestroy();
 				destroyActivity.setClazz(clazz);
 				System.out.println("destroying ...: " + clazz.getId());
-//				previous.setDead(deadTemporalEntity);
+//				previous.setDead(deadTemporalEntity);  // basta pegar o nome da fila do workproduct associado ao table model
 //				destroyActivity.getPrev().add(previous);
 				acd.getDestroy().add(destroyActivity);
 			}

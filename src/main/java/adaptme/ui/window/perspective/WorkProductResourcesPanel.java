@@ -28,7 +28,7 @@ import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import simulator.base.Policy;
 import simulator.base.QueueType;
-import simulator.base.WorkProduct;
+import simulator.base.WorkProductXACDML;
 
 public class WorkProductResourcesPanel {
 	
@@ -54,7 +54,7 @@ public class WorkProductResourcesPanel {
 	private JComboBox<Policy> policyJComboBox;
 	private JComboBox<QueueType> queueTypeJComboBox;
 
-	private List<WorkProduct> workProducts = new ArrayList<>();
+	private List<WorkProductXACDML> workProducts = new ArrayList<>();
 	private int indexSelectedRow;
 	
 	public WorkProductResourcesPanel() {
@@ -120,7 +120,7 @@ public class WorkProductResourcesPanel {
 
 			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
 
-				WorkProduct workProduct = new WorkProduct();
+				WorkProductXACDML workProduct = new WorkProductXACDML();
 				workProduct.setName(mcr.getName());
 				workProduct.setInputOrOutput("OUTPUT");
 				workProduct.setTaskName(pcr.getName());
@@ -151,7 +151,7 @@ public class WorkProductResourcesPanel {
 
 			for (MethodContentRepository mcr : setOfInputMethodContentRepository) {
 
-				WorkProduct workProduct = new WorkProduct();
+				WorkProductXACDML workProduct = new WorkProductXACDML();
 				workProduct.setName(mcr.getName());
 				workProduct.setInputOrOutput("INPUT");
 				workProduct.setTaskName(pcr.getName());
@@ -291,7 +291,7 @@ public class WorkProductResourcesPanel {
 		 
 	}
 
-	public List<WorkProduct> getWorkProducts() {
+	public List<WorkProductXACDML> getWorkProducts() {
 		return workProducts;
 	}
 

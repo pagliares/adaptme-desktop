@@ -16,18 +16,18 @@ public class Task {
 	private Role mainPerformer;
 	private List<Role> additionalPerformers = new ArrayList<>();
 	
-	private List<WorkProduct> inputWorkProducts = new ArrayList<>();
-	private List<WorkProduct> outputWorkProducts = new ArrayList<>();
+	private List<WorkProductXACDML> inputWorkProducts = new ArrayList<>();
+	private List<WorkProductXACDML> outputWorkProducts = new ArrayList<>();
 	
 	public void addAdditionaPerformer(Role role) {
 		additionalPerformers.add(role);
 	}
 	
-	public void addInputWorkProduct(WorkProduct wp) {
+	public void addInputWorkProduct(WorkProductXACDML wp) {
 		inputWorkProducts.add(wp);
 	}
 	
-	public void addOutputWorkProduct(WorkProduct wp) {
+	public void addOutputWorkProduct(WorkProductXACDML wp) {
 		outputWorkProducts.add(wp);
 	}
 	
