@@ -76,9 +76,9 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 		
 		
 		// configuring a queuobserver by Default
-		ActObserver queueObserver = new ActObserver();
- 		queueObserver.setName(workProductName+ " observer " + ++counter+"");
-		observersTableModel.addActObserver(queueObserver);
+		ActObserver generateActivityObserver = new ActObserver();
+ 		generateActivityObserver.setName(workProductName+ " generate activity observer " + ++counter+"");
+		observersTableModel.addActObserver(generateActivityObserver);
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 		tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 				
@@ -86,7 +86,7 @@ public class WorkProductResourcesGenerateActivityObserversPanel extends JPanel {
 		addObserverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ActObserver queueObserver = new ActObserver();
-				queueObserver.setName(queueNameTextField.getText()+ " observer " + ++counter+"");
+				queueObserver.setName(queueNameTextField.getText()+ " generate activity observer " + ++counter+"");
 				observersTableModel.addActObserver(queueObserver);
 				tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 				tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
