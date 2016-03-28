@@ -108,6 +108,8 @@ public class XACDMLBuilderFacade {
 		createGenerateActivitiesAndQueuesForTemporaryEntities(workProdutResourcesPanel, workProducts);
 		
 		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess);
+		
+	 
 
 		createDestroyActivities(roles, workProducts);
 
@@ -393,6 +395,34 @@ private void configureInputQueues(ProcessContentRepository processContentReposit
 			createTemporaryEntity();
 
 			JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
+			
+			// Quarto: configuracao da fila para entidade temporaria
+			// incluindo seu tipo (QUEUE, STACK or SET) e observers
+
+			String queueName = workProduct.getQueueName();
+			String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 4)).toString();
+			String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
+			String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 6)
+					.toString();
+
+			queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
+			queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
+			queueTypeTemporaryEntity.setInit(queueInitialQuantityTemporaryEntityString);
+
+			deadTemporalEntity.setId(queueName);
+			deadTemporalEntity.setClazz(temporaryEntity);
+			deadTemporalEntity.setType(queueTypeTemporaryEntity);
+
+			WorkProductResourcesQueueObserversPanel wprbrp = (WorkProductResourcesQueueObserversPanel) listOfWorkProductResourcesBottomRightPanel
+					.get(j);
+
+			List<QueueObserver> queueObservers = wprbrp.getObservers();
+			for (QueueObserver queueObserver : queueObservers)
+				deadTemporalEntity.getQueueObserver().add(queueObserver);
+
+			// quinto: adiciona a fila de entidade temporaria no acd
+
+			acd.getDead().add(deadTemporalEntity);
 
 			if (workProduct.isGenerateActivity()) {
 				generateActivity.setId(workProduct.getName());
@@ -440,33 +470,7 @@ private void configureInputQueues(ProcessContentRepository processContentReposit
 
 				generateActivity.setStat(distribution);
 
-				// Quarto: configuracao da fila para entidade temporaria
-				// incluindo seu tipo (QUEUE, STACK or SET) e observers
-
-				String queueName = workProduct.getQueueName();
-				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 4)).toString();
-				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
-				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 6)
-						.toString();
-
-				queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
-				queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
-				queueTypeTemporaryEntity.setInit(queueInitialQuantityTemporaryEntityString);
-
-				deadTemporalEntity.setId(queueName);
-				deadTemporalEntity.setClazz(temporaryEntity);
-				deadTemporalEntity.setType(queueTypeTemporaryEntity);
-
-				WorkProductResourcesQueueObserversPanel wprbrp = (WorkProductResourcesQueueObserversPanel) listOfWorkProductResourcesBottomRightPanel
-						.get(j);
-
-				List<QueueObserver> queueObservers = wprbrp.getObservers();
-				for (QueueObserver queueObserver : queueObservers)
-					deadTemporalEntity.getQueueObserver().add(queueObserver);
-
-				// quinto: adiciona a fila de entidade temporaria no acd
-
-				acd.getDead().add(deadTemporalEntity);
+				
 
 				// sexto: a fila de entidade temporaria deve ser adicionada na
 				// generate activity
@@ -488,7 +492,7 @@ private void configureInputQueues(ProcessContentRepository processContentReposit
 					generateActivity.getActObserver().add(generateActivityObserver);
 
 				// insere o dead state no acd
-				acd.getDead().add(deadPermanentEntity);
+//				acd.getDead().add(deadPermanentEntity);
 
 				// setimo: termino da configuracao de generate activity,
 				// inserindo-a no acd
