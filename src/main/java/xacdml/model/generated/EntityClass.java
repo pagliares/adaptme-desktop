@@ -79,5 +79,10 @@ public class EntityClass {
     public void setNext(Object value) {
         this.next = value;
     }
+    
+    @Override
+    public String toString() {
+    	return prev.toString() + next.toString();
+    }
 
 }

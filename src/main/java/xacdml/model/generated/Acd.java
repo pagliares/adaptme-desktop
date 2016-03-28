@@ -311,5 +311,10 @@ public class Acd {
         }
         return this.instanceOrConnectOrSubmodel;
     }
+    
+    @Override
+    public String toString() {
+    	return id;
+    }
 
 }

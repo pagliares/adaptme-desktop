@@ -106,5 +106,10 @@ public class Type {
     public void setInit(String value) {
         this.init = value;
     }
+    
+    @Override
+    public String toString() {
+    	return "struct..:" + struct + "size..:" + size + "init..:" + init;
+    }
 
 }

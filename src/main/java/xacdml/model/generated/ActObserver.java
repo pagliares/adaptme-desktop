@@ -79,5 +79,10 @@ public class ActObserver {
     public void setName(String value) {
         this.name = value;
     }
+    
+    @Override
+    public String toString() {
+    	return "name..:" + name + "type..:" + type;
+    }
 
 }

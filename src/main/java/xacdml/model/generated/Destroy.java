@@ -174,5 +174,10 @@ public class Destroy {
         }
         return this.actObserver;
     }
+    
+    @Override
+    public String toString() {
+    	return id;
+    }
 
 }

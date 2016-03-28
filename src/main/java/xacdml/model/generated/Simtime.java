@@ -52,5 +52,10 @@ public class Simtime {
     public void setTime(String value) {
         this.time = value;
     }
+    
+    @Override
+    public String toString() {
+    	return time;
+    }
 
 }

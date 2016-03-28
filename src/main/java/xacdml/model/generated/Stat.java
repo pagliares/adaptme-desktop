@@ -106,5 +106,10 @@ public class Stat {
     public void setParm2(String value) {
         this.parm2 = value;
     }
+    
+    @Override
+    public String toString() {
+    	return "type..:" + type + "param1..:" + parm1 + "param1..:" + parm2;
+    }
 
 }

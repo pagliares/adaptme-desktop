@@ -172,4 +172,8 @@ public class Dead {
         return this.queueObserver;
     }
 
+    @Override
+    public String toString() {
+    	return id;
+    }
 }

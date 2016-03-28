@@ -256,5 +256,10 @@ public class Act {
     public void setInterrupted(Interrupted value) {
         this.interrupted = value;
     }
+    
+    @Override
+    public String toString() {
+    	return id;
+    }
 
 }

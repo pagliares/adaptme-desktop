@@ -202,5 +202,10 @@ public class Generate {
         }
         return this.actObserver;
     }
+    
+    @Override
+    public String toString() {
+    	return id;
+    }
 
 }

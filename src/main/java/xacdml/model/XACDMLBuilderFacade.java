@@ -48,6 +48,7 @@ import xacdml.model.generated.QueueObserver;
 import xacdml.model.generated.Simtime;
 import xacdml.model.generated.Stat;
 import xacdml.model.generated.Type;
+import xacdml.model.generated.Whenprev;
 
 public class XACDMLBuilderFacade {
 
@@ -108,71 +109,99 @@ public class XACDMLBuilderFacade {
 		
 		createRegularActivities(mainPanelSimulationOfAlternativeOfProcess);
 
-		createDestroyActiviites(roles);
+		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
 
 	}
 
-	
-	private void createDestroyActiviites(List<Role> roles) {
-		// NONO: Configurar destroy activities
-	    // Algorithm used - Cannot be input to any regular activity AND must be output of any activity (since the when input/output is the same
-	    // only the output must be destroyed
-			 
-		Set<MethodContentRepository> setOfInputMethodContentRepository;
-		List<Class> listOfTemporaryEntities = acd.getClazz();
-		boolean mayBeDestroyed = true;
-		boolean isPermanenteEntity = false;
-		for (Class clazz: listOfTemporaryEntities) {
-			 
-			for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
-				
-				if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
-					
-					setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
-					
-					for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
-						
-						if (inputMethodContentRepository.getName().equals(clazz.getId())) {  // nao posso destruir
-							mayBeDestroyed = false;
-						}
-						
-						
+	private void createDestroyActivities(List<Role> roles, List<WorkProductXACDML> workProducts) {
+		
+		// Algorithm
+		// 1 - Nao pode ser input de nenhuma tarefa SPEM (regular activity)
+		// 2 - Nao podemos destruir entidades permanentes (Resource queues)
+		// 3 - Nao pode estar em uma fila next de uma generate activity
+
+		// Algorithm : search queues that have entities to be destroyed
+		// Only XACDML metamodel
+		// Queue can not be input to any regular activity (internal actiivy)
+		
+		boolean mayBeDestroyed1 = true;
+		Object classToBedestroyed = null;
+		List<Dead> queues = acd.getDead();
+		List<Act> regularActivities = acd.getAct();
+
+		String queueName;
+		for (Dead dead : queues) {
+			queueName = dead.getId();
+
+			for (Act act : regularActivities) {
+				List<EntityClass> entityClasses = act.getEntityClass();
+				for (EntityClass entityClass : entityClasses) {
+					Object previousQueueName = entityClass.getPrev();
+					if (queueName.equals(previousQueueName)) {
+						// it is input. cannot be destroyed
+						mayBeDestroyed1 = false;
+						classToBedestroyed = entityClass;
 					}
 				}
 			}
-			
-			for (Role role : roles) {
-				if (role.getName().equals(clazz.getId()))  // nao posso destruir
-					isPermanenteEntity = true;	
-					mayBeDestroyed = false;
-			}
-			
-			
-			
-			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
-				// posso destruir apenas se nao for role
-				
+			if (mayBeDestroyed1) {
 				destroyActivity = factory.createDestroy();
-				destroyActivity.setClazz(clazz);
-				System.out.println("destroying ...: " + clazz.getId());
-//				previous.setDead(deadTemporalEntity);  // basta pegar o nome da fila do workproduct associado ao table model
-//				destroyActivity.getPrev().add(previous);
+				destroyActivity.setClazz(classToBedestroyed);
 				acd.getDestroy().add(destroyActivity);
 			}
-			mayBeDestroyed = true;
-			isPermanenteEntity = false;
+			mayBeDestroyed1 = true;
 		}
+		
+		// ############
+//		boolean mayBeDestroyed = true;
+//		boolean isPermanenteEntity = false;
+//		
+//		List<Class> listOfEntities = acd.getClazz();
+//		Set<MethodContentRepository> setOfInputMethodContentRepository;
+//		
+//		for (Class clazz: listOfEntities) {
+//			 
+//			for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
+//
+//				setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
+//
+//				for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
+//
+//					if (inputMethodContentRepository.getName().equals(clazz.getId())) {  // 1																 
+//						mayBeDestroyed = false;
+//					}
+//				}
+//			}
+//			
+//			for (Role role : roles) {
+//				if (role.getName().equals(clazz.getId()))  // 2
+//					isPermanenteEntity = true;	
+//					mayBeDestroyed = false;
+//			}
+//			
+//			
+//			
+//			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
+//				// posso destruir apenas se nao for role
+//				
+//				destroyActivity = factory.createDestroy();
+//				destroyActivity.setClazz(clazz);
+//				System.out.println("destroying ...: " + clazz.getId());
+////				previous.setDead(deadTemporalEntity);  // basta pegar o nome da fila do workproduct associado ao table model
+////				destroyActivity.getPrev().add(previous);
+//				acd.getDestroy().add(destroyActivity);
+//			}
+//			mayBeDestroyed = true;
+//			isPermanenteEntity = false;
+//		}
 	}
 
 	private void createRegularActivities(
 			MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess) {
 		// Oitavo: configuracao de regular activities
 		 
-					 
-		
- 
 		Set<MethodContentRepository> setOfInputMethodContentRepository = null;
 		Set<MethodContentRepository> setOfOutputMethodContentRepository = null;
 		
@@ -303,8 +332,9 @@ public class XACDMLBuilderFacade {
 
 	// Em segundo lugar, configuro a distribuicao de probabilidade criada acima para a generate activity
 	// (panel probability distribution parameters - painel x associado com o workproduct x)
-	private void createGenerateActivitiesAndQueuesForTemporaryEntities(WorkProductResourcesPanel workProdutResourcesPanel, List<WorkProductXACDML> workProducts) {
-		
+	private void createGenerateActivitiesAndQueuesForTemporaryEntities(
+			WorkProductResourcesPanel workProdutResourcesPanel, List<WorkProductXACDML> workProducts) {
+
 		List<JPanel> listProbabilityDistributionPanel = workProdutResourcesPanel
 				.getListOfProbabilityDistributionPanels();
 		List<JPanel> listOfWorkProductResourcesBottomRightPanel = workProdutResourcesPanel
@@ -330,110 +360,114 @@ public class XACDMLBuilderFacade {
 
 			createTemporaryEntity();
 
- 		
-		JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
-		
-		if (workProduct.isGenerateActivity()) {
-			generateActivity.setId(workProduct.getName());
-		
-			generateActivity.setClazz(temporaryEntity);
-		
-		
+			JTable workProductTable = workProdutResourcesPanel.getTableWorkProduct();
 
-		
-		GenerateActivityProbabilityDistributionPanel probabilityDistributionInnerPanel = (GenerateActivityProbabilityDistributionPanel) listProbabilityDistributionPanel.get(j);
-		Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
+			if (workProduct.isGenerateActivity()) {
+				generateActivity.setId(workProduct.getName());
 
-		if (parametersDistributionGenerateActivity instanceof ConstantParameters) {
-			constantParameters = (ConstantParameters) parametersDistributionGenerateActivity;
-			distribution = factory.createStat();
-			distribution.setType("CONST");
-			distribution.setParm1(Double.toString(constantParameters.getValue()));
+				generateActivity.setClazz(temporaryEntity);
 
-		} else if (parametersDistributionGenerateActivity instanceof UniformParameters) {
-			uniformParameters = (UniformParameters) parametersDistributionGenerateActivity;
-			distribution = factory.createStat();
-			distribution.setType("UNIFORM");
-			distribution.setParm1(Double.toString(uniformParameters.getLow()));
-			distribution.setParm2(Double.toString(uniformParameters.getHigh()));
+				GenerateActivityProbabilityDistributionPanel probabilityDistributionInnerPanel = (GenerateActivityProbabilityDistributionPanel) listProbabilityDistributionPanel
+						.get(j);
+				Parameters parametersDistributionGenerateActivity = probabilityDistributionInnerPanel.getParameters();
 
-		} else if (parametersDistributionGenerateActivity instanceof NegativeExponential) {
-			negativeExponential = (NegativeExponential) parametersDistributionGenerateActivity;
-			distribution = factory.createStat();
-			distribution.setType("NEGEXP");
-			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+				if (parametersDistributionGenerateActivity instanceof ConstantParameters) {
+					constantParameters = (ConstantParameters) parametersDistributionGenerateActivity;
+					distribution = factory.createStat();
+					distribution.setType("CONST");
+					distribution.setParm1(Double.toString(constantParameters.getValue()));
 
-		} else if (parametersDistributionGenerateActivity instanceof NormalParameters) {
-			normalParameters = (NormalParameters) parametersDistributionGenerateActivity;
-			distribution = factory.createStat();
-			distribution.setType("NORMAL");
-			distribution.setParm1(Double.toString(normalParameters.getMean()));
-			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+				} else if (parametersDistributionGenerateActivity instanceof UniformParameters) {
+					uniformParameters = (UniformParameters) parametersDistributionGenerateActivity;
+					distribution = factory.createStat();
+					distribution.setType("UNIFORM");
+					distribution.setParm1(Double.toString(uniformParameters.getLow()));
+					distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-		} else if (parametersDistributionGenerateActivity instanceof PoissonParameters) {
-			poissonParameters = (PoissonParameters) parametersDistributionGenerateActivity;
-			distribution = factory.createStat();
-			distribution.setType("POISSON");
-			distribution.setParm1(Double.toString(poissonParameters.getMean()));
+				} else if (parametersDistributionGenerateActivity instanceof NegativeExponential) {
+					negativeExponential = (NegativeExponential) parametersDistributionGenerateActivity;
+					distribution = factory.createStat();
+					distribution.setType("NEGEXP");
+					distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+
+				} else if (parametersDistributionGenerateActivity instanceof NormalParameters) {
+					normalParameters = (NormalParameters) parametersDistributionGenerateActivity;
+					distribution = factory.createStat();
+					distribution.setType("NORMAL");
+					distribution.setParm1(Double.toString(normalParameters.getMean()));
+					distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+				} else if (parametersDistributionGenerateActivity instanceof PoissonParameters) {
+					poissonParameters = (PoissonParameters) parametersDistributionGenerateActivity;
+					distribution = factory.createStat();
+					distribution.setType("POISSON");
+					distribution.setParm1(Double.toString(poissonParameters.getMean()));
+				}
+
+				// configura a generate activity com a distribuicao apropriada
+
+				generateActivity.setStat(distribution);
+
+				// Quarto: configuracao da fila para entidade temporaria
+				// incluindo seu tipo (QUEUE, STACK or SET) e observers
+
+				String queueName = workProduct.getQueueName();
+				String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 4)).toString();
+				String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
+				String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 6)
+						.toString();
+
+				queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
+				queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
+				queueTypeTemporaryEntity.setInit(queueInitialQuantityTemporaryEntityString);
+
+				deadTemporalEntity.setId(queueName);
+				deadTemporalEntity.setClazz(temporaryEntity);
+				deadTemporalEntity.setType(queueTypeTemporaryEntity);
+
+				WorkProductResourcesQueueObserversPanel wprbrp = (WorkProductResourcesQueueObserversPanel) listOfWorkProductResourcesBottomRightPanel
+						.get(j);
+
+				List<QueueObserver> queueObservers = wprbrp.getObservers();
+				for (QueueObserver queueObserver : queueObservers)
+					deadTemporalEntity.getQueueObserver().add(queueObserver);
+
+				// quinto: adiciona a fila de entidade temporaria no acd
+
+				acd.getDead().add(deadTemporalEntity);
+
+				// sexto: a fila de entidade temporaria deve ser adicionada na
+				// generate activity
+
+				nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity); // chamando
+																						// deadTemporalEntity.getId()
+																						// esta
+																						// dando
+																						// erro
+																						// -
+																						// estranho
+
+				// 6 e meio - observers for generate activity
+				WorkProductResourcesGenerateActivityObserversPanel lgaop = (WorkProductResourcesGenerateActivityObserversPanel) listOfGenerateActivityObserversPanel
+						.get(j);
+				List<ActObserver> actObservers = lgaop.getObservers();
+
+				for (ActObserver generateActivityObserver : actObservers)
+					generateActivity.getActObserver().add(generateActivityObserver);
+
+				// insere o dead state no acd
+				acd.getDead().add(deadPermanentEntity);
+
+				// setimo: termino da configuracao de generate activity,
+				// inserindo-a no acd
+
+				if (workProduct.getInputOrOutput().equalsIgnoreCase("INPUT")) {
+					generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
+					acd.getGenerate().add(generateActivity);
+				}
+			}
 		}
-		
-		// configura a generate activity com a distribuicao apropriada
-		
-		generateActivity.setStat(distribution);
-		
-		
-
-		// Quarto: configuracao da fila para entidade temporaria incluindo seu tipo (QUEUE, STACK or SET) e observers
-		
-		String queueName = workProduct.getQueueName();
-		String queueTypeTemporaryEntityString = (workProductTable.getModel().getValueAt(j, 4)).toString();
-		String queueCapacityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 5).toString();
-		String queueInitialQuantityTemporaryEntityString = workProductTable.getModel().getValueAt(j, 6).toString();
-		
-		queueTypeTemporaryEntity.setStruct(queueTypeTemporaryEntityString);
-		queueTypeTemporaryEntity.setSize(queueCapacityTemporaryEntityString);
-		queueTypeTemporaryEntity.setInit(queueInitialQuantityTemporaryEntityString); 
-		 
-		
-		deadTemporalEntity.setId(queueName);
-		deadTemporalEntity.setClazz(temporaryEntity);
-		deadTemporalEntity.setType(queueTypeTemporaryEntity);
-
-		WorkProductResourcesQueueObserversPanel wprbrp = (WorkProductResourcesQueueObserversPanel) listOfWorkProductResourcesBottomRightPanel.get(j);
-		
-		List<QueueObserver> queueObservers = wprbrp.getObservers();
-		for (QueueObserver queueObserver : queueObservers)
-			deadTemporalEntity.getQueueObserver().add(queueObserver);
- 
-		// quinto: adiciona a fila de entidade temporaria no acd
-		
-		acd.getDead().add(deadTemporalEntity);
-
-		// sexto: a fila de entidade temporaria deve ser adicionada na generate activity
-		
-		nextDeadTemporaryEntityByGenerateActivity.setDead(deadTemporalEntity);  // chamando deadTemporalEntity.getId() esta dando erro - estranho
-
-		
-		// 6 e meio - observers for generate activity
-		WorkProductResourcesGenerateActivityObserversPanel lgaop = (WorkProductResourcesGenerateActivityObserversPanel) listOfGenerateActivityObserversPanel.get(j);
-		List<ActObserver> actObservers = lgaop.getObservers();
-		 
-		 
-		for (ActObserver generateActivityObserver : actObservers)
-			generateActivity.getActObserver().add(generateActivityObserver);
-			 
-
-		// insere o dead state no acd
-		acd.getDead().add(deadPermanentEntity);
-		
-		// setimo: termino da configuracao de generate activity, inserindo-a no acd
-		
-		if (workProduct.getInputOrOutput().equalsIgnoreCase("INPUT")) {
-			generateActivity.getNext().add(nextDeadTemporaryEntityByGenerateActivity);
-			acd.getGenerate().add(generateActivity);
-		}
-		}
-	}}
+	}
 
 	private void createTemporaryEntity() {
 		// primeiramente, crio e configuro a entidade temporaria criada acima

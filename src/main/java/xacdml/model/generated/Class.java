@@ -89,6 +89,10 @@ public class Class {
         return this.attribute;
     }
     
+    @Override
+    public String toString() {
+    	return id;
+    }
      
 
 }
