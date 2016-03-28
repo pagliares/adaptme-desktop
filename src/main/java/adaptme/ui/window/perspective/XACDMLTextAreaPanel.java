@@ -103,7 +103,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProductXACDML> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts, taskList, roleResourcePanel, 
+				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts,roleResourcePanel, 
 						workProdutResourcesPanel);
 				textArea.append(result);
 			}
