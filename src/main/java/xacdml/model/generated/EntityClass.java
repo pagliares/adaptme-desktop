@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -24,7 +25,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlRootElement(name = "entity_class")
 public class EntityClass {
-
+	@XmlAttribute(name = "id", required = false)
+	@XmlID
+	private String id;
     @XmlAttribute(name = "prev", required = true)
     @XmlIDREF
     protected Object prev;
@@ -82,7 +85,15 @@ public class EntityClass {
     
     @Override
     public String toString() {
-    	return prev.toString() + next.toString();
+    	return "["+prev.toString()+"]" + "["+next.toString()+"]";
     }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 }

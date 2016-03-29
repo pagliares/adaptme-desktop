@@ -133,28 +133,40 @@ public class XACDMLBuilderFacade {
 		Object classToBedestroyed = null;
 		List<Dead> queues = acd.getDead();
 		List<Act> regularActivities = acd.getAct();
-
+		 
+        int destroyIdCounter = 1;
 		String queueName;
+		Prev prev = null;
 		for (Dead dead : queues) {
 			queueName = dead.getId();
 
 			for (Act act : regularActivities) {
 				List<EntityClass> entityClasses = act.getEntityClass();
 				for (EntityClass entityClass : entityClasses) {
-					Object previousQueueName = entityClass.getPrev();
-					if (queueName.equals(previousQueueName)) {
+					classToBedestroyed = entityClass;
+					prev = (Prev)entityClass.getPrev();
+					Dead dx = (Dead)prev.getDead();
+					if (queueName.equals(dx.getId())) {
 						// it is input. cannot be destroyed
 						mayBeDestroyed1 = false;
-						classToBedestroyed = entityClass;
+						
 					}
 				}
 			}
 			if (mayBeDestroyed1) {
 				destroyActivity = factory.createDestroy();
-				destroyActivity.setClazz(classToBedestroyed);
+				
+				
+				destroyActivity.getPrev().add(prev);
+				Dead dx = (Dead)prev.getDead();
+				destroyActivity.setClazz(dx.getClazz());
+				destroyActivity.setId("destroy"+destroyIdCounter);
+				 
 				acd.getDestroy().add(destroyActivity);
 			}
 			mayBeDestroyed1 = true;
+			classToBedestroyed = null;
+			destroyIdCounter++;
 		}
 		
 		// ############
@@ -260,9 +272,6 @@ public class XACDMLBuilderFacade {
 			  String workpProductOutputNamePredecessor = iterator.next().toString();
 		}
 	  
-		
-	  
-		
 		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
 		List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
 		List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
@@ -278,10 +287,8 @@ public class XACDMLBuilderFacade {
 					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
 				} else {
 					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-				}
-				
-			} 
-			
+				}			
+			} 	
 		}
 		
 		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
@@ -291,8 +298,11 @@ public class XACDMLBuilderFacade {
 				previous = factory.createPrev();
 				next = factory.createNext();
 				if (d.getId().equals(queueName)) {
+					
 					previous.setId(d.getId());
 					previous.setDead(d);
+					entityClass.setId("ec"); //tem que existir
+
 					entityClass.setPrev(previous);
 
 					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
@@ -311,8 +321,6 @@ public class XACDMLBuilderFacade {
 			regularActivity.getEntityClass().add(entityClass);
 			entityClass = factory.createEntityClass();
 		}
-		
- 
 	}
 	
 	private void configureObservers(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
