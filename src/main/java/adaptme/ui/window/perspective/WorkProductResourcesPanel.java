@@ -156,7 +156,8 @@ public class WorkProductResourcesPanel {
 				workProduct.setInputOrOutput("INPUT");
 				workProduct.setTaskName(pcr.getName());
 
-				if (!workProducts.contains(workProduct)) {
+				// So estou colocando se nao tivier
+//				if (!workProducts.contains(workProduct)) {
 					workProducts.add(workProduct);
 					i++;
 
@@ -176,7 +177,7 @@ public class WorkProductResourcesPanel {
 							mcr.getName() + " input queue", "generate activity observers");
 					generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
 					listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
-				}
+//				}
 			}
 			System.out.println("value of i after all input" + i);
 

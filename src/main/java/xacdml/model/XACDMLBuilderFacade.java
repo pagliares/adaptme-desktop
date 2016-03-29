@@ -2,7 +2,11 @@ package xacdml.model;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
@@ -72,12 +76,11 @@ public class XACDMLBuilderFacade {
 	private Dead deadTemporalEntity;
 	private Type queueTypeTemporaryEntity;
 	private Next nextDeadTemporaryEntityByGenerateActivity;
-	private Next nextDeadTemporaryEntityQueueByRegularActivity;
+	private Next next;
 	private Act regularActivity;
 	private EntityClass entityClass;
 	private EntityClass ec2;
-	private Prev previous;
-	private Next next;
+	private Prev previous; 
 	private Destroy destroyActivity;
 	
 	private ConstantParameters constantParameters;
@@ -109,8 +112,6 @@ public class XACDMLBuilderFacade {
 		
 		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess);
 		
-	 
-
 		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
@@ -211,9 +212,7 @@ public class XACDMLBuilderFacade {
 			
 			configureRegularActivity(processContentRepository);
 		
-			configureInputQueues(workProducts, processContentRepository);
-
-			configureOutputQueues(processContentRepository);
+			bindQueuesToActivities(workProducts, processContentRepository);
 
 			configureDistribution(processContentRepository);
 			
@@ -228,79 +227,94 @@ public class XACDMLBuilderFacade {
 		regularActivity.setId(processContentRepository.getName());
 	}
 
-	private void configureInputQueues(List<WorkProductXACDML> workProducts, ProcessContentRepository processContentRepository) {
-		String queueNameTableModel = null;
-		previous = factory.createPrev();
-		Set<MethodContentRepository> setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
+	/**
+	 * 
+	 * @param workProducts
+	 * @param processContentRepository
+	 * 
+	 * A solucao esta nas composition e decomposition activities do ADOO do Hirata. Acho que para isso funcionar no XACDML, 
+	 * vou ter que alterar o DTD para que a tag EntityClass passe a aceitar varios Prevs e Next attributes. Outra possibilidade 
+	 * e por hora aceitar apenas relacionamentos 1 para 1, assim como xacdml. O metodo abaixo funciona para 1 x 1 apenas
+	 * 
+	 * A Solucao abaixo que aparentemente funcionava, mas nao pois a semantica deve ser coletiva e nao cada combinacao input/output (tenho
+	 * que pegar a1b1 coletivamente para produzir c1d1 coletivamente, por exemplo
+	 * um entity class tem que agregar um prev and um next.Como podemos ter n input queues and m outputqueues, temos n x m entities em uma tag <act>
+	 * quantidade de entity classes depende do tamanho das listas de inputqueuenames ou outputqueue names
+	 * Para ser necessario, preciso do NOME das filas de entrada e saida (apenas input e output work products nao funciona, pois podemos
+	 * ter produtos de trabalho com o mesmo nome)
+	 */
+	private void bindQueuesToActivities(List<WorkProductXACDML> workProducts, ProcessContentRepository processContentRepository) {
 		
-		// cada input de um processContentRepository é uma fila previa de uma atividade XACDML
-		for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
-			
-			
-			entityClass = factory.createEntityClass();  // preciso dos dois entity classes ou crio dinamicamente
-			previous.setId(inputMethodContentRepository.getName() + " input queue");
-			
-			for (Dead d: acd.getDead()) {
-				if (d.getId().equals(inputMethodContentRepository.getName() + " input queue")) {
-					previous.setDead(d);  
-					entityClass.setPrev(previous);
-					regularActivity.getEntityClass().add(entityClass);
-					 System.out.println("QUEUE: " + d.getId());
-					 previous = factory.createPrev();
-					 entityClass = factory.createEntityClass();
-				}
-			}				
+		boolean hasPredecessor =  false;
+		next = factory.createNext();   
+		previous = factory.createPrev();
+		entityClass = factory.createEntityClass(); 
+		
+		List<ProcessContentRepository> listProcessContentRepository = processContentRepository.getPredecessors();
+		
+		if (listProcessContentRepository.size() != 0) {
+			ProcessContentRepository predecessor  = listProcessContentRepository.get(0);
+			  // preciso pegar o nome da fila de saida da atividade anterior
+			  Set<MethodContentRepository> workProductsSaidaAnterior = predecessor.getOutputMethodContentsRepository();
+			  Iterator<MethodContentRepository> iterator = workProductsSaidaAnterior.iterator();
+			  String workpProductOutputNamePredecessor = iterator.next().toString();
 		}
+	  
+		
+	  
+		
+		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
+		List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+		List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+		
+		String taskNameXACDML;
+		
+		for (WorkProductXACDML workProductXACDML: workProducts) {
+			
+			taskNameXACDML = workProductXACDML.getTaskName();
+			if (taskNameXACDML.equals(processContentRepository.getName())) {
+				
+				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+				} else {
+					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+				}
+				
+			} 
+			
+		}
+		
+		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
+			
+			 
+			for (Dead d : acd.getDead()) {
+				previous = factory.createPrev();
+				next = factory.createNext();
+				if (d.getId().equals(queueName)) {
+					previous.setId(d.getId());
+					previous.setDead(d);
+					entityClass.setPrev(previous);
+
+					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+						for (Dead d1 : acd.getDead()) {
+							if (d1.getId().equals(queueName1)) {
+								next.setId(d1.getId());
+								next.setDead(d1);
+								entityClass.setNext(next);	
+							}
+						}
+					}
+					
+				}
+				
+			}
+			regularActivity.getEntityClass().add(entityClass);
+			entityClass = factory.createEntityClass();
+		}
+		
+ 
 	}
 	
-private void configureInputQueues(ProcessContentRepository processContentRepository) {
-		
-		previous = factory.createPrev();
-		Set<MethodContentRepository> setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
-		
-		// cada input de um processContentRepository é uma fila previa de uma atividade XACDML
-		for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
-			entityClass = factory.createEntityClass();  // preciso dos dois entity classes ou crio dinamicamente
-			previous.setId(inputMethodContentRepository.getName() + " input queue");
-			
-			for (Dead d: acd.getDead()) {
-				if (d.getId().equals(inputMethodContentRepository.getName() + " input queue")) {
-					previous.setDead(d);  
-					entityClass.setPrev(previous);
-					regularActivity.getEntityClass().add(entityClass);
-					 System.out.println("QUEUE: " + d.getId());
-					 previous = factory.createPrev();
-					 entityClass = factory.createEntityClass();
-				}
-			}				
-		}
-	}
-
-	private void configureOutputQueues(ProcessContentRepository processContentRepository) {
-		entityClass = factory.createEntityClass();  // preciso dos dois entity classes ou crio dinamicamente
-		nextDeadTemporaryEntityQueueByRegularActivity = factory.createNext();
-		
-		Set<MethodContentRepository> setOfOutputMethodContentRepository;
-		setOfOutputMethodContentRepository = processContentRepository.getOutputMethodContentsRepository();
-		 
-		// cada output de um processContentRepository é uma fila de saida de uma atividade XACDML
-		for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
-			 
-			nextDeadTemporaryEntityQueueByRegularActivity.setId(mcr.getName() + " output queue");
-
-			for (Dead d: acd.getDead() ) {
-				if (d.getId().equals(mcr.getName() + " output queue")) {
-					nextDeadTemporaryEntityQueueByRegularActivity.setDead(d);  
-					entityClass.setNext(nextDeadTemporaryEntityQueueByRegularActivity);
-					regularActivity.getEntityClass().add(entityClass);
-					 System.out.println("QUEUE: " + d.getId());
-					 nextDeadTemporaryEntityQueueByRegularActivity = factory.createNext();
-					 entityClass = factory.createEntityClass();
-				}
-			}
-		}
-	}
-
 	private void configureObservers(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
 			ProcessContentRepository processContentRepository) {
 		// configura os observer para as regular activities
