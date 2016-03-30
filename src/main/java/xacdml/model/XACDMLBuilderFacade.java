@@ -110,9 +110,9 @@ public class XACDMLBuilderFacade {
 
 		createGenerateActivitiesAndQueuesForTemporaryEntities(workProdutResourcesPanel, workProducts);
 		
-		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess);
+		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
 		
-		createDestroyActivities(roles, workProducts);
+//		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
 
@@ -146,7 +146,7 @@ public class XACDMLBuilderFacade {
 				for (EntityClass entityClass : entityClasses) {
  
 					prev = (Prev)entityClass.getPrev();
-					dx = (Dead)prev.getDead();
+					dx = (Dead)prev.getDead();  
 					classToBedestroyed = dx.getClazz();
 //					if (queueName.equals(dx.getId())) {
 						// it is input. cannot be destroyed
@@ -176,7 +176,7 @@ public class XACDMLBuilderFacade {
 		
 	}
 
-	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess) {
+	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, RoleResourcesPanel roleResourcePanel) {
 		 	
 		completeListOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
 		calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
@@ -187,7 +187,7 @@ public class XACDMLBuilderFacade {
 			
 			configureRegularActivity(processContentRepository);
 		
-			bindQueuesToActivities(workProducts, processContentRepository);
+			bindQueuesToActivities(workProducts, processContentRepository, roleResourcePanel);
 
 			configureDistribution(processContentRepository);
 			
@@ -218,14 +218,20 @@ public class XACDMLBuilderFacade {
 	 * Para ser necessario, preciso do NOME das filas de entrada e saida (apenas input e output work products nao funciona, pois podemos
 	 * ter produtos de trabalho com o mesmo nome)
 	 */
-	private void bindQueuesToActivities(List<WorkProductXACDML> workProducts, ProcessContentRepository processContentRepository) {
+	private void bindQueuesToActivities(List<WorkProductXACDML> workProducts, ProcessContentRepository processContentRepository, RoleResourcesPanel roleResourcePanel) {
+		
+		int entityClassIdCounter = 1; 
+		int prevIdCounter = 1; 
+		int netxIdCounter = 1;
 		
 		boolean hasPredecessor =  false;
+		
 		next = factory.createNext();   
 		previous = factory.createPrev();
 		entityClass = factory.createEntityClass(); 
-		Dead dead = factory.createDead();
+		deadTemporalEntity = factory.createDead();
 		
+		// Verify if there is a predecessor (If so, it determines the input queue of this regular activity
 		List<ProcessContentRepository> listProcessContentRepository = processContentRepository.getPredecessors();
 		
 		if (listProcessContentRepository.size() != 0) {
@@ -236,60 +242,96 @@ public class XACDMLBuilderFacade {
 			  String workpProductOutputNamePredecessor = iterator.next().toString();
 		}
 	  
-		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
-		List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
-		List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
-		
-		String taskNameXACDML;
-		
-		for (WorkProductXACDML workProductXACDML: workProducts) {
-			
-			taskNameXACDML = workProductXACDML.getTaskName();
-			if (taskNameXACDML.equals(processContentRepository.getName())) {
-				
-				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
-					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-				} else {
-					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-				}			
-			} 	
+	
+		// Configuring  entity class for permanent entities. If more than one resource, include call getAdditionalPerformers on processContentRepository  
+		String roleName = processContentRepository.getMainRole().getName();
+		String queueNameRole = null;
+		JTable roleTable = roleResourcePanel.getTableRole();
+					 
+		for (int i = 0; i < roleTable.getRowCount(); i++) {
+			String roleNameTable = (roleTable.getModel().getValueAt(i, 0)).toString();
+			if (roleNameTable.equals(roleName)) {
+				queueNameRole = (roleTable.getModel().getValueAt(i, 1)).toString();
+			}
 		}
 		
-		 int entityClassIdCounter = 1; 
-		 int prevIdCounter = 1; 
-		 int netxIdCounter = 1;
-		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
+		for (Dead queue : acd.getDead()) {
 			
-			for (Dead d : acd.getDead()) {
-				previous = factory.createPrev();
-				next = factory.createNext();
-				if (d.getId().equals(queueName)) {
-					
-					previous.setId("prev"+prevIdCounter);
-					previous.setDead(d);
-					entityClass.setId("ec"+entityClassIdCounter); //tem que existir
-
-					entityClass.setPrev(previous);
-
-					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
-						for (Dead d1 : acd.getDead()) {
-							if (d1.getId().equals(queueName1)) {
-								next.setId("next"+netxIdCounter);
-								next.setDead(d1);
-								entityClass.setNext(next);	
-							}
-						}
-					}
-					
-				}
-				
+			
+			if (queue.getId().equals(queueNameRole)) {  // supondo nao ter mudado o nome da queue do role
+				entityClass.setId("role" + entityClassIdCounter); // tem que existir para evitar o erro IDREF no momento de marshalling
+																	 
+				previous.setId(queue.getId());
+				previous.setDead(queue);
+ 
+				next.setId(queue.getId());
+				next.setDead(queue);  // recebe Object. O que acontece se eu passar queue.getId()
+				 
+				entityClass.setPrev(previous);
+				entityClass.setNext(next);
 			}
-			regularActivity.getEntityClass().add(entityClass);
-			entityClass = factory.createEntityClass();
+		}
+		 regularActivity.getEntityClass().add(entityClass);
+		 
+		// Configuring  entity class for non-permanent entities 
+		 
+		 // Engracado: as linhas abaixo fazer dar nullpointerexception
+//		 next = factory.createNext();   
+//			previous = factory.createPrev();
+//			entityClass = factory.createEntityClass(); 
+		
+		
+		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
+//			List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+//			List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+//		String taskNameXACDML;
+//		
+//		for (WorkProductXACDML workProductXACDML: workProducts) {
+//			
+//			taskNameXACDML = workProductXACDML.getTaskName();
+//			if (taskNameXACDML.equals(processContentRepository.getName())) {
+//				
+//				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+//					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+//				} else {
+//					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+//				}			
+//			} 	
+//		}
+		
+		
+//		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
+//			
+//			for (Dead d : acd.getDead()) {
+//				previous = factory.createPrev();
+//				next = factory.createNext();
+//				if (d.getId().equals(queueName)) {
+//					
+//					previous.setId("prev"+prevIdCounter);
+//					previous.setDead(d);
+//					entityClass.setId("ec"+entityClassIdCounter); //tem que existir
+//
+//					entityClass.setPrev(previous);
+//
+//					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+//						for (Dead d1 : acd.getDead()) {
+//							if (d1.getId().equals(queueName1)) {
+//								next.setId("next"+netxIdCounter);
+//								next.setDead(d1);
+//								entityClass.setNext(next);	
+//							}
+//						}
+//					}
+//					
+//				}
+//				
+//			}
+//			regularActivity.getEntityClass().add(entityClass);
+//			entityClass = factory.createEntityClass();
 			entityClassIdCounter++;
 			prevIdCounter++;
 		}
-	}
+//	}
 	
 	private void configureObservers(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
 			ProcessContentRepository processContentRepository) {
