@@ -136,21 +136,23 @@ public class XACDMLBuilderFacade {
 		 
         int destroyIdCounter = 1;
 		String queueName;
-		Prev prev = null;
+		Prev prev = factory.createPrev();
+		Dead dx = factory.createDead();
 		for (Dead dead : queues) {
 			queueName = dead.getId();
 
 			for (Act act : regularActivities) {
 				List<EntityClass> entityClasses = act.getEntityClass();
 				for (EntityClass entityClass : entityClasses) {
-					classToBedestroyed = entityClass;
+ 
 					prev = (Prev)entityClass.getPrev();
-					Dead dx = (Dead)prev.getDead();
-					if (queueName.equals(dx.getId())) {
+					dx = (Dead)prev.getDead();
+					classToBedestroyed = dx.getClazz();
+//					if (queueName.equals(dx.getId())) {
 						// it is input. cannot be destroyed
-						mayBeDestroyed1 = false;
+//						mayBeDestroyed1 = false;
 						
-					}
+//					}
 				}
 			}
 			if (mayBeDestroyed1) {
@@ -158,8 +160,8 @@ public class XACDMLBuilderFacade {
 				
 				
 				destroyActivity.getPrev().add(prev);
-				Dead dx = (Dead)prev.getDead();
-				destroyActivity.setClazz(dx.getClazz());
+				 
+				destroyActivity.setClazz(classToBedestroyed);
 				destroyActivity.setId("destroy"+destroyIdCounter);
 				 
 				acd.getDestroy().add(destroyActivity);
@@ -167,50 +169,11 @@ public class XACDMLBuilderFacade {
 			mayBeDestroyed1 = true;
 			classToBedestroyed = null;
 			destroyIdCounter++;
+			prev = factory.createPrev();
+			dx = factory.createDead();
 		}
 		
-		// ############
-//		boolean mayBeDestroyed = true;
-//		boolean isPermanenteEntity = false;
-//		
-//		List<Class> listOfEntities = acd.getClazz();
-//		Set<MethodContentRepository> setOfInputMethodContentRepository;
-//		
-//		for (Class clazz: listOfEntities) {
-//			 
-//			for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
-//
-//				setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
-//
-//				for (MethodContentRepository inputMethodContentRepository : setOfInputMethodContentRepository) {
-//
-//					if (inputMethodContentRepository.getName().equals(clazz.getId())) {  // 1																 
-//						mayBeDestroyed = false;
-//					}
-//				}
-//			}
-//			
-//			for (Role role : roles) {
-//				if (role.getName().equals(clazz.getId()))  // 2
-//					isPermanenteEntity = true;	
-//					mayBeDestroyed = false;
-//			}
-//			
-//			
-//			
-//			if ((mayBeDestroyed == true) && (isPermanenteEntity == false)){
-//				// posso destruir apenas se nao for role
-//				
-//				destroyActivity = factory.createDestroy();
-//				destroyActivity.setClazz(clazz);
-//				System.out.println("destroying ...: " + clazz.getId());
-////				previous.setDead(deadTemporalEntity);  // basta pegar o nome da fila do workproduct associado ao table model
-////				destroyActivity.getPrev().add(previous);
-//				acd.getDestroy().add(destroyActivity);
-//			}
-//			mayBeDestroyed = true;
-//			isPermanenteEntity = false;
-//		}
+		
 	}
 
 	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess) {
@@ -261,6 +224,7 @@ public class XACDMLBuilderFacade {
 		next = factory.createNext();   
 		previous = factory.createPrev();
 		entityClass = factory.createEntityClass(); 
+		Dead dead = factory.createDead();
 		
 		List<ProcessContentRepository> listProcessContentRepository = processContentRepository.getPredecessors();
 		
@@ -291,24 +255,26 @@ public class XACDMLBuilderFacade {
 			} 	
 		}
 		
+		 int entityClassIdCounter = 1; 
+		 int prevIdCounter = 1; 
+		 int netxIdCounter = 1;
 		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
 			
-			 
 			for (Dead d : acd.getDead()) {
 				previous = factory.createPrev();
 				next = factory.createNext();
 				if (d.getId().equals(queueName)) {
 					
-					previous.setId(d.getId());
+					previous.setId("prev"+prevIdCounter);
 					previous.setDead(d);
-					entityClass.setId("ec"); //tem que existir
+					entityClass.setId("ec"+entityClassIdCounter); //tem que existir
 
 					entityClass.setPrev(previous);
 
 					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
 						for (Dead d1 : acd.getDead()) {
 							if (d1.getId().equals(queueName1)) {
-								next.setId(d1.getId());
+								next.setId("next"+netxIdCounter);
 								next.setDead(d1);
 								entityClass.setNext(next);	
 							}
@@ -320,6 +286,8 @@ public class XACDMLBuilderFacade {
 			}
 			regularActivity.getEntityClass().add(entityClass);
 			entityClass = factory.createEntityClass();
+			entityClassIdCounter++;
+			prevIdCounter++;
 		}
 	}
 	
