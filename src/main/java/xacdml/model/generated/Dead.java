@@ -44,7 +44,7 @@ public class Dead {
     protected Graphic graphic;
     @XmlElement(required = true)
     protected Type type;
-    @XmlElement(name = "queue-observer")
+    @XmlElement(name = "observer")
     protected List<QueueObserver> queueObserver;
 
     /**

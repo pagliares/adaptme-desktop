@@ -45,7 +45,7 @@ public class Act {
     @XmlElement(name = "entity_class", required = true)
     protected List<EntityClass> entityClass;
     protected List<Whenprev> whenprev;
-    @XmlElement(name = "act-observer")
+    @XmlElement(name = "observer")
     protected List<ActObserver> actObserver;
     protected Interrupting interrupting;
     protected Interrupted interrupted;

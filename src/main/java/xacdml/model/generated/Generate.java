@@ -46,7 +46,7 @@ public class Generate {
     protected Stat stat;
     @XmlElement(required = true)
     protected List<Next> next;
-    @XmlElement(name = "act-observer")
+    @XmlElement(name = "observer")
     protected List<ActObserver> actObserver;
 
     /**
