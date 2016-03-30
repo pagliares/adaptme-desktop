@@ -64,6 +64,7 @@ public class XACDMLBuilderFacade {
     private Type queueTypePermanentEntity;
     private List<QueueObserver> queueObservers;
     private QueueObserver queueObserver;
+    private boolean mayQueueBeDestroyed = true;  //
     
     private ActObserver actObserver;
     private List<ActObserver> listOfActivityObservers;
@@ -112,7 +113,7 @@ public class XACDMLBuilderFacade {
 		
 		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
 		
-//		createDestroyActivities(roles, workProducts);
+		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
 
@@ -129,51 +130,60 @@ public class XACDMLBuilderFacade {
 		// Only XACDML metamodel
 		// Queue can not be input to any regular activity (internal actiivy)
 		
-		boolean mayBeDestroyed1 = true;
+		
 		Object classToBedestroyed = null;
+		Prev prev = factory.createPrev();
 		List<Dead> queues = acd.getDead();
 		List<Act> regularActivities = acd.getAct();
 		 
         int destroyIdCounter = 1;
 		String queueName;
-		Prev prev = factory.createPrev();
-		Dead dx = factory.createDead();
+		
+		deadTemporalEntity = factory.createDead();
+		
+	
 		for (Dead dead : queues) {
-			queueName = dead.getId();
+			mayQueueBeDestroyed = true;  //
+			queueName = dead.getId();  // essa fila nao pode ser input para nenhuma entity classes in all activities
 
-			for (Act act : regularActivities) {
-				List<EntityClass> entityClasses = act.getEntityClass();
-				for (EntityClass entityClass : entityClasses) {
- 
-					prev = (Prev)entityClass.getPrev();
-					dx = (Dead)prev.getDead();  
-					classToBedestroyed = dx.getClazz();
-//					if (queueName.equals(dx.getId())) {
-						// it is input. cannot be destroyed
-//						mayBeDestroyed1 = false;
-						
-//					}
-				}
-			}
-			if (mayBeDestroyed1) {
+			mayQueueBeDestroyed = mayQueueBeDestroyed(regularActivities, queueName, mayQueueBeDestroyed);
+			
+			if (mayQueueBeDestroyed) {
 				destroyActivity = factory.createDestroy();
-				
-				
-				destroyActivity.getPrev().add(prev);
-				 
+				Prev prevx = factory.createPrev();
+				prevx.setDead(dead);
+				prevx.setId(dead.getId());
+				destroyActivity.getPrev().add(prevx);  // erro prev apontando para input queue e nao caller output queue 0
 				destroyActivity.setClazz(classToBedestroyed);
 				destroyActivity.setId("destroy"+destroyIdCounter);
 				 
 				acd.getDestroy().add(destroyActivity);
 			}
-			mayBeDestroyed1 = true;
+			mayQueueBeDestroyed = true;
 			classToBedestroyed = null;
 			destroyIdCounter++;
 			prev = factory.createPrev();
-			dx = factory.createDead();
+			deadTemporalEntity = factory.createDead();
 		}
 		
 		
+	}
+
+	private boolean mayQueueBeDestroyed(List<Act> regularActivities, String queueName, boolean mayQueueBeDestroyed) {
+		for (Act act : regularActivities) {
+			List<EntityClass> entityClasses = act.getEntityClass();
+			for (EntityClass entityClass : entityClasses) {
+				Prev prev1 = (Prev)entityClass.getPrev();
+				deadTemporalEntity = (Dead)prev1.getDead();  
+//					classToBedestroyed = deadTemporalEntity.getClazz();
+				if (queueName.equals(deadTemporalEntity.getId())) {
+					// it is input. cannot be destroyed
+					mayQueueBeDestroyed = false;	
+				}
+				prev1 = factory.createPrev();
+			}
+		}
+		return mayQueueBeDestroyed;
 	}
 
 	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, RoleResourcesPanel roleResourcePanel) {
