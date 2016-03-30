@@ -80,7 +80,7 @@ public class WorkProductResourcesQueueObserversPanel extends JPanel {
  		queueObserver.setName(workProductName+ " observer " + ++counter+"");
 		observersTableModel.addQueueObserver(queueObserver);
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
-		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
+		tableObservers.setValueAt(QueueObserverType.LENGTH, observersTableModel.getRowCount()-1, 1);
 				
 		addObserverButton = new JButton("Add observer");
 		addObserverButton.addActionListener(new ActionListener() {

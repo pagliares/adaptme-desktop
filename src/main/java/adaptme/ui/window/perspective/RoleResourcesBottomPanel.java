@@ -83,7 +83,7 @@ public class RoleResourcesBottomPanel extends JPanel {
 		queueObserver.setName(roleName+ "  observer " + ++counter+"");
 		observersTableModel.addQueueObserver(queueObserver);
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
-		tableObservers.setValueAt(QueueObserverType.STATIONARY, observersTableModel.getRowCount()-1, 1);
+		tableObservers.setValueAt(QueueObserverType.LENGTH, observersTableModel.getRowCount()-1, 1);
 		 
  		 
 		
