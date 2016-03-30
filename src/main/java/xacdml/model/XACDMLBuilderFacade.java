@@ -221,11 +221,7 @@ public class XACDMLBuilderFacade {
 	private void bindQueuesToActivities(List<WorkProductXACDML> workProducts, ProcessContentRepository processContentRepository, RoleResourcesPanel roleResourcePanel) {
 		
 		int entityClassIdCounter = 1; 
-		int prevIdCounter = 1; 
-		int netxIdCounter = 1;
-		
-		boolean hasPredecessor =  false;
-		
+	 
 		next = factory.createNext();   
 		previous = factory.createPrev();
 		entityClass = factory.createEntityClass(); 
@@ -257,8 +253,7 @@ public class XACDMLBuilderFacade {
 		
 		for (Dead queue : acd.getDead()) {
 			
-			
-			if (queue.getId().equals(queueNameRole)) {  // supondo nao ter mudado o nome da queue do role
+			if (queue.getId().equals(queueNameRole)) {   
 				entityClass.setId("role" + entityClassIdCounter); // tem que existir para evitar o erro IDREF no momento de marshalling
 																	 
 				previous.setId(queue.getId());
@@ -276,62 +271,53 @@ public class XACDMLBuilderFacade {
 		// Configuring  entity class for non-permanent entities 
 		 
 		 // Engracado: as linhas abaixo fazer dar nullpointerexception
-//		 next = factory.createNext();   
-//			previous = factory.createPrev();
-//			entityClass = factory.createEntityClass(); 
-		
+		 next = factory.createNext();   
+		 previous = factory.createPrev();
+		 entityClass = factory.createEntityClass(); 
+		 deadTemporalEntity = factory.createDead();
 		
 		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
-//			List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
-//			List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
-//		String taskNameXACDML;
-//		
-//		for (WorkProductXACDML workProductXACDML: workProducts) {
-//			
-//			taskNameXACDML = workProductXACDML.getTaskName();
-//			if (taskNameXACDML.equals(processContentRepository.getName())) {
-//				
-//				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
-//					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-//				} else {
-//					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-//				}			
-//			} 	
-//		}
+		List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+		List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+		String taskNameXACDML;
 		
-		
-//		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {
-//			
-//			for (Dead d : acd.getDead()) {
-//				previous = factory.createPrev();
-//				next = factory.createNext();
-//				if (d.getId().equals(queueName)) {
-//					
-//					previous.setId("prev"+prevIdCounter);
-//					previous.setDead(d);
-//					entityClass.setId("ec"+entityClassIdCounter); //tem que existir
-//
-//					entityClass.setPrev(previous);
-//
-//					for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
-//						for (Dead d1 : acd.getDead()) {
-//							if (d1.getId().equals(queueName1)) {
-//								next.setId("next"+netxIdCounter);
-//								next.setDead(d1);
-//								entityClass.setNext(next);	
-//							}
-//						}
-//					}
-//					
-//				}
-//				
-//			}
-//			regularActivity.getEntityClass().add(entityClass);
-//			entityClass = factory.createEntityClass();
-			entityClassIdCounter++;
-			prevIdCounter++;
+		for (WorkProductXACDML workProductXACDML: workProducts) {
+			
+			taskNameXACDML = workProductXACDML.getTaskName();
+			if (taskNameXACDML.equals(processContentRepository.getName())) {
+				
+				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+				} else {
+					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+				}			
+			} 	
 		}
-//	}
+		
+		entityClass.setId("ec"+ ++entityClassIdCounter); //tem que existir
+		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
+			for (Dead queue : acd.getDead()) {
+				if (queue.getId().equals(queueName)) {
+					previous.setId(queue.getId());
+					previous.setDead(queue);
+					entityClass.setPrev(previous);
+				}
+			}
+		}
+		
+		for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+			for (Dead q1 : acd.getDead()) {
+				if (q1.getId().equals(queueName1)) {
+					next.setId(q1.getId());
+					next.setDead(q1);
+					entityClass.setNext(next);	
+				}
+			}
+		}
+					
+		regularActivity.getEntityClass().add(entityClass);
+	}
+	
 	
 	private void configureObservers(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
 			ProcessContentRepository processContentRepository) {
