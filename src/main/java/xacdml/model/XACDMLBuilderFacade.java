@@ -240,13 +240,13 @@ public class XACDMLBuilderFacade {
 		// Verify if there is a predecessor (If so, it determines the input queue of this regular activity
 		List<ProcessContentRepository> listProcessContentRepository = processContentRepository.getPredecessors();
 		
-		if (listProcessContentRepository.size() != 0) {
-			ProcessContentRepository predecessor  = listProcessContentRepository.get(0);
+//		if (listProcessContentRepository.size() != 0) {
+//			ProcessContentRepository predecessor  = listProcessContentRepository.get(0);
 			  // preciso pegar o nome da fila de saida da atividade anterior
-			  Set<MethodContentRepository> workProductsSaidaAnterior = predecessor.getOutputMethodContentsRepository();
-			  Iterator<MethodContentRepository> iterator = workProductsSaidaAnterior.iterator();
-			  String workpProductOutputNamePredecessor = iterator.next().toString();
-		}
+//			  Set<MethodContentRepository> workProductsSaidaAnterior = predecessor.getOutputMethodContentsRepository();
+//			  Iterator<MethodContentRepository> iterator = workProductsSaidaAnterior.iterator();
+//			  String workpProductOutputNamePredecessor = iterator.next().toString();
+//		}
 	  
 	
 		// Configuring  entity class for permanent entities. If more than one resource, include call getAdditionalPerformers on processContentRepository  
