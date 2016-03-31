@@ -211,6 +211,94 @@ public class XACDMLBuilderFacade {
 		regularActivity = factory.createAct();
 		regularActivity.setId(processContentRepository.getName());
 	}
+	
+	public void bindEntityClassesToQueues(ProcessContentRepository processContentRepository, List<WorkProductXACDML> workProducts) {
+		next = factory.createNext();   
+		previous = factory.createPrev();
+		entityClass = factory.createEntityClass(); 
+		deadTemporalEntity = factory.createDead();
+		
+		List<ProcessContentRepository> listPredecessorsProcessContentRepository = processContentRepository.getPredecessors();
+		
+		if (listPredecessorsProcessContentRepository.size() == 0) { // se nao tem predecessor
+			
+			boolean existeFila = false;
+			Dead inputQueue = null; 
+			boolean createQueue;
+			// encontra o nome da fila
+			String previousQueueName = null;
+			 
+			for (Dead queue : acd.getDead()) {
+				for (WorkProductXACDML workProductXACDML : workProducts) {
+					if (queue.getId().equals(workProductXACDML.getQueueName())) {
+						previousQueueName = queue.getId();
+						inputQueue = queue;
+						existeFila = true;
+					}
+				}
+			}
+			
+			if (existeFila) { //nao criar outra
+				createQueue = false;
+			} else {
+				createQueue = true;
+				previous.setId(inputQueue.getId());
+				previous.setDead(inputQueue);
+				entityClass.setPrev(previous);
+			}
+			
+			
+			
+		} else {  // tem predecessor 
+			
+			Dead outputQueuePredecessorActivity = null; 
+			
+			String outputQueueNamePredecessorActivity = null;
+			boolean existeFila = false;
+			// encontra o nome da fila
+			for (Dead queue : acd.getDead()) {
+				for (WorkProductXACDML workProductXACDML: workProducts) {
+					if (queue.getId().equals(workProductXACDML.getQueueName())){
+						outputQueueNamePredecessorActivity = queue.getId();
+						existeFila = true;
+					}
+				}
+			}
+			
+			// com o nome da fila anterior eu consigo pegar as entity classes, a partir do nome da regular activity 
+			
+			// se tem predecessor, buscamos a fila de saida deste predecessor
+			String predecessorTaskName = listPredecessorsProcessContentRepository.get(0).getName(); // ta pegando so o name do predecessor. Suficiente aparentemetne
+			
+			if (!predecessorTaskName.equals("")) {
+ 
+				List<Act> activities = acd.getAct();
+				for (Act act: activities) {
+					if (predecessorTaskName.equals(act.getId())) {
+						List<EntityClass> entities = act.getEntityClass();
+						for (EntityClass entityClass: entities) {
+							Next next = (Next)entityClass.getNext();
+							outputQueuePredecessorActivity = (Dead)next.getDead();
+							outputQueueNamePredecessorActivity = outputQueuePredecessorActivity.getId();
+							
+						}
+					} else {
+						outputQueueNamePredecessorActivity = "";
+					}
+					}
+				}
+			previous.setId(outputQueuePredecessorActivity.getId());
+			previous.setDead(outputQueuePredecessorActivity);
+			entityClass.setPrev(previous);
+			
+		}
+		
+		
+		
+		
+		
+		
+	}
 
 	/**
 	 * 
@@ -237,16 +325,7 @@ public class XACDMLBuilderFacade {
 		entityClass = factory.createEntityClass(); 
 		deadTemporalEntity = factory.createDead();
 		
-		// Verify if there is a predecessor (If so, it determines the input queue of this regular activity
-		List<ProcessContentRepository> listProcessContentRepository = processContentRepository.getPredecessors();
 		
-//		if (listProcessContentRepository.size() != 0) {
-//			ProcessContentRepository predecessor  = listProcessContentRepository.get(0);
-			  // preciso pegar o nome da fila de saida da atividade anterior
-//			  Set<MethodContentRepository> workProductsSaidaAnterior = predecessor.getOutputMethodContentsRepository();
-//			  Iterator<MethodContentRepository> iterator = workProductsSaidaAnterior.iterator();
-//			  String workpProductOutputNamePredecessor = iterator.next().toString();
-//		}
 	  
 	
 		// Configuring  entity class for permanent entities. If more than one resource, include call getAdditionalPerformers on processContentRepository  
@@ -280,37 +359,91 @@ public class XACDMLBuilderFacade {
 		 
 		// Configuring  entity class for non-permanent entities 
 		 
-		 // Engracado: as linhas abaixo fazer dar nullpointerexception
-		 next = factory.createNext();   
+ 		 next = factory.createNext();   
 		 previous = factory.createPrev();
 		 entityClass = factory.createEntityClass(); 
 		 deadTemporalEntity = factory.createDead();
 		
+		 
 		// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
 		List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
 		List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+		
+		
+		String workpProductOutputNamePredecessor = "";
+		Dead predecessorQueue = null;
+		List<ProcessContentRepository> listPredecessorsProcessContentRepository = processContentRepository.getPredecessors();
+				
 		String taskNameXACDML;
+		String predecessorTaskName;
 		
 		for (WorkProductXACDML workProductXACDML: workProducts) {
 			
 			taskNameXACDML = workProductXACDML.getTaskName();
-			if (taskNameXACDML.equals(processContentRepository.getName())) {
+			
+			if (listPredecessorsProcessContentRepository.size() != 0) {
+					predecessorTaskName = listPredecessorsProcessContentRepository.get(0).getName(); // ta pegando so o name do predecessor. Suficiente aparentemetne
+					// preciso pegar o nome da fila de saida da atividade anterior
+					
+					// se tem predecessor, buscamos a fila de saida deste predecessor
+					String predecessorQueueName = "";
+					if (!predecessorTaskName.equals("")) {
+//						String outputQueueName = "";
+						List<Act> activities = acd.getAct();
+						for (Act act: activities) {
+							if (predecessorTaskName.equals(act.getId())) {
+								List<EntityClass> entities = act.getEntityClass();
+								for (EntityClass entityClass: entities) {
+									Next next = (Next)entityClass.getNext();
+									predecessorQueue = (Dead)next.getDead();
+									predecessorQueueName = predecessorQueue.getId();
+									
+								}
+							} else {
+								predecessorQueueName = "";
+							}
+							}
+						}
+					
+					
+			} else {
+				predecessorTaskName = "";
+			}
+					
+			//  cria filas de entrada. se tem predecessor, seta ela, caso contrario seta o match
+				entityClass.setId("ec"+ ++entityClassIdCounter); //tem que existir
 				
-				if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
-					inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-				} else {
-					outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-				}			
-			} 	
+//				for (Dead queue : acd.getDead()) {
+//					if (predecessorQueueName.equals(queue.getId())) {
+//						predecessorQueue = queue;
+//					}
+//					
+//				}
+			
+				if (taskNameXACDML.equals(processContentRepository.getName())) {
+					
+					if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+						inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+					} else {
+						outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+					}			
+				} 	
 		}
 		
-		entityClass.setId("ec"+ ++entityClassIdCounter); //tem que existir
+		
+		
 		for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
 			for (Dead queue : acd.getDead()) {
 				if (queue.getId().equals(queueName)) {
-					previous.setId(queue.getId());
-					previous.setDead(queue);
-					entityClass.setPrev(previous);
+					if (predecessorQueue != null) {
+						previous.setId(queue.getId());
+						previous.setDead(predecessorQueue);
+						entityClass.setPrev(previous);
+					} else {
+						previous.setId(queue.getId());
+						previous.setDead(queue);
+						entityClass.setPrev(previous);
+					}
 				}
 			}
 		}
@@ -450,7 +583,16 @@ public class XACDMLBuilderFacade {
 
 			// quinto: adiciona a fila de entidade temporaria no acd
 
-			acd.getDead().add(deadTemporalEntity);
+			boolean exists = false;
+			for (Dead d: acd.getDead()) {
+				
+				if (d.getId().equals(deadTemporalEntity.getId())) {
+					exists = true;
+				}
+			}
+			if (!exists) {
+				acd.getDead().add(deadTemporalEntity);
+			}
 
 			if (workProduct.isGenerateActivity()) {
 				generateActivity.setId(workProduct.getName());
