@@ -40,7 +40,7 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 
-		JButton generateJavaProgramButton = new JButton("Generate Java program");
+		JButton generateJavaProgramButton = new JButton("Generate experimentation program");
 		generateJavaProgramButton.addActionListener(new ActionListener() {
 		
 			public void actionPerformed(ActionEvent e) {
@@ -79,15 +79,14 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		
 		northPanel.add(generateJavaProgramButton);	 
 
-		JButton saveJavaProgramButton = new JButton("Save Java program");
+		JButton saveJavaProgramButton = new JButton("Save experimentation program");
 		saveJavaProgramButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileContent = textArea.getText();
 				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
 				saveXML(fileName, fileContent);
-				 
-				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");
-			}
+				JOptionPane.showMessageDialog(getPanel(), fileName+".java successfully saved to folder xacdml_models");
+ 			}
 		});
 		panel.add(saveJavaProgramButton);
 	}	

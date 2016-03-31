@@ -39,7 +39,7 @@ public class RunSimulationPanel extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 
-		JButton runJavaProgramButton = new JButton("Run Java program");
+		JButton runJavaProgramButton = new JButton("Run experimentation program");
 		runJavaProgramButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
