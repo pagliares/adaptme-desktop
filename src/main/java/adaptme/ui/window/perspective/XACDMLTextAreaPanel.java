@@ -128,7 +128,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 				String fileName = acdIDTextField.getText();
 				saveXML(fileName, fileContent);
 				 
-				JOptionPane.showMessageDialog(getPanel(), "File saved successfully");
+				JOptionPane.showMessageDialog(getPanel(), fileName+".xacdml successfully saved to folder xacdml_models");
 
 			}
 		});
