@@ -62,15 +62,17 @@ public class PersistProcess {
 		this.methodLibraryHash = methodLibraryHash;
 		root = new ProcessRepository();
 		root.setName(process.getPresentationName());
-		buildChildren(process, root, root, null);
+		Map<String, MethodElement> hash = new HashMap<>();
+		buildHash(process, hash);
+		
+		buildChildren(process, root, root, null, hash);
 		return root;
 	}
 	
 
 	private void buildChildren(Activity process, ProcessRepository root, ProcessRepository processRepository,
-			ProcessContentRepository father) {
-		Map<String, MethodElement> hash = new HashMap<>();
-		buildHash(process, hash);
+			ProcessContentRepository father, Map<String, MethodElement> hash) {
+	
 		Boolean isNew = new Boolean(false);
 		for (Object object : process.getBreakdownElementOrRoadmap()) {
 			if (object instanceof Milestone) {
@@ -100,7 +102,7 @@ public class PersistProcess {
 					processRepository.addProcessElement(content);
 				}
 				content.setProcessRepository(processRepository);
-				buildChildren(iteration, null, processRepository, content);
+				buildChildren(iteration, null, processRepository, content, hash);
 			} else if (object instanceof Phase) {
 				Phase phase = (Phase) object;
 				ProcessContentRepository content = createProcessContentRepository(phase, ProcessContentType.PHASE,
@@ -114,7 +116,7 @@ public class PersistProcess {
 					processRepository.addProcessElement(content);
 				}
 				content.setProcessRepository(processRepository);
-				buildChildren(phase, null, processRepository, content);
+				buildChildren(phase, null, processRepository, content, hash);
 				
 			} else if (object instanceof TaskDescriptor) {
 				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
@@ -145,11 +147,11 @@ public class PersistProcess {
 				}
 				content.setProcessRepository(processRepository);
 				if (activity.getVariabilityType() == VariabilityType.NA) {
-					buildChildren(activity, null, processRepository, content);
+					buildChildren(activity, null, processRepository, content, hash);
 				} else {
 					Activity superActivity = (Activity) methodLibraryHash.getHashMap()
 							.get(activity.getVariabilityBasedOnElement());
-					buildChildren(superActivity, null, processRepository, content);
+					buildChildren(superActivity, null, processRepository, content, hash);
 				}
 			}
 		}
