@@ -38,12 +38,13 @@ public class RunSimulationPanel extends JPanel {
 
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
-
+		
+		JButton btnCompileExperimentationProgram = new JButton("Compile experimentation program");
 		JButton runJavaProgramButton = new JButton("Run experimentation program");
-		runJavaProgramButton.addActionListener(new ActionListener() {
-
+		
+		btnCompileExperimentationProgram.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				textArea.setText("");
 				String s = null;
 				String xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
 				try {
@@ -53,10 +54,13 @@ public class RunSimulationPanel extends JPanel {
 					BufferedReader stdError = new BufferedReader(new InputStreamReader(p1.getErrorStream()));
 					
 					// read the output from the command
+					textArea.append("Compiling..:\n");
 					while ((s = stdInput.readLine()) != null) {
 						System.out.println(s);
 						textArea.append(s + "\n");
 					}
+					
+					textArea.append("Success !");
 					
 				 
 					// read any errors from the attempted command
@@ -66,12 +70,42 @@ public class RunSimulationPanel extends JPanel {
 						textArea.append(s + "\n");
 					}
 					
-					Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ "+ "xacdml_models/"+xacdmlFile);
+					runJavaProgramButton.setEnabled(true);
+					 
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (IOException e1) {
+					textArea.append(e1.getMessage());
+					System.out.println("exception happened - here's what I know: ");
+					e1.printStackTrace();
+					
+					System.exit(-1);
+				}
+			}
+			
+		});
 
-					 stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					 stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	
+		runJavaProgramButton.setEnabled(false);
+		runJavaProgramButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
+				String s = null;
+				String xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
+				try {
+					Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ "+ "xacdml_models/"+xacdmlFile);
+        
+					BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 					 
 					// read the output from the command
+					textArea.setText("");
+					textArea.append("Interpreting..:\n");
 					while ((s = stdInput.readLine()) != null) {
 						System.out.println(s);
 						textArea.append(s + "\n");
@@ -102,6 +136,9 @@ public class RunSimulationPanel extends JPanel {
 				}
 			}
 		});
+		
+		
+		northPanel.add(btnCompileExperimentationProgram);
 
 		northPanel.add(runJavaProgramButton);
 	}	
