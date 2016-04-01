@@ -187,7 +187,7 @@ public class XACDMLBuilderFacade {
 	}
 
 	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, RoleResourcesPanel roleResourcePanel) {
-		 	
+		 
 		completeListOfProcessContentRepository = calibratedProcessRepository.getProcessContents();
 		calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
 		listOfProcessContentRepositoryTasks = calibratedProcessRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
@@ -195,22 +195,211 @@ public class XACDMLBuilderFacade {
 
 		for (ProcessContentRepository processContentRepository : listOfProcessContentRepositoryTasks) {
 			
-			configureRegularActivity(processContentRepository);
+			regularActivity = factory.createAct();
+			regularActivity.setId(processContentRepository.getName());
 		
-			bindQueuesToActivities(workProducts, processContentRepository, roleResourcePanel);
+			int entityClassIdCounter = 1; 
+			 
+			next = factory.createNext();   
+			previous = factory.createPrev();
+			entityClass = factory.createEntityClass(); 
+			deadTemporalEntity = factory.createDead();
+		
+			// Configuring  entity class for permanent entities. If more than one resource, include call getAdditionalPerformers on processContentRepository  
+			String roleName = processContentRepository.getMainRole().getName();
+			String queueNameRole = null;
+			JTable roleTable = roleResourcePanel.getTableRole();
+						 
+			for (int i = 0; i < roleTable.getRowCount(); i++) {
+				String roleNameTable = (roleTable.getModel().getValueAt(i, 0)).toString();
+				if (roleNameTable.equals(roleName)) {
+					queueNameRole = (roleTable.getModel().getValueAt(i, 1)).toString();
+				}
+			}
+			
+			for (Dead queue : acd.getDead()) {
+				
+				if (queue.getId().equals(queueNameRole)) {   
+					entityClass.setId("role" + entityClassIdCounter); // tem que existir para evitar o erro IDREF no momento de marshalling
+																		 
+					previous.setId(queue.getId());
+					previous.setDead(queue);
+	 
+					next.setId(queue.getId());
+					next.setDead(queue);  // recebe Object. O que acontece se eu passar queue.getId()
+					 
+					entityClass.setPrev(previous);
+					entityClass.setNext(next);
+				}
+			}
+			 regularActivity.getEntityClass().add(entityClass);
+			 
+			// Configuring  entity class for non-permanent entities 
+			 
+	 		 next = factory.createNext();   
+			 previous = factory.createPrev();
+			 entityClass = factory.createEntityClass(); 
+			 deadTemporalEntity = factory.createDead();
+			
+			 
+			// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
+			List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+			List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+			
+			
+			String workpProductOutputNamePredecessor = "";
+			Dead predecessorQueue = null;
+			List<ProcessContentRepository> listPredecessorsProcessContentRepository = processContentRepository.getPredecessors();
+					
+			String taskNameXACDML;
+			String predecessorTaskName;
+			
+			for (WorkProductXACDML workProductXACDML: workProducts) {
+				
+				taskNameXACDML = workProductXACDML.getTaskName();
+				
+				if (listPredecessorsProcessContentRepository.size() != 0) {
+						predecessorTaskName = listPredecessorsProcessContentRepository.get(0).getName(); // ta pegando so o name do predecessor. Suficiente aparentemetne
+						// preciso pegar o nome da fila de saida da atividade anterior
+						
+						// se tem predecessor, buscamos a fila de saida deste predecessor
+						String predecessorQueueName = "";
+						if (!predecessorTaskName.equals("")) {
+//							String outputQueueName = "";
+							List<Act> activities = acd.getAct();
+							for (Act act: activities) {
+								if (predecessorTaskName.equals(act.getId())) {
+									List<EntityClass> entities = act.getEntityClass();
+									for (EntityClass entityClass: entities) {
+										Next next = (Next)entityClass.getNext();
+										predecessorQueue = (Dead)next.getDead();
+										predecessorQueueName = predecessorQueue.getId();
+										
+									}
+								} else {
+									predecessorQueueName = "";
+								}
+								}
+							}
+						
+						
+				} else {
+					predecessorTaskName = "";
+				}
+						
+				//  cria filas de entrada. se tem predecessor, seta ela, caso contrario seta o match
+					entityClass.setId("ec"+ ++entityClassIdCounter); //tem que existir
+					
+//					for (Dead queue : acd.getDead()) {
+//						if (predecessorQueueName.equals(queue.getId())) {
+//							predecessorQueue = queue;
+//						}
+//						
+//					}
+				
+					if (taskNameXACDML.equals(processContentRepository.getName())) {
+						
+						if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+							inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+						} else {
+							outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+						}			
+					} 	
+			}
+			
+			
+			
+			for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
+				for (Dead queue : acd.getDead()) {
+					if (queue.getId().equals(queueName)) {
+						if (predecessorQueue != null) {
+							previous.setId(queue.getId());
+							previous.setDead(predecessorQueue);
+							entityClass.setPrev(previous);
+						} else {
+							previous.setId(queue.getId());
+							previous.setDead(queue);
+							entityClass.setPrev(previous);
+						}
+					}
+				}
+			}
+			
+			for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+				for (Dead q1 : acd.getDead()) {
+					if (q1.getId().equals(queueName1)) {
+						next.setId(q1.getId());
+						next.setDead(q1);
+						entityClass.setNext(next);	
+					}
+				}
+			}
+						
+			regularActivity.getEntityClass().add(entityClass);
 
-			configureDistribution(processContentRepository);
 			
-			configureObservers(mainPanelSimulationOfAlternativeOfProcess, processContentRepository);
+			parametersDistributionRegularActivity = processContentRepository.getSample().getParameters(); // talvez pegar direto do painel
+
+			distribution = factory.createStat();
+
+			if (parametersDistributionRegularActivity instanceof ConstantParameters) {
+				constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("CONST");
+				distribution.setParm1(Double.toString(constantParameters.getValue()));
+
+			} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
+				uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("UNIFORM");
+				distribution.setParm1(Double.toString(uniformParameters.getLow()));
+				distribution.setParm2(Double.toString(uniformParameters.getHigh()));
+
+			} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
+				negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("NEGEXP");
+				distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+
+			} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
+				normalParameters = (NormalParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("NORMAL");
+				distribution.setParm1(Double.toString(normalParameters.getMean()));
+				distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+			} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
+				poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("POISSON");
+				distribution.setParm1(Double.toString(poissonParameters.getMean()));
+			}
+			regularActivity.setStat(distribution);
 			
+			// configura os observer para as regular activities
+			// Configruando os observers
+			List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = mainPanelSimulationOfAlternativeOfProcess
+					.getListIntegratedLocalAndRepositoryViewPanel();
+
+			for (IntegratedLocalAndRepositoryViewPanel i : listOfIntegratedLocalandRepositoryViewPanels) {
+				if (processContentRepository.getName().equals(i.getName())) {
+					listOfActivityObservers = null;
+					LocalViewPanel localViewPanel = i.getLocalViewPanel();
+					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
+					 
+					listOfActivityObservers = localViewBottomPanel.getObservers();
+					for (ActObserver actObserver : listOfActivityObservers) {
+						 
+							regularActivity.getActObserver().add(actObserver);
+						 
+					}
+				}
+			}
 			acd.getAct().add(regularActivity);	
-		}
+		}	
 	}
 
-	private void configureRegularActivity(ProcessContentRepository processContentRepository) {
-		regularActivity = factory.createAct();
-		regularActivity.setId(processContentRepository.getName());
-	}
+	
 	
 	public void bindEntityClassesToQueues(ProcessContentRepository processContentRepository, List<WorkProductXACDML> workProducts) {
 		next = factory.createNext();   
@@ -462,68 +651,9 @@ public class XACDMLBuilderFacade {
 	}
 	
 	
-	private void configureObservers(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
-			ProcessContentRepository processContentRepository) {
-		// configura os observer para as regular activities
-		// Configruando os observers
-		List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = mainPanelSimulationOfAlternativeOfProcess
-				.getListIntegratedLocalAndRepositoryViewPanel();
+	
 
-		for (IntegratedLocalAndRepositoryViewPanel i : listOfIntegratedLocalandRepositoryViewPanels) {
-			if (processContentRepository.getName().equals(i.getName())) {
-				listOfActivityObservers = null;
-				LocalViewPanel localViewPanel = i.getLocalViewPanel();
-				LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
-				 
-				listOfActivityObservers = localViewBottomPanel.getObservers();
-				for (ActObserver actObserver : listOfActivityObservers) {
-					 
-						regularActivity.getActObserver().add(actObserver);
-					 
-				}
-			}
-		}
-	}
-
-	private void configureDistribution(ProcessContentRepository processContentRepository) {
-		parametersDistributionRegularActivity = processContentRepository.getSample().getParameters(); // talvez pegar direto do painel
-
-		distribution = factory.createStat();
-
-		if (parametersDistributionRegularActivity instanceof ConstantParameters) {
-			constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
-			distribution = factory.createStat();
-			distribution.setType("CONST");
-			distribution.setParm1(Double.toString(constantParameters.getValue()));
-
-		} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
-			uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
-			distribution = factory.createStat();
-			distribution.setType("UNIFORM");
-			distribution.setParm1(Double.toString(uniformParameters.getLow()));
-			distribution.setParm2(Double.toString(uniformParameters.getHigh()));
-
-		} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-			negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
-			distribution = factory.createStat();
-			distribution.setType("NEGEXP");
-			distribution.setParm1(Double.toString(negativeExponential.getAverage()));
-
-		} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
-			normalParameters = (NormalParameters) parametersDistributionRegularActivity;
-			distribution = factory.createStat();
-			distribution.setType("NORMAL");
-			distribution.setParm1(Double.toString(normalParameters.getMean()));
-			distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
-
-		} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
-			poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
-			distribution = factory.createStat();
-			distribution.setType("POISSON");
-			distribution.setParm1(Double.toString(poissonParameters.getMean()));
-		}
-		regularActivity.setStat(distribution);
-	}
+	
 
 	// Em segundo lugar, configuro a distribuicao de probabilidade criada acima para a generate activity
 	// (panel probability distribution parameters - painel x associado com o workproduct x)
