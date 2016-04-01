@@ -44,7 +44,7 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		generateJavaProgramButton.addActionListener(new ActionListener() {
 		
 			public void actionPerformed(ActionEvent e) {
- 
+				textArea.setText("");
 				String s = null;
 				try {
 					
