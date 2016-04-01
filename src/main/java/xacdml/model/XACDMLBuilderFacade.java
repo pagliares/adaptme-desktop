@@ -170,20 +170,20 @@ public class XACDMLBuilderFacade {
 	}
 
 	private boolean mayQueueBeDestroyed(List<Act> regularActivities, String queueName, boolean mayQueueBeDestroyed) {
-//		for (Act act : regularActivities) {
-//			List<EntityClass> entityClasses = act.getEntityClass();
-//			for (EntityClass entityClass : entityClasses) {
-//				Prev prev1 = (Prev)entityClass.getPrev();  // erro aqui
-//				deadTemporalEntity = (Dead)prev1.getDead();  
-// 				if (queueName.equals(deadTemporalEntity.getId())) {
-//					// it is input. cannot be destroyed
-//					mayQueueBeDestroyed = false;	
-//				}
-//				prev1 = factory.createPrev();
-//			}
-//		}
-//		return mayQueueBeDestroyed;
-		return false;
+		for (Act act : regularActivities) {
+			List<EntityClass> entityClasses = act.getEntityClass();
+			for (EntityClass entityClass : entityClasses) {
+				Prev prev1 = (Prev)entityClass.getPrev();  // erro aqui
+				deadTemporalEntity = (Dead)prev1.getDead();  
+ 				if (queueName.equals(deadTemporalEntity.getId())) {
+					// it is input. cannot be destroyed
+					mayQueueBeDestroyed = false;	
+				}
+				prev1 = factory.createPrev();
+			}
+		}
+		return mayQueueBeDestroyed;
+ 
 	}
 
 	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, RoleResourcesPanel roleResourcePanel) {
