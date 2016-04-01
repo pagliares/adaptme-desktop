@@ -170,20 +170,20 @@ public class XACDMLBuilderFacade {
 	}
 
 	private boolean mayQueueBeDestroyed(List<Act> regularActivities, String queueName, boolean mayQueueBeDestroyed) {
-		for (Act act : regularActivities) {
-			List<EntityClass> entityClasses = act.getEntityClass();
-			for (EntityClass entityClass : entityClasses) {
-				Prev prev1 = (Prev)entityClass.getPrev();
-				deadTemporalEntity = (Dead)prev1.getDead();  
-//					classToBedestroyed = deadTemporalEntity.getClazz();
-				if (queueName.equals(deadTemporalEntity.getId())) {
-					// it is input. cannot be destroyed
-					mayQueueBeDestroyed = false;	
-				}
-				prev1 = factory.createPrev();
-			}
-		}
-		return mayQueueBeDestroyed;
+//		for (Act act : regularActivities) {
+//			List<EntityClass> entityClasses = act.getEntityClass();
+//			for (EntityClass entityClass : entityClasses) {
+//				Prev prev1 = (Prev)entityClass.getPrev();  // erro aqui
+//				deadTemporalEntity = (Dead)prev1.getDead();  
+// 				if (queueName.equals(deadTemporalEntity.getId())) {
+//					// it is input. cannot be destroyed
+//					mayQueueBeDestroyed = false;	
+//				}
+//				prev1 = factory.createPrev();
+//			}
+//		}
+//		return mayQueueBeDestroyed;
+		return false;
 	}
 
 	private void createRegularActivities(List<WorkProductXACDML> workProducts, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, RoleResourcesPanel roleResourcePanel) {
@@ -238,7 +238,7 @@ public class XACDMLBuilderFacade {
 			 
 	 		 next = factory.createNext();   
 			 previous = factory.createPrev();
-			 entityClass = factory.createEntityClass(); 
+			 
 			 deadTemporalEntity = factory.createDead();
 			
 			 
@@ -257,15 +257,42 @@ public class XACDMLBuilderFacade {
 			for (WorkProductXACDML workProductXACDML: workProducts) {
 				
 				taskNameXACDML = workProductXACDML.getTaskName();
+				if (taskNameXACDML.equals(processContentRepository.getName())) {
+					
+					if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+						inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+					}
+					
+					if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Output")) {
+						outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+					}			
+				} 
 				
-				if (listPredecessorsProcessContentRepository.size() != 0) {
+				// preciso criar uma entidade para cada saida
+				for (String queueName : outputQueuesNameForSpecificProcessContentRepository) {
+					 entityClass = factory.createEntityClass();
+					 entityClass.setId("temp ec");
+					 
+					 // configura next  
+					 for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+							for (Dead q1 : acd.getDead()) {
+								if (q1.getId().equals(queueName1)) {
+									next.setId(q1.getId());
+									next.setDead(q1);
+									entityClass.setNext(next);	
+								}
+							}
+						}	
+					 
+					 // configure prev
+						if (listPredecessorsProcessContentRepository.size() != 0) { // se tem predecessor explicito
 						predecessorTaskName = listPredecessorsProcessContentRepository.get(0).getName(); // ta pegando so o name do predecessor. Suficiente aparentemetne
 						// preciso pegar o nome da fila de saida da atividade anterior
 						
 						// se tem predecessor, buscamos a fila de saida deste predecessor
-						String predecessorQueueName = "";
+						 
 						if (!predecessorTaskName.equals("")) {
-//							String outputQueueName = "";
+
 							List<Act> activities = acd.getAct();
 							for (Act act: activities) {
 								if (predecessorTaskName.equals(act.getId())) {
@@ -273,68 +300,35 @@ public class XACDMLBuilderFacade {
 									for (EntityClass entityClass: entities) {
 										Next next = (Next)entityClass.getNext();
 										predecessorQueue = (Dead)next.getDead();
-										predecessorQueueName = predecessorQueue.getId();
-										
+										 
 									}
-								} else {
-									predecessorQueueName = "";
-								}
-								}
+								}  
 							}
-						
-						
-				} else {
-					predecessorTaskName = "";
-				}
-						
-				//  cria filas de entrada. se tem predecessor, seta ela, caso contrario seta o match
-					entityClass.setId("ec"+ ++entityClassIdCounter); //tem que existir
-					
-//					for (Dead queue : acd.getDead()) {
-//						if (predecessorQueueName.equals(queue.getId())) {
-//							predecessorQueue = queue;
-//						}
-//						
-//					}
-				
-					if (taskNameXACDML.equals(processContentRepository.getName())) {
-						
-						if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
-							inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-						} else {
-							outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
-						}			
-					} 	
-			}
-			
-			
-			
-			for (String queueName : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
-				for (Dead queue : acd.getDead()) {
-					if (queue.getId().equals(queueName)) {
-						if (predecessorQueue != null) {
-							previous.setId(queue.getId());
+							previous.setId(predecessorQueue.getId());
 							previous.setDead(predecessorQueue);
 							entityClass.setPrev(previous);
-						} else {
-							previous.setId(queue.getId());
-							previous.setDead(queue);
-							entityClass.setPrev(previous);
+						}
+						
+						
+				} else {  // nao tem predecessor explicito
+					for (String queueName1 : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
+						for (Dead queue : acd.getDead()) {
+						if (queue.getId().equals(queueName1)) {
+							 
+								previous.setId(queue.getId());
+								previous.setDead(queue);
+								entityClass.setPrev(previous);
+							 
 						}
 					}
 				}
+				}
+				}		
 			}
 			
-			for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
-				for (Dead q1 : acd.getDead()) {
-					if (q1.getId().equals(queueName1)) {
-						next.setId(q1.getId());
-						next.setDead(q1);
-						entityClass.setNext(next);	
-					}
-				}
-			}
-						
+			System.out.println("input queue names.." + inputQueuesNameForSpecificProcessContentRepository);
+			System.out.println("output queue names.." + outputQueuesNameForSpecificProcessContentRepository);
+				
 			regularActivity.getEntityClass().add(entityClass);
 
 			
