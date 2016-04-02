@@ -645,14 +645,15 @@ public class AlternativeOfProcessPanel {
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
 		
-		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel);
-		tabbedPaneActivity4.addTab("4.1. Configuring experimentation program", experimentationPanel);
 		
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
-		tabbedPaneActivity4.addTab("4.2. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
- 		
-		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
-		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
+		tabbedPaneActivity4.addTab("4.1. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
+		
+		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel);
+		tabbedPaneActivity4.addTab("4.2. Configuring experimentation program", experimentationPanel);
+		
+//		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
+//		tabbedPaneActivity4.addTab("4.3. Run experiment", runSimulationPanel.getPanel());
 		
 		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, simulationFacade, this);  // talvez tenha que passar a lista de process
 																											// repository dentro de simulation facade
