@@ -13,8 +13,10 @@ import model.spem.SimulationFacade;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class ShowResultsPanel extends JPanel {
@@ -70,7 +72,15 @@ public class ShowResultsPanel extends JPanel {
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				alternativeOfProcessPanel.closeTabbedPane();
+				try {
+					Process p = Runtime.getRuntime().exec("cp xacdml_models/ExperimentationProgramProxy.java src/main/java/adaptme");
+					alternativeOfProcessPanel.closeTabbedPane();
+				} 
+
+				catch (IOException e1) {
+//					JOptionPane.showMessageDialog(this, "Place a stub empty ExperimentationProgramProxy.java in the folder xacdml_models"); 
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnSimulateAnotherAlternative.setBounds(459, 31, 290, 29);

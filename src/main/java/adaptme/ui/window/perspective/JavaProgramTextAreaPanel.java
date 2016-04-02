@@ -85,10 +85,12 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		JButton saveJavaProgramButton = new JButton("Save experimentation program");
 		saveJavaProgramButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+	
 				String fileContent = textArea.getText();
-//				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
+
 				saveXML("ExperimentationProgramProxy", fileContent);
 				JOptionPane.showMessageDialog(getPanel(), "ExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");  
+		
  			}
 		});
 		panel.add(saveJavaProgramButton);
