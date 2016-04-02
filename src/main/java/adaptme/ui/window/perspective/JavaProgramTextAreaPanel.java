@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import adaptme.ExperimentationProgramProxy;
+
 public class JavaProgramTextAreaPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -51,7 +53,8 @@ public class JavaProgramTextAreaPanel extends JPanel {
 				defineXACDMLTextAreaPanel.setAcdIDTextField(defineXACDMLTextAreaPanel.getAcdIDTextField());
 			    String xacdmlFile = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
 				Process p = Runtime.getRuntime().exec("java -cp xacdml_models/ Stylizer xacdml_models/xacdml.xsl xacdml_models/"+xacdmlFile+".xacdml");
-
+ 				
+             
 
 				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -83,17 +86,18 @@ public class JavaProgramTextAreaPanel extends JPanel {
 		saveJavaProgramButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileContent = textArea.getText();
-				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
-				saveXML(fileName, fileContent);
-				JOptionPane.showMessageDialog(getPanel(), fileName+".java successfully saved to folder xacdml_models");
+//				String fileName = defineXACDMLTextAreaPanel.getAcdIDTextField().getText();
+				saveXML("ExperimentationProgramProxy", fileContent);
+				JOptionPane.showMessageDialog(getPanel(), "ExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");  
  			}
 		});
 		panel.add(saveJavaProgramButton);
 	}	
 	
 	public void saveXML(String fileName, String fileContent) {
+		
+		File f = new File("src/main/java/adaptme/" + fileName + ".java");
 
-		File f = new File("./xacdml_models/" + fileName + ".java");
 
 		try (FileWriter fw = new FileWriter(f)) {
 			
