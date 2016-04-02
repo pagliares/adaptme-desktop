@@ -20,7 +20,7 @@ input/
 *.log
 HBC_Pagliares.java
 HBC.java
-ExperimentationProgramProxy.java
+src/main/java/adaptme/ExperimentationProgramProxy.java
  
 # Package Files #
 *.jar

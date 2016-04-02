@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import adaptme.ExperimentationProgramProxy;
+import adaptme.facade.SimulationManagerFacade;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProductXACDML;
@@ -36,7 +38,7 @@ public class ExperimentationPanel extends JPanel {
 	
 	private JTextField textField;
 	private JTable table;
-	private JTextField textField_1;
+	private JTextField numberOfReplicationsTextField;
 	private JTextField textField_2;
 	private TableColumnModel modeloColuna;
 	private JComboBox<VariableType> comboBoxVariableType = new JComboBox<>();
@@ -98,15 +100,19 @@ public class ExperimentationPanel extends JPanel {
 		lblNumberOfReplications.setBounds(6, 29, 145, 16);
 		panel_4.add(lblNumberOfReplications);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(163, 23, 66, 28);
-		panel_4.add(textField_1);
-		textField_1.setColumns(10);
+		numberOfReplicationsTextField = new JTextField();
+		numberOfReplicationsTextField.setBounds(163, 23, 66, 28);
+		panel_4.add(numberOfReplicationsTextField);
+		numberOfReplicationsTextField.setColumns(10);
 		
 		JButton btnSimulate = new JButton("Simulate");
 		btnSimulate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showResultsPanel.updateShowResultsPanelTable();
+				
+				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
+				SimulationManagerFacade facade = new SimulationManagerFacade();
+				facade.execute(numberReplications);
 			}
 		});
 		btnSimulate.setBounds(256, 24, 98, 29);

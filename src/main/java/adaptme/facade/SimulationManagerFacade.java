@@ -3,6 +3,7 @@ package adaptme.facade;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import adaptme.ExperimentationProgramProxy;
 import simula.Scheduler;
 import simula.manager.*;
  
@@ -224,6 +225,15 @@ public class SimulationManagerFacade {
 		}
 
 		System.out.println("\nThat's all folks!");
+	}
+	
+	public void execute(int numberReplications) {
+		for (int i =0; i < numberReplications; i++) {
+			ExperimentationProgramProxy epp = new ExperimentationProgramProxy();
+			System.out.println("Execution #" + (i+1));
+			
+			epp.execute();
+		}
 	}
 	
 	public static void main(String [] args) {
