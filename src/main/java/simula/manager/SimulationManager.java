@@ -1,5 +1,5 @@
 // Arquivo  SimulationManager.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 11.Jun.1999 Wladimir
 
 package simula.manager;
@@ -12,10 +12,10 @@ import simula.*;
 
 /**
  * Classe principal do sistema de gerenciamento. Concentra todos os
- * pedidos de criação e remoção de Entry's no modelo. 
- * Verifica consistência e provê controle de concorrência.
- * Gerencia diferentes repositórios de entry's de diversos tipos
- * e gera programa de simulação. 
+ * pedidos de criaï¿½ï¿½o e remoï¿½ï¿½o de Entry's no modelo. 
+ * Verifica consistï¿½ncia e provï¿½ controle de concorrï¿½ncia.
+ * Gerencia diferentes repositï¿½rios de entry's de diversos tipos
+ * e gera programa de simulaï¿½ï¿½o. 
  * @author	Wladimir
  */
 public class SimulationManager implements Serializable
@@ -30,7 +30,7 @@ public class SimulationManager implements Serializable
 	transient Scheduler s;
 	transient Sample sp;
 	private transient float endtime = 0;	// instante programado 
-											// de término da simulação
+											// de tï¿½rmino da simulaï¿½ï¿½o
 	private transient float resettime = 0;  // instante em que as 
 
 	/**
@@ -45,7 +45,7 @@ public class SimulationManager implements Serializable
 		histograms = new HashMap();
 		types = new Vector(5, 2);
 		globals = new AttributeTable();
-		globals.name = "globals";	// nome padrão 
+		globals.name = "globals";	// nome padrï¿½o 
 	}
 	
 	public String toString()
@@ -187,7 +187,7 @@ public class SimulationManager implements Serializable
 	}
 		
 	/**
-	 * Atualiza variáveis globais.
+	 * Atualiza variï¿½veis globais.
 	 */
 	public boolean UpdateGlobals(AttributeTable globalVars)
 	{
@@ -237,7 +237,7 @@ public class SimulationManager implements Serializable
 			{
 				synchronized(activestates)
 				{
-					// remove todas as referências a esse queue
+					// remove todas as referï¿½ncias a esse queue
 					Iterator it; // para percorrer todos os active states
 						
 					it = activestates.values().iterator();
@@ -254,7 +254,7 @@ public class SimulationManager implements Serializable
 								// remove se for fonte ou destino
 								ia.removeFromQueue(e.id);
 								int i = ia.toQueueIndexOf(e.id);
-								if(i != -1) // se é destino, remove tb a condição
+								if(i != -1) // se ï¿½ destino, remove tb a condiï¿½ï¿½o
 								{
 									ia.removeToQueue(i);
 									ia.removeCond(i);
@@ -319,7 +319,7 @@ public class SimulationManager implements Serializable
 			
 			synchronized(activestates)
 			{
-				// remove todas as referências a esse queue
+				// remove todas as referï¿½ncias a esse queue
 				Iterator it; // para percorrer todos os active states
 				
 				it = activestates.values().iterator();
@@ -435,7 +435,7 @@ public class SimulationManager implements Serializable
 			{
 				e = (Entry)observers.get(e.obsid);
 			}
-			e.obsid = oe.obsid;		// liga com o próximo
+			e.obsid = oe.obsid;		// liga com o prï¿½ximo
 			if(oe.getHistid() != null)
 				RemoveHistogram(oe.getHistid());
 		}
@@ -483,8 +483,8 @@ public class SimulationManager implements Serializable
 			}
 		}	
 	}
-	// Remove entrada do repositório respectivo e suas associadas
-	// de forma a manter a consistência
+	// Remove entrada do repositï¿½rio respectivo e suas associadas
+	// de forma a manter a consistï¿½ncia
 	
 	/**
 	 * Returns a Queue given its ID
@@ -526,8 +526,8 @@ public class SimulationManager implements Serializable
 	 * TypeID is the user-visible, and editable field.
 	 */
 	public AttributeTable GetType(String id)
-	// Este é o único caso em que o Id único não é usado para indexação,
-	// e sim o name, que é o campo visto e alterado pelo usuário.
+	// Este ï¿½ o ï¿½nico caso em que o Id ï¿½nico nï¿½o ï¿½ usado para indexaï¿½ï¿½o,
+	// e sim o name, que ï¿½ o campo visto e alterado pelo usuï¿½rio.
 	{
 		AttributeTable e = null;
 		synchronized(types)
@@ -544,12 +544,12 @@ public class SimulationManager implements Serializable
 	}
 	
 	/**
-	 * Obtém entrada do repositório respectivo através de seu ID único
+	 * Obtï¿½m entrada do repositï¿½rio respectivo atravï¿½s de seu ID ï¿½nico
 	 */
 	public AttributeTable GetGlobals(){return globals;}
 		
 	/**
-	 * Gera modelo de simulação e prepara para execução
+	 * Gera modelo de simulaï¿½ï¿½o e prepara para execuï¿½ï¿½o
 	 */
 	public synchronized boolean GenerateModel()
 	{
@@ -560,7 +560,7 @@ public class SimulationManager implements Serializable
 		
 		s = new Scheduler();
 		
-		// logo depois a stream de números aleatórios
+		// logo depois a stream de nï¿½meros aleatï¿½rios
 		
 		sp = new Sample();
 		
@@ -569,7 +569,7 @@ public class SimulationManager implements Serializable
 				synchronized(resources){
 					synchronized(observers){
 						synchronized(histograms)
-		// ninguém pode estar sendo alterado
+		// ninguï¿½m pode estar sendo alterado
 		{
 			QueueEntry qe;
 			ActiveEntry ae;
@@ -585,7 +585,7 @@ public class SimulationManager implements Serializable
 				qe = (QueueEntry)it.next();
 				if(!qe.Generate(this))
 				{
-					System.err.println("Impossível criar fila " + qe.id);
+					System.err.println("Impossï¿½vel criar fila " + qe.id);
 					return false;
 				}
 			}
@@ -596,14 +596,14 @@ public class SimulationManager implements Serializable
 				re = (ResourceEntry)it.next();
 				if(!re.Generate(this))
 				{
-					System.err.println("Impossível criar recurso " + re.id);
+					System.err.println("Impossï¿½vel criar recurso " + re.id);
 					return false;
 				}
 			}
 
-			// daí os ativos
+			// daï¿½ os ativos
 			
-			// 1.o limpa os objs de simulação (devido às InterruptActivity's)
+			// 1.o limpa os objs de simulaï¿½ï¿½o (devido ï¿½s InterruptActivity's)
 			it = activestates.values().iterator();
 			while(it.hasNext())
 			{
@@ -617,7 +617,7 @@ public class SimulationManager implements Serializable
 				ae = (ActiveEntry)it.next();
 				if(!ae.Generate(this))
 				{
-					System.err.println("Impossível criar estado ativo " + ae.id);
+					System.err.println("Impossï¿½vel criar estado ativo " + ae.id);
 					return false;
 				}
 			}
@@ -627,7 +627,7 @@ public class SimulationManager implements Serializable
 			}
 		}
 		
-		// cria, por último, as variáveis globais
+		// cria, por ï¿½ltimo, as variï¿½veis globais
 		
 		Expression.globals = new Variables();
 		
@@ -662,13 +662,13 @@ public class SimulationManager implements Serializable
 	}		
 	
 	/**
-	 * Executa simulação até instante endTime
+	 * Executa simulaï¿½ï¿½o atï¿½ instante endTime
 	 */
 	public synchronized boolean ExecuteSimulation(float endTime)
 	{
 		boolean ok = false;
 		
-		if(endTime >= 0 && s != null)	// o modelo já deve ter sido gerado
+		if(endTime >= 0 && s != null)	// o modelo jï¿½ deve ter sido gerado
 		{
 			Log.Close();
 			Log.OpenFile();
@@ -684,7 +684,7 @@ public class SimulationManager implements Serializable
 	}
 		
 	/**
-	 * Coloca todos os objetos da simulação em seus estados iniciais
+	 * Coloca todos os objetos da simulaï¿½ï¿½o em seus estados iniciais
 	 */
 	public synchronized boolean ResetSimulation()
 	{
@@ -716,14 +716,14 @@ public class SimulationManager implements Serializable
 	}
 		
 	/**
-	 * Limpa todos os objetos estatísticos, mesmo durante a simulação
-	 * a simulação deve estar pausada (Stop() suave do scheduler)
+	 * Limpa todos os objetos estatï¿½sticos, mesmo durante a simulaï¿½ï¿½o
+	 * a simulaï¿½ï¿½o deve estar pausada (Stop() suave do scheduler)
 	 */
 	public synchronized boolean ResetStatistics()
 	{
 		if(s == null || running)
 			return false;	// modelo precisa ser gerado antes e  
-										// não pode estar executando
+										// nï¿½o pode estar executando
 		Iterator it;
 		resettime = s.GetClock();
 		
@@ -737,18 +737,18 @@ public class SimulationManager implements Serializable
 	}
 		
 	/**
-	 * Interrompe simulação
+	 * Interrompe simulaï¿½ï¿½o
 	 */
 	public synchronized void StopSimulation()
 	{
 		if(running)
-			s.Stop();		// pára
+			s.Stop();		// pï¿½ra
 				
 		running = false;
 	}
 	
 	/**
-	 * Continua a simulação, se possível
+	 * Continua a simulaï¿½ï¿½o, se possï¿½vel
 	 */
 	public synchronized boolean ResumeSimulation()
 	{
@@ -759,7 +759,7 @@ public class SimulationManager implements Serializable
 	}
 	
 	/**
-	 * Verifica se a simulação ainda está executando
+	 * Verifica se a simulaï¿½ï¿½o ainda estï¿½ executando
 	 */
 	public boolean Finished()
 	{
@@ -770,8 +770,8 @@ public class SimulationManager implements Serializable
 	}
 	
 	/**
-	 * Depois da simulação terminada, escreve os resultados
-	 * das estatísticas nos arquivos de saída
+	 * Depois da simulaï¿½ï¿½o terminada, escreve os resultados
+	 * das estatï¿½sticas nos arquivos de saï¿½da
 	 */
 	public synchronized boolean OutputSimulationResults(String filename)
 	{
@@ -858,4 +858,8 @@ public class SimulationManager implements Serializable
 		HistogramEntry.hasSerialized = true;
 		AttributeTable.hasSerialized = true;
 	}
+ 	
+ 	public Scheduler getScheduler() {
+ 		return s;
+ 	}
 }	
