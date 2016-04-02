@@ -769,6 +769,55 @@ public class SimulationManager implements Serializable
 		return s.Finished();
 	}
 	
+	
+		
+	private void writeObject(ObjectOutputStream stream)
+     throws IOException
+	{
+		ActiveEntry.hasSerialized = false;
+		ResourceEntry.hasSerialized = false;
+		QueueEntry.hasSerialized = false;
+		ObserverEntry.hasSerialized = false;
+		HistogramEntry.hasSerialized = false;
+		AttributeTable.hasSerialized = false;
+		
+		stream.defaultWriteObject();
+		
+		ActiveEntry.hasSerialized = true;
+		ResourceEntry.hasSerialized = true;
+		QueueEntry.hasSerialized = true;
+		ObserverEntry.hasSerialized = true;
+		HistogramEntry.hasSerialized = true;
+		AttributeTable.hasSerialized = true;
+	}
+ 	private void readObject(ObjectInputStream stream)
+     throws IOException, ClassNotFoundException
+	{
+		ActiveEntry.hasSerialized = false;
+		ResourceEntry.hasSerialized = false;
+		QueueEntry.hasSerialized = false;
+		ObserverEntry.hasSerialized = false;
+		HistogramEntry.hasSerialized = false;
+		AttributeTable.hasSerialized = false;
+		
+		stream.defaultReadObject();
+		
+		ActiveEntry.hasSerialized = true;
+		ResourceEntry.hasSerialized = true;
+		QueueEntry.hasSerialized = true;
+		ObserverEntry.hasSerialized = true;
+		HistogramEntry.hasSerialized = true;
+		AttributeTable.hasSerialized = true;
+	}
+ 	
+ 	public Scheduler getScheduler() {
+ 		return s;
+ 	}
+
+	public float getResettime() {
+		return resettime;
+	}
+	
 	/**
 	 * Depois da simula��o terminada, escreve os resultados
 	 * das estat�sticas nos arquivos de sa�da
@@ -819,47 +868,107 @@ public class SimulationManager implements Serializable
 		
 		return true;
 	}
-		
-	private void writeObject(ObjectOutputStream stream)
-     throws IOException
+	
+	public synchronized boolean OutputSimulationResultsConsole()
 	{
-		ActiveEntry.hasSerialized = false;
-		ResourceEntry.hasSerialized = false;
-		QueueEntry.hasSerialized = false;
-		ObserverEntry.hasSerialized = false;
-		HistogramEntry.hasSerialized = false;
-		AttributeTable.hasSerialized = false;
+		System.out.println("OutputSimulationResults ");
+		PrintStream os;
+		FileOutputStream ofile;
 		
-		stream.defaultWriteObject();
+		 
 		
-		ActiveEntry.hasSerialized = true;
-		ResourceEntry.hasSerialized = true;
-		QueueEntry.hasSerialized = true;
-		ObserverEntry.hasSerialized = true;
-		HistogramEntry.hasSerialized = true;
-		AttributeTable.hasSerialized = true;
+		System.out.println("\r\n                    Simulation Report");
+		System.out.print("\r\nSimulation ended at time ");
+		System.out.println(s.GetClock());
+		System.out.print("Statistics collected from instant " + resettime);
+		System.out.println(" during " + (s.GetClock() - resettime) + " time units.");
+		
+		System.out.println("\r\n          Observers' report");
+		
+		Iterator it;
+		
+		it = observers.values().iterator();
+		while(it.hasNext())
+		{
+			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+		}
+		
+		System.out.println("\r\n          Histograms' report");
+
+		it = histograms.values().iterator();
+		while(it.hasNext())
+		{
+//			((HistogramEntry)it.next()).DoReportConsole();
+		}
+		
+		System.out.println("\r\nSimulation Report End");
+		
+		 
+		
+		return true;
 	}
- 	private void readObject(ObjectInputStream stream)
-     throws IOException, ClassNotFoundException
-	{
-		ActiveEntry.hasSerialized = false;
-		ResourceEntry.hasSerialized = false;
-		QueueEntry.hasSerialized = false;
-		ObserverEntry.hasSerialized = false;
-		HistogramEntry.hasSerialized = false;
-		AttributeTable.hasSerialized = false;
+	
+	public void printObserversReport() { 
+		System.out.println("\r\n          Observers' report");
 		
-		stream.defaultReadObject();
+		Iterator it;
 		
-		ActiveEntry.hasSerialized = true;
-		ResourceEntry.hasSerialized = true;
-		QueueEntry.hasSerialized = true;
-		ObserverEntry.hasSerialized = true;
-		HistogramEntry.hasSerialized = true;
-		AttributeTable.hasSerialized = true;
+		it = observers.values().iterator();
+		while(it.hasNext())
+		{
+			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+		}
+		
 	}
- 	
- 	public Scheduler getScheduler() {
- 		return s;
- 	}
+	
+	public HashMap getObservers() {
+		return observers;
+	}
+	
+	public void printObserversReport(ObserverEntry observerEntry) { 
+		 
+		observerEntry.DoReportConsole(s.GetClock() - resettime);
+	 
+	
+}
+	
+	public void printWeightedAverage(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getAvearageWeighted(s.GetClock() - resettime));
+	 
+	 
+	
+}
+	
+	public void printStandardDeviationWeighted(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getStandardDeviationWeighted(s.GetClock() - resettime));
+	 
+	 
+	
+}
+	
+	public void printVarianceWeighted(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getVarianceWeighted(s.GetClock() - resettime));
+	}
+	
+	public void printMin(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getMin(s.GetClock() - resettime));
+	}
+	
+	public void printMax(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getMax(s.GetClock() - resettime));
+	}
+	
+	public void printNumberOfObservations(ObserverEntry observerEntry) { 
+		 
+		System.out.println(observerEntry.getNumberOfObservations(s.GetClock() - resettime));
+	}
+	
+	
+	
+	
 }	
