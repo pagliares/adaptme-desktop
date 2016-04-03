@@ -15,7 +15,7 @@ import adaptme.ui.window.AdaptMeUI;
 
 /**
  * 
- * @author Joelmir
+ * @author Rodrigo Martins Pagliares
  */
 public class Main {
     public static void main(String[] args) {

@@ -39,7 +39,7 @@ public class WorkProductResourcesQueueObserversPanel extends JPanel {
  	private JComboBox<QueueObserverType> observerTypeJComboBox;
  	private WorkProductResourcesQueueObserversTableModel observersTableModel ;
  	private TableColumnModel modeloColuna;
- 	private int counter;
+ 	private static int counter;  // para evitar nomes duplicados de observadores
  	private int workProductResourcesBottomPanelNumber;
  	private int selectedRow;
  	private String workProductName;
