@@ -29,12 +29,14 @@ import simula.manager.*;
 public class ExperimentationProgramProxy
 <xsl:text>
 {
+
+ private SimulationManager man;
  public void execute()
  {
   System.out.println("\nGeracao de </xsl:text>
   <xsl:value-of select="@id"/>
   <xsl:text> atraves de Simulation Manager");
-  SimulationManager man= new SimulationManager();
+  man= new SimulationManager();
 
   QueueEntry qe;//queues 
   ResourceEntry re;//resource queues
