@@ -3,7 +3,7 @@ package adaptme.facade;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import adaptme.ExperimentationProgramProxy;
+import adaptme.DynamicExperimentationProgramProxy;
 import simula.Scheduler;
 import simula.manager.*;
  
@@ -28,7 +28,7 @@ public class SimulationManagerFacade {
 	public void execute(int numberReplications) {
 		
 		for (int i =0; i < numberReplications; i++) {
-			ExperimentationProgramProxy epp = new ExperimentationProgramProxy();
+			DynamicExperimentationProgramProxy epp = new DynamicExperimentationProgramProxy();
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
 			epp = null;

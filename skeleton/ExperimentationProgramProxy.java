@@ -2,9 +2,9 @@ package adaptme;
 
 import simula.manager.SimulationManager;
 
-public class ExperimentationProgramProxy {
+public class DynamicExperimentationProgramProxy {
 	private SimulationManager man;
-	
+
 	public void execute() {
 
 	}
@@ -12,6 +12,7 @@ public class ExperimentationProgramProxy {
 	public SimulationManager getSimulationManager() {
 		return man;
 	}
-	
+
 	// Skeleton empty template
+ 
 }

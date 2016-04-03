@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import adaptme.ExperimentationProgramProxy;
 
 public class JavaProgramTextAreaPanel extends JPanel {
 	

@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import adaptme.ExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
 import simulator.base.Policy;
 import simulator.base.QueueType;
