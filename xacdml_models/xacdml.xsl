@@ -127,17 +127,6 @@ public class ExperimentationProgramProxy
   System.out.println("Simulation Stopped!");
 
   //finally, output the results
-
-  Iterator it;
-  HashMap observers = man.getObservers();
-  it = observers.values().iterator();
- 
- 
-   System.out.println("IMPRIMINDO APENAS UM OBSERVADOR");
-   ObserverEntry observerEntry = (ObserverEntry)it.next();
-   man.printObserversReport(observerEntry);
-				
- 
   man.OutputSimulationResults ("</xsl:text>
 
   <xsl:value-of select="@id"/>
