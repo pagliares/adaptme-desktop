@@ -649,7 +649,7 @@ public class AlternativeOfProcessPanel {
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.1. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
 		
-		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel);
+		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel, tabbedPaneActivity4);
 		tabbedPaneActivity4.addTab("4.2. Configuring experimentation program", experimentationPanel);
 		
 //		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);
@@ -657,7 +657,7 @@ public class AlternativeOfProcessPanel {
 		
 		ShowResultsPanel showResultsPanel = new ShowResultsPanel(experimentationPanel, simulationFacade, this);  // talvez tenha que passar a lista de process
 																											// repository dentro de simulation facade
-		tabbedPaneActivity4.addTab("4.4. Showing results of alternatives of process", showResultsPanel);
+		tabbedPaneActivity4.addTab("4.3. Showing results of alternatives of process", showResultsPanel);
 		
 		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
 	}

@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -48,8 +49,11 @@ public class ExperimentationPanel extends JPanel {
 	
 	private WorkProductResourcesPanel workProductResourcesPanel;
 	private JTextField textField_4;
+	
+	private JTabbedPane tabbedPaneActivity4;
 
-	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel) {
+	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4) {
+		this.tabbedPaneActivity4 = tabbedPaneActivity4;
 		this.workProductResourcesPanel = workProductResourcesPanel;
 		setLayout(null);
 		
@@ -113,6 +117,8 @@ public class ExperimentationPanel extends JPanel {
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
 				SimulationManagerFacade facade = new SimulationManagerFacade();
 				facade.execute(numberReplications);
+				tabbedPaneActivity4.setSelectedIndex(2);
+				
 			}
 		});
 		btnSimulate.setBounds(256, 24, 98, 29);
