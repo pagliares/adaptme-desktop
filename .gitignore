@@ -21,6 +21,7 @@ input/
 HBC_Pagliares.java
 HBC.java
 src/main/java/adaptme/ExperimentationProgramProxy.java
+ExperimentationProgramProxy.java
  
 # Package Files #
 *.jar
