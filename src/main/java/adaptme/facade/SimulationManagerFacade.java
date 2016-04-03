@@ -16,6 +16,14 @@ public class SimulationManagerFacade {
 		System.out.println(" during " + (scheduler.GetClock() - man.getResettime()) + " time units.");
 	}
 	
+	public void printOneObserver() {
+		Iterator it;
+		  HashMap observers = man.getObservers();
+		  it = observers.values().iterator();
+		   ObserverEntry observerEntry = (ObserverEntry)it.next();
+		   man.printObserversReport(observerEntry);
+	}
+	
 	
 	public void execute(int numberReplications) {
 		
@@ -23,6 +31,7 @@ public class SimulationManagerFacade {
 			ExperimentationProgramProxy epp = new ExperimentationProgramProxy();
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
+			epp = null;
 		}
 	}
 	
