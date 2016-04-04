@@ -2,7 +2,7 @@ package adaptme;
 
 import simula.manager.SimulationManager;
 
-public class DynamicExperimentationProgramProxy {
+public class DynamicExperimentationProgramProxy implements IDynamicExperimentationProgramProxy {
 	private SimulationManager man;
 
 	public void execute() {

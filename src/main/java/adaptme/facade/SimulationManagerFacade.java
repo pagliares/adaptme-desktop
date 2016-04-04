@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import adaptme.DynamicExperimentationProgramProxy;
+import adaptme.DynamicExperimentationProgramProxyFactory;
+import adaptme.IDynamicExperimentationProgramProxy;
 import simula.Scheduler;
 import simula.manager.*;
  
@@ -28,7 +30,9 @@ public class SimulationManagerFacade {
 	public void execute(int numberReplications) {
 		
 		for (int i =0; i < numberReplications; i++) {
-			DynamicExperimentationProgramProxy epp = new DynamicExperimentationProgramProxy();
+			 
+//			IDynamicExperimentationProgramProxy epp = new DynamicExperimentationProgramProxy();
+			IDynamicExperimentationProgramProxy epp = DynamicExperimentationProgramProxyFactory.newInstance();
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
 			epp = null;
