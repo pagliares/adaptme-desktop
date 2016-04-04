@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import adaptme.DynamicExperimentationProgramProxyFactory;
+import adaptme.IDynamicExperimentationProgramProxy;
+
 
 public class JavaProgramTextAreaPanel extends JPanel {
 	
@@ -88,7 +91,8 @@ public class JavaProgramTextAreaPanel extends JPanel {
 				String fileContent = textArea.getText();
 
 				saveXML("DynamicExperimentationProgramProxy", fileContent);
-				JOptionPane.showMessageDialog(getPanel(), "DynamicExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");  
+				JOptionPane.showMessageDialog(getPanel(), "DynamicExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");
+				IDynamicExperimentationProgramProxy epp = DynamicExperimentationProgramProxyFactory.newInstance();  // Reload the class
 		
  			}
 		});
