@@ -73,7 +73,7 @@ public class ShowResultsPanel extends JPanel {
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Process p = Runtime.getRuntime().exec("cp skeleton/ExperimentationProgramProxy.java src/main/java/adaptme");
+					Process p = Runtime.getRuntime().exec("cp skeleton/DynamicExperimentationProgramProxy.java src/main/java/adaptme");
 					alternativeOfProcessPanel.closeTabbedPane();
 				} 
 

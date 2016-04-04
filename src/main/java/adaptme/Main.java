@@ -20,7 +20,7 @@ import adaptme.ui.window.AdaptMeUI;
 public class Main {
     public static void main(String[] args) {
 	try {
-		Process p = Runtime.getRuntime().exec("cp skeleton/ExperimentationProgramProxy.java src/main/java/adaptme");
+		Process p = Runtime.getRuntime().exec("cp skeleton/DynamicExperimentationProgramProxy.java src/main/java/adaptme");
 		
 	    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		if ("Nimbus".equals(info.getName())) {
