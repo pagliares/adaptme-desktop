@@ -87,8 +87,8 @@ public class JavaProgramTextAreaPanel extends JPanel {
 	
 				String fileContent = textArea.getText();
 
-				saveXML("ExperimentationProgramProxy", fileContent);
-				JOptionPane.showMessageDialog(getPanel(), "ExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");  
+				saveXML("DynamicExperimentationProgramProxy", fileContent);
+				JOptionPane.showMessageDialog(getPanel(), "DynamicExperimentationProgramProxy.java successfully saved to folder src/main/java/adaptme/");  
 		
  			}
 		});

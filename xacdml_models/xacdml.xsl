@@ -26,7 +26,7 @@ import simula.manager.*;
 <xsl:text>public class </xsl:text>
 <xsl:value-of select="@id"/> -->
 <xsl:template match="acd">
-public class ExperimentationProgramProxy
+public class DynamicExperimentationProgramProxy
 <xsl:text>
 {
 
