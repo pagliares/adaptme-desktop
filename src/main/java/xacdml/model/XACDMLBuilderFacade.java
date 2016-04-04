@@ -844,7 +844,8 @@ public class XACDMLBuilderFacade {
 			// o tipo da fila abaixo
 
 			JTable roleTable = roleResourcePanel.getTableRole();
-			Integer queueInitialQuantity = (Integer) roleTable.getModel().getValueAt(i, 4);
+//			Integer queueInitialQuantity = (Integer) roleTable.getModel().getValueAt(i, 4);
+			Integer queueInitialQuantity = role.getIntialQuantity();
 			role.setIntialQuantity(queueInitialQuantity);
 
 			// define o tipo da fila da entidade permanente (QUEUE, STACK or
@@ -854,7 +855,8 @@ public class XACDMLBuilderFacade {
 
 			queueTypePermanentEntity.setStruct(queueTypePermanentEntityString);
 			queueTypePermanentEntity.setSize(queueSizePermanentEntityString);
-			queueTypePermanentEntity.setInit(Integer.toString(role.getIntialQuantity())); // mesmo que pegar de queueInitialQuantity definido acima?
+//			queueTypePermanentEntity.setInit(Integer.toString(role.getIntialQuantity())); // mesmo que pegar de queueInitialQuantity definido acima?
+			queueTypePermanentEntity.setInit(Integer.toString(queueInitialQuantity)); // mesmo que pegar de queueInitialQuantity definido acima?
 			deadPermanentEntity.setType(queueTypePermanentEntity);
 
 			// configura os observer para o dead state

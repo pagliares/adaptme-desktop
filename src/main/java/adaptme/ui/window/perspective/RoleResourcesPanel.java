@@ -184,8 +184,7 @@ public class RoleResourcesPanel {
 		tableRole.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		tableRole.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		tableRole.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		tableRole.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
- 
+  
 
 		((DefaultTableCellRenderer) tableRole.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
@@ -193,8 +192,7 @@ public class RoleResourcesPanel {
 		tableRole.getColumnModel().getColumn(1).setPreferredWidth(23);
 		tableRole.getColumnModel().getColumn(2).setPreferredWidth(9);
 		tableRole.getColumnModel().getColumn(3).setPreferredWidth(9);
-		tableRole.getColumnModel().getColumn(4).setPreferredWidth(9);
-		
+ 		
 	}
 
 	public List<Role> getRoles() {

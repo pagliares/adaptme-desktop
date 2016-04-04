@@ -14,7 +14,7 @@ public class RoleTableModel extends AbstractTableModel {
 	private List<Role> roles;
 	private List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanels;
 	
-	private String[] headersRole = new String[] { "Name", "Queue name", "Queue type", "Queue size", "Queue initial quantity"};
+	private String[] headersRole = new String[] { "Name", "Queue name", "Queue type", "Queue size"};
 
 	public RoleTableModel(List<Role> roles, List<RoleResourcesBottomPanel> listOfRoleResourcesBottomPanels) {
 		this.roles = roles;
@@ -43,8 +43,6 @@ public class RoleTableModel extends AbstractTableModel {
 			return role.getQueueType();
  		case 3:
  			return role.getQueueSize();
-		case 4:
-			return role.getIntialQuantity();
 		default:
 			return null;
 		}
@@ -68,9 +66,6 @@ public class RoleTableModel extends AbstractTableModel {
 		case 3:
 			role.setQueueSize((int) aValue);
 			break;
-		case 4:
-			role.setIntialQuantity((int) aValue); 
-			break;
 		}
 	}
 
@@ -84,8 +79,6 @@ public class RoleTableModel extends AbstractTableModel {
 		case 2:
 			return QueueType.class;
 		case 3:
-			return Integer.class;
-		case 4:
 			return Integer.class;
 		default:
 			return null;

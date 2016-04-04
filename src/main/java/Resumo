@@ -79,3 +79,8 @@ tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  JCheckbox not being rendered in JTable cells. True or false being rendered instead
  Sollution. Tirei a linha : tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
  
+ 
+ Importante (me tirou varios dias de sono):
+ 
+ IMPORTANTE: AO GERAR JAVA DE XACDML, SE O TAMANHO DA FILA FOR IGUAL A QUANTIDADE INICIAL, GERA RESOURCE QUEUE. CASO CONTRARIO GERA TEMPORARY QUEUE
+ 
