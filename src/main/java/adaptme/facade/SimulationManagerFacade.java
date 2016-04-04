@@ -10,20 +10,28 @@ import simula.Scheduler;
 import simula.manager.*;
  
 public class SimulationManagerFacade {
-	private SimulationManager man;
+	private SimulationManager simulationManager;
+	private IDynamicExperimentationProgramProxy epp;
+	
+	public SimulationManagerFacade() {
+		
+		epp = DynamicExperimentationProgramProxyFactory.newInstance();
+		
+		this.simulationManager = (SimulationManager)epp.getSimulationManager();
+	}
 	
 	public void printSimulationEndedTime() {
-		Scheduler scheduler = man.getScheduler();
-		System.out.println("Statistics collected from instant " + man.getResettime());
-		System.out.println(" during " + (scheduler.GetClock() - man.getResettime()) + " time units.");
+		Scheduler scheduler = simulationManager.getScheduler();
+		System.out.println("Statistics collected from instant " + simulationManager.getResettime());
+		System.out.println(" during " + (scheduler.GetClock() - simulationManager.getResettime()) + " time units.");
 	}
 	
 	public void printOneObserver() {
 		Iterator it;
-		  HashMap observers = man.getObservers();
+		  HashMap observers = simulationManager.getObservers();
 		  it = observers.values().iterator();
 		   ObserverEntry observerEntry = (ObserverEntry)it.next();
-		   man.printObserversReport(observerEntry);
+		   simulationManager.printObserversReport(observerEntry);
 	}
 	
 	
@@ -31,16 +39,14 @@ public class SimulationManagerFacade {
 		
 		for (int i =0; i < numberReplications; i++) {
 			 
-//			IDynamicExperimentationProgramProxy epp = new DynamicExperimentationProgramProxy();
-			IDynamicExperimentationProgramProxy epp = DynamicExperimentationProgramProxyFactory.newInstance();
+			epp = DynamicExperimentationProgramProxyFactory.newInstance();
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
-			epp = null;
 		}
 	}
 	
 	public static void main(String [] args) {
-		SimulationManagerFacade hbcFacade = new SimulationManagerFacade();
+//		SimulationManagerFacade hbcFacade = new SimulationManagerFacade();
 //		hbcFacade.printSimulationEndedTime();
 	}
 }

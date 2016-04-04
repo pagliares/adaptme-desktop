@@ -31,6 +31,19 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
 {
 
  private SimulationManager man;
+ 
+ public DynamicExperimentationProgramProxy() {
+		this.man = new SimulationManager();
+ }
+ 
+ public void setSimulationManager(SimulationManager simulationManager) {
+		this.man = simulationManager;
+	}
+ 
+ public SimulationManager getSimulationManager() {
+		return man;
+}
+ 
  public void execute()
  {
   System.out.println("\nGeracao de </xsl:text>

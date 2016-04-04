@@ -10,6 +10,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import adaptme.facade.SimulationManagerFacade;
+import simula.manager.SimulationManager;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProductXACDML;
