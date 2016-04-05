@@ -640,7 +640,7 @@ public class AlternativeOfProcessPanel {
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(processRepository, mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPaneActivity3.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
-		spemDrivenPerspectivePanel.addTab("3. Simulation of the alternative of process", tabbedPaneActivity3);
+		spemDrivenPerspectivePanel.addTab("3. Generation of a simulation model for the alternative of process", tabbedPaneActivity3);
 		spemDrivenPerspectivePanel.getTabbedPane().setSelectedIndex(2); // exibe as subtabs da tab 3, deixando a 3.1 selecionada por default
 																		  // sem esta linha aparece a aba 3 e somente ao clicar nela que
 																		  // as subtabs aparecem. O indice 2 indica a tab 3 e nao a subtab 3.1
@@ -659,7 +659,7 @@ public class AlternativeOfProcessPanel {
 																											// repository dentro de simulation facade
 		tabbedPaneActivity4.addTab("4.3. Showing results of alternatives of process", showResultsPanel);
 		
-		spemDrivenPerspectivePanel.addTab("4. Experimentation", tabbedPaneActivity4);
+		spemDrivenPerspectivePanel.addTab("4. Experimentation of the simulation model", tabbedPaneActivity4);
 	}
 
 	private int count = 0;
