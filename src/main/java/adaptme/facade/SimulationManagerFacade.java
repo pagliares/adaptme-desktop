@@ -16,14 +16,12 @@ public class SimulationManagerFacade {
 	public SimulationManagerFacade() {
 		
 		epp = DynamicExperimentationProgramProxyFactory.newInstance();
-		
-		this.simulationManager = (SimulationManager)epp.getSimulationManager();
 	}
 	
 	public void printSimulationEndedTime() {
-		Scheduler scheduler = simulationManager.getScheduler();
+		Scheduler scheduler = epp.getSimulationManager().getScheduler();
 		System.out.println("Statistics collected from instant " + simulationManager.getResettime());
-		System.out.println(" during " + (scheduler.GetClock() - simulationManager.getResettime()) + " time units.");
+		System.out.println(" during " + (scheduler.getEndclock() - simulationManager.getResettime()) + " time units.");
 	}
 	
 	public void printOneObserver() {
@@ -42,6 +40,10 @@ public class SimulationManagerFacade {
 			epp = DynamicExperimentationProgramProxyFactory.newInstance();
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
+			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
+			printSimulationEndedTime();
+			simulationManager.OutputSimulationResultsConsole();
+			
 		}
 	}
 	

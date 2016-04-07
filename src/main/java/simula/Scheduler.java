@@ -1,5 +1,5 @@
 // Arquivo Scheduler.java
-// Implementação das Classes do Grupo Executivo da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo Executivo da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 19.Mar.1999	Wladimir
 
 package simula;
@@ -9,23 +9,23 @@ import java.util.*;
 public class Scheduler implements Runnable
 {
 	private Calendar calendar;		// estrutura de armazenamento dos estados ativos a servir
-	private float clock = 0;		// relógio da simulação
-	private float endclock;			// fim da simulação
-	private float timeprecision;	// diferença mínima que deve haver entre dois instantes
+	private float clock = 0;		// relï¿½gio da simulaï¿½ï¿½o
+	private float endclock;			// fim da simulaï¿½ï¿½o
+	private float timeprecision;	// diferenï¿½a mï¿½nima que deve haver entre dois instantes
 									// para que sejam considerados diferentes 
-	private Vector activestates;	// Vetor dos estados ativos da simulação
-	private boolean crescan = true;	// flag de habilitação de re-varrudura dos eventos C
+	private Vector activestates;	// Vetor dos estados ativos da simulaï¿½ï¿½o
+	private boolean crescan = true;	// flag de habilitaï¿½ï¿½o de re-varrudura dos eventos C
 	private volatile boolean running = false;
-									// controla se a simulação deve continuar rodando
-	private boolean stopped = false;// indica se a simulação parou conforme ordenado
-	private Thread simulation;		// thread em que a simulação irá executar
-	private byte termreason;		// porque encerrou a simulação
+									// controla se a simulaï¿½ï¿½o deve continuar rodando
+	private boolean stopped = false;// indica se a simulaï¿½ï¿½o parou conforme ordenado
+	private Thread simulation;		// thread em que a simulaï¿½ï¿½o irï¿½ executar
+	private byte termreason;		// porque encerrou a simulaï¿½ï¿½o
 	
-	private static Scheduler s;		// uma referência estática ao Scheduler
-									// para permitir ações de emergência (parada)
+	private static Scheduler s;		// uma referï¿½ncia estï¿½tica ao Scheduler
+									// para permitir aï¿½ï¿½es de emergï¿½ncia (parada)
 
 	/**
-	 * retorna referência ao objeto ativo
+	 * retorna referï¿½ncia ao objeto ativo
 	 */
 	public static Scheduler Get(){return s;}
 
@@ -38,7 +38,7 @@ public class Scheduler implements Runnable
 	}
 	
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 * Apaga todos os eventos agendados. Deve ser chamado ANTES
 	 * de todos os Clear() dos Active/DeadState
 	 */
@@ -46,8 +46,8 @@ public class Scheduler implements Runnable
 	{
 		if(running)
 			return;
-		simulation = null;	// impede continuação
-		clock = 0;					// reinicia relógio
+		simulation = null;	// impede continuaï¿½ï¿½o
+		clock = 0;					// reinicia relï¿½gio
 		stopped = false;
 		termreason = 0;
 		calendar = new Calendar();
@@ -79,21 +79,21 @@ public class Scheduler implements Runnable
 	}
 
 	/**
-	 * retorna true se a simulação terminou
+	 * retorna true se a simulaï¿½ï¿½o terminou
 	 */
 	public boolean Finished(){return stopped;}
 	
 	/**
-	 * Inicia execuçao da simulacao numa thread separada
+	 * Inicia execuï¿½ao da simulacao numa thread separada
 	 */
 	public synchronized boolean Run(double endtime)
 	{
-		if(endtime < 0.0)				// relógio não pode ser negativo
-			return false;				// se for 0.0 executa até acabarem as entidades
+		if(endtime < 0.0)				// relï¿½gio nï¿½o pode ser negativo
+			return false;				// se for 0.0 executa atï¿½ acabarem as entidades
 
 		if(!running)
 		{
-			if(activestates.isEmpty())	// se não há nenhum estado ativo registrado, 
+			if(activestates.isEmpty())	// se nï¿½o hï¿½ nenhum estado ativo registrado, 
 				return false;			// como executar?
 			activestates.trimToSize();
 			running = true;
@@ -103,7 +103,7 @@ public class Scheduler implements Runnable
 			termreason = 0;
 			simulation = new Thread(this);
 			simulation.setPriority(Thread.MAX_PRIORITY);
-			simulation.start();			// inicia execução
+			simulation.start();			// inicia execuï¿½ï¿½o
 			Log.LogMessage("Scheduler: simulation started");
 
 			return true;
@@ -113,40 +113,40 @@ public class Scheduler implements Runnable
 	}
 	
 	/**
-	 * Pára a simulacao
+	 * Pï¿½ra a simulacao
 	 */
 	public synchronized void Stop()
 	{
-		if(stopped)						// se já parou
+		if(stopped)						// se jï¿½ parou
 			return;
 		
 		stopped = false;
 		running = false;				// encerramento suave
 		try
 		{
-			simulation.join(5000);		// espera até 5 segundos
+			simulation.join(5000);		// espera atï¿½ 5 segundos
 		}
 		catch(InterruptedException e)
 		{
 			stopped = true;
-			simulation = null;	// não pode continuar
-			termreason = 4;			// parada drástica
+			simulation = null;	// nï¿½o pode continuar
+			termreason = 4;			// parada drï¿½stica
 			Log.LogMessage("Scheduler: simulation stopped drastically");
 			Log.Close();
-			return;							// já parou mesmo...
+			return;							// jï¿½ parou mesmo...
 		}
 		
 		termreason = 3;			// parada suave bem sucedida
 			
-		if(!stopped)					// se ainda não parou...
+		if(!stopped)					// se ainda nï¿½o parou...
 		{
 			try
 			{
-				simulation.interrupt();		// pára de forma drástica
+				simulation.interrupt();		// pï¿½ra de forma drï¿½stica
 			}
 			catch(SecurityException e){}
 			
-			simulation = null;	// não pode continuar
+			simulation = null;	// nï¿½o pode continuar
 			termreason = 4;
 			Log.LogMessage("Scheduler: simulation stopped drastically");
 			Log.Close();
@@ -157,7 +157,7 @@ public class Scheduler implements Runnable
 	}
 	
 	/**
-	 * Continua a execução de uma simulação parada por Stop()
+	 * Continua a execuï¿½ï¿½o de uma simulaï¿½ï¿½o parada por Stop()
 	 */
 	public synchronized boolean Resume()
 	{
@@ -174,7 +174,7 @@ public class Scheduler implements Runnable
 	}
 	
 	/**
-	 * Seta o mínimo intervalo entre dois instantes para que sejam considerados o mesmo.
+	 * Seta o mï¿½nimo intervalo entre dois instantes para que sejam considerados o mesmo.
 	 */
 	public void SetPrecision(double timeprec)
 	{ 
@@ -183,24 +183,24 @@ public class Scheduler implements Runnable
 	}
 
 	/**
-	 * retorna relógio da simulação.
+	 * retorna relï¿½gio da simulaï¿½ï¿½o.
 	 */
 	public float GetClock(){return clock;}
 
 	/**
-	 * Código que roda a simulacao. (rodado numa Thread separada)
+	 * Cï¿½digo que roda a simulacao. (rodado numa Thread separada)
 	 */
 	public void run()
 	{
 		while(running)
 		{
-			// atualiza relógio da simulação
+			// atualiza relï¿½gio da simulaï¿½ï¿½o
 
 			clock = calendar.GetNextClock();
 			
 			Log.LogMessage("Scheduler: clock advanced to " + clock);
 
-			// verifica se simulação chegou ao fim
+			// verifica se simulaï¿½ï¿½o chegou ao fim
 
 			if(clock == 0.0)			// fim das entidades
 			{
@@ -232,8 +232,8 @@ public class Scheduler implements Runnable
 				executed |= a.BServed(clock);	// se ao menos um executou, fica registrado
 			}while(calendar.RemoveNext());
 
-			if(!executed)				// se não havia nada a ser executado nesse instante
-				continue;				// pula para o próximo sem executar a fase C.
+			if(!executed)				// se nï¿½o havia nada a ser executado nesse instante
+				continue;				// pula para o prï¿½ximo sem executar a fase C.
 										// (as atividades podem ter alterado o tempo localmente)
 						
 			// Fase C
@@ -250,5 +250,9 @@ public class Scheduler implements Runnable
 
 		stopped = true;			// sinaliza o encerramento
 		running = false;
+	}
+
+	public float getEndclock() {
+		return endclock;
 	}
 }

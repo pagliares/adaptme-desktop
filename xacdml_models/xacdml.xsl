@@ -48,8 +48,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   System.out.println("\nGeracao de </xsl:text>
   <xsl:value-of select="@id"/>
   <xsl:text> atraves de Simulation Manager");
-  man= new SimulationManager();
-
+  
   QueueEntry qe;//queues 
   ResourceEntry re;//resource queues
   ExternalActiveEntry eae;//generator and detroy
