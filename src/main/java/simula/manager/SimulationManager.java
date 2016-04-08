@@ -914,18 +914,19 @@ public class SimulationManager implements Serializable
 		String result = null;
 		result = "OutputSimulationResults \n";
 		result+= "\r\n                    Simulation Report";
-		result+= "\r\nSimulation ended at time ";
+		result+= "\r\nSimulation ended at time \n";
 		result+= s.GetClock();
 		result+= "Statistics collected from instant " + resettime;
 		result+= " during " + (s.GetClock() - resettime) + " time units.";
-		result+= "\r\n          Observers' report";
+		result+= "\r\n\n          Observers' report\n";
 		
 		Iterator it;
 		
 		it = observers.values().iterator();
 		while(it.hasNext())
 		{
-			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+//			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+			result += ((ObserverEntry)it.next()).getReportConsole(s.GetClock() - resettime).toString();
 		}
 		
 	

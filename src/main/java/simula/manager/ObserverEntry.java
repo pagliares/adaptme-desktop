@@ -401,6 +401,90 @@ public class ObserverEntry extends Entry
 		System.out.println("----------------------------------------------------------------------");
 	}
  	
+ 	StringBuffer getReportConsole(float obstime)
+	{
+		if(SimObj == null)	// erro
+			return null;
+	
+		StringBuffer result = new StringBuffer();
+		result.append("----------------------------------------------------------------------\n");
+		result.append("\r\nReport from observer " + name + "\n");
+		result.append("Statistics summary:\n");
+		
+		boolean weighted = false;
+		
+		switch(type)
+		{
+			case RESOURCE:
+				result.append("Number of resources permanencing in queue:\n");
+				weighted = true;
+				break;
+			case QUEUE:
+				if(att == null)
+				{
+					result.append("Queue length:\n");
+					weighted = true;
+				}
+				else
+					result.append("Entity queue time:\n");
+				break;
+			case ACTIVE:
+				if(att == null)
+					result.append("Active state idle time (or inter-arrival time for Generate states):\n");
+				else
+					result.append("Observed entity attribute " + att + ":\n");
+				break;
+			case DELAY:
+				if(att == null)
+				{
+					result.append("Timestamper observer; no statistics available.\n");
+					return result;
+				}
+				else
+				{
+					result.append("Delay observed from previous stamp when ");
+					if(exp == null)
+						result.append("arriving:\n");
+					else
+						result.append("leaving:\n");
+				}
+				break;
+			case PROCESSOR:
+				result.append("Processor observer; no statistics available.\n");
+                result.append("Assigned " + exp + " to " + att + ".\n");
+				return result;
+			default:
+				result.append("Error: unknown observer type.\n");
+		}
+		
+		if(weighted)
+		{
+			float div = obstime / SimObj.NumObs();
+			result.append("Average: " + SimObj.Mean() / div);
+			result.append(" StdDev: " + SimObj.StdDev() / div);
+			result.append(" Variance: " + SimObj.Variance() / (div * div) + "\n"); 
+			result.append(" Minimum: " + SimObj.Min());
+			result.append(" Maximum: " + SimObj.Max()); 
+			result.append(" Observations: " + SimObj.NumObs() + "\n");
+		}
+		else
+		{
+			result.append("Average: " + SimObj.Mean());
+			result.append(" StdDev: " + SimObj.StdDev());
+			result.append(" Variance: " + SimObj.Variance() + "\n");
+			result.append(" Minimum: " + SimObj.Min());
+			result.append(" Maximum: " + SimObj.Max());
+			result.append(" Observations: " + SimObj.NumObs() + "\n"); 
+			 
+		}
+
+		if(histid != null)			
+			result.append("\r\nAditional information available for histogram with id = " + histid + ".\n");
+		    
+		result.append("----------------------------------------------------------------------\n");	
+		return result; 
+	}
+ 	
  	public double getAvearageWeighted(float obstime) {
  		float div = obstime / SimObj.NumObs();
  		return SimObj.Mean() / div;
