@@ -67,12 +67,20 @@ public class ShowResultsPanel extends JPanel {
 		table.setModel(showResultsTableModel);
  		scrollPaneTableResults.setViewportView(table);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(6, 427, 1049, 91);
-		add(panel_1);
-		panel_1.setLayout(null);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(16, 185, 662, 412);
+		add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		
+		JButton btnShowResults = new JButton("Show results");
+		btnShowResults.setBounds(809, 374, 117, 29);
+		add(btnShowResults);
 		
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
+		btnSimulateAnotherAlternative.setBounds(711, 474, 290, 29);
+		add(btnSimulateAnotherAlternative);
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -86,26 +94,12 @@ public class ShowResultsPanel extends JPanel {
 				}
 			}
 		});
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 185, 1039, 230);
-		add(scrollPane);
-		
-		JTextArea textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
-		btnSimulateAnotherAlternative.setBounds(690, 31, 290, 29);
-		panel_1.add(btnSimulateAnotherAlternative);
-		
-		JButton btnShowResults = new JButton("Show results");
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getFacade();
 				textArea.setText(simulationManagerFacade.getSimulationResults());
 			}
 		});
-		
-		btnShowResults.setBounds(382, 31, 117, 29);
-		panel_1.add(btnShowResults);
 		
 		
 		
