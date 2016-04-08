@@ -46,6 +46,7 @@ public class ExperimentationPanel extends JPanel {
 	private JTextField textField_3;
 	
 	private ShowResultsPanel showResultsPanel;
+	private SimulationManagerFacade facade;
 	
 	private WorkProductResourcesPanel workProductResourcesPanel;
 	private JTextField textField_4;
@@ -55,6 +56,7 @@ public class ExperimentationPanel extends JPanel {
 	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4) {
 		this.tabbedPaneActivity4 = tabbedPaneActivity4;
 		this.workProductResourcesPanel = workProductResourcesPanel;
+		this.facade = new SimulationManagerFacade();
 		setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -115,9 +117,10 @@ public class ExperimentationPanel extends JPanel {
 				showResultsPanel.updateShowResultsPanelTable();
 				
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
-				SimulationManagerFacade facade = new SimulationManagerFacade();
+				
 				facade.execute(numberReplications);
-				tabbedPaneActivity4.setSelectedIndex(2);
+				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
+			 
 				
 			}
 		});
@@ -226,6 +229,10 @@ public class ExperimentationPanel extends JPanel {
 
 	public void setListener(ShowResultsPanel listener) {
 		this.showResultsPanel = listener;
+	}
+
+	public SimulationManagerFacade getFacade() {
+		return facade;
 	}
 
 }

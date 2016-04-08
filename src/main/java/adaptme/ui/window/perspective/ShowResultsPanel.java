@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import adaptme.facade.SimulationManagerFacade;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
 import model.spem.SimulationFacade;
@@ -18,6 +19,8 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
 
 public class ShowResultsPanel extends JPanel {
 	
@@ -65,7 +68,7 @@ public class ShowResultsPanel extends JPanel {
  		scrollPaneTableResults.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(6, 186, 945, 91);
+		panel_1.setBounds(6, 427, 1049, 91);
 		add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -83,8 +86,29 @@ public class ShowResultsPanel extends JPanel {
 				}
 			}
 		});
-		btnSimulateAnotherAlternative.setBounds(459, 31, 290, 29);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(16, 185, 1039, 230);
+		add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		btnSimulateAnotherAlternative.setBounds(690, 31, 290, 29);
 		panel_1.add(btnSimulateAnotherAlternative);
+		
+		JButton btnShowResults = new JButton("Show results");
+		btnShowResults.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getFacade();
+				textArea.setText(simulationManagerFacade.getSimulationResults());
+			}
+		});
+		
+		btnShowResults.setBounds(382, 31, 117, 29);
+		panel_1.add(btnShowResults);
+		
+		
+		
 
 	}
 	

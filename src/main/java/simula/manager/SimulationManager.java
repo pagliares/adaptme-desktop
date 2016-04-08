@@ -908,6 +908,33 @@ public class SimulationManager implements Serializable
 		return true;
 	}
 	
+	
+	public synchronized String getSimulationResults()
+	{
+		String result = null;
+		result = "OutputSimulationResults \n";
+		result+= "\r\n                    Simulation Report";
+		result+= "\r\nSimulation ended at time ";
+		result+= s.GetClock();
+		result+= "Statistics collected from instant " + resettime;
+		result+= " during " + (s.GetClock() - resettime) + " time units.";
+		result+= "\r\n          Observers' report";
+		
+		Iterator it;
+		
+		it = observers.values().iterator();
+		while(it.hasNext())
+		{
+			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+		}
+		
+	
+		result+= "\r\nSimulation Report End";
+		 
+		return result;
+	}
+	
+	
 	public void printObserversReport() { 
 		System.out.println("\r\n          Observers' report");
 		

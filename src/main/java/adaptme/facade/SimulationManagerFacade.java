@@ -24,6 +24,15 @@ public class SimulationManagerFacade {
 		System.out.println(" during " + (scheduler.getEndclock() - simulationManager.getResettime()) + " time units.");
 	}
 	
+	public String getSimulationEndedTime() {
+		Scheduler scheduler = epp.getSimulationManager().getScheduler();
+		return (Float.toString(scheduler.getEndclock()));
+	}
+	
+	public String getSimulationResults() {
+		return simulationManager.getSimulationResults();
+	}
+	
 	public void printOneObserver() {
 		Iterator it;
 		  HashMap observers = simulationManager.getObservers();
