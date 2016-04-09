@@ -2,19 +2,25 @@ package adaptme.facade;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.DynamicExperimentationProgramProxyFactory;
 import adaptme.IDynamicExperimentationProgramProxy;
+import adaptme.ui.window.perspective.ShowResultsTableModel;
 import simula.Scheduler;
 import simula.manager.*;
  
 public class SimulationManagerFacade {
+	
+	private static SimulationManagerFacade simulationManagerFacade = new SimulationManagerFacade();
+	private Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap;
 	private SimulationManager simulationManager;
 	private IDynamicExperimentationProgramProxy epp;
+//	private ShowResultsTableModel showResultsTableModel;
 	
-	public SimulationManagerFacade() {
-		
+	private SimulationManagerFacade() {
+		resultsSimulationMap = new HashMap<>();
 		epp = DynamicExperimentationProgramProxyFactory.newInstance();
 	}
 	
@@ -50,12 +56,23 @@ public class SimulationManagerFacade {
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
 			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
-			printSimulationEndedTime();
-			simulationManager.OutputSimulationResultsConsole();
+			printSimulationEndedTime(); // tirar
+			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
+			resultsSimulationMap.put("process name"+i, epp);  // um por REPLICACAO?
+			
+			
 			
 		}
 	}
 	
+	public Map<String, IDynamicExperimentationProgramProxy> getResultsSimulationMap() {
+		return resultsSimulationMap;
+	}
+	
+	public static SimulationManagerFacade getSimulationManagerFacade() {
+		return simulationManagerFacade;
+	}
+
 	public static void main(String [] args) {
 //		SimulationManagerFacade hbcFacade = new SimulationManagerFacade();
 //		hbcFacade.printSimulationEndedTime();

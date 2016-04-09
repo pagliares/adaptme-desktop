@@ -4,9 +4,11 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import adaptme.IDynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
@@ -18,22 +20,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 
 public class ShowResultsPanel extends JPanel {
-	
+	private JTextArea textArea;
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
 	private ExperimentationPanel experimentationPanel;
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private SimulationFacade simulationFacade;
+	private SimulationManagerFacade simulationManagerFacade;
 	 
 	public ShowResultsPanel(ExperimentationPanel experimentationPanel, SimulationFacade simulationFacade, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 		this.experimentationPanel =  experimentationPanel;
 		this.simulationFacade = simulationFacade;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
+		
+		simulationManagerFacade = experimentationPanel.getSimulationManagerFacade(); // TODO verificar se nao esta retornando null
 		
 		experimentationPanel.setListener(this);
 		
@@ -66,12 +74,16 @@ public class ShowResultsPanel extends JPanel {
 		
 		table.setModel(showResultsTableModel);
  		scrollPaneTableResults.setViewportView(table);
+ 		
+ 		table.changeSelection(0, 0, false, false); // seleciona a primeira linha da tabela por default
+ 		
+ 		configuraTableListener();
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(16, 185, 662, 412);
 		add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		
 		JButton btnShowResults = new JButton("Show results");
@@ -96,7 +108,7 @@ public class ShowResultsPanel extends JPanel {
 		});
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getFacade();
+				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
 				textArea.setText(simulationManagerFacade.getSimulationResults());
 			}
 		});
@@ -105,6 +117,30 @@ public class ShowResultsPanel extends JPanel {
 		
 
 	}
+	
+	
+public void configuraTableListener() { 
+		
+		// Listener disparado ao selecionar uma linha da tabela
+	table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				
+				int indexSelectedRow = table.getSelectedRow();
+ 				 
+				if ((indexSelectedRow > -1)) { 					 
+					 String processAlternativeName = (String)table.getValueAt(indexSelectedRow, 0);
+					 Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
+					 IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName);
+					 textArea.setText("");
+					 textArea.setText(experimentationProgramProxy.getSimulationManager().getSimulationResults());
+					
+				}
+			}
+		});
+		
+ 	}
 	
 	public void updateShowResultsPanelTable() {
 		 

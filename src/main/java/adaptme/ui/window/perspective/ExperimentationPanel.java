@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
 import simula.manager.SimulationManager;
 import simulator.base.Policy;
@@ -22,7 +23,9 @@ import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -37,6 +40,7 @@ import java.awt.event.ActionEvent;
 
 public class ExperimentationPanel extends JPanel {
 	
+	
 	private JTextField textField;
 	private JTable table;
 	private JTextField numberOfReplicationsTextField;
@@ -46,7 +50,7 @@ public class ExperimentationPanel extends JPanel {
 	private JTextField textField_3;
 	
 	private ShowResultsPanel showResultsPanel;
-	private SimulationManagerFacade facade;
+	private SimulationManagerFacade simulationManagerFacade;
 	
 	private WorkProductResourcesPanel workProductResourcesPanel;
 	private JTextField textField_4;
@@ -56,7 +60,7 @@ public class ExperimentationPanel extends JPanel {
 	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4) {
 		this.tabbedPaneActivity4 = tabbedPaneActivity4;
 		this.workProductResourcesPanel = workProductResourcesPanel;
-		this.facade = new SimulationManagerFacade();
+		this.simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade(); // singleton
 		setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -118,7 +122,7 @@ public class ExperimentationPanel extends JPanel {
 				
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
 				
-				facade.execute(numberReplications);
+				simulationManagerFacade.execute(numberReplications);
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
 				
@@ -231,8 +235,10 @@ public class ExperimentationPanel extends JPanel {
 		this.showResultsPanel = listener;
 	}
 
-	public SimulationManagerFacade getFacade() {
-		return facade;
+	public SimulationManagerFacade getSimulationManagerFacade() {
+		return simulationManagerFacade;
 	}
+
+	
 
 }
