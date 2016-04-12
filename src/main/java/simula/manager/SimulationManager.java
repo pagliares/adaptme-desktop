@@ -32,6 +32,8 @@ public class SimulationManager implements Serializable
 	private transient float endtime = 0;	// instante programado 
 											// de t�rmino da simula��o
 	private transient float resettime = 0;  // instante em que as 
+	
+	 
 
 	/**
 	 * Creates a new, ready to use SimulationManager

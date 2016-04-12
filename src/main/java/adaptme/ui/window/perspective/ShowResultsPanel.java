@@ -28,6 +28,8 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 
 public class ShowResultsPanel extends JPanel {
+	
+	private int indexSelectedRow;
 	private JTextArea textArea;
 	private JTable table;
 	private ShowResultsTableModel showResultsTableModel;
@@ -41,7 +43,11 @@ public class ShowResultsPanel extends JPanel {
 		this.simulationFacade = simulationFacade;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		
-		simulationManagerFacade = experimentationPanel.getSimulationManagerFacade(); // TODO verificar se nao esta retornando null
+		
+		this.simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade(); // singleton
+		this.simulationManagerFacade.setShowResultsPanel(this);
+		this.simulationManagerFacade.setSimulationFacade(simulationFacade);
+		
 		
 		experimentationPanel.setListener(this);
 		
@@ -58,9 +64,9 @@ public class ShowResultsPanel extends JPanel {
 		panel.add(scrollPaneTableResults);
 		
 		table = new JTable();
-		showResultsTableModel = new ShowResultsTableModel();
-//		showResultsTableModel.addProcessAlternative(processRepository);
-		showResultsTableModel.setListOfProcessAlternatives(simulationFacade.getProcessAlternatives());
+		showResultsTableModel = new ShowResultsTableModel(simulationFacade);
+ 		showResultsTableModel.setListOfProcessAlternatives(simulationFacade.getProcessAlternatives());
+ 	
 		
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();
@@ -93,6 +99,15 @@ public class ShowResultsPanel extends JPanel {
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
 		btnSimulateAnotherAlternative.setBounds(711, 474, 290, 29);
 		add(btnSimulateAnotherAlternative);
+		
+		JButton btnClear = new JButton("Clear ");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
+			}
+		});
+		btnClear.setBounds(809, 421, 117, 29);
+		add(btnClear);
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -106,47 +121,43 @@ public class ShowResultsPanel extends JPanel {
 				}
 			}
 		});
+		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
 				textArea.setText(simulationManagerFacade.getSimulationResults());
 			}
 		});
-		
-		
-		
-
 	}
 	
-	
-public void configuraTableListener() { 
-		
+	public void configuraTableListener() {
+
 		// Listener disparado ao selecionar uma linha da tabela
-	table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-			
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
-				
-				int indexSelectedRow = table.getSelectedRow();
- 				 
-				if ((indexSelectedRow > -1)) { 					 
-					 String processAlternativeName = (String)table.getValueAt(indexSelectedRow, 0);
-					 Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
-					 IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName);
-					 textArea.setText("");
-					 textArea.setText(experimentationProgramProxy.getSimulationManager().getSimulationResults());
-					
+
+				indexSelectedRow = table.getSelectedRow();
+
+				if ((indexSelectedRow > -1)) {
+					String processAlternativeName = (String) table.getValueAt(indexSelectedRow, 0);
+					Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
+//					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName);
+					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName+0);
+					textArea.setText("");
+					textArea.append(processAlternativeName);
+					textArea.append(simulationManagerFacade.getSimulationResults());
 				}
 			}
 		});
-		
- 	}
+	}
 	
-	public void updateShowResultsPanelTable() {
+	public void updateShowResultsPanelTable(int numberReplications) {
 		 
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();
-		System.out.println(showResultsTableModel.removeAllColumns());
+//		System.out.println(showResultsTableModel.removeAllColumns());
 		
 		for (int i=0; i< numberOfLines; i++) {
 			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
@@ -154,5 +165,14 @@ public void configuraTableListener() {
 				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
 			}
 		}
+		int indexProcessAlternative = simulationFacade.getProcessAlternatives().size() - 1;
+		showResultsTableModel.setValueAt(numberReplications, indexProcessAlternative, 2); // storing the number of replications
  	}
+	
+	public String getSelectedProcessAlternativeName() {
+//		ProcessRepository pr = showResultsTableModel.getProcessAlternativeAt(indexSelectedRow);
+//		String selectedProcessAlternativeName = pr.getName();
+//		return selectedProcessAlternativeName;
+		return "teste";
+	}
 }

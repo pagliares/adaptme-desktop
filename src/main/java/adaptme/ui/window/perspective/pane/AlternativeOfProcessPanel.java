@@ -649,7 +649,7 @@ public class AlternativeOfProcessPanel {
 		JavaProgramTextAreaPanel javaProgramTextAreaPanel = new JavaProgramTextAreaPanel(defineXACDMLTextAreaPanel);
 		tabbedPaneActivity4.addTab("4.1. Generating experimentation program", javaProgramTextAreaPanel.getPanel());
 		
-		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel, tabbedPaneActivity4);
+		ExperimentationPanel experimentationPanel = new ExperimentationPanel(workProductResourcesPanel, tabbedPaneActivity4, simulationFacade);
 		tabbedPaneActivity4.addTab("4.2. Configuring experimentation program", experimentationPanel);
 		
 //		RunSimulationPanel runSimulationPanel = new RunSimulationPanel(defineXACDMLTextAreaPanel);

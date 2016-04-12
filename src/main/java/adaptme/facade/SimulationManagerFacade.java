@@ -7,7 +7,10 @@ import java.util.Map;
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.DynamicExperimentationProgramProxyFactory;
 import adaptme.IDynamicExperimentationProgramProxy;
+import adaptme.ui.window.perspective.ExperimentationPanel;
+import adaptme.ui.window.perspective.ShowResultsPanel;
 import adaptme.ui.window.perspective.ShowResultsTableModel;
+import model.spem.SimulationFacade;
 import simula.Scheduler;
 import simula.manager.*;
  
@@ -17,17 +20,12 @@ public class SimulationManagerFacade {
 	private Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap;
 	private SimulationManager simulationManager;
 	private IDynamicExperimentationProgramProxy epp;
-//	private ShowResultsTableModel showResultsTableModel;
-	
+ 	private ShowResultsPanel showResultsPanel;
+ 	private SimulationFacade simulationFacade;
+ 	
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
 		epp = DynamicExperimentationProgramProxyFactory.newInstance();
-	}
-	
-	public void printSimulationEndedTime() {
-		Scheduler scheduler = epp.getSimulationManager().getScheduler();
-		System.out.println("Statistics collected from instant " + simulationManager.getResettime());
-		System.out.println(" during " + (scheduler.getEndclock() - simulationManager.getResettime()) + " time units.");
 	}
 	
 	public String getSimulationEndedTime() {
@@ -56,12 +54,12 @@ public class SimulationManagerFacade {
 			System.out.println("Execution #" + (i+1));
 			epp.execute();
 			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
-			printSimulationEndedTime(); // tirar
 			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
-			resultsSimulationMap.put("process name"+i, epp);  // um por REPLICACAO?
-			
-			
-			
+//		    String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
+		    int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size()-1;
+            String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives().get(currentProessAlternativeIndex).getName();
+
+			resultsSimulationMap.put(selectedProcessAlternativeName+i, epp);  // um por REPLICACAO?
 		}
 	}
 	
@@ -73,8 +71,12 @@ public class SimulationManagerFacade {
 		return simulationManagerFacade;
 	}
 
-	public static void main(String [] args) {
-//		SimulationManagerFacade hbcFacade = new SimulationManagerFacade();
-//		hbcFacade.printSimulationEndedTime();
+	public void setShowResultsPanel(ShowResultsPanel showResultsPanel) {
+		this.showResultsPanel = showResultsPanel;
+	}
+
+	public void setSimulationFacade(SimulationFacade simulationFacade) {
+		this.simulationFacade = simulationFacade;
+		
 	}
 }

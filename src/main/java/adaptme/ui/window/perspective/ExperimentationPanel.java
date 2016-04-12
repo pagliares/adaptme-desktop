@@ -11,6 +11,7 @@ import javax.swing.table.TableColumnModel;
 
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
+import model.spem.SimulationFacade;
 import simula.manager.SimulationManager;
 import simulator.base.Policy;
 import simulator.base.QueueType;
@@ -57,10 +58,11 @@ public class ExperimentationPanel extends JPanel {
 	
 	private JTabbedPane tabbedPaneActivity4;
 
-	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4) {
+	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4, SimulationFacade simulationFacade) {
 		this.tabbedPaneActivity4 = tabbedPaneActivity4;
 		this.workProductResourcesPanel = workProductResourcesPanel;
 		this.simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade(); // singleton
+		this.simulationManagerFacade.setShowResultsPanel(showResultsPanel);
 		setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -118,10 +120,9 @@ public class ExperimentationPanel extends JPanel {
 		JButton btnSimulate = new JButton("Simulate");
 		btnSimulate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showResultsPanel.updateShowResultsPanelTable();
-				
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
-				
+				showResultsPanel.updateShowResultsPanelTable(numberReplications);
+				simulationFacade.addNumberOfSimulationRuns(numberReplications);
 				simulationManagerFacade.execute(numberReplications);
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
@@ -238,6 +239,8 @@ public class ExperimentationPanel extends JPanel {
 	public SimulationManagerFacade getSimulationManagerFacade() {
 		return simulationManagerFacade;
 	}
+
+	
 
 	
 

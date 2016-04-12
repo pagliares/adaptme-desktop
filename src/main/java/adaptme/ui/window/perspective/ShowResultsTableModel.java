@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
 
 import model.spem.ProcessRepository;
+import model.spem.SimulationFacade;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProductXACDML;
@@ -16,13 +17,15 @@ public class ShowResultsTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private List<ProcessRepository> listOfProcessAlternatives = new ArrayList<>();
-	
+	private SimulationFacade simulationFacade;
 	private List<String> headers;
 	
-	public ShowResultsTableModel() {
+	public ShowResultsTableModel(SimulationFacade simulationFacade) {
+		this.simulationFacade = simulationFacade;
 		headers = new ArrayList<>();
 		headers.add("Process alternative name");
 		headers.add("Project duration");
+		headers.add("# simulation runs");
 	}
 	 
 
@@ -45,7 +48,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		case 1:
 			return " ";
 		case 2:
-			return " ";
+			return simulationFacade.getNumberOfSimulationRuns(listOfProcessAlternatives.get(rowIndex).getName());
 		case 3:
 			return " ";
 		case 4:
@@ -69,7 +72,8 @@ public class ShowResultsTableModel extends AbstractTableModel {
 			 
 			break;
 		case 2:
-			 
+//			numberOfSimulationRuns = (Integer)aValue; como e read only, acho que nao preciso
+			
 			break;
 		case 3:
 			 
@@ -91,7 +95,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		case 1:
 			return String.class;
 		case 2:
-			return String.class;
+			return Integer.class;
 		case 3:
 			return String.class;
 		case 4:
@@ -120,10 +124,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 	 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if (column == 0) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 	
 	public void addProcessAlternative(ProcessRepository processRepository) {
