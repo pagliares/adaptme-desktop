@@ -832,7 +832,7 @@ public class SimulationManager implements Serializable
 		
 		try
 		{
-			ofile = new FileOutputStream(filename);
+			ofile = new FileOutputStream("output/"+filename); // recording to output instead of root folder. Pagliares
 			os = new PrintStream(ofile);
 		}
 		catch(FileNotFoundException x)
