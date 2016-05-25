@@ -265,7 +265,7 @@ public class WorkProductUsageTreeTableModel extends AbstractTreeTableModel {
 		if (vt == VariabilityType.NA) {
 			return "";
 		} else if (vt == VariabilityType.EXTENDS) {
-			sb.append("extrends ");
+			sb.append("extends ");
 		} else if (vt == VariabilityType.CONTRIBUTES) {
 			sb.append("contributes ");
 		} else if (vt == VariabilityType.REPLACES) {

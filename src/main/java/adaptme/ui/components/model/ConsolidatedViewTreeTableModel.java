@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 import org.eclipse.epf.uma.Activity;
 import org.eclipse.epf.uma.BreakdownElement;
@@ -14,10 +15,12 @@ import org.eclipse.epf.uma.Milestone;
 import org.eclipse.epf.uma.Phase;
 import org.eclipse.epf.uma.Process;
 import org.eclipse.epf.uma.RoleDescriptor;
+import org.eclipse.epf.uma.Task;
 import org.eclipse.epf.uma.TaskDescriptor;
 import org.eclipse.epf.uma.VariabilityType;
 import org.eclipse.epf.uma.WorkBreakdownElement;
 import org.eclipse.epf.uma.WorkOrder;
+import org.eclipse.epf.uma.WorkProduct;
 import org.eclipse.epf.uma.WorkProductDescriptor;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 import org.modelmapper.ModelMapper;
@@ -120,7 +123,7 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 12;
+		return 13;
 	}
 
 	@Override
@@ -169,10 +172,13 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 				return workBreakdownElement.isIsOptional();
 			case 11:
 				return workBreakdownElement.isIsOptional();
+			case 12:
+				return workBreakdownElement.isIsOptional();
 			}
 		}
 		return null;
 	}
+	
 
 	private String predecessorInfo(List<WorkOrder> predecessor) {
 		StringBuilder predecessorList = new StringBuilder("");
@@ -191,7 +197,7 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 		if (vt == VariabilityType.NA) {
 			return "";
 		} else if (vt == VariabilityType.EXTENDS) {
-			sb.append("extrends ");
+			sb.append("extends ");
 		} else if (vt == VariabilityType.CONTRIBUTES) {
 			sb.append("contributes ");
 		} else if (vt == VariabilityType.REPLACES) {
@@ -258,6 +264,8 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 			return "Optional";
 		case 11:
 			return "Team";
+		case 12:
+			return "Work product Type";
 		default:
 			return super.getColumnName(column);
 		}
@@ -281,6 +289,8 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 		case 10:
 			return Boolean.class;
 		case 11:
+			return String.class;
+		case 12:
 			return String.class;
 		default:
 			return super.getColumnClass(column);
