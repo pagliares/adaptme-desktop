@@ -26,6 +26,7 @@ import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 import org.modelmapper.ModelMapper;
 
 import adaptme.base.MethodLibraryHash;
+import adaptme.base.RoleDescriptorWithModelInfo;
 
 public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 
@@ -89,13 +90,33 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 		List<JAXBElement<String>> list = taskDescriptor.getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
 		for (JAXBElement<String> jaxbElement : list) {
 			MethodElement element = (MethodElement) hash.getHashMap().get(jaxbElement.getValue());
-			if(element instanceof RoleDescriptor){
-				RoleDescriptor role = new RoleDescriptor();
-				role.setPresentationName(element.getPresentationName());
-				allRootElements.add(role);
-			}else if(element instanceof WorkProductDescriptor){
+			if (element instanceof RoleDescriptor) {
+				RoleDescriptorWithModelInfo roleDescriptor = new RoleDescriptorWithModelInfo();
+				roleDescriptor.setPresentationName(element.getPresentationName());
+				roleDescriptor.setSuperActivity(taskDescriptor.getId());
+				roleDescriptor.setId(element.getId());
+				QName qName = jaxbElement.getName();
+				if (qName.getLocalPart().equals("PerformedPrimarilyBy")) {
+					roleDescriptor.setModelInfo("Primarily Performer");
+				} else if (qName.getLocalPart().equals("AdditionallyPerformedBy")) {
+					roleDescriptor.setModelInfo("Additional Performer");
+				}
+				allRootElements.add(roleDescriptor);
+			} else if (element instanceof WorkProductDescriptor) {
 				WorkProductDescriptor workProductDescriptor = new WorkProductDescriptor();
 				workProductDescriptor.setPresentationName(element.getPresentationName());
+				workProductDescriptor.setSuperActivity(taskDescriptor.getId());
+				workProductDescriptor.setId(element.getId());
+
+				QName qName = jaxbElement.getName();
+				if (qName.getLocalPart().equals("MandatoryInput")) {
+					workProductDescriptor.setResponsibleRole("Mandatory Input");  // mudar esta linha caso queira que apareça apenas input
+				} else if (qName.getLocalPart().equals("Output")) {
+					workProductDescriptor.setResponsibleRole("Output");
+				} else if (qName.getLocalPart().equals("OptionalInput")) {
+					workProductDescriptor.setResponsibleRole("Optional Input");
+				}
+
 				allRootElements.add(workProductDescriptor);
 			}
 		}
@@ -129,56 +150,66 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 	@Override
 	public Object getValueAt(Object node, int column) {
 		if (node instanceof WorkBreakdownElement) {
-			WorkBreakdownElement workBreakdownElement = (WorkBreakdownElement) node;
+			// WorkBreakdownElement workBreakdownElement =
+			// (WorkBreakdownElement) node;
 			switch (column) {
 			case 0:
 				String name;
-				if (workBreakdownElement instanceof Activity) {
-					Activity activity = (Activity) workBreakdownElement;
+				if (node instanceof Activity) {
+					Activity activity = (Activity) node;
 					if (activity.getVariabilityType() != VariabilityType.NA) {
 						name = ((Activity) hash.getHashMap().get(activity.getVariabilityBasedOnElement()))
 								.getPresentationName();
 					} else {
-						name = workBreakdownElement.getPresentationName();
+						name = ((MethodElement) node).getPresentationName();
 					}
 				} else {
-					name = workBreakdownElement.getPresentationName();
+					name = ((MethodElement) node).getPresentationName();
 				}
 				return name;
 			case 1:
 				int index = indexList.indexOf(node);
 				return index > -1 ? index : "";
 			case 2:
-				return predecessorInfo(workBreakdownElement.getPredecessor());
+				return predecessorInfo(((WorkBreakdownElement) node).getPredecessor());
 			case 3:
-				if (workBreakdownElement instanceof Activity) {
-					return modelInfo((Activity) workBreakdownElement);
-				} else {
-					return "";
-				}
+				return null;
 			case 4:
-				return workBreakdownElement.getClass().getSimpleName();
+				return node.getClass().getSimpleName();
 			case 5:
-				return workBreakdownElement.isIsPlanned();
+				return ((BreakdownElement) node).isIsPlanned();
 			case 6:
-				return workBreakdownElement.isIsRepeatable();
+				return ((WorkBreakdownElement) node).isIsRepeatable();
 			case 7:
-				return workBreakdownElement.isHasMultipleOccurrences();
+				return ((BreakdownElement) node).isHasMultipleOccurrences();
 			case 8:
-				return workBreakdownElement.isIsOngoing();
+				return ((WorkBreakdownElement) node).isIsOngoing();
 			case 9:
-				return workBreakdownElement.isIsEventDriven();
+				return ((WorkBreakdownElement) node).isIsEventDriven();
 			case 10:
-				return workBreakdownElement.isIsOptional();
+				return ((BreakdownElement) node).isIsOptional();
 			case 11:
-				return workBreakdownElement.isIsOptional();
-			case 12:
-				return workBreakdownElement.isIsOptional();
+				return ((BreakdownElement) node).isIsOptional();
+			}
+		}
+		if (node instanceof WorkProductDescriptor) {
+			switch (column) {
+			case 3:
+				if (node instanceof Activity) {
+					return modelInfo((Activity) node);
+				} else if (node instanceof WorkProductDescriptor) {
+					return ((WorkProductDescriptor) node).getResponsibleRole();
+				}
+			}
+		}
+		if (node instanceof RoleDescriptorWithModelInfo) {
+			switch (column) {
+			case 3:
+				return ((RoleDescriptorWithModelInfo) node).getModelInfo();
 			}
 		}
 		return null;
 	}
-	
 
 	private String predecessorInfo(List<WorkOrder> predecessor) {
 		StringBuilder predecessorList = new StringBuilder("");

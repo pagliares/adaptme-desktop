@@ -100,12 +100,12 @@ public class WorkProductUsageTreeTableModel extends AbstractTreeTableModel {
 				return name;
 			case 1:
 				if (breakdownElement instanceof WorkProductDescriptor) {
-					Process subProcess = (Process) process.getBreakdownElementOrRoadmap().get(0);
-					return modelInfo((WorkProductDescriptor) breakdownElement,
-							subProcess.getBreakdownElementOrRoadmap());
-				} else if (breakdownElement instanceof Activity) {
-					return modelInfo((Activity) breakdownElement);
-				}
+                    Activity activity = (Activity) hash.getHashMap()
+                            .get(((WorkProductDescriptor) node).getSuperActivity());
+                    return modelInfo((WorkProductDescriptor) node, activity.getBreakdownElementOrRoadmap());
+                } else if (breakdownElement instanceof Activity) {
+                    return modelInfo((Activity) breakdownElement);
+                }
 			case 2:
 				if (breakdownElement instanceof WorkProductDescriptor) {
 					WorkProductDescriptor workProductDescriptor = (WorkProductDescriptor) breakdownElement;
