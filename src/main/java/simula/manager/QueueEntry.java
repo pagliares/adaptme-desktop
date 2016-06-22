@@ -94,12 +94,14 @@ public class QueueEntry extends Entry
 		switch(policy)
 		{
 			case FIFO: SimObj = new simula.FifoQ(m.s, max); 
-			SimObj.setCount((short)intialQuantity);
-//			System.out.println("size: " + SimObj.getCount());
-		 
+			SimObj.setCount((short)intialQuantity);  // pagliares
 			break;
-			case STACK: SimObj = new simula.StackQ(m.s, max); break;
-			case PRIORITY: SimObj = new simula.PriorityQ(m.s, max); break;
+			case STACK: SimObj = new simula.StackQ(m.s, max); 
+			SimObj.setCount((short)intialQuantity); // pagliares
+			break;
+			case PRIORITY: SimObj = new simula.PriorityQ(m.s, max); 
+			SimObj.setCount((short)intialQuantity); // pagliares
+			break;
 			default: return false;
 		}
 
