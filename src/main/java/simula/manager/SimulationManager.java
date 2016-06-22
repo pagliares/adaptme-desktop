@@ -997,6 +997,10 @@ public class SimulationManager implements Serializable
 		 
 		System.out.println(observerEntry.getNumberOfObservations(s.GetClock() - resettime));
 	}
+
+	public HashMap getQueues() {
+		return queues;
+	}
 	
 	
 	
