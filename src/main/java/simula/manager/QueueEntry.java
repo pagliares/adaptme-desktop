@@ -1,5 +1,5 @@
 // Arquivo  QueueEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
@@ -11,29 +11,30 @@ import java.io.*;
  */
 public class QueueEntry extends Entry
 {
-	private static int lastid;	// identificador ÚNICO para as filas
-	static boolean hasSerialized = true; // "lastid já foi serializado"
+	private static int lastid;	// identificador ï¿½NICO para as filas
+	static boolean hasSerialized = true; // "lastid jï¿½ foi serializado"
+	public int intialQuantity;
 	
 	/**
 	 * FIFO, STACK, PRIORITY:
 	 * constantes que identificam
-	 * a política da fila
+	 * a polï¿½tica da fila
 	 */
 	public final static short FIFO = 0;			// constantes que identificam
-	public final static short STACK = 1;		// a política da fila
+	public final static short STACK = 1;		// a polï¿½tica da fila
 	public final static short PRIORITY = 2;
 		
 	/**
-	 * qtde máx de entidades na fila
+	 * qtde mï¿½x de entidades na fila
 	 */
 	private short max;
 	/**
-	 * política da fila
+	 * polï¿½tica da fila
 	 */ 
 	private short policy;							
 		
-  transient simula.DeadState SimObj;	// objeto de simulação
-                              			// não é serializado
+  public transient simula.DeadState SimObj;	// objeto de simulaï¿½ï¿½o
+                              			// nï¿½o ï¿½ serializado
 	
 	public String toString()
 	{
@@ -62,8 +63,8 @@ public class QueueEntry extends Entry
 		return "POLICY??";
 	}
   /**
-   * constrói um objeto com id gerado internamente;
-   * preenche com argumentos padrão os demais campos.
+   * constrï¿½i um objeto com id gerado internamente;
+   * preenche com argumentos padrï¿½o os demais campos.
    */
 	public QueueEntry()
 	{
@@ -92,7 +93,11 @@ public class QueueEntry extends Entry
 	{
 		switch(policy)
 		{
-			case FIFO: SimObj = new simula.FifoQ(m.s, max); break;
+			case FIFO: SimObj = new simula.FifoQ(m.s, max); 
+			SimObj.setCount((short)intialQuantity);
+//			System.out.println("size: " + SimObj.getCount());
+		 
+			break;
 			case STACK: SimObj = new simula.StackQ(m.s, max); break;
 			case PRIORITY: SimObj = new simula.PriorityQ(m.s, max); break;
 			default: return false;
