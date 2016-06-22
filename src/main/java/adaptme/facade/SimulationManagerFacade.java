@@ -62,7 +62,9 @@ public class SimulationManagerFacade {
 				//QueueEntry qe = simulationManager.GetQueue("User story input queue");
 				System.out.println("nome das filas: " + o);
 				QueueEntry qe = (QueueEntry)queues.get(o);
-				System.out.println("numero de entidadas na fila: " + qe.SimObj.getCount());
+				// ambas saidas abaixo retornam a variavel count
+				System.out.println("numero de entidadas na fila via getCount: " + qe.SimObj.getCount());
+				System.out.println("numero de entidadas na fila: via ObsLength" + qe.SimObj.getCount());
 				
 				//System.out.println(qe.intialQuantity);
 				//System.out.println("numero final entidades : " + qe.SimObj.getCount());
