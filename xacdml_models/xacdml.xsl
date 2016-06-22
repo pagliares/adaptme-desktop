@@ -154,7 +154,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   qe = new QueueEntry();
   qe.SetId("</xsl:text><xsl:value-of select="@id"/><xsl:text>");//mapped by dead id</xsl:text>
   qe.intialQuantity = <xsl:value-of select="type/@init"/>;
-  qe.setMax("<xsl:value-of select="type/@size"/><xsl:text>");
+  qe.setMax((short)<xsl:value-of select="type/@size"/><xsl:text>);
   </xsl:text>
    
   <xsl:apply-templates select="observer"/>
