@@ -3,6 +3,7 @@ package adaptme.facade;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.DynamicExperimentationProgramProxyFactory;
@@ -55,6 +56,19 @@ public class SimulationManagerFacade {
 			epp.execute();
 			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
 			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
+			HashMap queues = simulationManager.getQueues();
+			Set keys = queues.keySet();
+			for (Object o: keys) {
+				//QueueEntry qe = simulationManager.GetQueue("User story input queue");
+				System.out.println("nome das filas: " + o);
+				QueueEntry qe = (QueueEntry)queues.get(o);
+				System.out.println("numero de entidadas na fila: " + qe.SimObj.getCount());
+				
+				//System.out.println(qe.intialQuantity);
+				//System.out.println("numero final entidades : " + qe.SimObj.getCount());
+			}
+			
+			
 //		    String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
 		    int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size()-1;
             String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives().get(currentProessAlternativeIndex).getName();
