@@ -70,7 +70,7 @@ public class QueueEntry extends Entry
 	{
 		super("q_" + String.valueOf(lastid));
 		lastid++;
-    max = (short)10;
+    max = (short)1000;
     policy = FIFO;
 	}
 	
