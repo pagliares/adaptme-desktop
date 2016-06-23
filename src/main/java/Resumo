@@ -1,86 +1,81 @@
-Erro: xacdml_models/simula/manager/SimulationManager.java:2: error: unmappable character for encoding UTF8
-// Implementa��o das Classes do Sistema de Gerenciamento da Simula��o
-solucao:
-javac -encoding ISO-8859-1 -cp xacdml_models/ xacdml_models/mancu.java
+Erros, dicas e soluções
 
-Teste da modelagem no groupsim do HBC
+1) Erro: xacdml_models/simula/manager/SimulationManager.java:2: error: unmappable character for encoding UTF8
+         // Implementa��o das Classes do Sistema de Gerenciamento da Simula��o
 
-- Se criarmos uma activity generate, devemos colocar a fila correspondente. Caso contrario o software
-está dando nullpointerexception
+   Solucao:
+         javac -encoding ISO-8859-1 -cp xacdml_models/ xacdml_models/mancu.java
 
-Para gerar o programa java a partir da linha de comando:
+2) Teste da modelagem no groupsim do HBC
 
-- cd /Users/pagliares/Dropbox/projetosEclipse/workspaceHirata/GroupSim_1_2_Pagliares/src
-- java Stylizer ../xacdml_models/xacdml.xsl ../xacdml_models/HBC_Pagliares.xacdml  > HBC_Pagliares.java
-   - HBC_Pagliares.java gerado no pacote default do projeto (src)
-   - o Arquivo é gerado corretamente, mas no nome da classe main precisa ser renomeado 
-   - ao compilar o arquivo gerado dentro do eclipse, nenhum erro e dois arquivos gerados:
-   		- Automatically_generated_xacdml.out 
-   		- simxxxxxxx.log
-   - Para que o arquivo out tenha valores, precisamos configurar observadores antes no groupsim antes
+	- Se criarmos uma activity generate, devemos colocar a fila correspondente. Caso contrario o software
+	está dando nullpointerexception
+
+3) Para gerar o programa java a partir da linha de comando:
+
+	- cd /Users/pagliares/Dropbox/projetosEclipse/workspaceHirata/GroupSim_1_2_Pagliares/src
+	- java Stylizer ../xacdml_models/xacdml.xsl ../xacdml_models/HBC_Pagliares.xacdml  > HBC_Pagliares.java
+   		 - HBC_Pagliares.java gerado no pacote default do projeto (src)
+   		 - o Arquivo é gerado corretamente, mas no nome da classe main precisa ser renomeado 
+  		 - ao compilar o arquivo gerado dentro do eclipse, nenhum erro e dois arquivos gerados:
+   			- Automatically_generated_xacdml.out 
+   			- simxxxxxxx.log
+  	 - Para que o arquivo out tenha valores, precisamos configurar observadores antes no groupsim antes
      de gerar o xacdml
 
-
-Erros:
-
-1 - deve ser enviado para o servidor, SimulationFacade que possui o atributo objective e nao ProcessRepository com
+4) Deve ser enviado para o servidor, SimulationFacade que possui o atributo objective e nao ProcessRepository com
 atributo objective? Por enquanto está tudo no ProcessRepository e posso excluir SimulationFacade
-
      
- WindowBuilder
- - Nome oficial (SWT designer)
- - Help -> Install new software
- 	- http://download.eclipse.org/windowbuilder/WB/release/R201506241200-1/4.5/
+5) WindowBuilder
+ 	- Nome oficial (SWT designer)
+	- Help -> Install new software
+ 		- http://download.eclipse.org/windowbuilder/WB/release/R201506241200-1/4.5/
  	
-Geracao automatica de classes a partir de um dtd
- - xjc -dtd xacdml.dtd
+6) Geracao automatica de classes a partir de um dtd
+ 	- xjc -dtd xacdml.dtd
  
- 
- Erro que me custou mais de um mes:
+7) Erro que me custou mais de um mes:
  com.sun.istack.internal.SAXException2: Object "xacdml.model.generated.Dead@73a8dfcc" is found in an IDREF property but this object doesnt have an ID.]
- Solucao:
- 
- Muito simples. Basta colocar a anotacao @XmlID antes do campo protected String id das classes Class,Dead; (classe gerada automaticamente com xjc)
- 
- Aconteceu algo similar com a classe Prev e nao foi tao facil a solucao
  
  Solucao:
+ 	- Muito simples. Basta colocar a anotacao @XmlID antes do campo protected String id das classes Class,Dead; (classe gerada automaticamente com xjc)
  
- tive que criar o atributo id na classe Prev
+8) Erro: Aconteceu algo similar com a classe Prev e nao foi tao facil a solucao
  
-  @XmlAttribute(name = "id", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    protected String id;
+   Solucao:
  
- 3 - Como deixar um item de um JComboBox selecionado por default quando ele está dentro de um JTable (Horas para resolver)
+ 	- tive que criar o atributo id na classe Prev
  
- Solucao: Nao temos que configurar o JComboBox, e sim a JTable :)
+  		@XmlAttribute(name = "id", required = true)
+    	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    	@XmlID
+    	protected String id;
  
- tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
-tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
+9) Dúvida: Como deixar um item de um JComboBox selecionado por default quando ele está dentro de um JTable (Horas para resolver)?
+ 
+   Solucao: Nao temos que configurar o JComboBox, e sim a JTable :)
+ 
+ 	tableWorkProduct.setValueAt(QueueType.QUEUE, 0, 2);
+	tableWorkProduct.setValueAt(Policy.FIFO, 0, 5);
  
  
- Bug: o primeiro processo do plugin process_alternatives_adaptme nao esta abrindo para simulacao
- - o problema é que nao esta primeira opcao nao possui nenhum produto de trabalho. Assim, ao ler o produto de trabalho em WorkProductResourcesPanel, dá index
- outOfBoundsException (0)
+10) Erro: o primeiro processo do plugin process_alternatives_adaptme nao esta abrindo para simulacao
+ 
+    Solução: 
+    	- o problema é que nao esta primeira opcao nao possui nenhum produto de trabalho. 
+    	   Assim, ao ler o produto de trabalho em WorkProductResourcesPanel, dá indexoutOfBoundsException (0)
   		outerProbabilityPanel.add((ProbabilityDistributionInnerPanel) listOfProbabilityDistributionsInnerPanels.get(0), BorderLayout.WEST);
  
+11) Pause nos Bs
  
- Bug: ao importar o processo, as tarefas não estão aparecendo no method content
- 
- Bug: input/output nao aparecendo na work product resources view do adaptme (Processo thesis_xp)
- 
- Pause nos Bs
- 
- usar a versao do AdaptMe de 19/05/2015 (a ideia e em cada classe chamar um metodos estaticos da classe XP para controlar o pause. Se fosse fazer isso no
+ - usar a versao do AdaptMe de 19/05/2015 (a ideia e em cada classe chamar um metodos estaticos da classe XP para controlar o pause. Se fosse fazer isso no
  AdaptMe atual, teriamos que implementar isso no codigo de Simulation Manager do Wladimir)
  
- JCheckbox not being rendered in JTable cells. True or false being rendered instead
- Sollution. Tirei a linha : tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+12) Erro: JCheckbox not being rendered in JTable cells. True or false being rendered instead
+    Sollution. Tirei a linha : tableWorkProduct.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
  
+13) Importante (me tirou varios dias de sono):
+	-AO GERAR JAVA DE XACDML, SE O TAMANHO DA FILA FOR IGUAL A QUANTIDADE INICIAL, GERA RESOURCE QUEUE. CASO CONTRARIO GERA TEMPORARY QUEUE
  
- Importante (me tirou varios dias de sono):
- 
- IMPORTANTE: AO GERAR JAVA DE XACDML, SE O TAMANHO DA FILA FOR IGUAL A QUANTIDADE INICIAL, GERA RESOURCE QUEUE. CASO CONTRARIO GERA TEMPORARY QUEUE
- 
+ 14) IMPORTANT: Ao testar a atividade Prioritize user stories com input e output queue, o erro de array index out of bounds exception. O erro acontece quando o atribut
+ o init de customer esta configurado com 1 e nao com 2
