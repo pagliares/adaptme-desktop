@@ -70,8 +70,9 @@ public class SimulationManagerFacade {
 				//System.out.println("numero final entidades : " + qe.SimObj.getCount());
 			}
 			
-			// posso obter o numero de iteracoes de scheduler?
+			 
 			System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+			System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
 			
 			
 //		    String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();

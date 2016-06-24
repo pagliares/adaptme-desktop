@@ -1007,7 +1007,7 @@ public class SimulationManager implements Serializable
 	/**
 	 * Executa simula��o at� instante endTime
 	 */
-	public synchronized boolean ExecuteSimulation(float endTime, float iterationTime)
+	public synchronized boolean ExecuteSimulation(float endTime, float iterationTime, float releaseTime)
 	{
 		boolean ok = false;
 		
@@ -1015,7 +1015,7 @@ public class SimulationManager implements Serializable
 		{
 			Log.Close();
 			Log.OpenFile();
-			ok = s.Run(endTime, iterationTime );
+			ok = s.Run(endTime, iterationTime, releaseTime);
 			if(ok)
 			{
 				endtime = endTime;
