@@ -24,6 +24,8 @@ public class Scheduler implements Runnable
 	private static Scheduler s;		// uma refer�ncia est�tica ao Scheduler
 									// para permitir a��es de emerg�ncia (parada)
 
+	private float iterationTime;  // pagliares
+	private int numberOfIterations = 1; // Pagliares. Precisa ser um. vide metodo run sobreescrito
 	/**
 	 * retorna refer�ncia ao objeto ativo
 	 */
@@ -188,17 +190,26 @@ public class Scheduler implements Runnable
 	public float GetClock(){return clock;}
 
 	/**
-	 * C�digo que roda a simulacao. (rodado numa Thread separada)
+	 * Codigo que roda a simulacao. (rodado numa Thread separada)
 	 */
 	public void run()
 	{
 		while(running)
 		{
-			// atualiza rel�gio da simula��o
+			// atualiza relogio da simulao
 
 			clock = calendar.GetNextClock();
 			
 			Log.LogMessage("Scheduler: clock advanced to " + clock);
+			
+			// Pagliares
+			// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
+			// precisa de um tick a mais de clock, pelo menos para iniciar uma nova
+			 
+			if ((int)clock % iterationTime == 0) {
+					numberOfIterations++;
+			}
+			
 
 			// verifica se simula��o chegou ao fim
 
@@ -255,4 +266,41 @@ public class Scheduler implements Runnable
 	public float getEndclock() {
 		return endclock;
 	}
+	
+	// Pagliares
+	public synchronized boolean Run(double endtime, float iterationTime)
+	{
+		this.iterationTime = iterationTime;
+		if(endtime < 0.0)				// relogio nao pode ser negativo
+			return false;				// se for 0.0 executa ate acabarem as entidades
+
+		if(!running)
+		{
+			if(activestates.isEmpty())	// se nao ha nenhum estado ativo registrado, 
+				return false;			// como executar?
+			activestates.trimToSize();
+			running = true;
+			stopped = false;
+			endclock = (float)endtime;
+			clock = 0;
+			termreason = 0;
+			simulation = new Thread(this);
+			simulation.setPriority(Thread.MAX_PRIORITY);
+			simulation.start();			// inicia execu��o
+			Log.LogMessage("Scheduler: simulation started");
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public int getNumberOfIterations() {
+		return numberOfIterations;
+	}
+
+	public void setNumberOfIterations(int numberOfIterations) {
+		this.numberOfIterations = numberOfIterations;
+	}
+	
 }

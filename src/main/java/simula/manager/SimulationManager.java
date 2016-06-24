@@ -1002,6 +1002,29 @@ public class SimulationManager implements Serializable
 		return queues;
 	}
 	
+	// pagliares
+	
+	/**
+	 * Executa simula��o at� instante endTime
+	 */
+	public synchronized boolean ExecuteSimulation(float endTime, float iterationTime)
+	{
+		boolean ok = false;
+		
+		if(endTime >= 0 && s != null)	// o modelo j� deve ter sido gerado
+		{
+			Log.Close();
+			Log.OpenFile();
+			ok = s.Run(endTime, iterationTime );
+			if(ok)
+			{
+				endtime = endTime;
+				running = true;
+			}
+		}
+		
+		return ok;
+	}
 	
 	
 	
