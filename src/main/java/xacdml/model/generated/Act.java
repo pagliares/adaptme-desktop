@@ -42,7 +42,9 @@ public class Act {
     protected Graphic graphic;
     @XmlElement(required = true)
     protected Stat stat;
-    @XmlElement(name = "entity_class", required = true)
+//    @XmlElement(name = "entity_class", required = true)
+    @XmlElement(name = "entity_class", required = false) // para permitir gerar a tag <act> sem entity
+    													 // para iteration and release
     protected List<EntityClass> entityClass;
     protected List<Whenprev> whenprev;
     @XmlElement(name = "observer")

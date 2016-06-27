@@ -122,9 +122,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:value-of select="$time"/>
   <xsl:text>");
 
+  <!-- man.ExecuteSimulation(</xsl:text>
+  <xsl:value-of select="$time"/>
+  <xsl:text>); -->
+  
   man.ExecuteSimulation(</xsl:text>
   <xsl:value-of select="$time"/>
-  <xsl:text>);
+  <xsl:text>,  <xsl:apply-templates select="stat"/>);
 
   while (!man.Finished())
   {

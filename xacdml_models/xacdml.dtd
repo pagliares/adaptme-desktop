@@ -141,7 +141,8 @@
 >
 
 <!--Act Element -->
-<!ELEMENT act (graphic?,  stat, entity_class+, whenprev*, act-observer*, interrupting?, interrupted?)>
+<!--<!ELEMENT act (graphic?,  stat, entity_class+, whenprev*, act-observer*, interrupting?, interrupted?)> -->
+<!ELEMENT act (graphic?,  stat, entity_class*, whenprev*, act-observer*, interrupting?, interrupted?)>
 
 <!ATTLIST act
           id %id.type; #REQUIRED
