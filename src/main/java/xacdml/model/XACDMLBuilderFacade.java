@@ -113,11 +113,146 @@ public class XACDMLBuilderFacade {
 		
 		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
 		
+		createSpecialActivitiesForIterationAndRelease();
+		
 		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
 
 	}
+	
+	private void createSpecialActivitiesForIterationAndRelease() {
+		// Tornar recursivo
+		for (ProcessContentRepository processContentRepository : calibratedProcessRepository.getProcessContents()) {
+			if (processContentRepository.getName().equals("Iteration") || processContentRepository.getName().equals("Release")) {
+				regularActivity = factory.createAct();
+				regularActivity.setId(processContentRepository.getName());	
+				
+				parametersDistributionRegularActivity = processContentRepository.getSample().getParameters(); // talvez pegar direto do painel
+
+				distribution = factory.createStat();
+
+				if (parametersDistributionRegularActivity instanceof ConstantParameters) {
+					constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("CONST");
+					distribution.setParm1(Double.toString(constantParameters.getValue()));
+
+				} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
+					uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("UNIFORM");
+					distribution.setParm1(Double.toString(uniformParameters.getLow()));
+					distribution.setParm2(Double.toString(uniformParameters.getHigh()));
+
+				} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
+					negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("NEGEXP");
+					distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+
+				} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
+					normalParameters = (NormalParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("NORMAL");
+					distribution.setParm1(Double.toString(normalParameters.getMean()));
+					distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+				} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
+					poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("POISSON");
+					distribution.setParm1(Double.toString(poissonParameters.getMean()));
+				}
+				regularActivity.setStat(distribution);
+				
+				// Configuring  entity class for permanent entities. 
+				// estou pegando a primeira fila, supondo que seja permanent entity
+				// so estou fazendo isso, pois a simulacao nao funciona para um <act> sem entity class
+ 
+				Dead queue = acd.getDead().get(0);
+						 
+				entityClass.setId("role0"); // tem que existir para evitar o erro IDREF no momento de marshalling
+																			 
+				previous.setId(queue.getId());
+				previous.setDead(queue);
+		 
+				next.setId(queue.getId());
+				next.setDead(queue);  // recebe Object. O que acontece se eu passar queue.getId()
+						 
+				entityClass.setPrev(previous);
+				entityClass.setNext(next);
+			
+				
+				 regularActivity.getEntityClass().add(entityClass);
+				 acd.getAct().add(regularActivity);	
+				
+				 if (processContentRepository.getChildren().get(0).getName().equals("Iteration") || 
+						 processContentRepository.getChildren().get(0).getName().equals("Release")) {
+						regularActivity = factory.createAct();
+						
+						regularActivity.setId(processContentRepository.getChildren().get(0).getName());	
+						// Configuring  entity class for permanent entities. 
+						// estou pegando a primeira fila, supondo que seja permanent entity
+						// so estou fazendo isso, pois a simulacao nao funciona para um <act> sem entity class
+		 
+						Dead queue1 = acd.getDead().get(0);
+								 
+						entityClass.setId("role1"); // tem que existir para evitar o erro IDREF no momento de marshalling
+																					 
+						previous.setId(queue1.getId());
+						previous.setDead(queue1);
+				 
+						next.setId(queue1.getId());
+						next.setDead(queue1);  // recebe Object. O que acontece se eu passar queue.getId()
+								 
+						entityClass.setPrev(previous);
+						entityClass.setNext(next);
+						
+						
+						parametersDistributionRegularActivity = processContentRepository.getChildren().get(0).getSample().getParameters(); // talvez pegar direto do painel
+
+						distribution = factory.createStat();
+
+						if (parametersDistributionRegularActivity instanceof ConstantParameters) {
+							constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("CONST");
+							distribution.setParm1(Double.toString(constantParameters.getValue()));
+
+						} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
+							uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("UNIFORM");
+							distribution.setParm1(Double.toString(uniformParameters.getLow()));
+							distribution.setParm2(Double.toString(uniformParameters.getHigh()));
+
+						} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
+							negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("NEGEXP");
+							distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+
+						} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
+							normalParameters = (NormalParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("NORMAL");
+							distribution.setParm1(Double.toString(normalParameters.getMean()));
+							distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+
+						} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
+							poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("POISSON");
+							distribution.setParm1(Double.toString(poissonParameters.getMean()));
+						}
+						regularActivity.setStat(distribution);
+						 regularActivity.getEntityClass().add(entityClass);
+						acd.getAct().add(regularActivity);
+				 }  
+			}	}
+		}
+	
 
 	private void createDestroyActivities(List<Role> roles, List<WorkProductXACDML> workProducts) {
 		
