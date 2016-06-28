@@ -122,14 +122,9 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:value-of select="$time"/>
   <xsl:text>");
 
-  <!-- man.ExecuteSimulation(</xsl:text>
-  <xsl:value-of select="$time"/>
-  <xsl:text>); -->
-  
   man.ExecuteSimulation(</xsl:text>
-  <xsl:value-of select="$time"/>
-  <xsl:text>,  <xsl:apply-templates select="stat"/>);
-
+  <xsl:value-of select="$time"/>, (float)<xsl:text><xsl:if test="/acd/act[@id='Iteration']"><xsl:value-of select="act[@id='Iteration']/stat/@parm1" /></xsl:if> </xsl:text>, (float)<xsl:text><xsl:if test="/acd/act[@id='Release']"><xsl:value-of select="act[@id='Release']/stat/@parm1" /></xsl:if> </xsl:text>);  
+  
   while (!man.Finished())
   {
    try
@@ -142,13 +137,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   System.out.println("Simulation Stopped!");
 
   //finally, output the results
-  man.OutputSimulationResults ("</xsl:text>
-
-  <xsl:value-of select="@id"/>
-
-  <xsl:text>.out");
-  
-  </xsl:text>
+  man.OutputSimulationResults (" <xsl:value-of select="@id"/><xsl:text>.out");</xsl:text>
 
 </xsl:template>
 
