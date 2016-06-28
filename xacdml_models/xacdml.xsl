@@ -119,11 +119,28 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   </xsl:choose>
   </xsl:variable>
 
-  <xsl:value-of select="$time"/>
-  <xsl:text>");
+  <xsl:value-of select="$time"/>");
+  <!-- Se tiver iteration and release, chama de um jeito, se tiver so release, de outro, so iteration, de outro, nenhum, de outro -->
+   <xsl:choose>
+  <xsl:when test="/acd/act[@id='Iteration'] and /acd/act[@id='Iteration']">//iteration e release
+   man.ExecuteSimulation(<xsl:text><xsl:value-of select="$time"/></xsl:text>,(float)<xsl:text><xsl:if test="/acd/act[@id='Iteration']"><xsl:value-of select="act[@id='Iteration']/stat/@parm1" /></xsl:if></xsl:text>, (float)<xsl:text><xsl:if test="/acd/act[@id='Release']"><xsl:value-of select="act[@id='Release']/stat/@parm1" /></xsl:if> </xsl:text>);  
+  </xsl:when> 
+  <xsl:when test="/acd/act[@id='Iteration'] and not(/acd/act[@id='Iteration'])">//so iteration
+  man.ExecuteSimulation(<xsl:text><xsl:value-of select="$time"/></xsl:text>, (float)<xsl:text><xsl:if test="/acd/act[@id='Iteration']"><xsl:value-of select="act[@id='Iteration']/stat/@parm1" /></xsl:if> </xsl:text>, (float)<xsl:text><xsl:if test="/acd/act[@id='Release']"><xsl:value-of select="act[@id='Release']/stat/@parm1" /></xsl:if> </xsl:text>);  
+  </xsl:when> 
+   <xsl:when test="not(/acd/act[@id='Iteration']) and /acd/act[@id='Iteration']">//so release
+    man.ExecuteSimulation(<xsl:text><xsl:value-of select="$time"/></xsl:text>, 0 , (float)<xsl:text><xsl:if test="/acd/act[@id='Release']"><xsl:value-of select="act[@id='Release']/stat/@parm1" /></xsl:if> </xsl:text>);  
+     </xsl:when>
+     <xsl:when test="not(/acd/act[@id='Iteration']) and not(/acd/act[@id='Iteration'])">//nenhum nem outro
+    man.ExecuteSimulation(<xsl:text><xsl:value-of select="$time"/></xsl:text>);  
+     </xsl:when> 
+  
+     
+   
+ </xsl:choose> 
+  
 
-  man.ExecuteSimulation(</xsl:text>
-  <xsl:value-of select="$time"/>, (float)<xsl:text><xsl:if test="/acd/act[@id='Iteration']"><xsl:value-of select="act[@id='Iteration']/stat/@parm1" /></xsl:if> </xsl:text>, (float)<xsl:text><xsl:if test="/acd/act[@id='Release']"><xsl:value-of select="act[@id='Release']/stat/@parm1" /></xsl:if> </xsl:text>);  
+  
   
   while (!man.Finished())
   {
