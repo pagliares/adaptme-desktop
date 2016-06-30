@@ -1,5 +1,5 @@
 // Arquivo Activity.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 9.Abr.1999	Wladimir
 
 package simula;
@@ -12,30 +12,30 @@ public class Activity extends ActiveState
 	/**
 	 * entities_from_v, entities_to_v, conditions_from_v,
 	 * resources_from_v, resources_to_v, resources_qt_v:
-	 * vetores que mantêm as ligações e parâmetros
+	 * vetores que mantï¿½m as ligaï¿½ï¿½es e parï¿½metros
 	 */
 	protected Vector entities_from_v, entities_to_v, conditions_from_v,
 					 	resources_from_v, resources_to_v, resources_qt_v;
 													
-	private Distribution d;		// gerador de números aleatórios de uma dada distribuição
+	private Distribution d;		// gerador de nï¿½meros aleatï¿½rios de uma dada distribuiï¿½ï¿½o
 
 	/**
-	 * fila de entidades/recursos em serviço
+	 * fila de entidades/recursos em serviï¿½o
 	 */
 	protected IntPriorityQ service_q;
 		
 	/**
-	 * se está bloqueado
+	 * se estï¿½ bloqueado
 	 */
 	protected boolean blocked;	
 
 	/**
-	 * constrói um estado ativo sem conexões ou tempo de serviço definidos.
+	 * constrï¿½i um estado ativo sem conexï¿½es ou tempo de serviï¿½o definidos.
 	 */
 	public Activity(Scheduler s)
 	{
 		super(s);
-		// constrói vetores de ligações
+		// constrï¿½i vetores de ligaï¿½ï¿½es
 		entities_from_v = new Vector(1, 1);
 		entities_to_v = new Vector(1, 1);
 		conditions_from_v = new Vector(1, 1);
@@ -46,17 +46,22 @@ public class Activity extends ActiveState
 	}
 	
 	/**
-	 * determina o tempo de serviço de acordo com a distribuição especificada;
-	 * os parâmetros da distribuição são passados na criação do objeto.
+	 * determina o tempo de serviï¿½o de acordo com a distribuiï¿½ï¿½o especificada;
+	 * os parï¿½metros da distribuiï¿½ï¿½o sï¿½o passados na criaï¿½ï¿½o do objeto.
 	 */
-	public void SetServiceTime(Distribution d){this.d = d;}
+	public void SetServiceTime(Distribution d){
+		this.d = d;
+		// pagliares  as duas linhas abaixo
+		RegisterEvent((float)d.Draw());
+//		inservice = true;
+		}
 	
 	public void ConnectQueues(DeadState from, DeadState to)
 	{ConnectQueues(from, ConstExpression.TRUE, to);}
 	
 	/**
-	 * conecta estados mortos à atividade de forma que 
-	 * a(s) entidade(s) (recurso(s)) não se misturem.
+	 * conecta estados mortos ï¿½ atividade de forma que 
+	 * a(s) entidade(s) (recurso(s)) nï¿½o se misturem.
 	 */
 	public void ConnectResources(ResourceQ from, ResourceQ to, int qty_needed)
 	{
@@ -66,9 +71,9 @@ public class Activity extends ActiveState
 	}
 	
 	/**
-	 * conecta estados mortos à atividade de forma que 
-	 * a(s) entidade(s) (recurso(s)) não se misturem.
-	 * mas a entidade é obtida de from somente se cond é satisfeita
+	 * conecta estados mortos ï¿½ atividade de forma que 
+	 * a(s) entidade(s) (recurso(s)) nï¿½o se misturem.
+	 * mas a entidade ï¿½ obtida de from somente se cond ï¿½ satisfeita
 	 */
 	public void ConnectQueues(DeadState from, Expression cond, DeadState to)
 	{
@@ -78,7 +83,7 @@ public class Activity extends ActiveState
 	}
 	
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
 	public void Clear()
 	{
@@ -91,28 +96,28 @@ public class Activity extends ActiveState
 	 */
 	public boolean BServed(float time)
 	{
-		if(blocked)									// não faz nada enquanto estiver bloqueado
+		if(blocked)									// nï¿½o faz nada enquanto estiver bloqueado
 			return false;
 			
 		IntQEntry e = service_q.Dequeue();
 
-		if(e == null)								// não há mais nada a servir
+		if(e == null)								// nï¿½o hï¿½ mais nada a servir
 			return false;
 
-		if(time < e.duetime)				// serviço foi interrompido e scheduler 
-		{														// não foi notificado
-			service_q.PutBack(e);				// devolve à fila para ser servido mais tarde
+		if(time < e.duetime)				// serviï¿½o foi interrompido e scheduler 
+		{														// nï¿½o foi notificado
+			service_q.PutBack(e);				// devolve ï¿½ fila para ser servido mais tarde
 			return false;
 		}
 
-		// fim de serviço!
+		// fim de serviï¿½o!
 		
 		boolean shouldnotblock = true;
 
 		for(int i = 0; i < entities_to_v.size(); i++)		// as entidades...
 		{
-			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtém fila associada
-			shouldnotblock &= q.HasSpace();												// condição para não bloquear
+			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtï¿½m fila associada
+			shouldnotblock &= q.HasSpace();												// condiï¿½ï¿½o para nï¿½o bloquear
 		}
 		
 		if(!shouldnotblock)
@@ -125,15 +130,15 @@ public class Activity extends ActiveState
 
 		for(int i = 0; i < entities_to_v.size(); i++)		// as entidades...
 		{
-			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtém fila associada
-			if(q.HasSpace())										// se tem espaço
+			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtï¿½m fila associada
+			if(q.HasSpace())										// se tem espaï¿½o
 				q.Enqueue(e.ve[i]);									// envia ao estado morto
 		}
 		
 		for(int i = 0; i < resources_to_v.size(); i++)		// e os recursos.
 		{
 			int qt;
-			ResourceQ q = (ResourceQ)resources_to_v.elementAt(i);	// obtém fila associada
+			ResourceQ q = (ResourceQ)resources_to_v.elementAt(i);	// obtï¿½m fila associada
 			q.Release(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());// envia ao estado morto
 			Log.LogMessage(name + ":Released " + qt + " resources to " +
 				((ResourceQ)resources_to_v.elementAt(i)).name);
@@ -165,13 +170,13 @@ public class Activity extends ActiveState
 			blocked = false;
 			while(BServed(s.GetClock()));	// extrai todos os bloqueados
 							
-			if(blocked)		// se ainda estiver bloqueado, não faz nada
+			if(blocked)		// se ainda estiver bloqueado, nï¿½o faz nada
 				return false;
 			Log.LogMessage(name + ":Unblocked");
 		}
 			
 		
-		// primeiro verifica se todos os recursos e entidades estão disponíveis
+		// primeiro verifica se todos os recursos e entidades estï¿½o disponï¿½veis
 		boolean ok = true;
 		int esize = entities_from_v.size();
 		int i;
@@ -185,26 +190,26 @@ public class Activity extends ActiveState
 
 		IntQEntry possible = new IntQEntry(esize, (float)d.Draw());
 		Entity e;
-		for(i = 0; i < esize && ok; i++)					// as condições.
+		for(i = 0; i < esize && ok; i++)					// as condiï¿½ï¿½es.
 		{
 			possible.ve[i] = e = ((DeadState)entities_from_v.elementAt(i)).Dequeue();
 																// retira entidades...
 			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(e) != 0;
-																// e testa condição
+																// e testa condiï¿½ï¿½o
 		}
 
 		if(!ok)
 		{
-			if(i > 0)		// alguma condição não foi satisfeita
+			if(i > 0)		// alguma condiï¿½ï¿½o nï¿½o foi satisfeita
 			{
-				for(i--; i >= 0; i--)		// devolve as entidades às respectivas filas
+				for(i--; i >= 0; i--)		// devolve as entidades ï¿½s respectivas filas
 					((DeadState)entities_from_v.elementAt(i)).PutBack(possible.ve[i]);
 			}
 
 			return false;
 		}
 
-		// obtém os recursos
+		// obtï¿½m os recursos
 
 		for(i = 0; i < resources_from_v.size(); i++)
 		{
@@ -217,7 +222,7 @@ public class Activity extends ActiveState
 		}
 
 		possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
-		service_q.Enqueue(possible);							// coloca na fila de serviço
+		service_q.Enqueue(possible);							// coloca na fila de serviï¿½o
 		
 		if(obs != null)
 		{
