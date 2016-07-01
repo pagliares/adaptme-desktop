@@ -6,6 +6,8 @@ package simula;
 
 import java.util.*;
 
+import simula.manager.SimulationManager;
+
 public class Scheduler implements Runnable
 {
 	private Calendar calendar;		// estrutura de armazenamento dos estados ativos a servir
@@ -24,22 +26,27 @@ public class Scheduler implements Runnable
 	private static Scheduler s;		// uma refer�ncia est�tica ao Scheduler
 									// para permitir a��es de emerg�ncia (parada)
 
+	private SimulationManager simulationManager;
 	private float iterationTime;  // pagliares
 	private float releaseTime;  // pagliares
 	
 	private int numberOfIterations = 1; // Pagliares. Precisa ser um. vide metodo run sobreescrito
 	private int numberOfReleases = 0; // Pagliares. diferentemente de iteration, so contamos release quando entrega
+	
+	private HashMap<String, HashMap>simulationResultsByIteration = new HashMap<>();
+	
 	/**
 	 * retorna refer�ncia ao objeto ativo
 	 */
 	public static Scheduler Get(){return s;}
 
-	public Scheduler()
+	public Scheduler(SimulationManager simulationManager)
 	{
 		activestates = new Vector(20, 10);
 		calendar = new Calendar();
 		timeprecision = (float)0.001;
 		s = this;
+		this.simulationManager = simulationManager;
 	}
 	
 	/**
@@ -211,6 +218,10 @@ public class Scheduler implements Runnable
 			 
 			if ((int)clock % iterationTime == 0) {
 					numberOfIterations++;
+					// insere os resultados da iteracao. Fazer o mesmo para atividades
+					getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getQueues());
+					// para observers
+					// getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getObservers());
 			}
 			
 			// Pagliares
@@ -317,6 +328,14 @@ public class Scheduler implements Runnable
 
 	public int getNumberOfReleases() {
 		return numberOfReleases;
+	}
+
+	public HashMap<String, HashMap> getSimulationResultsByIteration() {
+		return simulationResultsByIteration;
+	}
+
+	public void setSimulationResultsByIteration(HashMap<String, HashMap> simulationResultsByIteration) {
+		this.simulationResultsByIteration = simulationResultsByIteration;
 	}
 	
 }

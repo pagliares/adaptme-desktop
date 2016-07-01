@@ -560,7 +560,8 @@ public class SimulationManager implements Serializable
 		
 		// 1.o cria o Scheduler
 		
-		s = new Scheduler();
+		s = new Scheduler(this); // Pagliares: estou passando simulation manager para permiter 
+								 // o calculo de estatisticas por iteracao/release
 		
 		// logo depois a stream de n�meros aleat�rios
 		
@@ -962,6 +963,8 @@ public class SimulationManager implements Serializable
 	
 }
 	
+	
+	
 	public void printWeightedAverage(ObserverEntry observerEntry) { 
 		 
 		System.out.println(observerEntry.getAvearageWeighted(s.GetClock() - resettime));
@@ -1026,6 +1029,11 @@ public class SimulationManager implements Serializable
 		return ok;
 	}
 	
+	// pagliares
+	public HashMap getSimulationResultsByIteration() {
+		return s.getSimulationResultsByIteration();
+		
+	}
 	
 	
 }	
