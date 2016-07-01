@@ -1,7 +1,9 @@
 package adaptme.facade;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,6 +76,10 @@ public class SimulationManagerFacade {
 			System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
 			System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
 			
+			System.out.println("Displaying results by iteration");
+			printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
+			
+			
 			
 //		    String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
 		    int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size()-1;
@@ -97,6 +103,29 @@ public class SimulationManagerFacade {
 
 	public void setSimulationFacade(SimulationFacade simulationFacade) {
 		this.simulationFacade = simulationFacade;
+		
+	}
+	
+	public void printObserversReportByIteration(HashMap firstHash) {
+		 Collection<String>  chaves = firstHash.keySet();
+		 
+		 for (String chave: chaves) {
+			 System.out.println(chave);
+			 HashMap secondHash = (HashMap)firstHash.get(chave);
+			 Collection<String> chavesSegundoHash = secondHash.keySet();
+			 for (String chave1: chavesSegundoHash) {
+				 if (secondHash.get(chave1) instanceof QueueEntry) {
+					 QueueEntry qe1 = (QueueEntry)secondHash.get(chave1);
+					 System.out.println("QueuName..:" + chave1  + "  "  + "inner queue name..:  "  + qe1.getName() + "  number of entities..:" + qe1.SimObj.getCount());
+				 } else if (secondHash.get(chave1) instanceof ObserverEntry) {
+					 ObserverEntry oe1 = (ObserverEntry)secondHash.get(chave1);
+					 System.out.println("Chave second hash..:" + chave1  + "  "  + "value (queue name) ..:  "  + oe1);
+				 }
+				
+			 }
+			 
+		 }
+		
 		
 	}
 }
