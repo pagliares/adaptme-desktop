@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.DynamicExperimentationProgramProxyFactory;
 import adaptme.IDynamicExperimentationProgramProxy;
@@ -179,24 +181,31 @@ public class SimulationManagerFacade {
 	}
 	
 	private void printResultadosGlobal(int [][] matrizResultados) {
-		System.out.println("Imprimindo a matriz");
+		System.out.println("Printing the mean and sd of entities in each queue and for each replication");
 		Set<String>  keys = resultadoGlobal.keySet();  // contem o nome de todos experimentos como chave
 		
 		HashMap secondHash = (HashMap)resultadoGlobal.get(keys.iterator().next());
 		Collection<String> chavesNomeFilasSegundoHash = secondHash.keySet();
 		
 		double soma = 0.0;
+		StandardDeviation sd = new StandardDeviation();
+	
 		Iterator iterator = chavesNomeFilasSegundoHash.iterator();
+		double [] numeroEntidadesPorFila = new double[matrizResultados.length];
 		
-		for (int j=0; j < matrizResultados[0].length; j++) { // para uma determinada colunas (representa quantidade de entities)
-			System.out.println("Fila " + iterator.next());
-			
+		for (int j=0; j < matrizResultados[0].length; j++) { // para uma determinada colunas (celula representa quantidade de entities)
+			String fila = (String)iterator.next();
+			System.out.println("Fila " + fila);
 			for (int i=0; i < matrizResultados.length; i++) { // somo todas as linhas para a coluna acima (representa experimentos)
-				System.out.println("quantity: " + matrizResultados[i][j]);
+				System.out.println("quantity in replication " + (i+1) + "..: " + matrizResultados[i][j]);
+				numeroEntidadesPorFila[i] = matrizResultados[i][j];
 				soma = soma + matrizResultados[i][j];	
 			}	
-			System.out.println("means of entities in queue  X " + soma/matrizResultados.length);
+			System.out.println("means of entities in queue " + fila + "..:" + soma/matrizResultados.length);
+			System.out.println("Standard deviation..: " + sd.evaluate(numeroEntidadesPorFila));
 			soma = 0.0;
+			numeroEntidadesPorFila = new double[matrizResultados.length];
+			
 		}
 	}
 }
