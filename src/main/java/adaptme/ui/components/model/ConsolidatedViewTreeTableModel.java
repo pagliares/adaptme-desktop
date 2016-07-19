@@ -97,7 +97,7 @@ public class ConsolidatedViewTreeTableModel extends AbstractTreeTableModel {
 				roleDescriptor.setId(element.getId());
 				QName qName = jaxbElement.getName();
 				if (qName.getLocalPart().equals("PerformedPrimarilyBy")) {
-					roleDescriptor.setModelInfo("Primarily Performer");
+					roleDescriptor.setModelInfo("Primary Performer");
 				} else if (qName.getLocalPart().equals("AdditionallyPerformedBy")) {
 					roleDescriptor.setModelInfo("Additional Performer");
 				}
