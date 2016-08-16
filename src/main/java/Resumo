@@ -79,3 +79,29 @@ atributo objective? Por enquanto está tudo no ProcessRepository e posso excluir
  
  14) IMPORTANT: Ao testar a atividade Prioritize user stories com input e output queue, o erro de array index out of bounds exception. O erro acontece quando o atribut
  o init de customer esta configurado com 1 e nao com 2
+ 
+ 15) Implementacao de PowerLaw distribution in java (Importante. usar pareto)
+ 
+ Resposta: Parece que tem varias implementacoes para power law em java. uma delas a Zipfs do apache commons.
+  http://stackoverflow.com/questions/3253692/java-power-law-distribution
+  
+  Embora a distribuicao acima seja power law, ela nao tem os parametros que eu preciso. Aparentemente
+  o que eu preciso é da Pareto distribuition, tambem presente no commons math.
+  
+  Artigo que parece interessante de power law
+  http://www-personal.umich.edu/~mejn/courses/2006/cmplxsys899/powerlaws.pdf
+  
+  mais um artigo:
+  http://www.di.fc.ul.pt/~jpn/r/powerlaw/powerlaw.html
+  
+  Pareto em java
+  http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/distribution/ParetoDistribution.html
+  
+  16) Implementacao power law em R
+  
+  http://pidgin.ucsd.edu/pipermail/r-lang/2007-July/000047.html
+  
+install.packages("zipfR") ## Need to specify CRAN the 1st time
+library(zipfR)
+Z <- lnre("zm", alpha=-15.31, B=1e-3)
+hist( as.integer(rlnre(Z, 1000)))
