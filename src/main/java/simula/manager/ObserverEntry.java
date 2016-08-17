@@ -154,12 +154,12 @@ public class ObserverEntry extends Entry
 	
 			case ACTIVE:
 				if(histid == null)
-					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).SimObj, new Statistics(m.s), att);
+					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).activeState, new Statistics(m.s), att);
 				else
 				{
 					HistogramEntry he = m.GetHistogram(histid);
 					ok = he.Generate(m);
-					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).SimObj, he.SimObj, att);
+					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).activeState, he.SimObj, att);
 				}
 				break;
 		
@@ -183,17 +183,17 @@ public class ObserverEntry extends Entry
 						expobj = new Expression(exp);
 				}
 
-				SimObj = new ProcessorObserver(m.s, m.GetActiveState(observed).SimObj, att, expobj, histid == null);
+				SimObj = new ProcessorObserver(m.s, m.GetActiveState(observed).activeState, att, expobj, histid == null);
 				break;
 				
 			case DELAY: 
 				if(histid == null)
-					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).SimObj, new Statistics(m.s), att == null, exp == null);
+					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).activeState, new Statistics(m.s), att == null, exp == null);
 				else
 				{
 					HistogramEntry he = m.GetHistogram(histid);
 					ok = he.Generate(m);
-					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).SimObj, he.SimObj, att == null, exp == null);
+					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).activeState, he.SimObj, att == null, exp == null);
 				}
 				break;
 

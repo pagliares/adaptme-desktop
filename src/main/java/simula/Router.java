@@ -30,6 +30,8 @@ public class Router extends ActiveState
 	 * se est� bloqueado
 	 */
 	protected boolean blocked;
+	
+//	protected boolean inservice; // pagliares nao funcionou
 
 
 	/**
@@ -55,8 +57,8 @@ public class Router extends ActiveState
 	public void SetServiceTime(Distribution d){
 		this.d = d;
 		// pagliares  as duas linhas abaixo
-				RegisterEvent((float)d.Draw());
-//				inservice = true;
+				RegisterEvent((float)d.Draw()); // TODO AQUI QUE FAZ O SAMPLING
+//				inservice = true;  // nao funcionou
 		}
 
 	/**
@@ -103,7 +105,7 @@ public class Router extends ActiveState
 		if(blocked)									// n�o faz nada enquanto estiver bloqueado
 			return false;
 
-		IntQEntry e = service_q.Dequeue();
+		IntQEntry e = service_q.Dequeue(); // AQUI INDICA O TERMINO. TESTAR COMENTANDO
 
 		if(e == null)						// n�o h� mais nada a servir
 			return false;

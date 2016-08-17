@@ -1,5 +1,5 @@
 // Arquivo  ExternalActiveEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
@@ -33,14 +33,14 @@ public class ExternalActiveEntry extends ActiveEntry
 	return stb.toString();
   }
   /**
-   * constrói um objeto com id gerado internamente;
-   * @param	generate	deve especificar se é um estado Generate (true) ou Destroy(false).
+   * constrï¿½i um objeto com id gerado internamente;
+   * @param	generate	deve especificar se ï¿½ um estado Generate (true) ou Destroy(false).
    */
   public ExternalActiveEntry(boolean generate)
   {
     super();
     gen = generate;
-    internal = false;
+    isInternal = false;
   }
   
   public void copyAttributes(Entry v_e)
@@ -65,15 +65,15 @@ public class ExternalActiveEntry extends ActiveEntry
   boolean Generate(SimulationManager m)
 	{
 		if(gen)
-			SimObj = new Generate(m.s);
+			activeState = new Generate(m.s);
 		else
-			SimObj = new Destroy(m.s);
+			activeState = new Destroy(m.s);
 			
 		return Setup(m);
 	}
 
   /**
-   * Ajusta os parâmetros comuns aos ActiveState's
+   * Ajusta os parï¿½metros comuns aos ActiveState's
    */
   protected boolean Setup(SimulationManager m)
 	{
@@ -85,21 +85,21 @@ public class ExternalActiveEntry extends ActiveEntry
 			switch(servicedist)
 			{
 				case NONE: break;
-				case CONST: 	((Generate)SimObj).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Generate)SimObj).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Generate)SimObj).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Generate)SimObj).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Generate)SimObj).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Generate)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
+				case UNIFORM: ((Generate)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
+				case NORMAL: 	((Generate)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
+				case NEGEXP: 	((Generate)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
+				case POISSON: ((Generate)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
 				default: return false;
 			}
 			
-			((Generate)SimObj).ConnectQueue(m.GetQueue(qid).SimObj);
+			((Generate)activeState).ConnectQueue(m.GetQueue(qid).SimObj);
 		}
 		else
 		{
 			System.out.println("ExternalActiveEntry.Setup id= "+id+" qid"+qid);
-			System.out.println("ExternalActiveEntry.Setup "+SimObj+" "+m.GetQueue(qid));
-			((Destroy)SimObj).ConnectQueue(m.GetQueue(qid).SimObj);
+			System.out.println("ExternalActiveEntry.Setup "+activeState+" "+m.GetQueue(qid));
+			((Destroy)activeState).ConnectQueue(m.GetQueue(qid).SimObj);
 		}
 
 		if(enttype != null)
@@ -108,7 +108,7 @@ public class ExternalActiveEntry extends ActiveEntry
 			if(type == null)
 				return false;
 			
-			((Generate)SimObj).SetEntitiesAtts(type.GetIds(), type.GetValues());
+			((Generate)activeState).SetEntitiesAtts(type.GetIds(), type.GetValues());
 		}
 
 		return true;	

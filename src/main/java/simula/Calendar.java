@@ -1,5 +1,5 @@
 // Arquivo Calendar.java
-// Implementação das Classes do Grupo Executivo da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo Executivo da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 19.Mar.1999	Wladimir
 
 package simula;
@@ -9,23 +9,24 @@ package simula;
  */
 class Calendar
 {
-	private TTreeEntry root = null;	// raiz da árvore
-	private TTreeEntry list = null;	// lista dos estados ativos correntes
+	//Pagliares BINGO: root e a atividade que esta sendo executada no exato momento. List, as proximas. Preciso
+	// executar o b de root e agendar um novo root (novo ttentry com prioritize task and another time sampled
+	private TTreeEntry root = null;	// raiz da ï¿½rvore 
+	private TTreeEntry list = null;	// lista dos estados ativos correntes (pagliares: atividades em execucao)
 
 	public Calendar(){}
 	/**
 	 * Adiciona uma atividade ao calendario
 	 */
-	public void Add(ActiveState a, double duetime)
+	public void Add(ActiveState activeState, double duetime)
 	{
-		if(root == null)	// se é a primeira inserção
-			root = new TTreeEntry(a, duetime);
-		else
-		{
+		if(root == null)	// se ï¿½ a primeira inserï¿½ï¿½o
+			root = new TTreeEntry(activeState, duetime);
+		else{
 			TTreeEntry child, parent, e;
-			e = new TTreeEntry(a, duetime);
+			e = new TTreeEntry(activeState, duetime);  // Pagliares: e eh == root inicialmente? nao pois so existe e chamado apos primeira insercao
 
-			child  = root;
+			child  = root; // por que?
 			parent = null;
 
 			// find insertion point.
@@ -76,42 +77,42 @@ class Calendar
 	/**
 	 * Remove uma Atividade do calendario
 	 */
-	public boolean Remove(ActiveState a, double duetime)
+	public boolean Remove(ActiveState activeState, double duetime)
 	{
-		if(root == null)	// se árvore vazia...
+		if(root == null)	// se ï¿½rvore vazia...
 			return false;
 
-		TTreeEntry e = Find(a, duetime);
+		TTreeEntry node = Find(activeState, duetime);  // PAGLIARES: renomeei e para node
 
-		if(e == null)		// se não encontrou
+		if(node == null)		// se nï¿½o encontrou
 			return false;
 
-		// remove da lista ligada ao nó
+		// remove da lista ligada ao nï¿½
 
 		TTreeEntry x, y;
 
-		x = e.middle;
+		x = node.middle;
 
-		if (e.left == e)
+		if (node.left == node)
 		{
 			// e is in a list => remove 
-			if (e == x) 
+			if (node == x) 
 			{
 				// nothing else in the list 
-				(e.right).middle = null;
-				e.right = e.middle = e.left = e.parent = null;	// zera referências
+				(node.right).middle = null;
+				node.right = node.middle = node.left = node.parent = null;	// zera referï¿½ncias
 				return true;
 			}
-			else if (e.right != null)
+			else if (node.right != null)
 			{
 				// e is at the head of the list 
-				(e.right).middle = x;
-				x.right = e.right;
+				(node.right).middle = x;
+				x.right = node.right;
 			}
 		
-			(e.parent).middle = x;
-			x.parent = e.parent;
-			e.right = e.middle = e.left = e.parent = null;	// zera referências
+			(node.parent).middle = x;
+			x.parent = node.parent;
+			node.right = node.middle = node.left = node.parent = null;	// zera referï¿½ncias
 
 			return true;
 		}
@@ -130,32 +131,32 @@ class Calendar
 				// there is one child 
 				x.middle = null;
 
-			x.parent = e.parent;
-			x.left   = e.left;
+			x.parent = node.parent;
+			x.left   = node.left;
 			if (x.left != null)
 				(x.left).parent = x;
-			x.right  = e.right;
+			x.right  = node.right;
 			if (x.right != null)
 				(x.right).parent = x;
 
 			// Check if we need to update root 
-			if (root == e)
+			if (root == node)
 				root = x;
-			else if ((e.parent).left == e)
-				(e.parent).left = x;
+			else if ((node.parent).left == node)
+				(node.parent).left = x;
 			else
-				(e.parent).right = x;
+				(node.parent).right = x;
 		}
 		else 
 		{
 			// e is in the tree and there is no list 
 			// Work out which entity to reposition in the tree. 
-			if (e.left != null && e.right != null) 
+			if (node.left != null && node.right != null) 
 			{
-				for (y = e.right; y.left != null; y = y.left);
+				for (y = node.right; y.left != null; y = y.left);
 			}
 			else
-				y = e;
+				y = node;
 
 			// Set x to a non-null child of y, or null if  
 			// there are no non-null children.             
@@ -178,113 +179,116 @@ class Calendar
 				(y.parent).right = x;
 
 			// Insert y in place of entity e. 
-			if (y != e) 
+			if (y != node) 
 			{
 				// Update the pointers from e 
-				y.parent = e.parent;
-				y.left   = e.left;
-				y.right  = e.right;
+				y.parent = node.parent;
+				y.left   = node.left;
+				y.right  = node.right;
 
 				// Update the pointers to e 
-				if (e.left != null)
-					(e.left).parent = y;
-				if (e.right != null)
-					(e.right).parent = y;
+				if (node.left != null)
+					(node.left).parent = y;
+				if (node.right != null)
+					(node.right).parent = y;
 
 				// Update root or parent 
-				if (root == e)
+				if (root == node)
 					root = y;
-				else if ((e.parent).left == e)
-					(e.parent).left = y;
+				else if ((node.parent).left == node)
+					(node.parent).left = y;
 				else
-					(e.parent).right = y;
+					(node.parent).right = y;
 			}
 
 			// Invalidate e's old pointers. 
-			e.right = null;
-			e.left  = null;
-			e.parent= null;
-			e.middle= null;
+			node.right = null;
+			node.left  = null;
+			node.parent= null;
+			node.middle= null;
 		}
 
 		return true;
 	}
 
 	/**
-	 * encontra posição na árvore
-	 * não precisa se preocupar em procurar na lista porque ela só contém 
-	 * os eventos que serão executados neste instante
+	 * encontra posiï¿½ï¿½o na ï¿½rvore
+	 * nï¿½o precisa se preocupar em procurar na lista porque ela sï¿½ contï¿½m 
+	 * os eventos que serï¿½o executados neste instante
 	 */
-	private TTreeEntry Find(ActiveState a, double duetime)
-	{
+	private TTreeEntry Find(ActiveState a, double duetime){
 
-		TTreeEntry e;
-		e = root;
+		TTreeEntry node;
+		node = root;
 		while(true)
 		{
-			if((float)duetime < e.time && e.left != null)
-				e = e.left;
-			else if((float)duetime > e.time && e.right != null)
-				e = e.right;
-			else if((float)duetime == e.time)
+			if((float)duetime < node.time && node.left != null)
+				node = node.left;
+			else if((float)duetime > node.time && node.right != null)
+				node = node.right;
+			else if((float)duetime == node.time)
 				break;			
 			else
-				return null;	// não está na árvore
+				return null;	// nï¿½o estï¿½ na ï¿½rvore
 		}
-		if(a == e.a)			// achou!
-			return e;
-		if(a != e.a && e.middle == null)
-			return null;		// tempo certo mas estado ativo não está presente
+		if(a == node.activeState)			// achou!
+			return node;
+		if(a != node.activeState && node.middle == null)
+			return null;		// tempo certo mas estado ativo nï¿½o estï¿½ presente
 		
-		// procura posição na lista do nó
-		TTreeEntry endflag = e.middle.parent;
-		while(a != e.a)
+		// procura posiï¿½ï¿½o na lista do nï¿½
+		TTreeEntry endflag = node.middle.parent;
+		while(a != node.activeState)
 		{
-			if(e == endflag)	// se sou o último e ainda não encontrei
-				return null;	// não existe na árvore
-			e = e.middle;	
+			if(node == endflag)	// se sou o ï¿½ltimo e ainda nï¿½o encontrei
+				return null;	// nï¿½o existe na ï¿½rvore
+			node = node.middle;	
 		}
 
-		return e;
+		return node;
 	}
 
-	public ActiveState GetNext()
+	public ActiveState getNextActiveState()
 	{
-		if(list == null)		// se o relógio ainda não avançou
-			return null;		// não retorna nenhum estado ativo
+		if(list == null)		// se o relï¿½gio ainda nï¿½o avanï¿½ou
+			return null;		// nï¿½o retorna nenhum estado ativo
 		
-		return list.a;
+		return list.activeState; // PAGLIARES: CORROBORA O BINGO. LIST CONTEM CURRENT TASK EXECUTED
   
 	}
-	public float GetNextClock()
+	public float GetNextClock()  // PAGLIARES: next clock indica o time associado com o no list
 	{
-		// se este é o primeiro evento após o avanço do relógio
-		if(list == null)
+		// se este ï¿½ o primeiro evento apï¿½s o avanï¿½o do relï¿½gio
+		if(list == null)  // VERIFICAR VARIAVEIS LIST E ROOT PARA EXEMPLO COM GENERATE ACTIVITY
 		{
-			if(root == null)		// se já removeu todas as entidades...
+			if(root == null)		// se jï¿½ removeu todas as entidades...
+				                    // PAGLIARES: in other words, se nao ha mais nenhuma atividade agendada
 			{
 				list = null;
-				return (float)0.0;
+				return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
 			}
 			
-			TTreeEntry x, child, parent;
+			TTreeEntry node, child, parent;
 	
 			child = root;
 			parent = null;
 
-			// encontra nó com menor duetime
+			// encontra nï¿½ com menor duetime
+			// PAGLIARES: eh este while entao que pega a proxima atividade agendada e prepara para leva-la para root?
 			while (child.left != null) 
 			{
 				parent = child;
 				child  = child.left;
 			}
 	
-			// remodela árvore
-			if (child == root)
-				root = child.right;
+			// remodela ï¿½rvore
+			if (child == root)  // PAGLIARES: child agora seria o de menor duetime (proxima a ser executada)
+				root = child.right;  // SEM GENERATE, CAI AQUI FAZENDO ROOT = NULL CHILD CONTINUA COM ATIVIDADE
+			                         // NA VERDADE, JA CHEGA COM ROOT = NULL
+									// CASO NAO TENHA ACHADO COM MENOR DUE TIME, PESQUISA A DIREITA DA RAIZ
 			else 
 			{
-				parent.left = child.right;
+				parent.left = child.right;  // PAGLIAERS: NAO ENTENDI ESTE ELSE
 				if (child.right != null)
 					(child.right).parent = parent;
 			}
@@ -299,35 +303,35 @@ class Calendar
 				child.middle.right = null;			// idem
 			}
 			child.right = null;					// idem
-			child.parent = null;				// desconecta da árvore
+			child.parent = null;				// desconecta da ï¿½rvore
 
-			// obtém a lista com os estados ativos a serem servidos neste tempo
+			// obtï¿½m a lista com os estados ativos a serem servidos neste tempo
 			list = child;
 		}
 
 		return list.time;
 	}
-	public boolean RemoveNext()
-	{
-		if(list == null) return false;	// não cria lista, apenas remove dela
 	
-		if(list.middle != null)			// se não é último...
-		{
+	public boolean RemoveNext(){
+		if(list == null) return false;	// nï¿½o cria lista, apenas remove dela
+	
+		if(list.middle != null)		{	// se nï¿½o ï¿½ ï¿½ltimo...
 			list = list.middle;
 			
-			// limpa referências 
+			// limpa referï¿½ncias 
 			list.parent.middle = null;
 			list.parent.left = null;
 			list.parent = null;			// desconecta da lista
 			
 			return true;
 		}
-		else
-		{
+		else{
 			list.left = null;
-			list = null;		// lista vazia
+			list = null;		// lista vazia  TESTAR SEM FAZER NULL
+			// sem null, nao avanca o clock, e a simulacao fica sem terminar em loop.
+			// verificar como com generate, agenda novamente para mudar o clock e nao ficar sempre no mesmo
 			
-			return false;
+			return false; 
 		}
 	}
 }

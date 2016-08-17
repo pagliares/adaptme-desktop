@@ -1,20 +1,34 @@
 // Arquivo TTreeEntry.java
-// Implementação das Classes do Grupo Executivo da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo Executivo da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 19.Mar.1999	Wladimir
 
 package simula;
 
 /**
- * Classe que implementa um nó de uma árvore
+ * Classe que implementa um nï¿½ de uma ï¿½rvore
  */
-class TTreeEntry
-{
+class TTreeEntry {
+	/** 
+	 * PAGLIARES: Each node in a ternary tree is like a hashMap or associative array
+	 * In this case, each node contains an activeState (GenerateActivity, Router, Activity, Destroy) and its
+	 * Corresponding duration time (sample duration? cumulativeClock?)
+	 */
+	public ActiveState activeState; 
+	public float time;      
+	  
 	public TTreeEntry left, right, middle, parent;
-	public float time;
-	public ActiveState a;
-	public TTreeEntry(){ left = right = middle = parent = null;
-		time = (float)0.0; a = null;}
-	public TTreeEntry(ActiveState a, double duetime)
-		{ left = right = middle = parent = null;
-		  time = (float)duetime; this.a = a;}
+	
+	public TTreeEntry(){ 
+		left = right = middle = parent = null;
+		time = (float)0.0; 
+		activeState = null;
+	}
+	
+	public TTreeEntry(ActiveState activeState, double duetime){ 
+		this.activeState = activeState;
+		time = (float)duetime; 
+		left = right = middle = parent = null;
+		
+		
+	}
 }

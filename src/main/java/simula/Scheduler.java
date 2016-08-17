@@ -260,9 +260,9 @@ public class Scheduler implements Runnable
 
 			do
 			{
-				a = calendar.GetNext();
+				a = calendar.getNextActiveState();
 				executed |= a.BServed(clock);	// se ao menos um executou, fica registrado
-			}while(calendar.RemoveNext());
+			}while(calendar.RemoveNext()); // ESTA LIMPANDO A LISTA SEM GENERATE ACTIVITY
 
 			if(!executed)				// se n�o havia nada a ser executado nesse instante
 				continue;				// pula para o pr�ximo sem executar a fase C.

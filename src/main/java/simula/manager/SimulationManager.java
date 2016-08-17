@@ -248,10 +248,10 @@ public class SimulationManager implements Serializable
 					while(it.hasNext())
 					{
 						ae = (ActiveEntry)it.next();
-						if(ae.internal)
+						if(ae.isInternal)
 						{
 							InternalActiveEntry ia = (InternalActiveEntry)ae;
-							if(ia.router)
+							if(ia.isRouter)
 							{
 								// remove se for fonte ou destino
 								ia.removeFromQueue(e.id);
@@ -330,7 +330,7 @@ public class SimulationManager implements Serializable
 				while(it.hasNext())
 				{
 					ae = (ActiveEntry)it.next();
-					if(ae.internal)
+					if(ae.isInternal)
 					{
 						InternalActiveEntry ia = (InternalActiveEntry)ae;
 						int i;
@@ -611,7 +611,7 @@ public class SimulationManager implements Serializable
 			while(it.hasNext())
 			{
 				ae = (ActiveEntry)it.next();
-				ae.SimObj = null;
+				ae.activeState = null;
 			}
 
 			it = activestates.values().iterator();
@@ -707,7 +707,7 @@ public class SimulationManager implements Serializable
 		it = activestates.values().iterator();
 		while(it.hasNext())
 		{
-			((ActiveEntry)it.next()).SimObj.Clear();
+			((ActiveEntry)it.next()).activeState.Clear();
 		}
 		it = resources.values().iterator();
 		while(it.hasNext())

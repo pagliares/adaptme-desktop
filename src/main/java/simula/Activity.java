@@ -28,6 +28,8 @@ public class Activity extends ActiveState
 	 * se est� bloqueado
 	 */
 	protected boolean blocked;	
+	
+//	protected boolean inservice;  pagliares nao funcionou
 
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -53,7 +55,7 @@ public class Activity extends ActiveState
 		this.d = d;
 		// pagliares  as duas linhas abaixo
 		RegisterEvent((float)d.Draw());
-//		inservice = true;
+	//	inservice = true;  nao funcionou pagliares
 		}
 	
 	public void ConnectQueues(DeadState from, DeadState to)

@@ -1,5 +1,5 @@
 // Arquivo  InternalActiveEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
@@ -11,9 +11,9 @@ import simula.*;
 /**
  * Entrada para os estados ativos Activity e Router.
  */
-public class InternalActiveEntry extends ActiveEntry
-{
-  boolean router;				// especifica se é um Router ou Activity
+public class InternalActiveEntry extends ActiveEntry{
+  
+	boolean isRouter;				// especifica se eh um Router ou Activity
 
   /**
    * fq, toq, fr, tor:
@@ -28,17 +28,16 @@ public class InternalActiveEntry extends ActiveEntry
   /**
    * qtde de cada resource utilizado
    */
-  private Vector rqty;	
+  private Vector quantityUsedResource;	
   /**
-   * condições (strings) associadas;
-   * se router de saída, senão de entrada
+   * condiï¿½ï¿½es (strings) associadas;
+   * se router de saï¿½da, senï¿½o de entrada
    */
-  private Vector conds;					
+  private Vector conditions;					
     
-  public String toString()
-  {
+  public String toString(){
 	StringBuffer stb = new StringBuffer();
-	stb.append("<InternalActiveEntry router=\""+router+"\">\r\n");
+	stb.append("<InternalActiveEntry router=\""+isRouter+"\">\r\n");
 	stb.append("<IA_super>\r\n");
 	stb.append(super.toString());
 	stb.append("</IA_super>\r\n");
@@ -55,13 +54,13 @@ public class InternalActiveEntry extends ActiveEntry
 	SimulationManager.appendVector(tor, stb);
 	stb.append("</tor>\r\n");
 	stb.append("<rqty>\r\n");
-	SimulationManager.appendVector(rqty, stb);
+	SimulationManager.appendVector(quantityUsedResource, stb);
 	stb.append("</rqty>\r\n");
 	stb.append("<conds>\r\n");
-	int iNConds = conds.size();
+	int iNConds = conditions.size();
 	for(int i=0; i<iNConds; i++)
 	{
-		String strCond = (String)conds.elementAt(i);
+		String strCond = (String)conditions.elementAt(i);
 		strCond = TString.replace(strCond, "<=", ".LE.");
 		strCond = TString.replace(strCond, ">=", ".GE.");
 		strCond = TString.replace(strCond, "<", ".LT.");
@@ -74,48 +73,48 @@ public class InternalActiveEntry extends ActiveEntry
 	return stb.toString();
   }
   /**
-   * constrói um objeto com id gerado internamente;
-   * @param	isRouter se for do tipo Router deve passar true, senão false.
+   * constrï¿½i um objeto com id gerado internamente;
+   * @param	isRouter se for do tipo Router deve passar true, senï¿½o false.
    */
   public InternalActiveEntry(boolean isRouter)
   {
     super();
-    router = isRouter;
+    isRouter = isRouter;
     fq = new Vector(2, 2); //from queue?
     toq = new Vector(2, 2);//to queue?
     fr = new Vector(2, 2);
     tor = new Vector(2, 2);
-    conds = new Vector(2, 2); //conditions
-    rqty = new Vector(2, 2);
-    internal = true;
+    conditions = new Vector(2, 2); //conditions
+    quantityUsedResource = new Vector(2, 2);
+    isInternal = true;
   }
   
   public void copyAttributes(Entry v_e)
   {
 	super.copyAttributes(v_e);
 	InternalActiveEntry intEntry = (InternalActiveEntry)v_e;
-	router = intEntry.router;
+	isRouter = intEntry.isRouter;
 	fq = intEntry.fq;
 	toq = intEntry.toq;
 	fr = intEntry.fr;
 	tor = intEntry.tor;
-	rqty = intEntry.rqty;
-	conds = intEntry.conds;
+	quantityUsedResource = intEntry.quantityUsedResource;
+	conditions = intEntry.conditions;
   }
   
   
   boolean Generate(SimulationManager m)
 	{
-		if(router)
-			SimObj = new Router(m.s);
+		if(isRouter)
+			activeState = new Router(m.s);
 		else
-			SimObj = new Activity(m.s);
+			activeState = new Activity(m.s);
 			
 		return Setup(m);
 	}
   	
   /**
-   * Ajusta os parâmetros referentes aos Router's e Activity's
+   * Ajusta os parï¿½metros referentes aos Router's e Activity's
    */
   protected boolean Setup(SimulationManager m)
   {
@@ -124,22 +123,22 @@ public class InternalActiveEntry extends ActiveEntry
 		
 		TrimVectors();
 		
-		if(router)
+		if(isRouter)
 		{
-			switch(servicedist)
+			switch(servicedist) // @TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
 			{
 				case NONE: break;
-				case CONST: 	((Router)SimObj).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Router)SimObj).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Router)SimObj).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Router)SimObj).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Router)SimObj).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Router)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
+				case UNIFORM: ((Router)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
+				case NORMAL: 	((Router)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
+				case NEGEXP: 	((Router)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
+				case POISSON: ((Router)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
 				default: return false;
 			}
 			
 			for(int i = 0; i < fq.size(); i++)
 			{
-				((Router)SimObj).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj);	
+				((Router)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj);	
 			}
 			
 			String sexp;
@@ -147,7 +146,7 @@ public class InternalActiveEntry extends ActiveEntry
 			
 			for(int i = 0; i < toq.size(); i++)
 			{
-				sexp = (String)conds.get(i);
+				sexp = (String)conditions.get(i);
 				if(sexp.equalsIgnoreCase("true"))
 					exp = ConstExpression.TRUE;
 				else if(sexp.equalsIgnoreCase("false"))
@@ -155,13 +154,13 @@ public class InternalActiveEntry extends ActiveEntry
 				else
 					exp = new Expression(sexp);
 					
-				((Router)SimObj).ConnectQueues(m.GetQueue((String)toq.get(i)).SimObj, exp);	
+				((Router)activeState).ConnectQueues(m.GetQueue((String)toq.get(i)).SimObj, exp);	
 			}
 			
 			for(int i = 0; i < fr.size(); i++)
 			{
-				((Router)SimObj).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
-					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)rqty.get(i)).intValue());	
+				((Router)activeState).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
+					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
 			}
 
 		}
@@ -170,11 +169,11 @@ public class InternalActiveEntry extends ActiveEntry
 			switch(servicedist)
 			{
 				case NONE: break;
-				case CONST: 	((Activity)SimObj).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Activity)SimObj).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Activity)SimObj).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Activity)SimObj).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Activity)SimObj).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
+				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
+				case NORMAL: 	((Activity)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
+				case NEGEXP: 	((Activity)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
+				case POISSON: ((Activity)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
 				default: return false;
 			}
 			
@@ -183,7 +182,7 @@ public class InternalActiveEntry extends ActiveEntry
 			
 			for(int i = 0; i < toq.size(); i++)
 			{
-				sexp = (String)conds.get(i);
+				sexp = (String)conditions.get(i);
 				if(sexp.equalsIgnoreCase("true"))
 					exp = ConstExpression.TRUE;
 				else if(sexp.equalsIgnoreCase("false"))
@@ -191,14 +190,14 @@ public class InternalActiveEntry extends ActiveEntry
 				else
 					exp = new Expression(sexp);
 					
-				((Activity)SimObj).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj,
+				((Activity)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj,
 					 exp, m.GetQueue((String)toq.get(i)).SimObj);	
 			}
 			
 			for(int i = 0; i < fr.size(); i++)
 			{
-				((Activity)SimObj).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
-					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)rqty.get(i)).intValue());	
+				((Activity)activeState).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
+					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
 			}
 			
 		}
@@ -206,18 +205,18 @@ public class InternalActiveEntry extends ActiveEntry
 		return true;	
 	}
   	
-  public final boolean isRouter(){	return router;	}
+  public final boolean isRouter(){	return isRouter;	}
   public final void addToQueue(Object v_o){	toq.add(v_o);	}
   public final void addFromQueue(Object v_o){	fq.add(v_o);	}
   public final void addToResource(Object v_o){	tor.add(v_o);	}
   public final void addFromResource(Object v_o){	fr.add(v_o);	}
-  public final void addCond(Object v_o){	conds.add(v_o);	}
-  public final void addResourceQty(Object v_o){	rqty.add(v_o);	}
+  public final void addCond(Object v_o){	conditions.add(v_o);	}
+  public final void addResourceQty(Object v_o){	quantityUsedResource.add(v_o);	}
   public final Vector getToQueue(){	return toq;	}
   public final Vector getFromQueue(){	return fq;	}
   public final Vector getToResource(){	return tor;	}
   public final Vector getFromResource(){	return fr;	}
-  public final Vector getConds(){	return conds;	}
+  public final Vector getConds(){	return conditions;	}
   public final int toQueueIndexOf(Object v_o){	return toq.indexOf(v_o);	}
   public final int fromQueueIndexOf(Object v_o){	return fq.indexOf(v_o);	}
   public final int toResourceIndexOf(Object v_o){	return tor.indexOf(v_o);	}
@@ -229,13 +228,13 @@ public class InternalActiveEntry extends ActiveEntry
   public final void removeToQueue(int v_i){	toq.remove(v_i);	}
   public final void removeFromResource(int v_i){	fr.remove(v_i);	}
   public final void removeToResource(int v_i){	tor.remove(v_i);	}
-  public final void removeCond(int v_i){	conds.remove(v_i);	}
-  public final void removeResourceQty(int v_i){	rqty.remove(v_i);	}
-  public final void setCondAt(Object v_o, int v_i){	conds.setElementAt(v_o, v_i);	}
+  public final void removeCond(int v_i){	conditions.remove(v_i);	}
+  public final void removeResourceQty(int v_i){	quantityUsedResource.remove(v_i);	}
+  public final void setCondAt(Object v_o, int v_i){	conditions.setElementAt(v_o, v_i);	}
   
   /**
    * chama trimToSize() para cada Vector interno
-   * para economizar memória alocada
+   * para economizar memï¿½ria alocada
    */
   public void TrimVectors()
 	{
@@ -243,7 +242,7 @@ public class InternalActiveEntry extends ActiveEntry
 		toq.trimToSize();
 		fr.trimToSize();
 		tor.trimToSize();
-		conds.trimToSize();
-		rqty.trimToSize();
+		conditions.trimToSize();
+		quantityUsedResource.trimToSize();
 	}
 }

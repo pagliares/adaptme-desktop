@@ -1,5 +1,5 @@
 // Arquivo  ActiveEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
@@ -9,20 +9,20 @@ import java.io.*;
 /**
  * Classe base para todos os estados ativos do modelo. 
  */
-public abstract class ActiveEntry extends Entry
-{
-  private static int lastid;  // identificador ÚNICO para os 
-                              // estados ativos 
-	static boolean hasSerialized = true; // "lastid já foi serializado"
+public abstract class ActiveEntry extends Entry{
+  
+	private static int lastid;  // identificador ï¿½NICO para os estados ativos 
+	static boolean hasSerialized = true; // "lastid jï¿½ foi serializado"
 		
-  transient simula.ActiveState SimObj;	// objeto de simulação
-                              					// não é serializado
-  boolean internal;						// se é um estado ativo interno ou externo
+	// PAGLIARES: antes chamado SimObj
+  transient simula.ActiveState activeState;	// objeto de simulaï¿½ï¿½o
+                              					// nï¿½o ï¿½ serializado
+  boolean isInternal;						// se ï¿½ um estado ativo interno ou externo
                               					
 	/**
 	 * FIFO, STACK, PRIORITY:
 	 * constantes que identificam
-	 * as distribuições de serviço
+	 * as distribuiï¿½ï¿½es de serviï¿½o
 	 */
   public static final short NONE    = 0;
   public static final short CONST   = 1;
@@ -32,21 +32,20 @@ public abstract class ActiveEntry extends Entry
   public static final short POISSON = 5;
   
   /**
-   * tipo de distribuição de serviço
+   * tipo de distribuiï¿½ï¿½o de serviï¿½o
    */
   protected short servicedist;
   /**
    * distp1, distp2:
-   * parâmetros da distribuição;
-   * têm significados diferentes 
-   * de acordo com a distribuição
+   * parï¿½metros da distribuiï¿½ï¿½o;
+   * tï¿½m significados diferentes 
+   * de acordo com a distribuiï¿½ï¿½o
    */
   protected float distp1, distp2;
 
-  public String toString()
-  {
+  public String toString(){
 	StringBuffer stb = new StringBuffer();
-	stb.append("<ActiveEntry internal=\""+internal+"\" servicedist=\""+serviceDistString()+"\" distp1=\""+distp1+"\" distp2=\""+distp2+"\">\r\n");
+	stb.append("<ActiveEntry internal=\""+isInternal+"\" servicedist=\""+serviceDistString()+"\" distp1=\""+distp1+"\" distp2=\""+distp2+"\">\r\n");
 	stb.append("<A_super>\r\n");
 	stb.append(super.toString());
 	stb.append("</A_super>\r\n");
@@ -82,8 +81,8 @@ public abstract class ActiveEntry extends Entry
 	return "SERVICEDIST???";
   }
   /**
-   * constrói um objeto com id gerado internamente;
-   * preenche com argumentos padrão os demais campos.
+   * constrï¿½i um objeto com id gerado internamente;
+   * preenche com argumentos padrï¿½o os demais campos.
    */
   public ActiveEntry()
   {
@@ -98,8 +97,8 @@ public abstract class ActiveEntry extends Entry
   {
 	super.copyAttributes(v_e);
 	ActiveEntry actEntry = (ActiveEntry)v_e;
-	SimObj = actEntry.SimObj;
-	internal = actEntry.internal;
+	activeState = actEntry.activeState;
+	isInternal = actEntry.isInternal;
 	servicedist = actEntry.servicedist;
 	distp1 = actEntry.distp1;
 	distp2 = actEntry.distp2;
@@ -111,7 +110,7 @@ public abstract class ActiveEntry extends Entry
   protected boolean Setup(SimulationManager m)
   {
 System.out.println("ActiveEntry.Setup. name = "+name);	  
-  	SimObj.name = name;
+  	activeState.name = name;
 		if(obsid == null)			// nada para criar
 			return true;
 			
