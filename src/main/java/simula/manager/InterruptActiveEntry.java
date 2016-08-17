@@ -48,9 +48,9 @@ public class InterruptActiveEntry extends InternalActiveEntry
 	interrupts = intpEntry.interrupts;
   }
   
-  boolean Generate(SimulationManager m)
+  boolean generate(SimulationManager m)
 	{
-		activeState = new InterruptActivity(m.s);
+		activeState = new InterruptActivity(m.scheduler);
 
 		return Setup(m);
 	}
@@ -69,7 +69,7 @@ public class InterruptActiveEntry extends InternalActiveEntry
 		{
 			e = (InterruptActiveEntry)m.GetActiveState((String)interrupts.get(i));
 			if(e.activeState == null)	// se ainda n�o foi gerado
-				if(!e.Generate(m))	// gera
+				if(!e.generate(m))	// gera
 					return false;			
 			((InterruptActivity)activeState).
 				AddInterruptable((InterruptActivity)e.activeState);	

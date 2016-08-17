@@ -1,5 +1,5 @@
 // Arquivo HistogramEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 16.Jul.1999 Wladimir
 
 package simula.manager;
@@ -8,23 +8,23 @@ import java.io.*;
 
 /**
  * Entrada para os histogramas do modelo.
- * Entry.obsid é usado como link (opcional) para o Observador
+ * Entry.obsid ï¿½ usado como link (opcional) para o Observador
  */
 public class HistogramEntry extends Entry
 {
-	private static int lastid;	// identificador ÚNICO para os histogramas
-	static boolean hasSerialized = true; // "lastid já foi serializado"
+	private static int lastid;	// identificador ï¿½NICO para os histogramas
+	static boolean hasSerialized = true; // "lastid jï¿½ foi serializado"
 	
 	/**
 	 * largura de cada coluna 
 	 */
 	private float width;			
 	/**
-	 * número de colunas
+	 * nï¿½mero de colunas
 	 */
 	private int   num_columns;	
 	/**
-	 * início do histograma
+	 * inï¿½cio do histograma
 	 */
 	private float start;		
 	/**
@@ -32,8 +32,8 @@ public class HistogramEntry extends Entry
 	 */
 	private short kind;			
 												
-	transient simula.Histogram SimObj;		// objeto de simulação
-                              					// não é serializado
+	transient simula.Histogram SimObj;		// objeto de simulaï¿½ï¿½o
+                              					// nï¿½o ï¿½ serializado
   		
 	public String toString()
 	{
@@ -46,7 +46,7 @@ public class HistogramEntry extends Entry
 		return stb.toString();
 	}
 	/**
-	 * constrói um objeto com id gerado internamente. 
+	 * constrï¿½i um objeto com id gerado internamente. 
 	 */
 	public HistogramEntry()
 	{
@@ -75,19 +75,19 @@ public class HistogramEntry extends Entry
 	public final void setStart(float v_fStart){	start = v_fStart;	}
 	public final void setKind(short v_sKind){	kind = v_sKind;	}
 	
-	boolean Generate(SimulationManager m)
+	boolean generate(SimulationManager m)
 	{
 		if(num_columns < 1 || width <= 0 || kind < simula.Histogram.SERIES ||
 			kind > simula.Histogram.WEIGHTED)
 			return false;
 		
-		SimObj = new simula.Histogram(m.s, start, width, num_columns, kind);
+		SimObj = new simula.Histogram(m.scheduler, start, width, num_columns, kind);
 		
 		return true;
 	}
 	
 	void DoReport(PrintStream os)
-	// Realiza relatório específico do histograma (tabela)
+	// Realiza relatï¿½rio especï¿½fico do histograma (tabela)
 	{
 		if(SimObj == null)	// erro
 			return;

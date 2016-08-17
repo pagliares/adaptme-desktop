@@ -103,12 +103,12 @@ public class InternalActiveEntry extends ActiveEntry{
   }
   
   
-  boolean Generate(SimulationManager m)
+  boolean generate(SimulationManager m)
 	{
 		if(isRouter)
-			activeState = new Router(m.s);
+			activeState = new Router(m.scheduler);
 		else
-			activeState = new Activity(m.s);
+			activeState = new Activity(m.scheduler);
 			
 		return Setup(m);
 	}
@@ -128,17 +128,17 @@ public class InternalActiveEntry extends ActiveEntry{
 			switch(servicedist) // @TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
 			{
 				case NONE: break;
-				case CONST: 	((Router)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Router)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Router)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Router)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Router)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Router)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
+				case UNIFORM: ((Router)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
+				case NORMAL: 	((Router)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
+				case NEGEXP: 	((Router)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
+				case POISSON: ((Router)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
 				default: return false;
 			}
 			
 			for(int i = 0; i < fq.size(); i++)
 			{
-				((Router)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj);	
+				((Router)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).deadState);	
 			}
 			
 			String sexp;
@@ -154,7 +154,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				else
 					exp = new Expression(sexp);
 					
-				((Router)activeState).ConnectQueues(m.GetQueue((String)toq.get(i)).SimObj, exp);	
+				((Router)activeState).ConnectQueues(m.GetQueue((String)toq.get(i)).deadState, exp);	
 			}
 			
 			for(int i = 0; i < fr.size(); i++)
@@ -169,11 +169,11 @@ public class InternalActiveEntry extends ActiveEntry{
 			switch(servicedist)
 			{
 				case NONE: break;
-				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Activity)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Activity)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Activity)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
+				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
+				case NORMAL: 	((Activity)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
+				case NEGEXP: 	((Activity)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
+				case POISSON: ((Activity)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
 				default: return false;
 			}
 			
@@ -190,8 +190,8 @@ public class InternalActiveEntry extends ActiveEntry{
 				else
 					exp = new Expression(sexp);
 					
-				((Activity)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).SimObj,
-					 exp, m.GetQueue((String)toq.get(i)).SimObj);	
+				((Activity)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).deadState,
+					 exp, m.GetQueue((String)toq.get(i)).deadState);	
 			}
 			
 			for(int i = 0; i < fr.size(); i++)

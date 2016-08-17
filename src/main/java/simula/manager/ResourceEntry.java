@@ -1,5 +1,5 @@
 // Arquivo  ResourceEntry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
@@ -11,16 +11,16 @@ import java.io.*;
  */
 public class ResourceEntry extends Entry
 {
-  private static int lastid;  // identificador ÚNICO para as filas
-	static boolean hasSerialized = true; // "lastid já foi serializado"
+  private static int lastid;  // identificador ï¿½NICO para as filas
+	static boolean hasSerialized = true; // "lastid jï¿½ foi serializado"
   
 	/**
 	 * qtde inicial de recuros
 	 */
   private short init;                 // 
     
-	transient simula.ResourceQ SimObj;	// objeto de simulação
-																			// não é serializado
+	transient simula.ResourceQ SimObj;	// objeto de simulaï¿½ï¿½o
+																			// nï¿½o ï¿½ serializado
 	public String toString()
 	{
 		StringBuffer stb = new StringBuffer();
@@ -32,8 +32,8 @@ public class ResourceEntry extends Entry
 		return stb.toString();
 	}
 	/**
-	 * constrói um objeto com id gerado internamente;
-	 * preenche com argumentos padrão os demais campos.
+	 * constrï¿½i um objeto com id gerado internamente;
+	 * preenche com argumentos padrï¿½o os demais campos.
 	 */
   public ResourceEntry()
   {
@@ -53,13 +53,13 @@ public class ResourceEntry extends Entry
   public final short getInit(){	return init;	}
   public final void setInit(short v_sInit){	init = v_sInit;	}
   
-  boolean Generate(SimulationManager m)
+  boolean generate(SimulationManager m)
 	{
-		SimObj = new simula.ResourceQ(m.s, init);
+		SimObj = new simula.ResourceQ(m.scheduler, init);
 		SimObj.name = name;
 		
 		if(obsid != null)
-			return m.GetObserver(obsid).Generate(m);
+			return m.GetObserver(obsid).generate(m);
 		
 		return true;
 	}

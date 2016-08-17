@@ -62,12 +62,12 @@ public class ExternalActiveEntry extends ActiveEntry
   }
   public String getQID(){	return qid;	}
   
-  boolean Generate(SimulationManager m)
+  boolean generate(SimulationManager m)
 	{
 		if(gen)
-			activeState = new Generate(m.s);
+			activeState = new Generate(m.scheduler);
 		else
-			activeState = new Destroy(m.s);
+			activeState = new Destroy(m.scheduler);
 			
 		return Setup(m);
 	}
@@ -85,21 +85,21 @@ public class ExternalActiveEntry extends ActiveEntry
 			switch(servicedist)
 			{
 				case NONE: break;
-				case CONST: 	((Generate)activeState).SetServiceTime(new ConstDistribution(m.sp, distp1)); break;
-				case UNIFORM: ((Generate)activeState).SetServiceTime(new Uniform(m.sp, distp1, distp2)); break;
-				case NORMAL: 	((Generate)activeState).SetServiceTime(new Normal(m.sp, distp1, distp2)); break;
-				case NEGEXP: 	((Generate)activeState).SetServiceTime(new NegExp(m.sp, distp1)); break;
-				case POISSON: ((Generate)activeState).SetServiceTime(new Poisson(m.sp, distp1)); break;
+				case CONST: 	((Generate)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
+				case UNIFORM: ((Generate)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
+				case NORMAL: 	((Generate)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
+				case NEGEXP: 	((Generate)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
+				case POISSON: ((Generate)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
 				default: return false;
 			}
 			
-			((Generate)activeState).ConnectQueue(m.GetQueue(qid).SimObj);
+			((Generate)activeState).ConnectQueue(m.GetQueue(qid).deadState);
 		}
 		else
 		{
 			System.out.println("ExternalActiveEntry.Setup id= "+id+" qid"+qid);
 			System.out.println("ExternalActiveEntry.Setup "+activeState+" "+m.GetQueue(qid));
-			((Destroy)activeState).ConnectQueue(m.GetQueue(qid).SimObj);
+			((Destroy)activeState).ConnectQueue(m.GetQueue(qid).deadState);
 		}
 
 		if(enttype != null)

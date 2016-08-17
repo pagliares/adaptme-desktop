@@ -1,5 +1,5 @@
 // Arquivo  AttributeTable.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 30.Out.1999 Wladimir
 
 package simula.manager;
@@ -10,15 +10,15 @@ import java.io.*;
 
 /**
  * Entrada para os diversos tipos de entidades que podem exixtir no
- * no modelo. Usado também para as variáveis globais. Deve ser 
+ * no modelo. Usado tambï¿½m para as variï¿½veis globais. Deve ser 
  * associada aos estados Generate para iniciar os atributos de cada
- * nova Entity criada. Deve existir um exclusivo para as variáveis
+ * nova Entity criada. Deve existir um exclusivo para as variï¿½veis
  * globais do modelo.
  */
 public class AttributeTable extends Entry
 {
-	private static int lastid;		// identificador ÚNICO para as tabelas
-	static boolean hasSerialized = true; // "lastid já foi serializado"
+	private static int lastid;		// identificador ï¿½NICO para as tabelas
+	static boolean hasSerialized = true; // "lastid jï¿½ foi serializado"
 		
 	/**
 	 * atributos (Var's)
@@ -39,8 +39,8 @@ public class AttributeTable extends Entry
 		return stb.toString();
 	}
 	/**
-	 * constrói um objeto com id gerado internamente;
-	 * preenche com argumentos padrão os demais campos.
+	 * constrï¿½i um objeto com id gerado internamente;
+	 * preenche com argumentos padrï¿½o os demais campos.
 	 */
 	public AttributeTable()
 	{
@@ -61,17 +61,17 @@ public class AttributeTable extends Entry
 	public final Object getVar(int v_i){	return vars.get(v_i);	}
 	public void removeVar(int v_i){	vars.remove(v_i);	}
 	
-	boolean Generate(SimulationManager m){return true;}
+	boolean generate(SimulationManager m){return true;}
 	
 	/**
-	 * Retorna array de valores, na ordem em que estão armazenados
-	 * no vetor vars. Retorna null se não há valores armazenados.
+	 * Retorna array de valores, na ordem em que estï¿½o armazenados
+	 * no vetor vars. Retorna null se nï¿½o hï¿½ valores armazenados.
 	 */
 	public float[] GetValues()
 	{
 		//if(vars.isEmpty())
 		//	return null;
-		//<tony> deixa retornar vazio mesmo que tá dando NullPointerException
+		//<tony> deixa retornar vazio mesmo que tï¿½ dando NullPointerException
 		float[] vals = new float[vars.size()];
 		Iterator it = vars.iterator();
 		int i = 0;
@@ -84,14 +84,14 @@ public class AttributeTable extends Entry
 	}
 	
 	/**
-	 * Retorna array de identificadores, na ordem em que estão 
+	 * Retorna array de identificadores, na ordem em que estï¿½o 
 	 * armazenados no vetor vars. Retorna null se vars estiver vazio. 
 	 */
 	public String[] GetIds()
 	{
 		//if(vars.isEmpty())
 		//	return null;
-		//<tony> deixa retornar vazio mesmo que tá dando NullPointerException
+		//<tony> deixa retornar vazio mesmo que tï¿½ dando NullPointerException
 		String[] vals = new String[vars.size()];
 		Iterator it = vars.iterator();
 		int i = 0;

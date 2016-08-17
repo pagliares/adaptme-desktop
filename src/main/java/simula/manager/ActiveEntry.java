@@ -114,7 +114,7 @@ System.out.println("ActiveEntry.Setup. name = "+name);
 		if(obsid == null)			// nada para criar
 			return true;
 			
-		return m.GetObserver(obsid).Generate(m);
+		return m.GetObserver(obsid).generate(m);
 	}
   	
   private void writeObject(ObjectOutputStream stream)

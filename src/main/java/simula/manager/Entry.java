@@ -1,24 +1,24 @@
 // Arquivo  Entry.java 
-// Implementação das Classes do Sistema de Gerenciamento da Simulação
+// Implementaï¿½ï¿½o das Classes do Sistema de Gerenciamento da Simulaï¿½ï¿½o
 // 21.Mai.1999 Wladimir
 
 package simula.manager;
 
 /**
  * Classe base para todas as entradas do Sistema de Gerenciamento. 
- * Fornece métodos para uso em Hashtables e mantém identificador
- * único do objeto em todo modelo. Unicidade dever ser garantida
+ * Fornece mï¿½todos para uso em Hashtables e mantï¿½m identificador
+ * ï¿½nico do objeto em todo modelo. Unicidade dever ser garantida
  * pelos descendentes e por quem mais atribuir o seu valor.
  */
 public abstract class Entry implements java.io.Serializable
 {
-	protected String id;							// identificador ÚNICO EM TODO O MODELO do objeto
+	protected String id;							// identificador ï¿½NICO EM TODO O MODELO do objeto
 	/**
 	 * identificador do observador
 	 */
 	protected String obsid;	
 	/**
-	 * nome (para o usuário referenciar)
+	 * nome (para o usuï¿½rio referenciar)
 	 */
 	protected String name;		
 	
@@ -28,7 +28,7 @@ public abstract class Entry implements java.io.Serializable
 	}
 	
 	/**
-	 * constrói um objeto com dado id; id deve ser único e não nulo.
+	 * constrï¿½i um objeto com dado id; id deve ser ï¿½nico e nï¿½o nulo.
 	 */
 	public Entry(String id){this.id = id; name = id;}
 	
@@ -40,11 +40,11 @@ public abstract class Entry implements java.io.Serializable
 	}
 	
 	/**
-	 * Cria objeto de simulação baseado nos dados fornecidos 
-	 * é chamado pelo SimulationManager após a criação do 
+	 * Cria objeto de simulaï¿½ï¿½o baseado nos dados fornecidos 
+	 * ï¿½ chamado pelo SimulationManager apï¿½s a criaï¿½ï¿½o do 
 	 *  objetos Scheduler interno ao manager.
 	 */
-	abstract boolean Generate(SimulationManager m);
+	abstract boolean generate(SimulationManager m);
 	
 	/**
 	 * Returns a hascode for this object

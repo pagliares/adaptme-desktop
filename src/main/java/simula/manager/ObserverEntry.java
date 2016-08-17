@@ -133,33 +133,33 @@ public class ObserverEntry extends Entry
 	public final void setExp(String v_strExp){	exp = v_strExp;	}
 	public final void setHistid(String v_strHistid){	histid = v_strHistid;	}
 	
-	boolean Generate(SimulationManager m)
+	boolean generate(SimulationManager m)
 	{
 		boolean ok = true;
 		
 		switch(type)
 		{
-			case RESOURCE: SimObj = new ResourceObserver(m.s, m.GetResource(observed).SimObj, new Statistics(m.s)); break;
+			case RESOURCE: SimObj = new ResourceObserver(m.scheduler, m.GetResource(observed).SimObj, new Statistics(m.scheduler)); break;
 	
 			case QUEUE: 
 				if(histid == null)
-					SimObj = new QueueObserver(m.s, m.GetQueue(observed).SimObj, new Statistics(m.s), att != null);
+					SimObj = new QueueObserver(m.scheduler, m.GetQueue(observed).deadState, new Statistics(m.scheduler), att != null);
 				else
 				{
 					HistogramEntry he = m.GetHistogram(histid);
-					ok = he.Generate(m);
-					SimObj = new QueueObserver(m.s, m.GetQueue(observed).SimObj, he.SimObj, att != null);
+					ok = he.generate(m);
+					SimObj = new QueueObserver(m.scheduler, m.GetQueue(observed).deadState, he.SimObj, att != null);
 				}
 				break;
 	
 			case ACTIVE:
 				if(histid == null)
-					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).activeState, new Statistics(m.s), att);
+					SimObj = new ActiveObserver(m.scheduler, m.GetActiveState(observed).activeState, new Statistics(m.scheduler), att);
 				else
 				{
 					HistogramEntry he = m.GetHistogram(histid);
-					ok = he.Generate(m);
-					SimObj = new ActiveObserver(m.s, m.GetActiveState(observed).activeState, he.SimObj, att);
+					ok = he.generate(m);
+					SimObj = new ActiveObserver(m.scheduler, m.GetActiveState(observed).activeState, he.SimObj, att);
 				}
 				break;
 		
@@ -183,17 +183,17 @@ public class ObserverEntry extends Entry
 						expobj = new Expression(exp);
 				}
 
-				SimObj = new ProcessorObserver(m.s, m.GetActiveState(observed).activeState, att, expobj, histid == null);
+				SimObj = new ProcessorObserver(m.scheduler, m.GetActiveState(observed).activeState, att, expobj, histid == null);
 				break;
 				
 			case DELAY: 
 				if(histid == null)
-					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).activeState, new Statistics(m.s), att == null, exp == null);
+					SimObj = new DelayObserver(m.scheduler, m.GetActiveState(observed).activeState, new Statistics(m.scheduler), att == null, exp == null);
 				else
 				{
 					HistogramEntry he = m.GetHistogram(histid);
-					ok = he.Generate(m);
-					SimObj = new DelayObserver(m.s, m.GetActiveState(observed).activeState, he.SimObj, att == null, exp == null);
+					ok = he.generate(m);
+					SimObj = new DelayObserver(m.scheduler, m.GetActiveState(observed).activeState, he.SimObj, att == null, exp == null);
 				}
 				break;
 
@@ -206,7 +206,7 @@ public class ObserverEntry extends Entry
 		if(obsid == null)			// fim da lista de observadores
 			return true;
 			
-		return m.GetObserver(obsid).Generate(m); // cria pr�ximo
+		return m.GetObserver(obsid).generate(m); // cria pr�ximo
 	}
 	
 	/**

@@ -18,17 +18,16 @@ import simula.*;
  * e gera programa de simula��o. 
  * @author	Wladimir
  */
-public class SimulationManager implements Serializable
-{
-	private HashMap queues, resources, activestates,
-								 observers, histograms;
-
-	private Vector types;
-	private AttributeTable globals;
+public class SimulationManager implements Serializable{
 	
-	private transient boolean running = false;
-	transient Scheduler s;
-	transient Sample sp;
+	private HashMap queues, resources, activestates,observers, histograms;
+
+	private Vector attributeTables;
+	private AttributeTable attributeTable; // PAGLIARES: antes do refactoring, chamave globals
+	
+	private transient boolean isRunning = false;
+	transient Scheduler scheduler;
+	transient Sample sample;
 	private transient float endtime = 0;	// instante programado 
 											// de t�rmino da simula��o
 	private transient float resettime = 0;  // instante em que as 
@@ -38,20 +37,18 @@ public class SimulationManager implements Serializable
 	/**
 	 * Creates a new, ready to use SimulationManager
 	 */
-	public SimulationManager()
-	{
+	public SimulationManager() {
 		queues = new HashMap();
 		resources  = new HashMap();
 		activestates = new HashMap();
 		observers = new HashMap();
 		histograms = new HashMap();
-		types = new Vector(5, 2);
-		globals = new AttributeTable();
-		globals.name = "globals";	// nome padr�o 
+		attributeTables = new Vector(5, 2);
+		attributeTable = new AttributeTable();
+		attributeTable.name = "globals";	// nome padr�o 
 	}
 	
-	public String toString()
-	{
+	public String toString(){
 		StringBuffer stb = new StringBuffer();
 		stb.append("<SimulationManager>\r\n");
 		stb.append("<SM_queues>\r\n");
@@ -69,26 +66,24 @@ public class SimulationManager implements Serializable
 		stb.append("<SM_histograms>\r\n");
 		appendIterator(histograms.values().iterator(), stb);
 		stb.append("</SM_histograms>\r\n");
-		stb.append("<SM_types>\r\n");
-		appendVector(types, stb);
-		stb.append("</SM_types>\r\n");
-		stb.append("<SM_globals>\r\n");
-		stb.append(globals);
-		stb.append("</SM_globals>\r\n");
+		stb.append("<SM_attributeTables>\r\n");  // attributeTables era chamada de types antes do refactoring
+		appendVector(attributeTables, stb);
+		stb.append("</SM_attributeTables>\r\n");
+		stb.append("<SM_attributeTable>\r\n");
+		stb.append(attributeTable);
+		stb.append("</SM_attributeTable>\r\n");
 		stb.append("</SimulationManager>\r\n");
 		return stb.toString();
 	}
 	
-	public static void appendIterator(Iterator v_it, StringBuffer v_stb)
-	{
+	public static void appendIterator(Iterator v_it, StringBuffer v_stb){
 		while(v_it.hasNext())
 		{
 			v_stb.append(v_it.next()+"\r\n");
 		}
 	}
 	
-	public static void appendVector(Vector v_vec, StringBuffer v_stb)
-	{
+	public static void appendVector(Vector v_vec, StringBuffer v_stb){
 		int iN = v_vec.size();
 		for(int i=0; i<iN; i++)
 		{
@@ -99,14 +94,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds a Queue to the system
 	 */
-	public boolean AddQueue(QueueEntry e)
-	{
+	public boolean AddQueue(QueueEntry queueEntry)	{
 		synchronized(queues)
 		{
-			if(queues.containsKey(e.id))
+			if(queues.containsKey(queueEntry.id))
 				return false;
 			
-			queues.put(e.id, e);
+			queues.put(queueEntry.id, queueEntry);
 		}
 		
 		return true;
@@ -115,14 +109,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds a Resource to the system
 	 */
-	public boolean AddResource(ResourceEntry e)
-	{
+	public boolean AddResource(ResourceEntry resourceEntry){
 		synchronized(resources)
 		{
-			if(resources.containsKey(e.id))
+			if(resources.containsKey(resourceEntry.id))
 				return false;
 			
-			resources.put(e.id, e);
+			resources.put(resourceEntry.id, resourceEntry);
 		}	
 		return true;
 	}
@@ -130,14 +123,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds an ActiveState to the system
 	 */
-	public boolean AddActiveState(ActiveEntry e)
-	{
+	public boolean AddActiveState(ActiveEntry activeEntry)	{
 		synchronized(activestates)
 		{
-			if(activestates.containsKey(e.id))
+			if(activestates.containsKey(activeEntry.id))
 				return false;
 			
-			activestates.put(e.id, e);
+			activestates.put(activeEntry.id, activeEntry);
 		}
 		return true;
 	}
@@ -145,14 +137,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds an Observer to the System
 	 */
-	public boolean AddObserver(ObserverEntry e)
-	{
+	public boolean AddObserver(ObserverEntry observerEntry)	{
 		synchronized(observers)
 		{
-			if(observers.containsKey(e.id))
+			if(observers.containsKey(observerEntry.id))
 				return false;
 			
-			observers.put(e.id, e);
+			observers.put(observerEntry.id, observerEntry);
 		}
 		return true;
 	}
@@ -161,14 +152,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds a Histogram to the system
 	 */
-	public boolean AddHistogram(HistogramEntry e)
-	{
+	public boolean AddHistogram(HistogramEntry histrogramEntry){
 		synchronized(histograms)
 		{
-			if(histograms.containsKey(e.id))
+			if(histograms.containsKey(histrogramEntry.id))
 				return false;
 			
-			histograms.put(e.id, e);
+			histograms.put(histrogramEntry.id, histrogramEntry);
 		}	
 		return true;
 	}
@@ -176,14 +166,13 @@ public class SimulationManager implements Serializable
 	/**
 	 * Adds an AttributeTable to the system
 	 */
-	public boolean AddType(AttributeTable type)
-	{
-		synchronized(types)
+	public boolean addAttributeTable(AttributeTable attributeTable){  // PAGLIARES: metodo chamado AddType antes do refactoring
+		synchronized(attributeTables)
 		{
-			if(types.contains(type))
+			if(attributeTables.contains(attributeTable))
 				return false;
 			
-			types.add(type);
+			attributeTables.add(attributeTable);
 		}	
 		return true;
 	}
@@ -191,15 +180,14 @@ public class SimulationManager implements Serializable
 	/**
 	 * Atualiza vari�veis globais.
 	 */
-	public boolean UpdateGlobals(AttributeTable globalVars)
-	{
+	public boolean updateAttributeTable(AttributeTable globalVars){  // PAGLIARES: metodo chamado UpdateGlobals antes do refactoring
 		if(globalVars == null)
 			return false;
 			
-		if(!globals.id.equals(globalVars.id))
+		if(!attributeTable.id.equals(globalVars.id))
 			return false;
 			
-		globals = globalVars;
+		attributeTable = globalVars;
 		
 		return true;
 	}
@@ -208,37 +196,32 @@ public class SimulationManager implements Serializable
 	 * Removes a Queue from the system,
 	 * updating the related entities properly
 	 */
-	public void RemoveQueue(String id){	RemoveQueue(id, true, true);	}
-	public void RemoveQueue(String id, boolean v_bRemoveObservers, boolean v_bRemovePointingActiveStates)
-	{
+	public void RemoveQueue(String id){	
+		RemoveQueue(id, true, true);	
+	}
+	
+	public void RemoveQueue(String id, boolean v_bRemoveObservers, boolean v_bRemovePointingActiveStates){
 		QueueEntry e;
 		
-		synchronized(queues)
-		{
+		synchronized(queues){
 			e = (QueueEntry)queues.remove(id);
 		}
 		
-		if(e != null)
-		{
+		if(e != null){
 			// remove todos os observadores
-			if(e.obsid != null && v_bRemoveObservers)
-			{
-				synchronized(observers)
-				{
+			if(e.obsid != null && v_bRemoveObservers){
+				synchronized(observers){
 					String oid = e.obsid; //existe uma lista encadeada de observadores dentro da tabela de observadores
 					ObserverEntry oe = (ObserverEntry)observers.remove(oid);
 
-					while(oe != null)
-					{
+					while(oe != null)	{
 						oid = oe.obsid;
 						oe = (ObserverEntry)observers.remove(oid);
 					}
 				}
 			}
-			if(v_bRemovePointingActiveStates)
-			{
-				synchronized(activestates)
-				{
+			if(v_bRemovePointingActiveStates){
+				synchronized(activestates){
 					// remove todas as refer�ncias a esse queue
 					Iterator it; // para percorrer todos os active states
 						
@@ -300,8 +283,7 @@ public class SimulationManager implements Serializable
 	 * Removes a Resource from the system
 	 * updating the related entities properly
 	 */
-	public void RemoveResource(String id)
-	{
+	public void RemoveResource(String id){
 		ResourceEntry e;
 		
 		synchronized(resources)
@@ -360,8 +342,7 @@ public class SimulationManager implements Serializable
 	 * Removes an ActiveState from the system
 	 * updating the related entities properly
 	 */
-	public void RemoveActiveState(String id)
-	{
+	public void RemoveActiveState(String id){
 		ActiveEntry ae;
 		
 		synchronized(activestates)
@@ -406,8 +387,7 @@ public class SimulationManager implements Serializable
 	 * Removes an Observer from the system
 	 * updating the related entities properly
 	 */
-	public void RemoveObserver(String id)
-	{
+	public void RemoveObserver(String id){
 		ObserverEntry oe;
 		
 		synchronized(observers)
@@ -447,8 +427,7 @@ public class SimulationManager implements Serializable
 	 * Removes a Histogram from the system
 	 * updating the related entities properly
 	 */
-	public void RemoveHistogram(String id)
-	{
+	public void RemoveHistogram(String id){
 		HistogramEntry he;
 		
 		synchronized(histograms)
@@ -470,11 +449,10 @@ public class SimulationManager implements Serializable
 	/**
 	 * Removes an AttributeTable from the system
 	 */
-	public void RemoveType(String id)
-	{
-		synchronized(types)
+	public void removeAttributeTable(String id){ // PAGLIARES: RemoveType antes de refatorar
+		synchronized(attributeTables)
 		{
-			Iterator it = types.iterator();
+			Iterator it = attributeTables.iterator();
 			while(it.hasNext())
 			{
 				if(((AttributeTable)it.next()).id == id)
@@ -509,32 +487,36 @@ public class SimulationManager implements Serializable
 	/**
 	 * Returns an iterator to the ActiveStates HashMap
 	 */
-	public Iterator GetActiveStatesIterator(){	return activestates.values().iterator();	}
+	public Iterator GetActiveStatesIterator(){	
+		return activestates.values().iterator();	
+	}
 		
 	/**
 	 * Returns an Observer given its ID
 	 */
-	public ObserverEntry GetObserver(String id)
-	{return (ObserverEntry)observers.get(id);}
+	public ObserverEntry GetObserver(String id){
+		return (ObserverEntry)observers.get(id);
+	}
 		
 	/**
 	 * Returns a Histogram given its ID
 	 */
-	public HistogramEntry GetHistogram(String id)
-	{return (HistogramEntry)histograms.get(id);}
+	public HistogramEntry GetHistogram(String id){
+		return (HistogramEntry)histograms.get(id);
+	}
 	
 	/**
 	 * Returns an AttributeTable given its TypeID
 	 * TypeID is the user-visible, and editable field.
 	 */
-	public AttributeTable GetType(String id)
+	public AttributeTable GetType(String id){ // Pagliares: chamado GetType antes do refactoring
 	// Este � o �nico caso em que o Id �nico n�o � usado para indexa��o,
 	// e sim o name, que � o campo visto e alterado pelo usu�rio.
-	{
+	
 		AttributeTable e = null;
-		synchronized(types)
+		synchronized(attributeTables)
 		{
-			Iterator it = types.iterator();
+			Iterator it = attributeTables.iterator();
 			while(it.hasNext())
 			{
 				if((e = (AttributeTable)it.next()).name.equals(id))
@@ -548,24 +530,26 @@ public class SimulationManager implements Serializable
 	/**
 	 * Obt�m entrada do reposit�rio respectivo atrav�s de seu ID �nico
 	 */
-	public AttributeTable GetGlobals(){return globals;}
+	public AttributeTable getAttributeTable(){ // Pagliares: GetGlobals antes do refactoring
+		return attributeTable;
+	}
 		
 	/**
 	 * Gera modelo de simula��o e prepara para execu��o
 	 */
-	public synchronized boolean GenerateModel()
-	{
-//System.out.println("simulationmanager.GenerateModel");
-		Iterator it;
+	public synchronized boolean GenerateModel(){  
+		
+		//System.out.println("simulationmanager.GenerateModel");
+		Iterator iterator;
 		
 		// 1.o cria o Scheduler
 		
-		s = new Scheduler(this); // Pagliares: estou passando simulation manager para permiter 
-								 // o calculo de estatisticas por iteracao/release
+		scheduler = new Scheduler(this); // Pagliares: estou passando simulation manager para permitir 
+								         // o calculo de estatisticas por iteracao/release
 		
 		// logo depois a stream de n�meros aleat�rios
 		
-		sp = new Sample();
+		sample = new Sample();
 		
 		synchronized(queues){
 			synchronized(activestates){
@@ -574,32 +558,29 @@ public class SimulationManager implements Serializable
 						synchronized(histograms)
 		// ningu�m pode estar sendo alterado
 		{
-			QueueEntry qe;
-			ActiveEntry ae;
-			ResourceEntry re;
-			ObserverEntry oe;
-			HistogramEntry he;
+			QueueEntry queueEntry;
+			ActiveEntry activeEntry;
+			ResourceEntry resourceEntry;
+			ObserverEntry observerEntry;
+			HistogramEntry histogramEntry;
 			
 			// agora os estados mortos
 
-			it = queues.values().iterator();
-			while(it.hasNext())
-			{
-				qe = (QueueEntry)it.next();
-				if(!qe.Generate(this))
-				{
-					System.err.println("Imposs�vel criar fila " + qe.id);
+			iterator = queues.values().iterator();
+			while(iterator.hasNext()){
+				queueEntry = (QueueEntry)iterator.next();
+				if(!queueEntry.generate(this)){
+					System.err.println("Imposs�vel criar fila " + queueEntry.id);
 					return false;
 				}
 			}
 			
-			it = resources.values().iterator();
-			while(it.hasNext())
-			{
-				re = (ResourceEntry)it.next();
-				if(!re.Generate(this))
+			iterator = resources.values().iterator();
+			while(iterator.hasNext()){
+				resourceEntry = (ResourceEntry)iterator.next();
+				if(!resourceEntry.generate(this))
 				{
-					System.err.println("Imposs�vel criar recurso " + re.id);
+					System.err.println("Imposs�vel criar recurso " + resourceEntry.id);
 					return false;
 				}
 			}
@@ -607,20 +588,17 @@ public class SimulationManager implements Serializable
 			// da� os ativos
 			
 			// 1.o limpa os objs de simula��o (devido �s InterruptActivity's)
-			it = activestates.values().iterator();
-			while(it.hasNext())
-			{
-				ae = (ActiveEntry)it.next();
-				ae.activeState = null;
+			iterator = activestates.values().iterator();
+			while(iterator.hasNext()){
+				activeEntry = (ActiveEntry)iterator.next();
+				activeEntry.activeState = null;
 			}
 
-			it = activestates.values().iterator();
-			while(it.hasNext())
-			{
-				ae = (ActiveEntry)it.next();
-				if(!ae.Generate(this))
-				{
-					System.err.println("Imposs�vel criar estado ativo " + ae.id);
+			iterator = activestates.values().iterator();
+			while(iterator.hasNext()){
+				activeEntry = (ActiveEntry)iterator.next();
+				if(!activeEntry.generate(this)){
+					System.err.println("Imposs�vel criar estado ativo " + activeEntry.id);
 					return false;
 				}
 			}
@@ -634,30 +612,28 @@ public class SimulationManager implements Serializable
 		
 		Expression.globals = new Variables();
 		
-		QueueEntry qe = null;
-		ResourceEntry re = null;
-		HashMap deads = new HashMap(queues.size() + resources.size());
+		QueueEntry queueEntry = null;
+		ResourceEntry resourceEntry = null;
+		HashMap deadsHashMap = new HashMap(queues.size() + resources.size());
 		
-		it = queues.values().iterator();
-		while(it.hasNext())
-		{
-			qe = (QueueEntry)it.next();
-			deads.put(qe.name, qe.SimObj);		
-		}
-		it = resources.values().iterator();
-		while(it.hasNext())
-		{
-			re = (ResourceEntry)it.next();
-			deads.put(re.name, re.SimObj);		
+		iterator = queues.values().iterator();
+		while(iterator.hasNext()){
+			queueEntry = (QueueEntry)iterator.next();
+			deadsHashMap.put(queueEntry.name, queueEntry.deadState);		
 		}
 		
-		Expression.globals.AssignQueuesTable(deads);
+		iterator = resources.values().iterator();
+		while(iterator.hasNext()){
+			resourceEntry = (ResourceEntry)iterator.next();
+			deadsHashMap.put(resourceEntry.name, resourceEntry.SimObj);		
+		}
+		
+		Expression.globals.AssignQueuesTable(deadsHashMap);
 		
 		Var var = null;
-		it = globals.getVarsIterator();
-		while(it.hasNext())
-		{
-			var = (Var)it.next();
+		iterator = attributeTable.getVarsIterator();
+		while(iterator.hasNext()){
+			var = (Var)iterator.next();
 			Expression.globals.CreateVar(var.id, var.value);
 		}
 
@@ -671,15 +647,15 @@ public class SimulationManager implements Serializable
 	{
 		boolean ok = false;
 		
-		if(endTime >= 0 && s != null)	// o modelo j� deve ter sido gerado
+		if(endTime >= 0 && scheduler != null)	// o modelo j� deve ter sido gerado
 		{
 			Log.Close();
 			Log.OpenFile();
-			ok = s.Run(endTime);
+			ok = scheduler.Run(endTime);
 			if(ok)
 			{
 				endtime = endTime;
-				running = true;
+				isRunning = true;
 			}
 		}
 		
@@ -691,10 +667,10 @@ public class SimulationManager implements Serializable
 	 */
 	public synchronized boolean ResetSimulation()
 	{
-		if(s == null || running)
+		if(scheduler == null || isRunning)
 			return false;	// modelo precisa ser gerado antes
 		
-		s.Clear();
+		scheduler.Clear();
 		resettime = 0;
 		
 		Iterator it;
@@ -702,7 +678,7 @@ public class SimulationManager implements Serializable
 		it = queues.values().iterator();
 		while(it.hasNext())
 		{
-			((QueueEntry)it.next()).SimObj.Clear();
+			((QueueEntry)it.next()).deadState.Clear();
 		}
 		it = activestates.values().iterator();
 		while(it.hasNext())
@@ -724,11 +700,11 @@ public class SimulationManager implements Serializable
 	 */
 	public synchronized boolean ResetStatistics()
 	{
-		if(s == null || running)
+		if(scheduler == null || isRunning)
 			return false;	// modelo precisa ser gerado antes e  
 										// n�o pode estar executando
 		Iterator it;
-		resettime = s.GetClock();
+		resettime = scheduler.GetClock();
 		
 		it = observers.values().iterator();
 		while(it.hasNext())
@@ -744,10 +720,10 @@ public class SimulationManager implements Serializable
 	 */
 	public synchronized void StopSimulation()
 	{
-		if(running)
-			s.Stop();		// p�ra
+		if(isRunning)
+			scheduler.Stop();		// p�ra
 				
-		running = false;
+		isRunning = false;
 	}
 	
 	/**
@@ -755,10 +731,10 @@ public class SimulationManager implements Serializable
 	 */
 	public synchronized boolean ResumeSimulation()
 	{
-		if(s == null)
+		if(scheduler == null)
 			return false;
 			
-		return s.Resume();
+		return scheduler.Resume();
 	}
 	
 	/**
@@ -766,10 +742,10 @@ public class SimulationManager implements Serializable
 	 */
 	public boolean Finished()
 	{
-		if(s == null) 
+		if(scheduler == null) 
 			return true;
 			
-		return s.Finished();
+		return scheduler.Finished();
 	}
 	
 	
@@ -814,7 +790,7 @@ public class SimulationManager implements Serializable
 	}
  	
  	public Scheduler getScheduler() {
- 		return s;
+ 		return scheduler;
  	}
 
 	public float getResettime() {
@@ -843,9 +819,9 @@ public class SimulationManager implements Serializable
 		
 		os.println("\r\n                    Simulation Report");
 		os.print("\r\nSimulation ended at time ");
-		os.println(s.GetClock());
+		os.println(scheduler.GetClock());
 		os.print("Statistics collected from instant " + resettime);
-		os.println(" during " + (s.GetClock() - resettime) + " time units.");
+		os.println(" during " + (scheduler.GetClock() - resettime) + " time units.");
 		
 		os.println("\r\n          Observers' report");
 		
@@ -854,7 +830,7 @@ public class SimulationManager implements Serializable
 		it = observers.values().iterator();
 		while(it.hasNext())
 		{
-			((ObserverEntry)it.next()).DoReport(os, s.GetClock() - resettime);
+			((ObserverEntry)it.next()).DoReport(os, scheduler.GetClock() - resettime);
 		}
 		
 		os.println("\r\n          Histograms' report");
@@ -882,9 +858,9 @@ public class SimulationManager implements Serializable
 		
 		System.out.println("\r\n                    Simulation Report");
 		System.out.print("\r\nSimulation ended at time ");
-		System.out.println(s.GetClock());
+		System.out.println(scheduler.GetClock());
 		System.out.print("Statistics collected from instant " + resettime);
-		System.out.println(" during " + (s.GetClock() - resettime) + " time units.");
+		System.out.println(" during " + (scheduler.GetClock() - resettime) + " time units.");
 		
 		System.out.println("\r\n          Observers' report");
 		
@@ -893,7 +869,7 @@ public class SimulationManager implements Serializable
 		it = observers.values().iterator();
 		while(it.hasNext())
 		{
-			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+			((ObserverEntry)it.next()).DoReportConsole(scheduler.GetClock() - resettime);
 		}
 		
 		System.out.println("\r\n          Histograms' report");
@@ -918,9 +894,9 @@ public class SimulationManager implements Serializable
 		result = "OutputSimulationResults \n";
 		result+= "\r\n                    Simulation Report";
 		result+= "\r\nSimulation ended at time \n";
-		result+= s.GetClock();
+		result+= scheduler.GetClock();
 		result+= "Statistics collected from instant " + resettime;
-		result+= " during " + (s.GetClock() - resettime) + " time units.";
+		result+= " during " + (scheduler.GetClock() - resettime) + " time units.";
 		result+= "\r\n\n          Observers' report\n";
 		
 		Iterator it;
@@ -929,7 +905,7 @@ public class SimulationManager implements Serializable
 		while(it.hasNext())
 		{
 //			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
-			result += ((ObserverEntry)it.next()).getReportConsole(s.GetClock() - resettime).toString();
+			result += ((ObserverEntry)it.next()).getReportConsole(scheduler.GetClock() - resettime).toString();
 		}
 		
 	
@@ -947,7 +923,7 @@ public class SimulationManager implements Serializable
 		it = observers.values().iterator();
 		while(it.hasNext())
 		{
-			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+			((ObserverEntry)it.next()).DoReportConsole(scheduler.GetClock() - resettime);
 		}
 		
 	}
@@ -958,7 +934,7 @@ public class SimulationManager implements Serializable
 	
 	public void printObserversReport(ObserverEntry observerEntry) { 
 		 
-		observerEntry.DoReportConsole(s.GetClock() - resettime);
+		observerEntry.DoReportConsole(scheduler.GetClock() - resettime);
 	 
 	
 }
@@ -967,7 +943,7 @@ public class SimulationManager implements Serializable
 	
 	public void printWeightedAverage(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getAvearageWeighted(s.GetClock() - resettime));
+		System.out.println(observerEntry.getAvearageWeighted(scheduler.GetClock() - resettime));
 	 
 	 
 	
@@ -975,7 +951,7 @@ public class SimulationManager implements Serializable
 	
 	public void printStandardDeviationWeighted(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getStandardDeviationWeighted(s.GetClock() - resettime));
+		System.out.println(observerEntry.getStandardDeviationWeighted(scheduler.GetClock() - resettime));
 	 
 	 
 	
@@ -983,22 +959,22 @@ public class SimulationManager implements Serializable
 	
 	public void printVarianceWeighted(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getVarianceWeighted(s.GetClock() - resettime));
+		System.out.println(observerEntry.getVarianceWeighted(scheduler.GetClock() - resettime));
 	}
 	
 	public void printMin(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getMin(s.GetClock() - resettime));
+		System.out.println(observerEntry.getMin(scheduler.GetClock() - resettime));
 	}
 	
 	public void printMax(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getMax(s.GetClock() - resettime));
+		System.out.println(observerEntry.getMax(scheduler.GetClock() - resettime));
 	}
 	
 	public void printNumberOfObservations(ObserverEntry observerEntry) { 
 		 
-		System.out.println(observerEntry.getNumberOfObservations(s.GetClock() - resettime));
+		System.out.println(observerEntry.getNumberOfObservations(scheduler.GetClock() - resettime));
 	}
 
 	public HashMap getQueues() {
@@ -1014,15 +990,15 @@ public class SimulationManager implements Serializable
 	{
 		boolean ok = false;
 		
-		if(endTime >= 0 && s != null)	// o modelo j� deve ter sido gerado
+		if(endTime >= 0 && scheduler != null)	// o modelo j� deve ter sido gerado
 		{
 			Log.Close();
 			Log.OpenFile();
-			ok = s.Run(endTime, iterationTime, releaseTime);
+			ok = scheduler.Run(endTime, iterationTime, releaseTime);
 			if(ok)
 			{
 				endtime = endTime;
-				running = true;
+				isRunning = true;
 			}
 		}
 		
@@ -1031,7 +1007,7 @@ public class SimulationManager implements Serializable
 	
 	// pagliares
 	public HashMap getSimulationResultsByIteration() {
-		return s.getSimulationResultsByIteration();
+		return scheduler.getSimulationResultsByIteration();
 		
 	}
 	

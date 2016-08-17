@@ -33,8 +33,9 @@ public class QueueEntry extends Entry
 	 */ 
 	private short policy;							
 		
-  public transient simula.DeadState SimObj;	// objeto de simula��o
+  public transient simula.DeadState deadState;	// objeto de simula��o
                               			// n�o � serializado
+  										// PAGLIARES: SimObj antes de refatorar
 	
 	public String toString()
 	{
@@ -80,7 +81,7 @@ public class QueueEntry extends Entry
 		QueueEntry qEntry = (QueueEntry)v_e;
 		max = qEntry.max;
 		policy = qEntry.policy;
-		SimObj = qEntry.SimObj;
+		deadState = qEntry.deadState;
 	}
 	
 	public final short getMax(){	return max;	}
@@ -89,26 +90,28 @@ public class QueueEntry extends Entry
 	public final void setPolicy(short v_sPolicy){	policy = v_sPolicy;	}
 	
 	
-	boolean Generate(SimulationManager m)
-	{
-		switch(policy)
-		{
-			case FIFO: SimObj = new simula.FifoQ(m.s, max); 
-			SimObj.setCount((short)intialQuantity);  // pagliares
-			break;
-			case STACK: SimObj = new simula.StackQ(m.s, max); 
-			SimObj.setCount((short)intialQuantity); // pagliares
-			break;
-			case PRIORITY: SimObj = new simula.PriorityQ(m.s, max); 
-			SimObj.setCount((short)intialQuantity); // pagliares
-			break;
-			default: return false;
+	boolean generate(SimulationManager m)	{  // PAGLIARES. Generate antes de refatorar
+		switch(policy)	{
+			case FIFO: 
+				deadState = new simula.FifoQ(m.scheduler, max); 
+				deadState.setCount((short)intialQuantity);  // pagliares
+				break;
+			case STACK:
+				deadState = new simula.StackQ(m.scheduler, max); 
+				deadState.setCount((short)intialQuantity); // pagliares
+				break;
+			case PRIORITY: 
+				deadState = new simula.PriorityQ(m.scheduler, max); 
+				deadState.setCount((short)intialQuantity); // pagliares
+				break;
+			default: 
+				return false;
 		}
 
-		SimObj.name = name;
+		deadState.name = name;
 				
 		if(obsid != null)
-			return m.GetObserver(obsid).Generate(m);
+			return m.GetObserver(obsid).generate(m);
 			
 		return true;
 	}

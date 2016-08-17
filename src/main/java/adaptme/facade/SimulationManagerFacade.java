@@ -74,7 +74,7 @@ public class SimulationManagerFacade {
 				System.out.println("\nQueue name : " + o);
 				QueueEntry qe = (QueueEntry)queues.get(o);
 				// ambas saidas abaixo retornam a variavel count
-				System.out.println("Nunber of entities in queue via getCount: " + qe.SimObj.getCount());
+				System.out.println("Nunber of entities in queue via getCount: " + qe.deadState.getCount());
 //				System.out.println("numero de entidadas na fila: via ObsLength" + qe.SimObj.getCount());
 				
 				//System.out.println(qe.intialQuantity);
@@ -130,7 +130,7 @@ public class SimulationManagerFacade {
 			 for (String chave1: chavesSegundoHash) {
 				 if (secondHash.get(chave1) instanceof QueueEntry) {
 					 QueueEntry qe1 = (QueueEntry)secondHash.get(chave1);
-					 System.out.println("QueuName..:" + chave1  + "  "  + "inner queue name..:  "  + qe1.getName() + "  number of entities..:" + qe1.SimObj.getCount());
+					 System.out.println("QueuName..:" + chave1  + "  "  + "inner queue name..:  "  + qe1.getName() + "  number of entities..:" + qe1.deadState.getCount());
 				 } else if (secondHash.get(chave1) instanceof ObserverEntry) {
 					 ObserverEntry oe1 = (ObserverEntry)secondHash.get(chave1);
 					 System.out.println("Chave second hash..:" + chave1  + "  "  + "value (queue name) ..:  "  + oe1);
@@ -169,7 +169,7 @@ public class SimulationManagerFacade {
 			 for (String queueName: chavesNomeFilasSegundoHash) {
 				  if (secondHash.get(queueName) instanceof QueueEntry) {
 					 QueueEntry qe1 = (QueueEntry)secondHash.get(queueName);
-					 quantity = qe1.SimObj.getCount();
+					 quantity = qe1.deadState.getCount();
 					 matrizResultados[contadorLinhas][contadorColunas] = quantity; // nao armazeno o nome do experimento, apenas inteiros com #entities
 				 }  
 				  contadorColunas++;
