@@ -5,7 +5,10 @@
 package simula.manager;
 
 import java.io.*;
+import simula.Entity; // pagliares
 
+ 
+ 
 /**
  * Entrada para as filas de entidades do modelo.
  */
@@ -37,8 +40,7 @@ public class QueueEntry extends Entry
                               			// n�o � serializado
   										// PAGLIARES: SimObj antes de refatorar
 	
-	public String toString()
-	{
+	public String toString()	{
 		StringBuffer stb = new StringBuffer();
 		stb.append("<QueueEntry max=\""+max+"\" policy=\""+policyString()+"\">\r\n");
 		stb.append("<Q_super>\r\n");
@@ -47,36 +49,32 @@ public class QueueEntry extends Entry
 		stb.append("</QueueEntry>\r\n");
 		return stb.toString();
 	}
-	String policyString()
-	{
-		if(policy == FIFO)
-		{
+	
+	String policyString(){
+		if(policy == FIFO){
 			return "FIFO";
 		}
-		else if(policy == STACK)
-		{
+		else if(policy == STACK){
 			return "STACK";
 		}
-		else if(policy == PRIORITY)
-		{
+		else if(policy == PRIORITY){
 			return "PRIORITY";
 		}
 		return "POLICY??";
 	}
+	
   /**
    * constr�i um objeto com id gerado internamente;
    * preenche com argumentos padr�o os demais campos.
    */
-	public QueueEntry()
-	{
+	public QueueEntry(){
 		super("q_" + String.valueOf(lastid));
 		lastid++;
-    max = (short)1000;
-    policy = FIFO;
+		max = (short)1000;
+		policy = FIFO;
 	}
 	
-	public void copyAttributes(Entry v_e)
-	{
+	public void copyAttributes(Entry v_e){
 		super.copyAttributes(v_e);
 		QueueEntry qEntry = (QueueEntry)v_e;
 		max = qEntry.max;
@@ -90,19 +88,19 @@ public class QueueEntry extends Entry
 	public final void setPolicy(short v_sPolicy){	policy = v_sPolicy;	}
 	
 	
-	boolean generate(SimulationManager m)	{  // PAGLIARES. Generate antes de refatorar
+	boolean generate(SimulationManager m)	{   
 		switch(policy)	{
 			case FIFO: 
 				deadState = new simula.FifoQ(m.scheduler, max); 
-				deadState.setCount((short)intialQuantity);  // pagliares
+				createAndEnqueueEntities(); // Pagliares
 				break;
 			case STACK:
 				deadState = new simula.StackQ(m.scheduler, max); 
-				deadState.setCount((short)intialQuantity); // pagliares
+				createAndEnqueueEntities(); // Pagliares
 				break;
 			case PRIORITY: 
 				deadState = new simula.PriorityQ(m.scheduler, max); 
-				deadState.setCount((short)intialQuantity); // pagliares
+				createAndEnqueueEntities(); // Pagliares
 				break;
 			default: 
 				return false;
@@ -116,9 +114,7 @@ public class QueueEntry extends Entry
 		return true;
 	}
 	
-	private void writeObject(ObjectOutputStream stream)
-     throws IOException
-	{
+	private void writeObject(ObjectOutputStream stream) throws IOException{
 		stream.defaultWriteObject();
 		
 		if(hasSerialized)
@@ -127,9 +123,8 @@ public class QueueEntry extends Entry
 		stream.writeInt(lastid);
 		hasSerialized = true;
 	}
- 	private void readObject(ObjectInputStream stream)
-     throws IOException, ClassNotFoundException
-	{
+	
+ 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException{
 		stream.defaultReadObject();
 		
 		if(hasSerialized)
@@ -138,4 +133,16 @@ public class QueueEntry extends Entry
 		lastid = stream.readInt();
 		hasSerialized = true;
 	}
+ 	
+ 	// The method below, before the statement break as developed by Rodrigo Pagliares to cope with the problem of
+ 	// starting a simulation without using generate activities, placing some 
+ 	// initial entities on the first queue of the simulation. Make the same to the other options of the 
+ 	// switch, refactoring 
+ 	private boolean createAndEnqueueEntities() {
+ 		for (int i=0; i < intialQuantity; i++) {
+ 			Entity e = new Entity(0); // 0 is the time of creation. I am using zero to indicate before simulation start
+ 			deadState.Enqueue(e);  
+ 		}
+ 		return true;
+ 	}
 }
