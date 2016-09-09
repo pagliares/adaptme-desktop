@@ -1,5 +1,5 @@
 // Arquivo Generate.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
@@ -10,7 +10,7 @@ package simula;
 public class Generate extends ActiveState
 {
 	/**
-	 * referência da fila conectada
+	 * referï¿½ncia da fila conectada
 	 */
 	protected DeadState to_q;		
 	/**
@@ -18,8 +18,8 @@ public class Generate extends ActiveState
 	 */
 	protected boolean inservice;
 	/**
-	 * gerador de números aleatórios
-	 * de uma dada distribuição
+	 * gerador de nï¿½meros aleatï¿½rios
+	 * de uma dada distribuiï¿½ï¿½o
 	 */
 	protected Distribution d;		
 
@@ -31,47 +31,46 @@ public class Generate extends ActiveState
 	/**
 	 * ids dos atributos das entidades
 	 */
-	protected String[] attids;		
+	protected String[] entitiesAttributesIds;		
 	/**
-	 * número de entidades geradas
+	 * nï¿½mero de entidades geradas
 	 */
 	public int Generated = 0;	
 	/**
-	 * número de entidades perdidas
+	 * nï¿½mero de entidades perdidas
 	 */
 	public int Wasted = 0;			
 
 	/**
-	 * constrói um estado ativo sem conexões ou tempo de serviço definidos.
+	 * constrï¿½i um estado ativo sem conexï¿½es ou tempo de serviï¿½o definidos.
 	 */
-	public Generate(Scheduler s){super(s);}
+	public Generate(Scheduler s){
+		super(s);
+	}
 	
 	/**
 	 * determina destino das entidades geradas.
 	 */
-	public void ConnectQueue(DeadState to)
-	{
+	public void ConnectQueue(DeadState to){
 		if(to_q == null)
 			to_q = to;
 	}
 	
 	/**
-	 * determina o tempo de serviço de acordo com a distribuição especificada;
-	 * os parâmetros da distribuição são passados na criação do objeto 
+	 * determina o tempo de serviï¿½o de acordo com a distribuiï¿½ï¿½o especificada;
+	 * os parï¿½metros da distribuiï¿½ï¿½o sï¿½o passados na criaï¿½ï¿½o do objeto 
 	 * e registra primeiro evento de chegada.
 	 */
-	public void SetServiceTime(Distribution d)
-	{
+	public void SetServiceTime(Distribution d){
 		this.d = d;
 		RegisterEvent((float)d.Draw());
 		inservice = true;
 	}
 
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
-	public void Clear()
-	{
+	public void Clear(){
 		super.Clear();
 		Generated = 0;
 		Wasted = 0;
@@ -80,74 +79,207 @@ public class Generate extends ActiveState
 	}
 	
 	/**
-	 * atribui vetores de atributos que contêm ids e valores
+	 * atribui vetores de atributos que contï¿½m ids e valores
 	 * iniciais dos atributos de cada entidade gerada por 
-	 * uma instância deste estado ativo. 
+	 * uma instï¿½ncia deste estado ativo. 
 	 */
 	public void SetEntitiesAtts(String[] ids, float[] values)
 	{
 		if(ids.length != values.length)
 			throw new IllegalArgumentException
-				("Vetores de ids e valores devem ter o mesmo número de elementos");
-		attids = ids;
+				("Vetores de ids e valores devem ter o mesmo nï¿½mero de elementos");
+		entitiesAttributesIds = ids;
 		attvals = values;
 	}
 
 	/**
 	 * implementa protocolo.
 	 */
-	public boolean BServed(float time)
-	{
-		Entity e = new Entity(time);	// cria entidade e atribui-lhe instante de criação
+	public boolean BServed(float time){
 		
-		// atribui atributos específicos a e
+		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 4.999  entity = nao existe  this.inservice = true   
+				           name a_0      toq = q_o            this.s.calendar.root = null  this.s.calendar.list = generate a_0
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity = nao existe  this.inservice = true   
+				           name = a_0       toq = q_o            this.s.calendar.root = null   this.s.calendar.list =  generate a_0
+		*/
+ 		 
+				
+		/* TODO CT-01 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+		
+			TODO CT-02 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+				FIRST HIT IN THE BREAKPOINT 
+					VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+					name a_1 toqueue = q_1  root = null  list = generate a_1
+				SECOND HIT IN THE BREAKPOINT 
+					VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+					name a_1 toqueue = q_1  root = null  list = generate a_1
+		*/
+		
+		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+			name a_1 toqueue = q_1  root = null  list = generate a_1
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+			name a_1 toqueue = q_1  root = null  list = generate a_1
+	
+		TODO CT-02 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+	*/
+		
+		/* TODO CT-03 - PROCESS WITH GENERATE, PRIORITIZE USER STORIES AND ESTIMATE USER STORIES  
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+			name a_1 toqueue = q_1  root = null  list = generate a_1
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+			name a_1 toqueue = q_1  root = null  list = generate a_1
+	
+		TODO CT-02 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS: time = 9.998  entity =  nao existe inservice = true  
+				name a_1 toqueue = q_1  root = null  list = generate a_1
+	*/
+		
+		Entity entity = new Entity(time);	// cria entidade e atribui-lhe instante de criaï¿½ï¿½o
+		
+		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 1  entity creation time = 4.999  time = 4.99
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 2   entity creation time = 9.998    time =  9.998
+		*/
+		
+		/* TODO CT-01 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT  
+				VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 1  entity creation time = 4.999 
+		*/
+		
+		/* TODO CT-02 - PROCESS WITHOUT GENERATE AND WITH PRIORITIZE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 1  entity creation time = 4.999 
+		*/
+		
+		/* TODO CT-03 - PROCESS WITH GENERATE, PRIORITIZE USER STORIES AND ESTIMATE USER STORIES  
+			FIRST HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+			SECOND HIT IN THE BREAKPOINT 
+				VARIAVEIS:  entity = 1  entity creation time = 4.999 
+		*/
+		
+		// atribui atributos especï¿½ficos a e
 
-		if(attids != null)
-		{
-			for(int i = 0; i < attids.length; i++)
-				e.SetAttribute(attids[i], attvals[i]);	
+		if(entitiesAttributesIds != null){
+			for(int i = 0; i < entitiesAttributesIds.length; i++)
+				entity.SetAttribute(entitiesAttributesIds[i], attvals[i]);	
 		}		
 		
-		if(to_q.HasSpace())				// se tem espaço para entidade na fila
-		{
-			to_q.Enqueue(e);
-			Log.LogMessage(name + ":Entity " + e.GetId() + 
+		if(to_q.HasSpace())	{			// se tem espaï¿½o para entidade na fila
+			to_q.Enqueue(entity);
+			Log.LogMessage(name + ":Entity " + entity.GetId() + 
 				" generated and sent to " + to_q.name);
 			if(obs != null)
-				obs.Outgoing(e);
+				obs.Outgoing(entity);
 		}
-		else
-		{
-			Wasted++;					// mais uma entidade desperdiçada
-			Log.LogMessage(name + ":Entity " + e.GetId() +
+		else {
+			Wasted++;					// mais uma entidade desperdiï¿½ada. PAGLIARES: por falta de espaco
+			Log.LogMessage(name + ":Entity " + entity.GetId() +
 				" generated but wasted");
 		}
 		
+		
 		Generated++;					// mais uma entidade gerada
 
-		inservice = false;				// libera a geração de novas entidades
+		inservice = false;				// libera a geraï¿½ï¿½o de novas entidades
 		if(obs != null)
 			obs.StateChange(Observer.BUSY);// marca fim do idle-time => determina inter-arrival
 
+
+	/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 1  entity creation time = 4.999  entity qentertime = 4.99
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 2   entity creation time = 9.998   entity qentertime = 9.988
+	*/
+	
+	/* TODO CT-01 - PROCESS WITH GENERATE AND PRIORITIZE USER STORIES  
+		FIRST HIT IN THE BREAKPOINT  
+			VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 1  entity creation time = 4.999 
+	*/
+	
+	/* TODO CT-02 - PROCESS WITHOUT GENERATE AND WITH PRIORITIZE USER STORIES  
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 1  entity creation time = 4.999 
+	*/
+	
+	/* TODO CT-03 - PROCESS WITH GENERATE, PRIORITIZE USER STORIES AND ESTIMATE USER STORIES  
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity = 12  entity creation time = 9.998 time = 9.998
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  entity =   entity creation time = 4.999 
+	*/
+		
 		return true;			
 	}
 
 	/**
-	 * implementa protocolo; agenda evento B se não está "gerando" outra entidade.
-	 * sempre retorna false pois não tem efeito no instante de simulação atual.
+	 * implementa protocolo; agenda evento B se nï¿½o estï¿½ "gerando" outra entidade.
+	 * sempre retorna false pois nï¿½o tem efeito no instante de simulaï¿½ï¿½o atual.
 	 */
-	public boolean CServed()
-	{
-		if(!inservice)					// se não está "gerando" outra entidade...
+	public boolean CServed() {
+
+		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS:  inservice = false  name = a_0  this.s.calendar.list = NULL this.s.calendar.root = NULL
+			            this.s.clock = 4.99  this.s.running = true this.s.activestates = generate a_o
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  inservice = false  name = a_0  this.s.calendar.list = NULL this.s.calendar.root = NULL
+			            this.s.clock = 9.998  this.s.running = true this.s.activestates = generate a_o
+		 */
+		
+		if(!inservice)					// se nï¿½o estï¿½ "gerando" outra entidade...
 		{
-			float t = (float)d.Draw();		// obtém instante de criação da próxima entidade
+			float t = (float)d.Draw();		// obtï¿½m instante de criaï¿½ï¿½o da prï¿½xima entidade
 			RegisterEvent(t);				// agenda evento B
-			inservice = true;				// está "gerando"
+			inservice = true;				// estï¿½ "gerando"
 			if(obs != null)
-				obs.StateChange(Observer.IDLE);// para o Generate, o idle-time é o inter-arrival
+				obs.StateChange(Observer.IDLE);// para o Generate, o idle-time ï¿½ o inter-arrival
 			Log.LogMessage(name + ":Scheduled entity generation to " + t);
 		}
 
+		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
+		FIRST HIT IN THE BREAKPOINT 
+			VARIAVEIS:  inservice = true  name = a_0  this.s.calendar.list = NULL this.s.calendar.root = generate a_o
+			            this.s.clock = 4.99  this.running = true this.s.activestates = generate a_o
+		SECOND HIT IN THE BREAKPOINT 
+			VARIAVEIS:  inservice = true  name = a_1  this.s.calendar.list = NULL this.s.calendar.root = generate a_1
+			            this.s.clock = 9.998  this.s.running = true this.s.activestates = generate a_1
+		 */
 		return false;
 
 	}
