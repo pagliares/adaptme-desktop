@@ -20,6 +20,7 @@ import adaptme.ui.window.perspective.ShowResultsPanel;
 import adaptme.ui.window.perspective.ShowResultsTableModel;
 import executive.queue.Queue;
 import model.spem.SimulationFacade;
+import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
  
@@ -99,6 +100,7 @@ public class SimulationManagerFacade {
 
 			resultsSimulationMap.put(selectedProcessAlternativeName+i, epp);  // armazena replicacoes
 			epp = null;
+			Activity.counter = 0;
 		}
 		printResultadosGlobal();
 	}

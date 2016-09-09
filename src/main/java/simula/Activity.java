@@ -4,6 +4,7 @@
 
 package simula;
 
+import java.sql.Time;
 import java.util.*;
 
  
@@ -30,6 +31,7 @@ public class Activity extends ActiveState{
 	 */
 	protected boolean blocked;	
 	
+	public static int counter = 0; // Pagliares
   
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -55,9 +57,8 @@ public class Activity extends ActiveState{
 		RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
 		 
 		// ACHO QUE TENHO QUE COLOCAR A GALERA PARA TRABALHAR AQUI
-		//	solucao();
-		//	CServed();	
- 	}
+//			solucao();
+  	}
 	
 	public void ConnectQueues(DeadState from, DeadState to){
 		ConnectQueues(from, ConstExpression.TRUE, to);
@@ -96,15 +97,21 @@ public class Activity extends ActiveState{
 	 * implementa protocolo.
 	 */
 	public boolean BServed(float time){
-		 
+		
 		if(blocked)									// n�o faz nada enquanto estiver bloqueado
 			return false;
 			
 		InServiceEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue();
 
+		if (counter == 0) { // pagliares 
+			counter = counter +1; // pagliares
+			return true; // pagliares
+		}
 		if(inServiceEntities == null)								// n�o h� mais nada a servir
 			return false;
 
+		
+		
 		if(time < inServiceEntities.duetime){			// servi�o foi interrompido e scheduler n�o foi notificado									
 			queueOfEntitiesAndResourcesInService.PutBack(inServiceEntities);		// devolve � fila para ser servido mais tarde
 			return false;
@@ -179,7 +186,7 @@ public class Activity extends ActiveState{
 
 		InServiceEntitiesUntilDueTime possible = new InServiceEntitiesUntilDueTime(esize, (float)d.Draw());
 		Entity entity;
-		
+		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
 		for(i = 0; i < esize && ok; i++) {					// as condi��es.
 		
 			possible.entities[i] = entity = ((DeadState)entities_from_v.elementAt(i)).dequeue();
@@ -225,8 +232,9 @@ public class Activity extends ActiveState{
 		return true;
 	}
 	
-	private void solucao() {
- 
+	private boolean solucao() {
+		
+				return true;
 	}
 	
 	/**
