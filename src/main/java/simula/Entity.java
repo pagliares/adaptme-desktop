@@ -1,76 +1,74 @@
 // Arquivo Entity.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
 
 import java.util.*;
 
-class Entity
-{
+public class Entity { // pagliares, public para ser acessado via QueueEntry
+
 	/**
-	 * A mínima prioridade (255)
+	 * A mï¿½nima prioridade (255)
 	 */
 	public static final short MinPriority = 255;	
 	/**
-	 * A máxima prioridade (ZERO)
+	 * A mï¿½xima prioridade (ZERO)
 	 */
 	public static final short MaxPriority = 0;
 	private static long counter = 1;
 
-	private long 	id;							// id da entidade
+	private long id;							// id da entidade
 	private float creationtime;
 	private float timestamp;
-	private short priority = 128;	// valor padrão
-	private float qentertime;			// instante em que entrou na fila atual
-	private float totalqtime = 0;	// tempo total que passou em filas
-	private float qtime = 0;			// tempo que passou na última fila
+	private short priority = 128;	// valor padrï¿½o
+	private float queueEnterTime;			// instante em que entrou na fila atual
+	private float totalTimeInQueues = 0;	// tempo total que passou em filas
+	private float timeInLastQueue = 0;			// tempo que passou na ï¿½ltima fila
 
 	private HashMap attributes;
 
 	/**
-	 * constrói uma entidade e atribui o instante da sua criação.
+	 * constrï¿½i uma entidade e atribui o instante da sua criaï¿½ï¿½o.
 	 */
-	public Entity(float creationtime)
-	{
+	public Entity(float creationtime){
 		timestamp = this.creationtime = creationtime;
 		id = counter++;	
 	}
 	
 	/**
-	 * obtém instante de criação.
+	 * obtï¿½m instante de criaï¿½ï¿½o.
 	 */
-	public float GetCreationTime(){return creationtime;}
+	public float getCreationTime(){
+		return creationtime;
+	}
 	
 	/**
-	 * obtém valor de um atributo personalisado.
+	 * obtï¿½m valor de um atributo personalisado.
 	 */
-	public float GetAttribute(String name)
-	{
+	public float getAttribute(String name){
 		if(attributes == null)
 			return Float.NaN;
 		Float data = (Float)attributes.get(name);
-		if(data == null)							// atributo não existe
+		if(data == null)							// atributo nï¿½o existe
 			return Float.NaN;
 		
 		return data.floatValue();
 	}
 
 	/**
-	 * atribui valor a um atributo personalisado; cria, se necessário. 
+	 * atribui valor a um atributo personalisado; cria, se necessï¿½rio. 
 	 */
-	public void SetAttribute(String name, float value)
-	{
+	public void setAttribute(String name, float value){
 		if(attributes == null)
-			attributes = new HashMap(5);			// cria a tabela na primeira atribuição
+			attributes = new HashMap(5);			// cria a tabela na primeira atribuiï¿½ï¿½o
 		attributes.put(name, new Float(value));		// armazena
 	}
 
 	/**
-	 * determina prioridade de uma entidade em relação às outras.
+	 * determina prioridade de uma entidade em relaï¿½ï¿½o ï¿½s outras.
 	 */
-	public void SetPriority(short p)
-	{
+	public void setPriority(short p){
 		if(p > MinPriority)
 			priority = MinPriority;
 		else if(p < MaxPriority)
@@ -80,48 +78,61 @@ class Entity
 	}
 
 	/**
-	 * obtém prioridade da entidade.
+	 * obtï¿½m prioridade da entidade.
 	 */
-	public short GetPriority(){return priority;} 
+	public short getPriority(){
+		return priority;
+	} 
 
 	/**
-	 * faz uma marcação de tempo na entidade.
+	 * faz uma marcaï¿½ï¿½o de tempo na entidade.
 	 */
-	public void Stamp(float time){timestamp = time;}
+	public void setTimestamp(float time){
+		timestamp = time;
+	}
 
 	/**
-	 * obtém valor da última marcação.
+	 * obtï¿½m valor da ï¿½ltima marcaï¿½ï¿½o.
 	 */
-	public float GetTimestamp(){return timestamp;}
+	public float getTimestamp(){
+		return timestamp;
+	}
 
 	/**
-	 * obtém o tempo em que a entidade ficou em filas
+	 * obtï¿½m o tempo em que a entidade ficou em filas
 	 */
-	public float GetTotalQueueTime(){return totalqtime;}
+	public float getTotalQueueTime(){
+		return totalTimeInQueues;
+	}
 
 	/**
-	 * obtém o tempo em que a entidade ficou em filas
+	 * obtï¿½m o tempo em que a entidade ficou em filas
 	 */
-	public long GetId(){return id;}
+	public long getId(){
+		return id;
+	}
 
 	/**
 	 * notifica o instante em que entrou em uma fila
 	 */
-	public void EnteredQueue(float time){qentertime = time;}
+	public void setQueueEnterTime(float time){
+		queueEnterTime = time;
+	}
 
 	/**
 	 * notifica o instante em que saiu de uma fila; 
 	 */
-	public void LeftQueue(float time)
-	{
-		qtime = time - qentertime;
-		totalqtime += qtime;
-		qentertime = 0;
+	public void leftQueue(float time){
+		timeInLastQueue = time - queueEnterTime;
+		totalTimeInQueues += timeInLastQueue;
+		queueEnterTime = 0;
 	}
 
 	/**
 	 * retorna o tempo em que passou na fila
 	 */
-	public float GetQTime(){return qtime;}
+	public float getTimeInLastQueue(){
+		return timeInLastQueue;
+	}
 		
 }

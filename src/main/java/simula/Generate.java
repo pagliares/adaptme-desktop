@@ -192,19 +192,19 @@ public class Generate extends ActiveState
 
 		if(entitiesAttributesIds != null){
 			for(int i = 0; i < entitiesAttributesIds.length; i++)
-				entity.SetAttribute(entitiesAttributesIds[i], attvals[i]);	
+				entity.setAttribute(entitiesAttributesIds[i], attvals[i]);	
 		}		
 		
 		if(to_q.HasSpace())	{			// se tem espa�o para entidade na fila
 			to_q.Enqueue(entity);
-			Log.LogMessage(name + ":Entity " + entity.GetId() + 
+			Log.LogMessage(name + ":Entity " + entity.getId() + 
 				" generated and sent to " + to_q.name);
 			if(obs != null)
 				obs.Outgoing(entity);
 		}
 		else {
 			Wasted++;					// mais uma entidade desperdi�ada. PAGLIARES: por falta de espaco
-			Log.LogMessage(name + ":Entity " + entity.GetId() +
+			Log.LogMessage(name + ":Entity " + entity.getId() +
 				" generated but wasted");
 		}
 		

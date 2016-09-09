@@ -1,5 +1,5 @@
 // Arquivo Destroy.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
@@ -11,22 +11,22 @@ package simula;
 public class Destroy extends ActiveState
 {
 	/**
-	 * referência da fila conectada
+	 * referï¿½ncia da fila conectada
 	 */
 	protected DeadState from_q;		
 	
 	/**
-	 * número de entidades destruídas
+	 * nï¿½mero de entidades destruï¿½das
 	 */
 	public int Destroyed = 0;		
 
 	/**
-	 * constrói um estado ativo sem conexões ou tempo de serviço definidos.
+	 * constrï¿½i um estado ativo sem conexï¿½es ou tempo de serviï¿½o definidos.
 	 */
 	public Destroy(Scheduler s){super(s);}
 
 	/**
-	 * determina origem das entidades destruídas.
+	 * determina origem das entidades destruï¿½das.
 	 * @param	from	the queue to connect from
 	 */
 	public void ConnectQueue(DeadState from)
@@ -36,7 +36,7 @@ public class Destroy extends ActiveState
 	}
 
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
 	public void Clear()
 	{
@@ -50,21 +50,21 @@ public class Destroy extends ActiveState
 	public boolean BServed(float time){return false;}
 
 	/**
-	 * consome entidades disponíveis na fila e realiza estatísticas (quando aplicável).
+	 * consome entidades disponï¿½veis na fila e realiza estatï¿½sticas (quando aplicï¿½vel).
 	 */
 	public boolean CServed()
 	{
 		boolean got = false;
 
-		while(from_q.HasEnough())			// enquanto tiver entidades a serem destruídas
+		while(from_q.HasEnough())			// enquanto tiver entidades a serem destruï¿½das
 		{
 			Entity e = from_q.Dequeue();	// retira entidade
-			// faz estatísticas
+			// faz estatï¿½sticas
 			if(obs != null)
 				obs.Incoming(e);
 			got = true;
 			Destroyed++;
-			Log.LogMessage(name + ":Entity " + e.GetId() + 
+			Log.LogMessage(name + ":Entity " + e.getId() + 
 				", from " + from_q.name + ", destroyed.");
 		}
 		

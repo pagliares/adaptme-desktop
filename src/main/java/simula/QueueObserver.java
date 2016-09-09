@@ -1,12 +1,12 @@
 // Arquivo QueueObserver.java
-// Implementação das Classes do Grupo de Resultados da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Resultados da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 16.Abr.1999	Wladimir
 
 package simula;
 
 public class QueueObserver extends Observer
 {
-	private DeadState q;					// referência à fila observada
+	private DeadState q;					// referï¿½ncia ï¿½ fila observada
 	private float previousobservation = 0;
 	private boolean obsqtime;
 	
@@ -27,19 +27,19 @@ public class QueueObserver extends Observer
 	// construtores
 
 	/**
-	 * para filas de entidades, não tem sentido.
+	 * para filas de entidades, nï¿½o tem sentido.
 	 */
 	public void StateChange(short to){}
 		
 	/**
-	 * para filas, realiza estatística do tamanho da fila.
+	 * para filas, realiza estatï¿½stica do tamanho da fila.
 	 */
 	public void Incoming(Entity e)
 	{
 		if(obsqtime)
 			return;
 		float clock = s.GetClock();
-		if(clock == previousobservation)		// já observou neste instante
+		if(clock == previousobservation)		// jï¿½ observou neste instante
 			return;
 		if(hist != null)
 			hist.Add(q.ObsLength(), 1);
@@ -59,14 +59,14 @@ public class QueueObserver extends Observer
 	{
 		if(!obsqtime)
 		{
-			Incoming(e);	// se não estiver observando o tempo, observo tamanho
+			Incoming(e);	// se nï¿½o estiver observando o tempo, observo tamanho
 			return;
 		}
 		
 		if(hist != null)
-			hist.Add(e.GetQTime(), 1);
+			hist.Add(e.getTimeInLastQueue(), 1);
 		else
-			stat.Add(e.GetQTime());
+			stat.Add(e.getTimeInLastQueue());
 		
 		if(next != null)
 			next.Outgoing(e);

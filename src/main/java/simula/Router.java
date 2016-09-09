@@ -122,7 +122,7 @@ public class Router extends ActiveState{
 					if(q.HasSpace())									// se tem espa�o
 					{
 						q.Enqueue(e.entities[j]);								// envia ao estado morto
-						Log.LogMessage(name + ":Entity " + e.entities[j].GetId() +
+						Log.LogMessage(name + ":Entity " + e.entities[j].getId() +
 							" sent to " + q.name);
 		
 						if(obs != null)
@@ -212,7 +212,7 @@ public class Router extends ActiveState{
 		}
 
 		for(int i = 0; i < entry.entities.length; i++)
-			Log.LogMessage(name + ":Entity " + entry.entities[i].GetId() +
+			Log.LogMessage(name + ":Entity " + entry.entities[i].getId() +
 				" got from " + ((DeadState)entities_from_v.elementAt(i)).name);
 
 		return true;
