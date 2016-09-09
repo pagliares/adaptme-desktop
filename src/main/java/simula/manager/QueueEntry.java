@@ -141,7 +141,7 @@ public class QueueEntry extends Entry
  	private boolean createAndEnqueueEntities() {
  		for (int i=0; i < intialQuantity; i++) {
  			Entity e = new Entity(0); // 0 is the time of creation. I am using zero to indicate before simulation start
- 			deadState.Enqueue(e);  
+ 			deadState.enqueue(e);  
  		}
  		return true;
  	}

@@ -1,5 +1,5 @@
 // Arquivo FifoQ.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
@@ -9,71 +9,64 @@ import java.util.*;
 /**
  * Implements a First-In First-Out Queue
  */
-public class FifoQ extends DeadState
-{
-	private Vector q;					// implementa fila como vetor
+public class FifoQ extends DeadState{
+	private Vector queue;					// implementa fila como vetor
 
 	/**
-	 * constrói uma fila vazia com capacidade para max entidades. 
+	 * constrï¿½i uma fila vazia com capacidade para max entidades. 
 	 */
-	public FifoQ(Scheduler s, short max)
-	{
+	public FifoQ(Scheduler s, short max){
 		super(s, max);
-		q = new Vector(max);	
+		queue = new Vector(max);	
 	} 
 	
 	/**
-	 * constrói uma fila vazia com capacidade ilimitada. 
+	 * constrï¿½i uma fila vazia com capacidade ilimitada. 
 	 */
-	public FifoQ(Scheduler s)
-	{
+	public FifoQ(Scheduler s){
 		super(s, 0);
-		q = new Vector(10, 10);	
+		queue = new Vector(10, 10);	
 	}
 	
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
-	public void Clear()
-	{
-		super.Clear();
-		q.clear();
+	public void clear(){
+		super.clear();
+		queue.clear();
 	}
 
 	/**
-	 * implementa a interface segundo a política FIFO; atualiza atributos de tamanho.
+	 * implementa a interface segundo a polï¿½tica FIFO; atualiza atributos de tamanho.
 	 */
-	public void Enqueue(Entity e)
-	{
+	public void enqueue(Entity e){
 		if(obs != null)
 			obs.Incoming(e);
-		q.addElement(e);
+		queue.addElement(e);
 		count++;
-		e.EnteredQueue(s.GetClock());
+		e.setQueueEnterTime(s.GetClock());
 	}
 	/**
-	 * implementa a interface segundo a política FIFO; atualiza atributos de tamanho.
+	 * implementa a interface segundo a polï¿½tica FIFO; atualiza atributos de tamanho.
 	 */
-	public void PutBack(Entity e)
-	{	
+	public void putBack(Entity e){	
 		if(obs != null)
 			obs.Incoming(e);
-		q.insertElementAt(e, 0);
+		queue.insertElementAt(e, 0);
 		count++;
-		e.EnteredQueue(s.GetClock());
+		e.setQueueEnterTime(s.GetClock());
 	}
 	/**
-	 * implementa a interface segundo a política FIFO; atualiza atributos de tamanho.
+	 * implementa a interface segundo a polï¿½tica FIFO; atualiza atributos de tamanho.
 	 */
-	public Entity Dequeue()
-	{
+	public Entity dequeue(){
 		try
 		{
-			Entity e = (Entity)q.firstElement();
-			e.LeftQueue(s.GetClock());
+			Entity e = (Entity)queue.firstElement();
+			e.leftQueue(s.GetClock());
 			if(obs != null)
 				obs.Outgoing(e);
-			q.removeElementAt(0);
+			queue.removeElementAt(0);
 			count--;
 			return e;
 		}

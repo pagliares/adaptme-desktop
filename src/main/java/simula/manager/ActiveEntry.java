@@ -107,7 +107,7 @@ public abstract class ActiveEntry extends Entry{
   /**
    * Cria os observadores e histogramas associados
    */
-  protected boolean Setup(SimulationManager m)
+  protected boolean setup(SimulationManager m)
   {
 System.out.println("ActiveEntry.Setup. name = "+name);	  
   	activeState.name = name;

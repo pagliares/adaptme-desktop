@@ -36,7 +36,7 @@ public class InterruptActivity extends Activity
 			return false;	// n�o tinha servi�o para interromper
 			
 		for(int i = 0; i < e.entities.length; i++)		// devolve as entidades �s respectivas filas
-			((DeadState)entities_from_v.elementAt(i)).PutBack(e.entities[i]);
+			((DeadState)entities_from_v.elementAt(i)).putBack(e.entities[i]);
 		
 		for(int i = 0; i < resources_from_v.size(); i++)	// e os recursos
 			((ResourceQ)resources_from_v.elementAt(i)).

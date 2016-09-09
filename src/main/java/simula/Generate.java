@@ -196,7 +196,7 @@ public class Generate extends ActiveState
 		}		
 		
 		if(to_q.HasSpace())	{			// se tem espa�o para entidade na fila
-			to_q.Enqueue(entity);
+			to_q.enqueue(entity);
 			Log.LogMessage(name + ":Entity " + entity.getId() + 
 				" generated and sent to " + to_q.name);
 			if(obs != null)

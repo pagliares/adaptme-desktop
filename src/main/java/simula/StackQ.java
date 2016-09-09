@@ -33,16 +33,16 @@ public class StackQ extends DeadState
 	/**
 	 * Coloca objeto em seu estado inicial para simula��o
 	 */
-	public void Clear()
+	public void clear()
 	{
-		super.Clear();
+		super.clear();
 		q.clear();
 	}
 
 	/**
 	 * implementa a interface segundo a pol�tica FIFO; atualiza atributos de tamanho.
 	 */
-	public void Enqueue(Entity e)
+	public void enqueue(Entity e)
 	{
 		if(obs != null)
 			obs.Incoming(e);
@@ -54,7 +54,7 @@ public class StackQ extends DeadState
 	/**
 	 * implementa a interface segundo a pol�tica FIFO; atualiza atributos de tamanho.
 	 */
-	public void PutBack(Entity e)
+	public void putBack(Entity e)
 	{	
 		if(obs != null)
 			obs.Incoming(e);
@@ -65,7 +65,7 @@ public class StackQ extends DeadState
 	/**
 	 * implementa a interface segundo a pol�tica FIFO; atualiza atributos de tamanho.
 	 */
-	public Entity Dequeue()
+	public Entity dequeue()
 	{
 		try
 		{

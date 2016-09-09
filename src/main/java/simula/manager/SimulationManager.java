@@ -645,7 +645,7 @@ public class SimulationManager implements Serializable{
 	 */
 	public synchronized boolean ExecuteSimulation(float endTime)
 	{
-		boolean ok = false;
+		boolean ok = false; // TODO melhor nome: isRunning, isSimulationStarted
 		
 		if(endTime >= 0 && scheduler != null)	// o modelo j� deve ter sido gerado
 		{
@@ -678,7 +678,7 @@ public class SimulationManager implements Serializable{
 		it = queues.values().iterator();
 		while(it.hasNext())
 		{
-			((QueueEntry)it.next()).deadState.Clear();
+			((QueueEntry)it.next()).deadState.clear();
 		}
 		it = activestates.values().iterator();
 		while(it.hasNext())
@@ -688,7 +688,7 @@ public class SimulationManager implements Serializable{
 		it = resources.values().iterator();
 		while(it.hasNext())
 		{
-			((ResourceEntry)it.next()).SimObj.Clear();
+			((ResourceEntry)it.next()).SimObj.clear();
 		}
 		
 		return true;

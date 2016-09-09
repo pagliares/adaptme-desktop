@@ -121,7 +121,7 @@ public class Router extends ActiveState{
 					DeadState q = (DeadState)entities_to_v.elementAt(i);// obt�m fila associada
 					if(q.HasSpace())									// se tem espa�o
 					{
-						q.Enqueue(e.entities[j]);								// envia ao estado morto
+						q.enqueue(e.entities[j]);								// envia ao estado morto
 						Log.LogMessage(name + ":Entity " + e.entities[j].getId() +
 							" sent to " + q.name);
 		
@@ -189,7 +189,7 @@ public class Router extends ActiveState{
 		// retira entidades...
 
 		for(int i = 0; i < esize && ok; i++)					
-			entry.entities[i] = ((DeadState)entities_from_v.elementAt(i)).Dequeue();
+			entry.entities[i] = ((DeadState)entities_from_v.elementAt(i)).dequeue();
 																
 		// obt�m os recursos
 

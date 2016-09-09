@@ -1,5 +1,5 @@
 // Arquivo ResourceQ.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
@@ -9,7 +9,7 @@ public class ResourceQ extends DeadState
 	private short init_qty;
 
 	/**
-	 * constrói uma fila de recursos com init_qty recursos iniciais.
+	 * constrï¿½i uma fila de recursos com init_qty recursos iniciais.
 	 */
 	public ResourceQ(Scheduler s, int init_qty)
 	{
@@ -18,63 +18,63 @@ public class ResourceQ extends DeadState
 	}
 	
 	/**
-	 * constrói uma fila de recursos com zero recursos iniciais.
+	 * constrï¿½i uma fila de recursos com zero recursos iniciais.
 	 */
 	public ResourceQ(Scheduler s){super(s, 0);}
 	
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
-	public void Clear()
+	public void clear()
 	{
-		super.Clear();
+		super.clear();
 		count = init_qty;;
 	}
 	
 	/**
-	 * não utilizada; produz erro em tempo de execução.
+	 * nï¿½o utilizada; produz erro em tempo de execuï¿½ï¿½o.
 	 */
-	public void Enqueue(Entity e)
+	public void enqueue(Entity e)
 	{
-		System.err.println("\nChamou Enqueue() de um objeto ResourceQ!\nEncerrando simulação!");
+		System.err.println("\nChamou Enqueue() de um objeto ResourceQ!\nEncerrando simulaï¿½ï¿½o!");
 		Scheduler.Get().Stop();
 	}
 	
 	/**
-	 * não utilizada; produz erro em tempo de execução.
+	 * nï¿½o utilizada; produz erro em tempo de execuï¿½ï¿½o.
 	 */
-	public Entity Dequeue()
+	public Entity dequeue()
 	{
-		System.err.println("\nChamou Dequeue() de um objeto ResourceQ!\nEncerrando simulação!");
+		System.err.println("\nChamou Dequeue() de um objeto ResourceQ!\nEncerrando simulaï¿½ï¿½o!");
 		Scheduler.Get().Stop();
 		return null;
 	}
 	/**
-	 * não utilizada; produz erro em tempo de execução.
+	 * nï¿½o utilizada; produz erro em tempo de execuï¿½ï¿½o.
 	 */
-	public void PutBack(Entity e) 
+	public void putBack(Entity e) 
 	{
-		System.err.println("\nChamou PutBack() de um objeto ResourceQ!\nEncerrando simulação!");
+		System.err.println("\nChamou PutBack() de um objeto ResourceQ!\nEncerrando simulaï¿½ï¿½o!");
 		Scheduler.Get().Stop();
 	}
 	
 	/**
-	 * retira n recursos do armazém; se não tem suficientes o resultado é imprevisto.
+	 * retira n recursos do armazï¿½m; se nï¿½o tem suficientes o resultado ï¿½ imprevisto.
 	 */
 	public void Acquire(int n)
 	{
 		if(obs != null)
-			obs.StateChange(Observer.IDLE);		// o argumento não tem sentido nesse caso
+			obs.StateChange(Observer.IDLE);		// o argumento nï¿½o tem sentido nesse caso
 		count -= (short)n;
 	}
 
 	/**
-	 * libera n recursos ao armazém; a integridade da operação é responsabilidade do usuário.
+	 * libera n recursos ao armazï¿½m; a integridade da operaï¿½ï¿½o ï¿½ responsabilidade do usuï¿½rio.
 	 */
 	public void Release(int n)
 	{
 		if(obs != null)
-			obs.StateChange(Observer.IDLE);		// o argumento não tem sentido nesse caso
+			obs.StateChange(Observer.IDLE);		// o argumento nï¿½o tem sentido nesse caso
 		count += (short)n;
 	}
 

@@ -8,8 +8,7 @@ import java.util.*;
 
 import simula.manager.SimulationManager;
 
-public class Scheduler implements Runnable
-{
+public class Scheduler implements Runnable{
 	private Calendar calendar;		// estrutura de armazenamento dos estados ativos a servir
 	private float clock = 0;		// rel�gio da simula��o
 	private float endclock;			// fim da simula��o
@@ -35,13 +34,14 @@ public class Scheduler implements Runnable
 	
 	private HashMap<String, HashMap>simulationResultsByIteration = new HashMap<>();
 	
+	private int bobo = 0;
+	
 	/**
 	 * retorna refer�ncia ao objeto ativo
 	 */
 	public static Scheduler Get(){return s;}
 
-	public Scheduler(SimulationManager simulationManager)
-	{
+	public Scheduler(SimulationManager simulationManager)	{
 		activestates = new Vector(20, 10);
 		calendar = new Calendar();
 		timeprecision = (float)0.001;
@@ -54,8 +54,7 @@ public class Scheduler implements Runnable
 	 * Apaga todos os eventos agendados. Deve ser chamado ANTES
 	 * de todos os Clear() dos Active/DeadState
 	 */
-	public void Clear()
-	{
+	public void Clear(){
 		if(running)
 			return;
 		simulation = null;	// impede continua��o
@@ -66,17 +65,15 @@ public class Scheduler implements Runnable
 	}
 
 	
-	float ScheduleEvent(ActiveState a, double duetime)
-	{
-		double time = clock + duetime;
+	float ScheduleEvent(ActiveState activeState, double duetime){
+		double time = clock + duetime; // @TODO PAGLIARES: ACUMULADOR DO CLOCK
 		time = Math.floor(time / timeprecision);
 		time *= timeprecision;					// trunca parte menor que timeprecision
-		calendar.Add(a, time);
+		calendar.Add(activeState, time); // atribui calendar.root   
 		return (float)time;							// retorna instante realmente utilizado
 	}
 	
-	void Register(ActiveState a)
-	{
+	void Register(ActiveState a){
 		if(!activestates.contains(a))
 			activestates.addElement(a);
 	}
@@ -84,8 +81,7 @@ public class Scheduler implements Runnable
 	/**
 	 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	 */
-	public void CRescan(boolean on)
-	{	
+	public void CRescan(boolean on){	
 		if(!running)
 			crescan = on;
 	}
@@ -93,18 +89,19 @@ public class Scheduler implements Runnable
 	/**
 	 * retorna true se a simula��o terminou
 	 */
-	public boolean Finished(){return stopped;}
+	public boolean Finished(){
+		return stopped;
+	}
 	
 	/**
 	 * Inicia execu�ao da simulacao numa thread separada
 	 */
-	public synchronized boolean Run(double endtime)
-	{
+	public synchronized boolean Run(double endtime){
 		if(endtime < 0.0)				// rel�gio n�o pode ser negativo
 			return false;				// se for 0.0 executa at� acabarem as entidades
 
-		if(!running)
-		{
+		if(!running) { // @TODO INICIA A SIMULACAO PELA PRIMEIRA VEZ
+		
 			if(activestates.isEmpty())	// se n�o h� nenhum estado ativo registrado, 
 				return false;			// como executar?
 			activestates.trimToSize();
@@ -127,19 +124,16 @@ public class Scheduler implements Runnable
 	/**
 	 * P�ra a simulacao
 	 */
-	public synchronized void Stop()
-	{
+	public synchronized void Stop(){
 		if(stopped)						// se j� parou
 			return;
 		
 		stopped = false;
 		running = false;				// encerramento suave
-		try
-		{
+		try{
 			simulation.join(5000);		// espera at� 5 segundos
 		}
-		catch(InterruptedException e)
-		{
+		catch(InterruptedException e){
 			stopped = true;
 			simulation = null;	// n�o pode continuar
 			termreason = 4;			// parada dr�stica
@@ -150,10 +144,8 @@ public class Scheduler implements Runnable
 		
 		termreason = 3;			// parada suave bem sucedida
 			
-		if(!stopped)					// se ainda n�o parou...
-		{
-			try
-			{
+		if(!stopped){					// se ainda n�o parou...
+			try{
 				simulation.interrupt();		// p�ra de forma dr�stica
 			}
 			catch(SecurityException e){}
@@ -164,15 +156,13 @@ public class Scheduler implements Runnable
 			Log.Close();
 		}
 		
-		Log.LogMessage("Scheduler: simulation paused");
-		
+		Log.LogMessage("Scheduler: simulation paused");	
 	}
 	
 	/**
 	 * Continua a execu��o de uma simula��o parada por Stop()
 	 */
-	public synchronized boolean Resume()
-	{
+	public synchronized boolean Resume(){
 		if(running || simulation == null || termreason != 3)
 			return false;
 		
@@ -188,8 +178,7 @@ public class Scheduler implements Runnable
 	/**
 	 * Seta o m�nimo intervalo entre dois instantes para que sejam considerados o mesmo.
 	 */
-	public void SetPrecision(double timeprec)
-	{ 
+	public void SetPrecision(double timeprec){ 
 		if(!running)
 			timeprecision = (float)timeprec;
 	}
@@ -197,18 +186,19 @@ public class Scheduler implements Runnable
 	/**
 	 * retorna rel�gio da simula��o.
 	 */
-	public float GetClock(){return clock;}
+	public float GetClock(){
+		return clock;
+	}
 
 	/**
 	 * Codigo que roda a simulacao. (rodado numa Thread separada)
 	 */
-	public void run()
-	{
-		while(running)
-		{
-			// atualiza relogio da simulao
-
-			clock = calendar.GetNextClock();
+	public void run(){
+		
+		while(running){
+			
+			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A
+			clock = calendar.getNextClock();
 			
 			Log.LogMessage("Scheduler: clock advanced to " + clock);
 			
@@ -231,19 +221,17 @@ public class Scheduler implements Runnable
 					numberOfReleases++;
 			}
 			
-
 			// verifica se simula��o chegou ao fim
 
-			if(clock == 0.0)			// fim das entidades
-			{
+			if(clock == 0.0){			// fim das entidades
 				running = false;
 				termreason = 1;			
 				Log.LogMessage("Scheduler: simulation finished due to end of entities");
 				Log.Close();
 				break;
 			}
-			if(clock >= endclock && endclock != 0.0)	// fim do intervalo
-			{
+			
+			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
 				running = false;
 				termreason = 2;
 				Log.LogMessage("Scheduler: simulation finished due to end of simulation time");
@@ -256,26 +244,25 @@ public class Scheduler implements Runnable
 			// Fase B
 			
 			executed = false;
-			ActiveState a;
+			ActiveState activeState;
 
-			do
-			{
-				a = calendar.getNextActiveState();
-				executed |= a.BServed(clock);	// se ao menos um executou, fica registrado
+			do{
+				activeState = calendar.getNextActiveState();
+				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
 			}while(calendar.RemoveNext()); // ESTA LIMPANDO A LISTA SEM GENERATE ACTIVITY
 
+			// PAGLIARES : COMENTEI AS DUAS ABAIXO SO PARA TESTE - da null pointer exception
 			if(!executed)				// se n�o havia nada a ser executado nesse instante
 				continue;				// pula para o pr�ximo sem executar a fase C.
-										// (as atividades podem ter alterado o tempo localmente)
-						
-			// Fase C
-
-			do
-			{
+										// (as atividades podem ter alterado o tempo localmente) AQUI ESTA O ERRO PRECISO CONTROLAR ESTE FLAG EXECUTED
+			// PAGLIARES: COM GENERATE, PASSA DESTE IF
+ 			// Fase C
+ 
+			do{
 				executed = false;
 
 				for(short i = 0; i < activestates.size(); i++)
-					executed |= ((ActiveState)activestates.elementAt(i)).CServed();
+					executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE
 				
 			}while(crescan && executed);	
 		}
@@ -288,17 +275,15 @@ public class Scheduler implements Runnable
 		return endclock;
 	}
 	
-	// Pagliares
-	public synchronized boolean Run(double endtime, float iterationTime, float releaseTime)
-	{
+	// Pagliares TODO - VERIFICAR SE PRECISA SER ATUALIZADO COM O CONTEUDO DO METODO ORIGINAL QUE FOI SOBRECARREGADO
+	public synchronized boolean Run(double endtime, float iterationTime, float releaseTime){
 		this.iterationTime = iterationTime;
 		this.releaseTime = releaseTime;
 		
 		if(endtime < 0.0)				// relogio nao pode ser negativo
 			return false;				// se for 0.0 executa ate acabarem as entidades
 
-		if(!running)
-		{
+		if(!running){
 			if(activestates.isEmpty())	// se nao ha nenhum estado ativo registrado, 
 				return false;			// como executar?
 			activestates.trimToSize();

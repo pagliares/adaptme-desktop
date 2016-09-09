@@ -58,7 +58,7 @@ public class Destroy extends ActiveState
 
 		while(from_q.HasEnough())			// enquanto tiver entidades a serem destru�das
 		{
-			Entity e = from_q.Dequeue();	// retira entidade
+			Entity e = from_q.dequeue();	// retira entidade
 			// faz estat�sticas
 			if(obs != null)
 				obs.Incoming(e);

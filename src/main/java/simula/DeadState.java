@@ -73,7 +73,7 @@ public abstract class DeadState
 	/**
 	 * Coloca objeto em seu estado inicial para simula��o
 	 */
-	public void Clear()
+	public void clear()
 	{
 		if(obs == null)
 			return;
@@ -84,17 +84,17 @@ public abstract class DeadState
 	 * adiciona entidade e no "final" da fila; 
 	 * resultado imprevis�vel se ocorrer estouro da capacidade.
 	 */
-	public abstract void Enqueue(Entity e);					
+	public abstract void enqueue(Entity e);					
 	/**
 	 * remove entidade da "frente" da fila; 
 	 * resultado imprevis�vel se n�o houver entidade a ser retirada.
 	 */
-	public abstract Entity Dequeue();						
+	public abstract Entity dequeue();						
 	/**
 	 * devolve entidade e � "frente" da fila;
 	 * resultado imprevis�vel se ocorrer estouro da capacidade.
 	 */
-	public abstract void PutBack(Entity e);
+	public abstract void putBack(Entity e);
 
 	public short getCount() {
 		return count;
