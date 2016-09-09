@@ -58,8 +58,7 @@ public class InternalActiveEntry extends ActiveEntry{
 	stb.append("</rqty>\r\n");
 	stb.append("<conds>\r\n");
 	int iNConds = conditions.size();
-	for(int i=0; i<iNConds; i++)
-	{
+	for(int i=0; i<iNConds; i++){
 		String strCond = (String)conditions.elementAt(i);
 		strCond = TString.replace(strCond, "<=", ".LE.");
 		strCond = TString.replace(strCond, ">=", ".GE.");
@@ -76,8 +75,7 @@ public class InternalActiveEntry extends ActiveEntry{
    * constr�i um objeto com id gerado internamente;
    * @param	isRouter se for do tipo Router deve passar true, sen�o false.
    */
-  public InternalActiveEntry(boolean isRouter)
-  {
+  public InternalActiveEntry(boolean isRouter) {
     super();
     isRouter = isRouter;
     fq = new Vector(2, 2); //from queue?
@@ -89,8 +87,7 @@ public class InternalActiveEntry extends ActiveEntry{
     isInternal = true;
   }
   
-  public void copyAttributes(Entry v_e)
-  {
+  public void copyAttributes(Entry v_e) {
 	super.copyAttributes(v_e);
 	InternalActiveEntry intEntry = (InternalActiveEntry)v_e;
 	isRouter = intEntry.isRouter;
@@ -103,49 +100,44 @@ public class InternalActiveEntry extends ActiveEntry{
   }
   
   
-  boolean generate(SimulationManager m)
-	{
+  boolean generate(SimulationManager m){
 		if(isRouter)
 			activeState = new Router(m.scheduler);
 		else
 			activeState = new Activity(m.scheduler);
 			
-		return Setup(m);
+		return setup(m);
 	}
   	
   /**
    * Ajusta os par�metros referentes aos Router's e Activity's
    */
-  protected boolean Setup(SimulationManager m)
-  {
-		if(!super.Setup(m))
+  protected boolean setup(SimulationManager m){
+		if(!super.setup(m))
 			return false;
 		
 		TrimVectors();
 		
-		if(isRouter)
-		{
-			switch(servicedist) // @TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
-			{
+		if(isRouter){
+			switch(servicedist) { // @TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
+			
 				case NONE: break;
-				case CONST: 	((Router)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
-				case UNIFORM: ((Router)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
-				case NORMAL: 	((Router)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
-				case NEGEXP: 	((Router)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
-				case POISSON: ((Router)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
+				case CONST: 	((Router)activeState).setServiceTime(new ConstDistribution(m.sample, distp1)); break;
+				case UNIFORM: ((Router)activeState).setServiceTime(new Uniform(m.sample, distp1, distp2)); break;
+				case NORMAL: 	((Router)activeState).setServiceTime(new Normal(m.sample, distp1, distp2)); break;
+				case NEGEXP: 	((Router)activeState).setServiceTime(new NegExp(m.sample, distp1)); break;
+				case POISSON: ((Router)activeState).setServiceTime(new Poisson(m.sample, distp1)); break;
 				default: return false;
 			}
 			
-			for(int i = 0; i < fq.size(); i++)
-			{
+			for(int i = 0; i < fq.size(); i++){
 				((Router)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).deadState);	
 			}
 			
 			String sexp;
 			Expression exp;
 			
-			for(int i = 0; i < toq.size(); i++)
-			{
+			for(int i = 0; i < toq.size(); i++){
 				sexp = (String)conditions.get(i);
 				if(sexp.equalsIgnoreCase("true"))
 					exp = ConstExpression.TRUE;
@@ -157,17 +149,14 @@ public class InternalActiveEntry extends ActiveEntry{
 				((Router)activeState).ConnectQueues(m.GetQueue((String)toq.get(i)).deadState, exp);	
 			}
 			
-			for(int i = 0; i < fr.size(); i++)
-			{
+			for(int i = 0; i < fr.size(); i++){
 				((Router)activeState).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
 					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
 			}
 
 		}
-		else
-		{
-			switch(servicedist)
-			{
+		else{
+			switch(servicedist){
 				case NONE: break;
 				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
 				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
@@ -205,39 +194,81 @@ public class InternalActiveEntry extends ActiveEntry{
 		return true;	
 	}
   	
-  public final boolean isRouter(){	return isRouter;	}
-  public final void addToQueue(Object v_o){	toq.add(v_o);	}
-  public final void addFromQueue(Object v_o){	fq.add(v_o);	}
-  public final void addToResource(Object v_o){	tor.add(v_o);	}
-  public final void addFromResource(Object v_o){	fr.add(v_o);	}
-  public final void addCond(Object v_o){	conditions.add(v_o);	}
-  public final void addResourceQty(Object v_o){	quantityUsedResource.add(v_o);	}
-  public final Vector getToQueue(){	return toq;	}
-  public final Vector getFromQueue(){	return fq;	}
+  public final boolean isRouter(){	
+	  return isRouter;	
+  }
+  
+  public final void addToQueue(Object v_o){	
+	  toq.add(v_o);	
+  }
+  
+  public final void addFromQueue(Object v_o){	
+	  fq.add(v_o);	
+  }
+  
+  public final void addToResource(Object v_o){	
+	  tor.add(v_o);	
+  }
+  
+  public final void addFromResource(Object v_o){	
+	  fr.add(v_o);	
+  }
+  
+  public final void addCond(Object v_o){	
+	  conditions.add(v_o);	
+  }
+ 
+  public final void addResourceQty(Object v_o){	
+	  quantityUsedResource.add(v_o);	
+  }
+ 
+  public final Vector getToQueue(){	
+	  return toq;	
+  }
+ 
+  public final Vector getFromQueue(){	
+	  return fq;	
+  }
+ 
   public final Vector getToResource(){	return tor;	}
+ 
   public final Vector getFromResource(){	return fr;	}
+ 
   public final Vector getConds(){	return conditions;	}
+ 
   public final int toQueueIndexOf(Object v_o){	return toq.indexOf(v_o);	}
+ 
   public final int fromQueueIndexOf(Object v_o){	return fq.indexOf(v_o);	}
+
   public final int toResourceIndexOf(Object v_o){	return tor.indexOf(v_o);	}
+ 
   public final int fromResourceIndexOf(Object v_o){	return fr.indexOf(v_o);	}
+ 
   public final boolean fromQueueContains(Object v_o){	return fq.contains(v_o);	}
+ 
   public final boolean toQueueContains(Object v_o){	return toq.contains(v_o);	}
+ 
   public final void removeFromQueue(int v_i){	fq.remove(v_i);	}
+ 
   public final void removeFromQueue(Object v_o){	fq.remove(v_o);	}
+ 
   public final void removeToQueue(int v_i){	toq.remove(v_i);	}
+ 
   public final void removeFromResource(int v_i){	fr.remove(v_i);	}
+ 
   public final void removeToResource(int v_i){	tor.remove(v_i);	}
+ 
   public final void removeCond(int v_i){	conditions.remove(v_i);	}
+ 
   public final void removeResourceQty(int v_i){	quantityUsedResource.remove(v_i);	}
+ 
   public final void setCondAt(Object v_o, int v_i){	conditions.setElementAt(v_o, v_i);	}
   
   /**
    * chama trimToSize() para cada Vector interno
    * para economizar mem�ria alocada
    */
-  public void TrimVectors()
-	{
+  public void TrimVectors(){
 		fq.trimToSize();
 		toq.trimToSize();
 		fr.trimToSize();

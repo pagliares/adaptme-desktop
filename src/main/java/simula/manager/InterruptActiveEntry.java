@@ -52,15 +52,15 @@ public class InterruptActiveEntry extends InternalActiveEntry
 	{
 		activeState = new InterruptActivity(m.scheduler);
 
-		return Setup(m);
+		return setup(m);
 	}
 
   /**
    * Ajusta os par�metros referentes aos Router's e Activity's
    */
-  protected boolean Setup(SimulationManager m)
+  protected boolean setup(SimulationManager m)
   {
-		if(!super.Setup(m))
+		if(!super.setup(m))
 			return false;
 			
 		InterruptActiveEntry e = null;
