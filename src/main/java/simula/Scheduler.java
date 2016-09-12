@@ -6,6 +6,7 @@ package simula;
 
 import java.util.*;
 
+import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 
 public class Scheduler implements Runnable{
@@ -235,6 +236,17 @@ public class Scheduler implements Runnable{
 				running = false;
 				termreason = 2;
 				Log.LogMessage("Scheduler: simulation finished due to end of simulation time");
+				Log.Close();
+				break;
+			}
+			
+			// pagliares
+			QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
+			QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
+			if (lastQueue.deadState.count == firstQueue.intialQuantity) {
+				running = false;
+				termreason = 1;			
+				Log.LogMessage("Scheduler: simulation finished due to end of entities");
 				Log.Close();
 				break;
 			}
