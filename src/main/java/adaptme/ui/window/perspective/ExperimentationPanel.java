@@ -42,7 +42,7 @@ import java.awt.event.ActionEvent;
 public class ExperimentationPanel extends JPanel {
 	
 	
-	private JTextField textField;
+	private JTextField simulationDurationTextField;
 	private JTable table;
 	private JTextField numberOfReplicationsTextField;
 	private JTextField textField_2;
@@ -123,7 +123,7 @@ public class ExperimentationPanel extends JPanel {
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
 				showResultsPanel.updateShowResultsPanelTable(numberReplications);
 				simulationFacade.addNumberOfSimulationRuns(numberReplications);
-				simulationManagerFacade.execute(numberReplications);
+				simulationManagerFacade.execute(Float.parseFloat(simulationDurationTextField.getText()), numberReplications); // TODO buscar do text field
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
 				
@@ -156,10 +156,10 @@ public class ExperimentationPanel extends JPanel {
 		lblDurationTime.setBounds(21, 33, 87, 16);
 		panel_7.add(lblDurationTime);
 		
-		textField = new JTextField();
-		textField.setBounds(118, 27, 74, 28);
-		panel_7.add(textField);
-		textField.setColumns(10);
+		simulationDurationTextField = new JTextField();
+		simulationDurationTextField.setBounds(118, 27, 74, 28);
+		panel_7.add(simulationDurationTextField);
+		simulationDurationTextField.setColumns(10);
 		
 		JLabel lblWorkProductFinishes = new JLabel("No more work product");
 		lblWorkProductFinishes.setBounds(204, 32, 165, 16);

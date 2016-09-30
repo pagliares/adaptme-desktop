@@ -59,7 +59,6 @@ public class XACDMLTextAreaPanel extends JPanel {
 	private Set<String> taskList;
 	private JTextField acdIDTextField;
 	private JTextArea textArea;
-	private JTextField simulationTimeJTextField;
 	private ProcessRepository processRepository;
 	
 	public XACDMLTextAreaPanel(ProcessRepository processRepository, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess, AlternativeOfProcessPanel alternativeOfProcessPanel, Set<String> taskList,
@@ -86,9 +85,6 @@ public class XACDMLTextAreaPanel extends JPanel {
 		JLabel whiteSpaceJLabel1 = new JLabel("   ");
 		panel.add(whiteSpaceJLabel1);
 		
-		JLabel simulationTimeJLabel = new JLabel("Simulation time");
-		panel.add(simulationTimeJLabel);
-		
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -103,15 +99,11 @@ public class XACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProductXACDML> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), simulationTimeJTextField.getText(), roles, workProducts,roleResourcePanel, 
+				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), roles, workProducts,roleResourcePanel, 
 						workProdutResourcesPanel);
 				textArea.append(result);
 			}
 		});
-		
-		simulationTimeJTextField = new JTextField();
-		panel.add(simulationTimeJTextField);
-		simulationTimeJTextField.setColumns(4);
 		
 		JLabel whiteSpaceJLabel2 = new JLabel("       ");
 		panel.add(whiteSpaceJLabel2);
@@ -169,8 +161,6 @@ public class XACDMLTextAreaPanel extends JPanel {
 		this.acdIDTextField = acdIDTextField;
 	}
 
-	public JTextField getSimulationTimeJTextField() {
-		return simulationTimeJTextField;
-	}
+ 
 }
  

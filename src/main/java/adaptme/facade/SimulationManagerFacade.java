@@ -58,13 +58,14 @@ public class SimulationManagerFacade {
 	}
 	
 	
-	public void execute(int numberReplications) {
+	public void execute(float simulationDuration, int numberReplications) {
 		
 		for (int i =0; i < numberReplications; i++) {
 			 
 			epp = DynamicExperimentationProgramProxyFactory.newInstance();
 			System.out.println("Execution #" + (i+1));
-			epp.execute();
+			epp.setSimulationDuration(simulationDuration);
+			epp.execute(simulationDuration);
 			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
 			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
 			HashMap queues = simulationManager.getQueues();
@@ -99,6 +100,9 @@ public class SimulationManagerFacade {
             String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives().get(currentProessAlternativeIndex).getName();
 
 			resultsSimulationMap.put(selectedProcessAlternativeName+i, epp);  // armazena replicacoes
+			epp.getSimulationManager().getScheduler().Stop();
+			epp.getSimulationManager().getScheduler().Clear();
+			
 			epp = null;
 			Activity.counter = 0;
 		}

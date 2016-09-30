@@ -102,10 +102,10 @@ public class XACDMLBuilderFacade {
  	}
 	 
 	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
-			String acdId, String simTime, List<Role> roles, List<WorkProductXACDML> workProducts,
+			String acdId, List<Role> roles, List<WorkProductXACDML> workProducts,
 			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel) {
 
-		createSimulationDuration(acdId, simTime);
+		createSimulationDuration(acdId);
 
 		createPermanentEntitiesAndResourceQueues(roles, roleResourcePanel);
 
@@ -1005,15 +1005,15 @@ public class XACDMLBuilderFacade {
 		}
 	}
 
-	private void createSimulationDuration(String acdId, String simTime) {
+	private void createSimulationDuration(String acdId) {
 		factory = new ObjectFactory();
 		
 		acd = factory.createAcd();
 		acd.setId(acdId);
-		
-		Simtime simulationTime = new Simtime();
-		simulationTime.setTime(simTime);
-		acd.setSimtime(simulationTime);
+		// Nao estou mais gerando simulation time in xacdml - fica para experimentation
+//		Simtime simulationTime = new Simtime();
+//		simulationTime.setTime(simTime);
+//		acd.setSimtime(simulationTime);
 	}
 	
 	private String generateXACDML() {
