@@ -1,4 +1,3 @@
-
 package adaptme.base;
 
 import java.io.BufferedReader;

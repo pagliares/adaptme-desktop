@@ -34,6 +34,11 @@ public class SimulationManagerFacade {
  	private SimulationFacade simulationFacade;
  	
  	private SortedMap resultadoGlobal = new TreeMap();
+ 	private double averageNumberOfDays;
+ 	private double averageNumberOfImplementedUserStories;
+ 	private double averageNumberOfReleases;
+ 	private double averageNumberOfIterations;
+ 	private double numberOfSimulationRuns;
  	
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
@@ -59,41 +64,59 @@ public class SimulationManagerFacade {
 	
 	
 	public void execute(float simulationDuration, int numberReplications) {
+		double acumulatedNumberOfDays = 0.0;
+		double acumulatedNumberOfUserStories = 0.0;
+		double acumulateNumberOfIterations = 0.0;
+		double acumulateNumberOfReleases = 0.0;
+		this.numberOfSimulationRuns = numberReplications;
 		
 		for (int i =0; i < numberReplications; i++) {
-			 
 			epp = DynamicExperimentationProgramProxyFactory.newInstance();
-			System.out.println("Execution #" + (i+1));
+			
 			epp.setSimulationDuration(simulationDuration);
 			epp.execute(simulationDuration);
 			this.simulationManager = (SimulationManager)epp.getSimulationManager(); // nao funciona no construtor
+			
+			
+			// output to console implemented by Pagliares
+			// Imprime numero de dias, armazena a replicacao corrente em um mapa para posterior calculo agregado
+			
 			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
+			System.out.println("Execution #" + (i+1));
+			double numberOfDays = simulationManager.getScheduler().GetClock() / 480;
+			System.out.println("Project duration: " + numberOfDays + " days");  // 480 minutes = 1 day
+			acumulatedNumberOfDays+= numberOfDays;
+			
 			HashMap queues = simulationManager.getQueues();
-			resultadoGlobal.put("run #" + (i+1), queues);
 			Set keys = queues.keySet();
+			
 			for (Object o: keys) {
-				//QueueEntry qe = simulationManager.GetQueue("User story input queue");
+				//	QueueEntry qe1 = simulationManager.GetQueue("User story input queue");
 				System.out.println("\nQueue name : " + o);
 				QueueEntry qe = (QueueEntry)queues.get(o);
+				
+				// TODO so para o o artigo. Precisa ser generalizado
+				if (qe.GetId().equalsIgnoreCase("Implemented User stories")) {
+					acumulatedNumberOfUserStories+= qe.deadState.getCount();
+				}
+				
 				// ambas saidas abaixo retornam a variavel count
 				System.out.println("Nunber of entities in queue via getCount: " + qe.deadState.getCount());
-//				System.out.println("numero de entidadas na fila: via ObsLength" + qe.SimObj.getCount());
-				
-				//System.out.println(qe.intialQuantity);
-				//System.out.println("numero final entidades : " + qe.SimObj.getCount());
+				// System.out.println("numero de entidadas na fila: via ObsLength, basta mudar simobj para o novo nome" + qe.SimObj.getCount()); 
 			}
 			
-			 
+			resultadoGlobal.put("run #" + (i+1), queues);
+			
+			
 			System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+			acumulateNumberOfIterations+= simulationManager.getScheduler().getNumberOfIterations();
 			System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
+			acumulateNumberOfReleases+= simulationManager.getScheduler().getNumberOfReleases();
 			
 			System.out.println("Displaying results by iteration");
 			printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
 			
 			System.out.println("\nDisplaying global results");
-			
-			
-			
 			
 //		    String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
 		    int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size()-1;
@@ -106,6 +129,13 @@ public class SimulationManagerFacade {
 			epp = null;
 			Activity.counter = 0;
 		}
+		
+		this.averageNumberOfDays = acumulatedNumberOfDays/numberReplications;
+		this.averageNumberOfIterations = acumulateNumberOfIterations/numberReplications;
+		this.averageNumberOfImplementedUserStories = acumulatedNumberOfUserStories/numberReplications;
+		this.averageNumberOfReleases = acumulateNumberOfReleases/numberReplications;
+ 		
+		System.out.println("Average number of days ..: " + averageNumberOfDays);
 		printResultadosGlobal();
 	}
 	
@@ -213,5 +243,45 @@ public class SimulationManagerFacade {
 			numeroEntidadesPorFila = new double[matrizResultados.length];
 			
 		}
+	}
+
+	public double getAverageNumberOfDays() {
+		return averageNumberOfDays;
+	}
+
+	public void setAverageNumberOfDays(double averageNumberOfDays) {
+		this.averageNumberOfDays = averageNumberOfDays;
+	}
+
+	public double getAverageNumberOfImplementedUserStories() {
+		return averageNumberOfImplementedUserStories;
+	}
+
+	public void setAverageNumberOfImplementedUserStories(double averageNumberOfImplementedUserStories) {
+		this.averageNumberOfImplementedUserStories = averageNumberOfImplementedUserStories;
+	}
+
+	public double getAverageNumberOfReleases() {
+		return averageNumberOfReleases;
+	}
+
+	public void setAverageNumberOfReleases(double averageNumberOfReleases) {
+		this.averageNumberOfReleases = averageNumberOfReleases;
+	}
+
+	public double getAverageNumberOfIterations() {
+		return averageNumberOfIterations;
+	}
+
+	public void setAverageNumberOfIteration(double averageNumberOfIterations) {
+		this.averageNumberOfIterations = averageNumberOfIterations;
+	}
+
+	public double getNumberOfSimulationRuns() {
+		return numberOfSimulationRuns;
+	}
+
+	public void setNumberOfSimulationRuns(double numberOfSimulationRuns) {
+		this.numberOfSimulationRuns = numberOfSimulationRuns;
 	}
 }

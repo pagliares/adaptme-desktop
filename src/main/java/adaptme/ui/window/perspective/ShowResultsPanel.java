@@ -125,7 +125,16 @@ public class ShowResultsPanel extends JPanel {
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
-				textArea.setText(simulationManagerFacade.getSimulationResults());
+//				textArea.setText(simulationManagerFacade.getSimulationResults());
+				String simulationRuns = "Number of simulation runs...: "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
+				String meanNumberOfDays = "Number of days (mean)...: " + simulationManagerFacade.getAverageNumberOfDays() + "\n";
+				String meanNumberOfUserStories = "Number of user stories (mean)...: " + simulationManagerFacade.getAverageNumberOfImplementedUserStories() + "\n";
+				String meanNumberOfReleases = "Number of releases (mean)....:" + simulationManagerFacade.getAverageNumberOfReleases() + "\n";
+				String meanNumberOfIterations = "Number of iterations (mean)....:" + simulationManagerFacade.getAverageNumberOfIterations() + "\n";
+				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
+
+				
+ 
 			}
 		});
 	}
