@@ -848,14 +848,11 @@ public class SimulationManager implements Serializable{
 		return true;
 	}
 	
-	public synchronized boolean OutputSimulationResultsConsole()
-	{
+	public synchronized boolean OutputSimulationResultsConsole(){
 		System.out.println("OutputSimulationResults ");
 		PrintStream os;
 		FileOutputStream ofile;
-		
-		 
-		
+	
 		System.out.println("\r\n                    Simulation Report");
 		System.out.print("\r\nSimulation ended at time ");
 		System.out.println(scheduler.GetClock());
@@ -867,23 +864,18 @@ public class SimulationManager implements Serializable{
 		Iterator it;
 		
 		it = observers.values().iterator();
-		while(it.hasNext())
-		{
+		while(it.hasNext()){
 			((ObserverEntry)it.next()).DoReportConsole(scheduler.GetClock() - resettime);
 		}
 		
-		System.out.println("\r\n          Histograms' report");
+//		System.out.println("\r\n          Histograms' report");
 
 		it = histograms.values().iterator();
-		while(it.hasNext())
-		{
+		while(it.hasNext()){
 //			((HistogramEntry)it.next()).DoReportConsole();
 		}
 		
 		System.out.println("\r\nSimulation Report End");
-		
-		 
-		
 		return true;
 	}
 	
