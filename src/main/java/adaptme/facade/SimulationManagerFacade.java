@@ -39,6 +39,11 @@ public class SimulationManagerFacade {
  	private double averageNumberOfReleases;
  	private double averageNumberOfIterations;
  	private double numberOfSimulationRuns;
+ 	private double [] numberOfDaysPerReplication; // TODO generalizar depois 
+ 	private double [] numberOfproducedUserStoriesPerReplication; // TODO generalizar depois
+ 	private double [] numberOfReleasesPerReplication; // TODO generalizar depois
+ 	private double [] numberOfIterationsPerReplication; // TODO generalizar depois para release e nao replication - Aparentemetente refatorar para criar classes Release e iteration para manter
+ 	  												// quantidade de iteracoes por release
  	
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
@@ -69,6 +74,11 @@ public class SimulationManagerFacade {
 		double acumulateNumberOfIterations = 0.0;
 		double acumulateNumberOfReleases = 0.0;
 		this.numberOfSimulationRuns = numberReplications;
+		numberOfDaysPerReplication = new double[numberReplications];
+		numberOfReleasesPerReplication = new double[numberReplications];
+		numberOfproducedUserStoriesPerReplication = new double[numberReplications];
+		numberOfIterationsPerReplication = new double[numberReplications];
+		 
 		
 		for (int i =0; i < numberReplications; i++) {
 			epp = DynamicExperimentationProgramProxyFactory.newInstance();
@@ -84,6 +94,7 @@ public class SimulationManagerFacade {
 			simulationManager.OutputSimulationResultsConsole(); // tirar saida histograms report
 			System.out.println("Execution #" + (i+1));
 			double numberOfDays = simulationManager.getScheduler().GetClock() / 480;
+			numberOfDaysPerReplication[i] = numberOfDays;
 			System.out.println("Project duration: " + numberOfDays + " days");  // 480 minutes = 1 day
 			acumulatedNumberOfDays+= numberOfDays;
 			
@@ -98,6 +109,7 @@ public class SimulationManagerFacade {
 				// TODO so para o o artigo. Precisa ser generalizado
 				if (qe.GetId().equalsIgnoreCase("Implemented User stories")) {
 					acumulatedNumberOfUserStories+= qe.deadState.getCount();
+					numberOfproducedUserStoriesPerReplication[i] = qe.deadState.getCount();
 				}
 				
 				// ambas saidas abaixo retornam a variavel count
@@ -109,9 +121,13 @@ public class SimulationManagerFacade {
 			
 			
 			System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+			numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
+			
 			acumulateNumberOfIterations+= simulationManager.getScheduler().getNumberOfIterations();
+			
 			System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
 			acumulateNumberOfReleases+= simulationManager.getScheduler().getNumberOfReleases();
+			numberOfReleasesPerReplication[i] = simulationManager.getScheduler().getNumberOfReleases();
 			
 			System.out.println("Displaying results by iteration");
 			printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
@@ -130,7 +146,7 @@ public class SimulationManagerFacade {
 			Activity.counter = 0;
 		}
 		
-		this.averageNumberOfDays = acumulatedNumberOfDays/numberReplications;
+		this.averageNumberOfDays = acumulatedNumberOfDays/numberReplications * 10/10;
 		this.averageNumberOfIterations = acumulateNumberOfIterations/numberReplications;
 		this.averageNumberOfImplementedUserStories = acumulatedNumberOfUserStories/numberReplications;
 		this.averageNumberOfReleases = acumulateNumberOfReleases/numberReplications;
@@ -283,5 +299,24 @@ public class SimulationManagerFacade {
 
 	public void setNumberOfSimulationRuns(double numberOfSimulationRuns) {
 		this.numberOfSimulationRuns = numberOfSimulationRuns;
+	}
+
+	public double[] getNumberOfDaysPerReplication() {
+		return numberOfDaysPerReplication;
+	}
+	
+	public double calculateStandardDeviationNumberOfDays() {
+		StandardDeviation sd = new StandardDeviation();
+		return sd.evaluate(numberOfDaysPerReplication) * 100/100;
+	}
+	
+	public double calculateStandardDeviationUserStoriesProducede() {
+		StandardDeviation sd = new StandardDeviation();
+		return sd.evaluate(numberOfproducedUserStoriesPerReplication) * 100/100;
+	}
+	
+	public double calculateStandardDeviationNumberOfReleases() {
+		StandardDeviation sd = new StandardDeviation();
+		return sd.evaluate(numberOfReleasesPerReplication) * 100/100;
 	}
 }

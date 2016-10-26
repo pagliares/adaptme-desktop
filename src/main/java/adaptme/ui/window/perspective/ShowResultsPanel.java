@@ -127,10 +127,14 @@ public class ShowResultsPanel extends JPanel {
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
 //				textArea.setText(simulationManagerFacade.getSimulationResults());
 				String simulationRuns = "Number of simulation runs...: "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
-				String meanNumberOfDays = "Number of days (mean)...: " + simulationManagerFacade.getAverageNumberOfDays() + "\n";
-				String meanNumberOfUserStories = "Number of user stories (mean)...: " + simulationManagerFacade.getAverageNumberOfImplementedUserStories() + "\n";
-				String meanNumberOfReleases = "Number of releases (mean)....:" + simulationManagerFacade.getAverageNumberOfReleases() + "\n";
-				String meanNumberOfIterations = "Number of iterations (mean)....:" + simulationManagerFacade.getAverageNumberOfIterations() + "\n";
+				String meanNumberOfDays = "Number of days mean(sd)...: " + simulationManagerFacade.getAverageNumberOfDays() +
+						                  "\t(" + simulationManagerFacade.calculateStandardDeviationNumberOfDays() + ")" + "\n";
+				String meanNumberOfUserStories = "Number of user stories mean(sd)...: " + simulationManagerFacade.getAverageNumberOfImplementedUserStories() + 
+						 "\t(" + simulationManagerFacade.calculateStandardDeviationUserStoriesProducede() + ")" + "\n";
+				String meanNumberOfReleases = "Number of releases (mean)....:" + simulationManagerFacade.getAverageNumberOfReleases() +
+						"\t(" + simulationManagerFacade.calculateStandardDeviationNumberOfReleases() + ")" + "\n";
+				String meanNumberOfIterations = "Number of iterations per release (mean)....:" + simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases() + 
+						      "\t(" + simulationManagerFacade.calculateStandardDeviationNumberOfReleases() + ")" + "\n";; // TODO implementar para release
 				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
 
 				
