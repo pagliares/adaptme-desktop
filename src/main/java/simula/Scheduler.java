@@ -27,11 +27,14 @@ public class Scheduler implements Runnable{
 									// para permitir a��es de emerg�ncia (parada)
 
 	private SimulationManager simulationManager;
-	private float iterationTime;  // pagliares
-	private float releaseTime;  // pagliares
+	
+	private float iterationDuration;  // pagliares
+	private float releaseDuration;  // pagliares
 	
 	private int numberOfIterations = 1; // Pagliares. Precisa ser um. vide metodo run sobreescrito
 	private int numberOfReleases = 0; // Pagliares. diferentemente de iteration, so contamos release quando entrega
+	private int multiploIterations = 2; // Pagliares: usado para se contar apenas uma vez uma iteracao quando o clock for maior que a duracao da iteracao
+	private int multiploRelease = 1; // Pagliares: usado para se contar apenas uma vez uma release quando o clock for maior que a duracao da iteracao
 	
 	private HashMap<String, HashMap>simulationResultsByIteration = new HashMap<>();
 	
@@ -206,8 +209,9 @@ public class Scheduler implements Runnable{
 			// Pagliares
 			// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
 			// precisa de um tick a mais de clock, pelo menos para iniciar uma nova
-			 
-			if ((int)clock % iterationTime == 0) {
+			
+			if ((int)clock/iterationDuration > multiploIterations) {
+				    multiploIterations++;
 					numberOfIterations++;
 					// insere os resultados da iteracao. Fazer o mesmo para atividades
 					getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getQueues());
@@ -218,7 +222,8 @@ public class Scheduler implements Runnable{
 			// Pagliares
 			// Se clock corrente for multiplo do tempo de release definido como parametro, indica o fim de release
 			// precisa de um tick a mais de clock, pelo menos para iniciar uma nova 
-			if ((int)clock % releaseTime == 0) {
+			if ((int)clock/releaseDuration > multiploRelease) {
+					multiploRelease++;
 					numberOfReleases++;
 			}
 			
@@ -289,8 +294,8 @@ public class Scheduler implements Runnable{
 	
 	// Pagliares TODO - VERIFICAR SE PRECISA SER ATUALIZADO COM O CONTEUDO DO METODO ORIGINAL QUE FOI SOBRECARREGADO
 	public synchronized boolean Run(double endtime, float iterationTime, float releaseTime){
-		this.iterationTime = iterationTime;
-		this.releaseTime = releaseTime;
+		this.iterationDuration = iterationTime;
+		this.releaseDuration = releaseTime;
 		
 		if(endtime < 0.0)				// relogio nao pode ser negativo
 			return false;				// se for 0.0 executa ate acabarem as entidades
