@@ -57,6 +57,7 @@ public class RolePanel implements UpdatePanel {
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
 	distributionJComboBox.addItem(BestFitDistribution.POISSON);
 	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+	distributionJComboBox.addItem(BestFitDistribution.LOGNORMAL);
 	
 	distributionJComboBox.setBounds(256, 119, 164, 20);
 	panel.setBorder(new TitledBorder(null, "Role", TitledBorder.LEADING, TitledBorder.TOP, null, null));

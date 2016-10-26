@@ -39,7 +39,7 @@
 >
 
 <!-- Types of Statistical Distributions  -->
-<!ENTITY % type-stats-app.type "NONE|CONST|UNIFORM|NORMAL|NEGEXP|POISSON">
+<!ENTITY % type-stats-app.type "NONE|CONST|UNIFORM|NORMAL|NEGEXP|POISSON |LOGNORMAL">
 
 <!ENTITY % stats-type-att "type (%type-stats-app.type;) #REQUIRED
                           parm1 %number.type; #REQUIRED

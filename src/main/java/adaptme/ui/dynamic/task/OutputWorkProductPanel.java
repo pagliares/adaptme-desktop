@@ -69,6 +69,7 @@ public class OutputWorkProductPanel implements UpdatePanel {
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
 	distributionJComboBox.addItem(BestFitDistribution.POISSON);
 	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+	distributionJComboBox.addItem(BestFitDistribution.LOGNORMAL);
 	
 	distributionJComboBox.addItemListener(e -> {
 	     

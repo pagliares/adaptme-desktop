@@ -30,6 +30,7 @@ public abstract class ActiveEntry extends Entry{
   public static final short NORMAL  = 3;
   public static final short NEGEXP  = 4; 
   public static final short POISSON = 5;
+  public static final short LOGNORMAL = 6;  // Criado por Pagliares
   
   /**
    * tipo de distribui��o de servi�o
@@ -77,6 +78,10 @@ public abstract class ActiveEntry extends Entry{
 	else if(servicedist == POISSON)
 	{
 		return "POISSON";
+	}
+	else if(servicedist == LOGNORMAL)
+	{
+		return "LOGNORMAL";
 	}
 	return "SERVICEDIST???";
   }

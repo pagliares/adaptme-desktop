@@ -72,6 +72,7 @@ public class InputWorkProductPanel implements UpdatePanel {
 	distributionJComboBox.addItem(BestFitDistribution.NORMAL);
 	distributionJComboBox.addItem(BestFitDistribution.POISSON);
 	distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+	distributionJComboBox.addItem(BestFitDistribution.LOGNORMAL);
 
 	
 	parameters = Parameters.createParameter(BestFitDistribution.NORMAL);

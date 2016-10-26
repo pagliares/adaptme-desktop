@@ -20,6 +20,8 @@ public abstract class Parameters {
 			return new NormalParameters();
 		case POISSON:
 			return new PoissonParameters();
+		case LOGNORMAL:
+			return new LogNormalParameters();
 		default:
 			return null;
 		}

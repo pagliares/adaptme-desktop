@@ -45,6 +45,7 @@ public class GenerateActivityProbabilityDistributionPanel extends JPanel {
  		distributionJComboBox.addItem(BestFitDistribution.NORMAL);
  		distributionJComboBox.addItem(BestFitDistribution.POISSON);
  		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
+ 		distributionJComboBox.addItem(BestFitDistribution.LOGNORMAL);
  		
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);

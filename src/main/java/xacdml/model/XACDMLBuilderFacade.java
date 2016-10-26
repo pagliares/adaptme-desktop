@@ -29,6 +29,7 @@ import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
 import model.spem.derived.ConstantParameters;
+import model.spem.derived.LogNormalParameters;
 import model.spem.derived.NegativeExponential;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
@@ -89,6 +90,7 @@ public class XACDMLBuilderFacade {
 	private NegativeExponential negativeExponential;
 	private NormalParameters normalParameters;
 	private PoissonParameters poissonParameters;
+	private LogNormalParameters logNormalParameters;
 	
 	private ProcessRepository calibratedProcessRepository;
 	private List<ProcessContentRepository> completeListOfProcessContentRepository;
@@ -163,6 +165,12 @@ public class XACDMLBuilderFacade {
 					distribution = factory.createStat();
 					distribution.setType("POISSON");
 					distribution.setParm1(Double.toString(poissonParameters.getMean()));
+				} else if (parametersDistributionRegularActivity instanceof LogNormalParameters) {
+					logNormalParameters = (LogNormalParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("LOGNORMAL");
+					distribution.setParm1(Double.toString(logNormalParameters.getScale()));
+					distribution.setParm2(Double.toString(logNormalParameters.getShape()));
 				}
 				regularActivity.setStat(distribution);
 				
@@ -245,9 +253,15 @@ public class XACDMLBuilderFacade {
 							distribution = factory.createStat();
 							distribution.setType("POISSON");
 							distribution.setParm1(Double.toString(poissonParameters.getMean()));
+						} else if (parametersDistributionRegularActivity instanceof LogNormalParameters) {
+							logNormalParameters = (LogNormalParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("LOGNORMAL");
+							distribution.setParm1(Double.toString(logNormalParameters.getScale()));
+							distribution.setParm2(Double.toString(logNormalParameters.getShape()));
 						}
 						regularActivity.setStat(distribution);
-						 regularActivity.getEntityClass().add(entityClass);
+						regularActivity.getEntityClass().add(entityClass);
 						acd.getAct().add(regularActivity);
 				 }  
 			}	}
@@ -502,6 +516,12 @@ public class XACDMLBuilderFacade {
 				distribution = factory.createStat();
 				distribution.setType("POISSON");
 				distribution.setParm1(Double.toString(poissonParameters.getMean()));
+			} else if (parametersDistributionRegularActivity instanceof LogNormalParameters) {
+				logNormalParameters = (LogNormalParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("LOGNORMAL");
+				distribution.setParm1(Double.toString(logNormalParameters.getScale()));
+				distribution.setParm2(Double.toString(logNormalParameters.getShape()));
 			}
 			regularActivity.setStat(distribution);
 			
@@ -893,6 +913,12 @@ public class XACDMLBuilderFacade {
 					distribution = factory.createStat();
 					distribution.setType("POISSON");
 					distribution.setParm1(Double.toString(poissonParameters.getMean()));
+				} else if (parametersDistributionRegularActivity instanceof LogNormalParameters) {
+					logNormalParameters = (LogNormalParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("LOGNORMAL");
+					distribution.setParm1(Double.toString(logNormalParameters.getScale()));
+					distribution.setParm2(Double.toString(logNormalParameters.getShape()));
 				}
 
 				// configura a generate activity com a distribuicao apropriada

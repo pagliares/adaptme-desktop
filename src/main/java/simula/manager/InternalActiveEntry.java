@@ -119,7 +119,7 @@ public class InternalActiveEntry extends ActiveEntry{
 		TrimVectors();
 		
 		if(isRouter){
-			switch(servicedist) { // @TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
+			switch(servicedist) { // TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
 			
 				case NONE: break;
 				case CONST: 	((Router)activeState).setServiceTime(new ConstDistribution(m.sample, distp1)); break;
@@ -127,6 +127,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case NORMAL: 	((Router)activeState).setServiceTime(new Normal(m.sample, distp1, distp2)); break;
 				case NEGEXP: 	((Router)activeState).setServiceTime(new NegExp(m.sample, distp1)); break;
 				case POISSON: ((Router)activeState).setServiceTime(new Poisson(m.sample, distp1)); break;
+				case LOGNORMAL: ((Router)activeState).setServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
 			
@@ -163,6 +164,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case NORMAL: 	((Activity)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
 				case NEGEXP: 	((Activity)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
 				case POISSON: ((Activity)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
+				case LOGNORMAL: ((Activity)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
 			
