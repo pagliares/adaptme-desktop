@@ -105,3 +105,6 @@ install.packages("zipfR") ## Need to specify CRAN the 1st time
 library(zipfR)
 Z <- lnre("zm", alpha=-15.31, B=1e-3)
 hist( as.integer(rlnre(Z, 1000)))
+
+17) Atualizei PersistProcess para ter suporte ao openUp dentro do AdaptMe. SHA-1 5d933bc. Talvez tenha que atualizar 
+PersistProcessWeb
