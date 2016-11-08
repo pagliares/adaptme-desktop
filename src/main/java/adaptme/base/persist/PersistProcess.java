@@ -204,14 +204,19 @@ public class PersistProcess {
 		for (JAXBElement<String> jaxbElement : list) {
 			QName qName = jaxbElement.getName();
 			String localPart = qName.getLocalPart();
+			MethodElement element = hash.get(jaxbElement.getValue());
+			if(element == null){
+				element = (MethodElement) methodLibraryHash.getHashMap().get(jaxbElement.getValue());
+				hash.put(element.getId(), element);
+			}
 			if (localPart == "MandatoryInput") {
-				inputNames.add(hash.get(jaxbElement.getValue()).getPresentationName());
+				inputNames.add(element.getPresentationName());
 			} else if (localPart == "Output") {
-				outputNames.add(hash.get(jaxbElement.getValue()).getPresentationName());
+				outputNames.add(element.getPresentationName());
 			} else if (localPart == "PerformedPrimarilyBy") {
-				performedPrimarilyBy.add(hash.get(jaxbElement.getValue()).getPresentationName());
+				performedPrimarilyBy.add(element.getPresentationName());
 			} else if (localPart == "AdditionallyPerformedBy") {
-				additionallyPerformedBy.add(hash.get(jaxbElement.getValue()).getPresentationName());
+				additionallyPerformedBy.add(element.getPresentationName());
 			}
 		}
 		Boolean isNew = new Boolean(false);
