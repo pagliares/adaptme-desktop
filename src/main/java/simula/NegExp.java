@@ -1,5 +1,5 @@
 // Arquivo NegExp.java
-// Implementação das Classes do Grupo Utilitário da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo Utilitï¿½rio da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 30.Abr.1999	Wladimir
 
 package simula;
@@ -12,13 +12,21 @@ public class NegExp extends Distribution
 	private double mean;
 
 	/**
-	 * associa a stream à distribuição e recebe parâmetros.
+	 * associa a stream ï¿½ distribuiï¿½ï¿½o e recebe parï¿½metros.
 	 */
 	public NegExp(Sample s, double Mean)
 	{super(s); mean = Mean;}
 
 	/**
-	 * obtém uma amostra segundo a dada distribuição.
+	 * obtï¿½m uma amostra segundo a dada distribuiï¿½ï¿½o.
 	 */
 	public double Draw(){return mean * stream.NegExp();}
+	
+	public static void main (String [] args) {
+		Sample s = new Sample();
+		NegExp ne = new NegExp(s, 800);
+		for (int i = 0; i < 28; i++)
+		System.out.print(ne.Draw()/8 + ",");
+	}
+	
 }
