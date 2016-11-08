@@ -245,16 +245,16 @@ public class Scheduler implements Runnable{
 				break;
 			}
 			
-			// pagliares
-			QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
-			QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
-			if (lastQueue.deadState.count == firstQueue.intialQuantity) {
-				running = false;
-				termreason = 1;			
-				Log.LogMessage("Scheduler: simulation finished due to end of entities");
-				Log.Close();
-				break;
-			}
+			// pagliares - Gera excecao para outros processos 
+//			QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
+//			QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
+//			if (lastQueue.deadState.count == firstQueue.intialQuantity) {
+//				running = false;
+//				termreason = 1;			
+//				Log.LogMessage("Scheduler: simulation finished due to end of entities");
+//				Log.Close();
+//				break;
+//			}
 
 			boolean executed;			// se algum evento B ou C foi executado
 			
