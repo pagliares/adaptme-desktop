@@ -66,7 +66,7 @@ public class ParametersPanel {
 				constraints.fill = GridBagConstraints.NONE;
 				constraints.gridx = 5;
 
-				JTextField titleText = new JTextField("30");   
+				JTextField titleText = new JTextField("480");   
 				titleText.setName(name);
 				// start
 

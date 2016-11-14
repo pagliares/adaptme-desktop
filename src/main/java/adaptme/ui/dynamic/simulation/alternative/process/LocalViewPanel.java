@@ -59,10 +59,10 @@ public class LocalViewPanel implements UpdatePanel {
 		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 		scrollPaneParameters.setViewportBorder(null);
 		focusListener = new ProbabilityDistributionPanelListener();
-		distributionJComboBox.setSelectedIndex(1); // normal select by default
+		distributionJComboBox.setSelectedIndex(0); // normal select by default
 													// with lines below setting
 													// initial values
-		bestFitDistributionParameters = Parameters.createParameter(BestFitDistribution.NEGATIVE_EXPONENTIAL);
+		bestFitDistributionParameters = Parameters.createParameter(BestFitDistribution.CONSTANT);
 		parametersPanel = new ParametersPanel(bestFitDistributionParameters, focusListener);
 		focusListener.setParameters(bestFitDistributionParameters);
 		scrollPaneParameters.setViewportView(parametersPanel.getPanel());
