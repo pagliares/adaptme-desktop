@@ -119,18 +119,30 @@ public class SimulationManagerFacade {
 			
 			resultadoGlobal.put("run #" + (i+1), queues);
 			
+			if (simulationManager.getScheduler().hasIteration()) {
+				System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+				numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
+				acumulateNumberOfIterations+= simulationManager.getScheduler().getNumberOfIterations();
+				
+				System.out.println("Displaying results by iteration");
+				printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
+			} else {
+				System.out.println("number of iterations ..: " + 0);
+				numberOfIterationsPerReplication[i] = 0;
+				acumulateNumberOfIterations+= 0;
+			}
 			
-			System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
-			numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
+			if (simulationManager.getScheduler().hasRelease()) {
+				System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
+				acumulateNumberOfReleases+= simulationManager.getScheduler().getNumberOfReleases();
+				numberOfReleasesPerReplication[i] = simulationManager.getScheduler().getNumberOfReleases();
+			} else {
+				System.out.println("number of releases ..: " + 0);
+				acumulateNumberOfReleases+= 0;
+				numberOfReleasesPerReplication[i] = 0;
+			}
 			
-			acumulateNumberOfIterations+= simulationManager.getScheduler().getNumberOfIterations();
 			
-			System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
-			acumulateNumberOfReleases+= simulationManager.getScheduler().getNumberOfReleases();
-			numberOfReleasesPerReplication[i] = simulationManager.getScheduler().getNumberOfReleases();
-			
-			System.out.println("Displaying results by iteration");
-			printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
 			
 			System.out.println("\nDisplaying global results");
 			
@@ -318,5 +330,9 @@ public class SimulationManagerFacade {
 	public double calculateStandardDeviationNumberOfReleases() {
 		StandardDeviation sd = new StandardDeviation();
 		return sd.evaluate(numberOfReleasesPerReplication) * 100/100;
+	}
+	
+	public SimulationManager getSimulationManager() {
+		return simulationManager;
 	}
 }

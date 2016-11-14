@@ -124,6 +124,11 @@ public class ShowResultsPanel extends JPanel {
 		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+ 				
+				String meanNumberOfReleases = "";
+				String meanNumberOfIterations = "";
+				
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
 //				textArea.setText(simulationManagerFacade.getSimulationResults());
 				String simulationRuns = "Number of simulation runs.....................................:  "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
@@ -132,10 +137,16 @@ public class ShowResultsPanel extends JPanel {
 				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
 						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
 						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
-				String meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
-						"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
-				String meanNumberOfIterations = "Number of iterations per release mean(sd).............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
-						      "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release
+				
+				if (simulationManagerFacade.getSimulationManager().getScheduler().hasRelease()) {
+					 meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
+							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
+				}
+				
+				if (simulationManagerFacade.getSimulationManager().getScheduler().hasIteration()) {
+					 meanNumberOfIterations = "Number of iterations per release mean(sd).............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
+							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release
+				}
 				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
 
 				
