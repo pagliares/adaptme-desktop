@@ -38,7 +38,10 @@ public class Scheduler implements Runnable{
 	
 	private HashMap<String, HashMap>simulationResultsByIteration = new HashMap<>();
 	
-	private int bobo = 0;
+    private boolean hasRelease;
+    private boolean hasIteration;
+	
+	
 	
 	/**
 	 * retorna refer�ncia ao objeto ativo
@@ -101,6 +104,8 @@ public class Scheduler implements Runnable{
 	 * Inicia execu�ao da simulacao numa thread separada
 	 */
 	public synchronized boolean Run(double endtime){
+		hasIteration = false;
+		hasRelease = false;
 		if(endtime < 0.0)				// rel�gio n�o pode ser negativo
 			return false;				// se for 0.0 executa at� acabarem as entidades
 
@@ -294,6 +299,8 @@ public class Scheduler implements Runnable{
 	
 	// Pagliares TODO - VERIFICAR SE PRECISA SER ATUALIZADO COM O CONTEUDO DO METODO ORIGINAL QUE FOI SOBRECARREGADO
 	public synchronized boolean Run(double endtime, float iterationTime, float releaseTime){
+		hasIteration = true;
+		hasRelease = true;
 		this.iterationDuration = iterationTime;
 		this.releaseDuration = releaseTime;
 		
@@ -338,6 +345,14 @@ public class Scheduler implements Runnable{
 
 	public void setSimulationResultsByIteration(HashMap<String, HashMap> simulationResultsByIteration) {
 		this.simulationResultsByIteration = simulationResultsByIteration;
+	}
+	
+	public boolean hasRelease() {
+		return hasRelease;
+	}
+	
+	public boolean hasIteration() {
+		return hasIteration;
 	}
 	
 }
