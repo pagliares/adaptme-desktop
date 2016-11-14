@@ -98,7 +98,8 @@ public class ExperimentationPanel extends JPanel {
 				
 				showResultsPanel.updateShowResultsPanelTable(numberReplications);
 				simulationFacade.addNumberOfSimulationRuns(numberReplications);
-				simulationManagerFacade.execute(Float.parseFloat(simulationDurationTextField.getText()), numberReplications); // TODO buscar do text field
+				float sDuration = Float.parseFloat(simulationDurationTextField.getText());
+				simulationManagerFacade.execute(sDuration, numberReplications);  
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
 				

@@ -117,7 +117,7 @@ public class XACDMLBuilderFacade {
 		
 		createSpecialActivitiesForIterationAndRelease();
 		
-		createDestroyActivities(roles, workProducts);
+//		createDestroyActivities(roles, workProducts);
 
 		return generateXACDML();
 
