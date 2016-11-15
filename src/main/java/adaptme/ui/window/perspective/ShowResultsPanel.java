@@ -13,6 +13,7 @@ import adaptme.facade.SimulationManagerFacade;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
 import model.spem.SimulationFacade;
+import simula.manager.QueueEntry;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -124,19 +126,18 @@ public class ShowResultsPanel extends JPanel {
 		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
- 				
 				String meanNumberOfReleases = "";
 				String meanNumberOfIterations = "";
+				String meanNumberOfUserStories = "";
 				
 				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
 //				textArea.setText(simulationManagerFacade.getSimulationResults());
 				String simulationRuns = "Number of simulation runs.....................................:  "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
 				String meanNumberOfDays = "Number of days mean(sd).....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
 						                  "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
-				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
-						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
-						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
+//				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
+//						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
+//						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
 				
 				if (simulationManagerFacade.getSimulationManager().getScheduler().hasRelease()) {
 					 meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
@@ -149,8 +150,23 @@ public class ShowResultsPanel extends JPanel {
 				}
 				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
 
+				HashMap queues = simulationManagerFacade.getSimulationManager().getQueues();
+				Set keys = queues.keySet();
+
+				JTable variableTypeTable = experimentationPanel.getTable();  
+				int numberOfLines = variableTypeTable.getRowCount();
 				
- 
+				for (Object o: keys) { 
+					QueueEntry qe = (QueueEntry)queues.get(o);
+ 					
+					for (int i=0; i< numberOfLines; i++) {
+						VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
+						if (variableType.equals(VariableType.DEPENDENT) && (qe.GetId().equalsIgnoreCase((String)variableTypeTable.getValueAt(i, 4)))) {
+							textArea.append("\nQueue name : " + o);
+							textArea.append("\tNunber of entities: " + qe.deadState.getCount());
+						}
+					}
+				}
 			}
 		});
 	}
@@ -179,17 +195,6 @@ public class ShowResultsPanel extends JPanel {
 	}
 	
 	public void updateShowResultsPanelTable(int numberReplications) {
-		 
-		JTable variableTypeTable = experimentationPanel.getTable();
-		int numberOfLines = variableTypeTable.getRowCount();
-//		System.out.println(showResultsTableModel.removeAllColumns());
-		
-		for (int i=0; i< numberOfLines; i++) {
-			VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
-			if (variableType.equals(VariableType.DEPENDENT)) {
-				showResultsTableModel.addColumn((String)variableTypeTable.getValueAt(i, 0));
-			}
-		}
 		int indexProcessAlternative = simulationFacade.getProcessAlternatives().size() - 1;
 		showResultsTableModel.setValueAt(numberReplications, indexProcessAlternative, 2); // storing the number of replications
  	}
