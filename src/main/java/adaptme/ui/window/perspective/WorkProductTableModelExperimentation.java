@@ -16,7 +16,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	private List<WorkProductXACDML> workProducts;
  	
-	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Variable type"};
+	private String[] headers = new String[] { "Work product", "Input/output","Task name", "Variable type", "Queue name"};
 
 	public WorkProductTableModelExperimentation(List<WorkProductXACDML> workProducts) {
 		this.workProducts = workProducts;
@@ -44,6 +44,8 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 			return workProduct.getTaskName();
 		case 3:
 			return workProduct.getVariableType();
+		case 4:
+			return workProduct.getQueueName();
 		
 		default:
 			return null;
@@ -67,6 +69,9 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 		case 3:
 			workProduct.setVariableType((VariableType) aValue);  
 			break;
+		case 4:
+			workProduct.setQueueName((String)aValue); 
+			break;
 		
 		} 
 	}
@@ -82,7 +87,8 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 			return String.class;
 		case 3:
 			return VariableType.class;
-		
+		case 4:
+			return String.class;
 		default:
 			return null;
 		}
@@ -107,7 +113,7 @@ public class WorkProductTableModelExperimentation extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		if ((column == 0) || (column == 1) || (column == 2)){
+		if ((column == 0) || (column == 1) || (column == 2) || (column == 4)){
 			return false;
 		}
 		return true;
