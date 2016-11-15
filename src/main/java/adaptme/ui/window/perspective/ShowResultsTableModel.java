@@ -24,8 +24,8 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		this.simulationFacade = simulationFacade;
 		headers = new ArrayList<>();
 		headers.add("Process alternative name");
-		headers.add("Project duration");
-		headers.add("# simulation runs");
+//		headers.add("Project duration");
+//		headers.add("# simulation runs");
 	}
 	 
 
@@ -45,16 +45,16 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0:
 			return listOfProcessAlternatives.get(rowIndex).getName();
-		case 1:
-			return " ";
-		case 2:
-			return simulationFacade.getNumberOfSimulationRuns(listOfProcessAlternatives.get(rowIndex).getName());
-		case 3:
-			return " ";
-		case 4:
-			return " ";
-		case 5:
-			return " ";
+//		case 1:
+//			return " ";
+//		case 2:
+//			return simulationFacade.getNumberOfSimulationRuns(listOfProcessAlternatives.get(rowIndex).getName());
+//		case 3:
+//			return " ";
+//		case 4:
+//			return " ";
+//		case 5:
+//			return " ";
 		default:
 			return null;
 		}
@@ -68,22 +68,22 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		case 0:
 			processRepository.setName((String) aValue);
 			break;
-		case 1:
-			 
-			break;
-		case 2:
+//		case 1:
+//			 
+//			break;
+//		case 2:
 //			numberOfSimulationRuns = (Integer)aValue; como e read only, acho que nao preciso
 			
-			break;
-		case 3:
-			 
-			break;
-		case 4:
-			 
-			break;
-		case 5:
-			 
-			break;
+//			break;
+//		case 3:
+//			 
+//			break;
+//		case 4:
+//			 
+//			break;
+//		case 5:
+//			 
+//			break;
 		} 
 	}
 
@@ -92,16 +92,16 @@ public class ShowResultsTableModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0:
 			return String.class;
-		case 1:
-			return String.class;
-		case 2:
-			return Integer.class;
-		case 3:
-			return String.class;
-		case 4:
-			return String.class;   
-		case 5:
-			return String.class; 
+//		case 1:
+//			return String.class;
+//		case 2:
+//			return Integer.class;
+//		case 3:
+//			return String.class;
+//		case 4:
+//			return String.class;   
+//		case 5:
+//			return String.class; 
 		default:
 			return null;
 		}
@@ -134,7 +134,7 @@ public class ShowResultsTableModel extends AbstractTableModel {
 	public boolean removeAllColumns() {
 		headers.clear();
 		headers.add("Process alternative name");
-		headers.add("Project duration");
+//		headers.add("Project duration");
 		fireTableStructureChanged();
 		return true;
 	}
