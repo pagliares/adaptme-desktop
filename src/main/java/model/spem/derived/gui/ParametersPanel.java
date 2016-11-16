@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import org.apache.commons.lang3.text.WordUtils;
 
 import model.spem.derived.ConstantParameters;
+import model.spem.derived.LogNormalParameters;
 import model.spem.derived.NegativeExponential;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
@@ -107,11 +108,17 @@ public class ParametersPanel {
 					
 					PoissonParameters poissonParameters = (PoissonParameters)parameters;
 					poissonParameters.setMean(Double.parseDouble(titleText.getText()));
-	 			}
+	 			} 
 				
-				
-				// end
-				
+				else if (parameters instanceof LogNormalParameters) {
+					
+					LogNormalParameters logNormalParameters = (LogNormalParameters)parameters;
+					if (titleText.getName().equals("scale")) {
+						logNormalParameters.setScale(Double.parseDouble(titleText.getText()));
+					} else {
+						logNormalParameters.setShape(Double.parseDouble(titleText.getText()));
+ 					}
+	 			}				
 				
 				
 				titleText.addFocusListener(focusListener);

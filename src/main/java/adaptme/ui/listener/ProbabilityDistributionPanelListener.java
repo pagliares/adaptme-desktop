@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.ProcessRepository;
 import model.spem.derived.ConstantParameters;
+import model.spem.derived.LogNormalParameters;
 import model.spem.derived.NegativeExponential;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
@@ -59,7 +60,19 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 					
 					PoissonParameters poissonParameters = (PoissonParameters)distributionParameters;
 					poissonParameters.setMean(Double.parseDouble(textField.getText()));
-	 			}
+	 			} 
+	    		
+				else if (distributionParameters instanceof LogNormalParameters) {
+					
+					LogNormalParameters logNormalParameters = (LogNormalParameters)distributionParameters;
+					if (textField.getName().equals("scale")) {
+						logNormalParameters.setScale(Double.parseDouble(textField.getText()));
+					} else {
+						logNormalParameters.setShape(Double.parseDouble(textField.getText()));
+ 					}
+	 			}	
+	    		
+	    		
 	    	
 //		repositoryViewPanel.setMessagem("");
 	    }
