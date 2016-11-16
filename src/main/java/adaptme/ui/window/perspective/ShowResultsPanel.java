@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+
 import adaptme.IDynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
@@ -21,9 +23,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -39,6 +45,7 @@ public class ShowResultsPanel extends JPanel {
 	private AlternativeOfProcessPanel alternativeOfProcessPanel;
 	private SimulationFacade simulationFacade;
 	private SimulationManagerFacade simulationManagerFacade;
+	private SortedMap resultadoGlobal = new TreeMap(); // hoje, 16 nov, 11:41 veja comentarios abaixo
 	 
 	public ShowResultsPanel(ExperimentationPanel experimentationPanel, SimulationFacade simulationFacade, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 		this.experimentationPanel =  experimentationPanel;
@@ -88,18 +95,18 @@ public class ShowResultsPanel extends JPanel {
  		configuraTableListener();
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 185, 662, 412);
+		scrollPane.setBounds(16, 185, 1096, 504);
 		add(scrollPane);
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		
 		JButton btnShowResults = new JButton("Show results");
-		btnShowResults.setBounds(809, 374, 117, 29);
+		btnShowResults.setBounds(1212, 368, 117, 29);
 		add(btnShowResults);
 		
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
-		btnSimulateAnotherAlternative.setBounds(711, 474, 290, 29);
+		btnSimulateAnotherAlternative.setBounds(1114, 468, 290, 29);
 		add(btnSimulateAnotherAlternative);
 		
 		JButton btnClear = new JButton("Clear ");
@@ -108,7 +115,7 @@ public class ShowResultsPanel extends JPanel {
 				textArea.setText("");
 			}
 		});
-		btnClear.setBounds(809, 421, 117, 29);
+		btnClear.setBounds(1212, 415, 117, 29);
 		add(btnClear);
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,29 +133,29 @@ public class ShowResultsPanel extends JPanel {
 		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String meanNumberOfReleases = "";
-				String meanNumberOfIterations = "";
-				String meanNumberOfUserStories = "";
-				
-				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
-//				textArea.setText(simulationManagerFacade.getSimulationResults());
-				String simulationRuns = "Number of simulation runs.....................................:  "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
-				String meanNumberOfDays = "Number of days mean(sd).....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
-						                  "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
-//				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
-//						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
-//						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
-				
-				if (simulationManagerFacade.getSimulationManager().getScheduler().hasRelease()) {
-					 meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
-							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
-				}
-				
-				if (simulationManagerFacade.getSimulationManager().getScheduler().hasIteration()) {
-					 meanNumberOfIterations = "Number of iterations per release mean(sd).............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
-							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release
-				}
-				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
+//				String meanNumberOfReleases = "";
+//				String meanNumberOfIterations = "";
+//				String meanNumberOfUserStories = "";
+//				
+//				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
+////				textArea.setText(simulationManagerFacade.getSimulationResults());
+//				String simulationRuns = "Number of simulation runs.....................................:  "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
+//				String meanNumberOfDays = "Number of days mean(sd).....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
+//						                  "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
+////				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
+////						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
+////						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
+//				
+//				if (simulationManagerFacade.getSimulationManager().getScheduler().hasRelease()) {
+//					 meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
+//							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
+//				}
+//				
+//				if (simulationManagerFacade.getSimulationManager().getScheduler().hasIteration()) {
+//					 meanNumberOfIterations = "Number of iterations per release mean(sd).............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
+//							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release
+//				}
+//				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
 
 				HashMap queues = simulationManagerFacade.getSimulationManager().getQueues();
 				Set keys = queues.keySet();
@@ -163,10 +170,16 @@ public class ShowResultsPanel extends JPanel {
 						VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
 						if (variableType.equals(VariableType.DEPENDENT) && (qe.GetId().equalsIgnoreCase((String)variableTypeTable.getValueAt(i, 4)))) {
 							textArea.append("\nQueue name : " + o);
-							textArea.append("\tNunber of entities: " + qe.deadState.getCount());
+							textArea.append("\tnunber of entities: " + qe.deadState.getCount());
 						}
 					}
 				}
+				
+				String resultadoGlobalCabecalho = simulationManagerFacade.getResultadosCabecalho();
+				textArea.append(resultadoGlobalCabecalho);
+ 				String resultadoGlobalString = simulationManagerFacade.getResultadosGlobalString();
+				textArea.append(resultadoGlobalString); 
+			
 			}
 		});
 	}
