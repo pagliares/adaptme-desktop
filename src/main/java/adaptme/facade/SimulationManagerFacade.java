@@ -31,6 +31,8 @@ public class SimulationManagerFacade {
 
 	private static SimulationManagerFacade simulationManagerFacade = new SimulationManagerFacade();
 	private Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap;
+	
+	private Map<String, String> resultsSimulationMapAdaptMe;
 	private SimulationManager simulationManager;
 	private IDynamicExperimentationProgramProxy epp;
 	private ShowResultsPanel showResultsPanel;
@@ -58,6 +60,7 @@ public class SimulationManagerFacade {
 
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
+		resultsSimulationMapAdaptMe = new TreeMap<>();
 		epp = DynamicExperimentationProgramProxyFactory.newInstance();
 	}
 
@@ -174,6 +177,8 @@ public class SimulationManagerFacade {
 
 			resultsSimulationMap.put(selectedProcessAlternativeName + i, epp); // armazena
 																				// replicacoes
+			
+			resultsSimulationMapAdaptMe.put(selectedProcessAlternativeName + i, getResultadosCabecalho()+ "\n" + getResultadosGlobalString());
 			epp.getSimulationManager().getScheduler().Stop();
 			epp.getSimulationManager().getScheduler().Clear();
 
@@ -491,6 +496,10 @@ public class SimulationManagerFacade {
 
 	public SortedMap getResultadoGlobal() {
 		return resultadoGlobal;
+	}
+
+	public Map<String, String> getResultsSimulationMapAdaptMe() {
+		return resultsSimulationMapAdaptMe;
 	}
 
 }

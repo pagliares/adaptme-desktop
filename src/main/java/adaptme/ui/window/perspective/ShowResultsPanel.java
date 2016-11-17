@@ -191,17 +191,20 @@ public class ShowResultsPanel extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
-
 				indexSelectedRow = table.getSelectedRow();
 
 				if ((indexSelectedRow > -1)) {
 					String processAlternativeName = (String) table.getValueAt(indexSelectedRow, 0);
-					Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
+//					Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
 //					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName);
-					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName+0);
+//					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName+0);
+					
+					Map<String, String> resultsSimulationMapAdaptMe = simulationManagerFacade.getResultsSimulationMapAdaptMe();
+
 					textArea.setText("");
-					textArea.append(processAlternativeName);
-					textArea.append(simulationManagerFacade.getSimulationResults());
+//					textArea.append(processAlternativeName);
+//					textArea.append(simulationManagerFacade.getSimulationResults());
+					textArea.append(resultsSimulationMapAdaptMe.get(processAlternativeName+"0"));
 				}
 			}
 		});
