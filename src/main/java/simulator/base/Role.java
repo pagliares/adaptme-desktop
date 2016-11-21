@@ -3,11 +3,11 @@ package simulator.base;
 public class Role {
 	
 	private String name;
-	private int intialQuantity = 2;
+	private int intialQuantity = 1;
 	
 	private String queueName;
 	private QueueType queueType;
-	private int queueSize = 2;
+	private int queueSize = 1;
 	
 	private boolean observeStationaryTime;
 	
