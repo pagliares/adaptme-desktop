@@ -52,11 +52,9 @@ public class ShowResultsPanel extends JPanel {
 		this.simulationFacade = simulationFacade;
 		this.alternativeOfProcessPanel = alternativeOfProcessPanel;
 		
-		
 		this.simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade(); // singleton
 		this.simulationManagerFacade.setShowResultsPanel(this);
 		this.simulationManagerFacade.setSimulationFacade(simulationFacade);
-		
 		
 		experimentationPanel.setListener(this);
 		
@@ -76,7 +74,6 @@ public class ShowResultsPanel extends JPanel {
 		showResultsTableModel = new ShowResultsTableModel(simulationFacade);
  		showResultsTableModel.setListOfProcessAlternatives(simulationFacade.getProcessAlternatives());
  	
-		
 		JTable variableTypeTable = experimentationPanel.getTable();
 		int numberOfLines = variableTypeTable.getRowCount();
 		
@@ -133,51 +130,11 @@ public class ShowResultsPanel extends JPanel {
 		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				String meanNumberOfReleases = "";
-//				String meanNumberOfIterations = "";
-//				String meanNumberOfUserStories = "";
-//				
-//				SimulationManagerFacade simulationManagerFacade = experimentationPanel.getSimulationManagerFacade();
-////				textArea.setText(simulationManagerFacade.getSimulationResults());
-//				String simulationRuns = "Number of simulation runs.....................................:  "  + simulationManagerFacade.getNumberOfSimulationRuns() + "\n";
-//				String meanNumberOfDays = "Number of days mean(sd).....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
-//						                  "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
-////				String meanNumberOfUserStories = "Number of implemented user stories mean(sd).......:  " + 
-////						Math.round(simulationManagerFacade.getAverageNumberOfImplementedUserStories()*100.0)/100.0 + 
-////						 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationUserStoriesProducede()*100.0)/100.0 + ")" + "\n";
-//				
-//				if (simulationManagerFacade.getSimulationManager().getScheduler().hasRelease()) {
-//					 meanNumberOfReleases = "Number of releases mean(sd)................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
-//							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
-//				}
-//				
-//				if (simulationManagerFacade.getSimulationManager().getScheduler().hasIteration()) {
-//					 meanNumberOfIterations = "Number of iterations per release mean(sd).............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
-//							"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release
-//				}
-//				textArea.setText(simulationRuns + meanNumberOfDays + meanNumberOfUserStories + meanNumberOfReleases + meanNumberOfIterations);
 
-				HashMap queues = simulationManagerFacade.getSimulationManager().getQueues();
-				Set keys = queues.keySet();
-
-				JTable variableTypeTable = experimentationPanel.getTable();  
-				int numberOfLines = variableTypeTable.getRowCount();
-				
-				for (Object o: keys) { 
-					QueueEntry qe = (QueueEntry)queues.get(o);
- 					
-					for (int i=0; i< numberOfLines; i++) {
-						VariableType variableType = (VariableType)variableTypeTable.getValueAt(i, 3);
-						if (variableType.equals(VariableType.DEPENDENT) && (qe.GetId().equalsIgnoreCase((String)variableTypeTable.getValueAt(i, 4)))) {
-							textArea.append("\nQueue name : " + o);
-							textArea.append("\tnunber of entities: " + qe.deadState.getCount());
-						}
-					}
-				}
 				
 				String resultadoGlobalCabecalho = simulationManagerFacade.getResultadosCabecalho();
 				textArea.append(resultadoGlobalCabecalho);
- 				String resultadoGlobalString = simulationManagerFacade.getResultadosGlobalString();
+ 				String resultadoGlobalString = simulationManagerFacade.getResultadosGlobalString(experimentationPanel.getMapQueueVariableType());
 				textArea.append(resultadoGlobalString); 
 			
 			}
@@ -195,16 +152,18 @@ public class ShowResultsPanel extends JPanel {
 
 				if ((indexSelectedRow > -1)) {
 					String processAlternativeName = (String) table.getValueAt(indexSelectedRow, 0);
-//					Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
-//					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName);
-//					IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName+0);
-					
 					Map<String, String> resultsSimulationMapAdaptMe = simulationManagerFacade.getResultsSimulationMapAdaptMe();
+					System.out.println(resultsSimulationMapAdaptMe);
+					System.out.println(resultsSimulationMapAdaptMe);
 
 					textArea.setText("");
-//					textArea.append(processAlternativeName);
-//					textArea.append(simulationManagerFacade.getSimulationResults());
+					textArea.append(processAlternativeName);
 					textArea.append(resultsSimulationMapAdaptMe.get(processAlternativeName+"0"));
+
+					// Map<String, IDynamicExperimentationProgramProxy> resultsSimulationMap = simulationManagerFacade.getResultsSimulationMap();
+					//	IDynamicExperimentationProgramProxy experimentationProgramProxy = resultsSimulationMap.get(processAlternativeName+0);
+					//	textArea.append(processAlternativeName);
+					//  textArea.append(simulationManagerFacade.getSimulationResults());
 				}
 			}
 		});

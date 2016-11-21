@@ -57,6 +57,8 @@ public class SimulationManagerFacade {
 														// classes Release e
 														// iteration para manter
 	// quantidade de iteracoes por release
+	
+	private ExperimentationPanel experimentationPanel;
 
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
@@ -97,60 +99,40 @@ public class SimulationManagerFacade {
 
 			epp.setSimulationDuration(simulationDuration);
 			epp.execute(simulationDuration);
-			this.simulationManager = (SimulationManager) epp.getSimulationManager(); // nao
-																						// funciona
-																						// no
-																						// construtor
-
+			this.simulationManager = (SimulationManager) epp.getSimulationManager(); // nao funciona no construtor
+																						
 			// output to console implemented by Pagliares
-			// Imprime numero de dias, armazena a replicacao corrente em um mapa
-			// para posterior calculo agregado
+			// Imprime numero de dias, armazena a replicacao corrente em um mapa para posterior calculo agregado
 
-			simulationManager.OutputSimulationResultsConsole(); // tirar saida
-																// histograms
-																// report
+			simulationManager.OutputSimulationResultsConsole();  
+																 
 			System.out.println("Execution #" + (i + 1));
 			double numberOfDays = simulationManager.getScheduler().GetClock() / 480;
 			numberOfDaysPerReplication[i] = numberOfDays;
-			System.out.println("Project duration: " + numberOfDays + " days"); // 480
-																				// minutes
-																				// =
-																				// 1
-																				// day
+			System.out.println("Project duration: " + numberOfDays + " days"); // 480 minutes = 1 day 
+																				
 			acumulatedNumberOfDays += numberOfDays;
 
 			HashMap queues = simulationManager.getQueues();
 			Set keys = queues.keySet();
 
-			for (Object o : keys) {
-				// QueueEntry qe1 = simulationManager.GetQueue("User story input
-				// queue");
-				System.out.println("\nQueue name : " + o);
-				QueueEntry qe = (QueueEntry) queues.get(o);
-
-				// TODO so para o o artigo. Precisa ser generalizado
-				if (qe.GetId().equalsIgnoreCase("Implemented User stories")) {
-					acumulatedNumberOfUserStories += qe.deadState.getCount();
-					numberOfproducedUserStoriesPerReplication[i] = qe.deadState.getCount();
-				}
+			for (Object queueName : keys) {
+				System.out.println("\nQueue name : " + queueName);
+				QueueEntry qe = (QueueEntry) queues.get(queueName);
 
 				// ambas saidas abaixo retornam a variavel count
 				System.out.println("Nunber of entities in queue via getCount: " + qe.deadState.getCount());
-				// System.out.println("numero de entidadas na fila: via
-				// ObsLength, basta mudar simobj para o novo nome" +
-				// qe.SimObj.getCount());
+				// System.out.println("numero de entidadas na fila: via ObsLength, basta mudar simobj para o novo nome" + qe.SimObj.getCount());
 			}
 
 			resultadoGlobal.put("run #" + (i + 1), queues);
 
 			if (simulationManager.getScheduler().hasIteration()) {
-				System.out.println(
-						"number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+				System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
 				numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
 				acumulateNumberOfIterations += simulationManager.getScheduler().getNumberOfIterations();
-
-				System.out.println("Displaying results by iteration");
-				printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
+				 System.out.println("Displaying results by iteration");
+				 printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
 			} else {
 				System.out.println("number of iterations ..: " + 0);
 				numberOfIterationsPerReplication[i] = 0;
@@ -169,16 +151,14 @@ public class SimulationManagerFacade {
 
 			System.out.println("\nDisplaying global results");
 
-			// String selectedProcessAlternativeName =
-			// showResultsPanel.getSelectedProcessAlternativeName();
+			// String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
 			int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size() - 1;
-			String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives()
-					.get(currentProessAlternativeIndex).getName();
+			String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives().get(currentProessAlternativeIndex).getName();
 
-			resultsSimulationMap.put(selectedProcessAlternativeName + i, epp); // armazena
-																				// replicacoes
+			resultsSimulationMap.put(selectedProcessAlternativeName + i, epp); // armazena replicacoes
+			resultsSimulationMapAdaptMe.put(selectedProcessAlternativeName + i, getResultadosCabecalho()+ "\n" + 
+			                                getResultadosGlobalString(experimentationPanel.getMapQueueVariableType()));
 			
-			resultsSimulationMapAdaptMe.put(selectedProcessAlternativeName + i, getResultadosCabecalho()+ "\n" + getResultadosGlobalString());
 			epp.getSimulationManager().getScheduler().Stop();
 			epp.getSimulationManager().getScheduler().Clear();
 
@@ -333,9 +313,10 @@ public class SimulationManagerFacade {
 	 * 		3.1 - extract the quantity of entities in each queue and stores it in the array 
 	 * 4 - Print array contents
 	 */
-	public String getResultadosGlobalString() {
+	public String getResultadosGlobalString(Map<String, VariableType> mapQueueVariableType ) {
 		
-		String resultadoGlobalString = "\n............................   PRINTING THE MEAN AND STANDARD DEVIATION OF ENTITIES IN EACH QUEUE CONFIGURED AS 'DEPENDENT' FOR EACH REPLICATION   ............................ \n";
+		String resultadoGlobalString = "";
+
 		// quatro linhas abaixo apenas para descobrir o numero de linhas e
 		// colunas da matriz
 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos
@@ -367,12 +348,18 @@ public class SimulationManagerFacade {
 			contadorLinhas++;
 			contadorColunas = 0;
 		}
-		String temp = printResultadosGlobalTextArea(matrizResultados, resultadoGlobalString);
+		String temp = printResultadosGlobalTextArea(matrizResultados, resultadoGlobalString, mapQueueVariableType );
 		return temp;
 	}
 
-	private String printResultadosGlobalTextArea(int[][] matrizResultados, String resultadoGlobalString) {
-
+	private String printResultadosGlobalTextArea(int[][] matrizResultados, String resultadoGlobalString, Map<String, VariableType> mapQueueVariableType) {
+//		String cabecalho = "";
+//		if (mapQueueVariableType.size() !=0) {
+		    String cabecalho = "\n............................   PRINTING THE MEAN AND STANDARD DEVIATION OF ENTITIES IN EACH QUEUE CONFIGURED AS 'DEPENDENT' FOR EACH REPLICATION   ............................ \n";
+//		} else {
+//			cabecalho = "";
+//		}
+			
 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
 
 		HashMap secondHash = (HashMap) resultadoGlobal.get(keys.iterator().next());
@@ -387,26 +374,26 @@ public class SimulationManagerFacade {
 		for (int j = 0; j < matrizResultados[0].length; j++) { // para uma determinada coluna (celula representa quantidade de entities)
 																
 			String fila = (String) iterator.next();
-			resultadoGlobalString += "\nQueue: " + fila;
+			System.out.println(mapQueueVariableType.toString());
+			if (mapQueueVariableType.containsKey(fila)) {
+				resultadoGlobalString += "\nQueue: " + fila;
 			 
-			for (int i = 0; i < matrizResultados.length; i++) { // somo todas as linhas para a coluna acima (representa experimentos)
-									 
-				resultadoGlobalString += "\n\tquantity in replication " + (i + 1) + "..: " + matrizResultados[i][j];
-				numeroEntidadesPorFila[i] = matrizResultados[i][j];
-				soma = soma + matrizResultados[i][j];
+				for (int i = 0; i < matrizResultados.length; i++) { // somo todas as linhas para a coluna acima (representa experimentos)				 
+					resultadoGlobalString += "\n\tquantity in replication " + (i + 1) + "..: " + matrizResultados[i][j];
+					numeroEntidadesPorFila[i] = matrizResultados[i][j];
+					soma = soma + matrizResultados[i][j];
+				}
+				
+				double mean = Math.round(((soma / matrizResultados.length)*100.0)/100.0);
+				double standardDeviation = Math.round(((sd.evaluate(numeroEntidadesPorFila))*100.0)/100.0);
+				
+				resultadoGlobalString += "\n\tmean of entities in queue " + fila + "..:" + mean;
+				resultadoGlobalString += "\tStandard deviation..: " + standardDeviation + "\n";
+				soma = 0.0;
+				numeroEntidadesPorFila = new double[matrizResultados.length];
 			}
-			double mean = Math.round(((soma / matrizResultados.length)*100.0)/100.0);
-			double standardDeviation = Math.round(((sd.evaluate(numeroEntidadesPorFila))*100.0)/100.0);
-			resultadoGlobalString += "\n\tmean of entities in queue " + fila + "..:" + mean;
-			resultadoGlobalString += "\tStandard deviation..: " + standardDeviation + "\n";
-			
-			
- 
-			soma = 0.0;
-			numeroEntidadesPorFila = new double[matrizResultados.length];
-
 		}
-		return resultadoGlobalString;
+		return cabecalho + resultadoGlobalString;
 	}
 	
 	public String getResultadosCabecalho() {
@@ -500,6 +487,10 @@ public class SimulationManagerFacade {
 
 	public Map<String, String> getResultsSimulationMapAdaptMe() {
 		return resultsSimulationMapAdaptMe;
+	}
+
+	public void setExperimentationPanel(ExperimentationPanel experimentationPanel) {
+		this.experimentationPanel = experimentationPanel;
 	}
 
 }

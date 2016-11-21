@@ -12,6 +12,7 @@ import javax.swing.table.TableColumnModel;
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
 import model.spem.SimulationFacade;
+import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 import simulator.base.Policy;
 import simulator.base.QueueType;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -59,12 +61,15 @@ public class ExperimentationPanel extends JPanel {
 	private WorkProductResourcesPanel workProductResourcesPanel;
 	
 	private JTabbedPane tabbedPaneActivity4;
+	
+	private Map<String, VariableType> mapQueueVariableType = new HashMap<>();
 
 	public ExperimentationPanel(WorkProductResourcesPanel workProductResourcesPanel, JTabbedPane tabbedPaneActivity4, SimulationFacade simulationFacade) {
 		this.tabbedPaneActivity4 = tabbedPaneActivity4;
 		this.workProductResourcesPanel = workProductResourcesPanel;
 		this.simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade(); // singleton
 		this.simulationManagerFacade.setShowResultsPanel(showResultsPanel);
+		this.simulationManagerFacade.setExperimentationPanel(this);;
 		
 		JPanel welchChartPanel = new WelchChartPanel().createChartPanel();
 		welchChartPanel.setBounds(6, 23, 483, 266);
@@ -93,6 +98,8 @@ public class ExperimentationPanel extends JPanel {
 					return; 
 				}
 				
+				
+				
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
 				int durationTime = Integer.parseInt(simulationDurationTextField.getText());
 				
@@ -100,6 +107,26 @@ public class ExperimentationPanel extends JPanel {
 				simulationFacade.addNumberOfSimulationRuns(numberReplications);
 				float sDuration = Float.parseFloat(simulationDurationTextField.getText());
 				simulationManagerFacade.execute(sDuration, numberReplications);  
+				
+				HashMap queues = simulationManagerFacade.getSimulationManager().getQueues();
+				Set keys = queues.keySet();
+
+ 				int numberOfLines = table.getRowCount();
+				System.out.println(queues.toString());
+				 
+				
+				for (Object o: keys) { 
+					QueueEntry qe = (QueueEntry)queues.get(o);
+ 					
+					for (int i=0; i< numberOfLines; i++) {
+						VariableType variableType = (VariableType)table.getValueAt(i, 3);
+						if (variableType.equals(VariableType.DEPENDENT) && table.getValueAt(i, 4).equals(o)) {
+							mapQueueVariableType.put(qe.GetId(), variableType);
+						}
+					}
+					 
+				}
+				
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
 				
@@ -249,6 +276,10 @@ public class ExperimentationPanel extends JPanel {
 
 	public JPanel getPanel() {
 		return this;
+	}
+
+	public Map<String, VariableType> getMapQueueVariableType() {
+		return mapQueueVariableType;
 	}
 	
 
