@@ -22,7 +22,10 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
@@ -72,12 +75,12 @@ public class RepositoryViewPanel implements UpdatePanel {
 		JPanel histogramConfigPanel = new JPanel();
 		histogramConfigPanel.setBorder(new TitledBorder(null, "Histogram Config", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		histogramChartPanel.setLayout(new BorderLayout(0, 0));
-		histogramChartPanel.add(getHistogram(5), BorderLayout.CENTER);
+		histogramChartPanel.add(getHistogram(10), BorderLayout.CENTER);
 		
 		JLabel lblNumberOfBins = new JLabel("Number of Bins");
 		
 		textFieldNumberOfBins = new JTextField();
-		textFieldNumberOfBins.setText("5");
+		textFieldNumberOfBins.setText("10");
 		textFieldNumberOfBins.setColumns(10);
 		
 		JButton btnUpdateHistogram = new JButton("Update Histogram");
@@ -118,24 +121,25 @@ public class RepositoryViewPanel implements UpdatePanel {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(4)
+								.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(sampleSizeValueLabel))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(4)
+								.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(4)
+								.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(histogramConfigPanel, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(4)
-							.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(sampleSizeValueLabel))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(histogramConfigPanel, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(43, Short.MAX_VALUE))
+							.addComponent(histogramChartPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -173,17 +177,21 @@ public class RepositoryViewPanel implements UpdatePanel {
 			 values[0] = 1;
 			
 			HistogramDataset dataset = new HistogramDataset();
+			
 			dataset.setType(HistogramType.FREQUENCY);
 //			dataset.addSeries("Histogram", values, bins);
 			String plotTitle = "Histogram";
-			String xaxis = "number";
-			String yaxis = "value";
+			String xaxis = "Duration (minutes)";
+			String yaxis = "Frequency";
 			PlotOrientation orientation = PlotOrientation.VERTICAL;
 			boolean show = false;
 			boolean toolTips = false;
 			boolean urls = false;
 			JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis, yaxis, dataset, orientation, show, toolTips,
 					urls);
+//			XYPlot plot = chart.getXYPlot();
+//			NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+//		    rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 			chartPanel = new ChartPanel(chart);
 		} else {
 			sampleSizeValueLabel.setText(Integer.toString(measurements.size()));
@@ -198,14 +206,17 @@ public class RepositoryViewPanel implements UpdatePanel {
 			dataset.setType(HistogramType.FREQUENCY);
 			dataset.addSeries("Histogram", values, bins);
 			String plotTitle = "Histogram";
-			String xaxis = "number";
-			String yaxis = "value";
+			String xaxis = "Duration (minutes)";
+			String yaxis = "Frequency";
 			PlotOrientation orientation = PlotOrientation.VERTICAL;
 			boolean show = false;
 			boolean toolTips = false;
 			boolean urls = false;
 			JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis, yaxis, dataset, orientation, show, toolTips,
 					urls);
+//			XYPlot plot = chart.getXYPlot();
+//			NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+//		    rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 			chartPanel = new ChartPanel(chart);
 		}
 		return chartPanel;
