@@ -61,6 +61,14 @@ public class RestClientProxy {
 		 System.out.println(response);
 	}
 	
+	public String getProcessName(String processName) {
+		 WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
+		 WebTarget applicationDomainRestFacadeGetResource = applicationDomainRestDirectoryRestFacade.path("getProcessName").queryParam("processName",processName);
+		 Invocation.Builder invocationBuilder = applicationDomainRestFacadeGetResource.request(MediaType.TEXT_XML);
+		 String response =  invocationBuilder.get(String.class);
+		 return(response);
+	}
+	
 	public void getProcessXML() throws IOException {   
 		 WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
 		 WebTarget applicationDomainRestFacadeGetResource = applicationDomainRestDirectoryRestFacade.path("getProcessXML");
@@ -127,6 +135,14 @@ public class RestClientProxy {
 		printProcesses(result);
  
 	}
+	
+	public void setDefaultProcess(String processName) {
+		 WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
+ 		 WebTarget applicationDomainRestFacadeGetResource = applicationDomainRestDirectoryRestFacade.path("setDefaultProcess");
+		 applicationDomainRestFacadeGetResource.request().post(Entity.entity(processName, MediaType.APPLICATION_XML));
+	}
+	
+	
 	
 	public void listAllMeasurements() {
 		WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
@@ -203,7 +219,7 @@ public class RestClientProxy {
 		 return applicationDomainRestFacadeResource;
 	}
 	
-	private void printProcesses(List<ProcessRepository> listProcessRepository) {
+	public void printProcesses(List<ProcessRepository> listProcessRepository) {
 		
 		for (ProcessRepository processRepository : listProcessRepository) {
 
@@ -255,6 +271,15 @@ public class RestClientProxy {
 			}
 			}
 	}
+	
+	public void sendProcessToRepository(ProcessRepository processRepository) throws IOException {   
+		 
+		 WebTarget applicationDomainRestDirectoryRestFacade = buildRestURI();
+		 WebTarget applicationDomainRestFacadeGetResource = applicationDomainRestDirectoryRestFacade.path("sendProcessToRepository");
+		 applicationDomainRestFacadeGetResource.request().post(Entity.entity(processRepository, MediaType.APPLICATION_XML));
+ 	}
+	
+	
 	 
 	 public static void main(String [] args) throws IOException{
 //		 new RestClientProxy().getHelloWorldString();
@@ -264,9 +289,11 @@ public class RestClientProxy {
 // 		 new RestClientProxy().listAllProcesses(); BUG
 //		 new RestClientProxy().listAllTasks();
 //		 new RestClientProxy().listAllMeasurements();
-		 new RestClientProxy().listAllMeasurementsForSpecificContent("Iteration [1..n]");  
+//		 new RestClientProxy().listAllMeasurementsForSpecificContent("Iteration [1..n]"); 
+//		 System.out.println(new RestClientProxy().getProcessName("xp_agile_alternative_1")); 
 //		 new RestClientProxy().getTask("Write acceptance tests"); BUG
-// 		 new RestClientProxy().sendProcessToRepository();  
+// 		 new RestClientProxy().sendProcessToRepository(); 
+		 new RestClientProxy().setDefaultProcess("Problem_report_process");
 		 System.out.println("Success !\n");
 	 }
 }

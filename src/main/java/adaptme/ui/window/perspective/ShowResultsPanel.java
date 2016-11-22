@@ -12,6 +12,7 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 import adaptme.IDynamicExperimentationProgramProxy;
 import adaptme.facade.SimulationManagerFacade;
+import adaptme.repository.web.client.RestClientProxy;
 import adaptme.ui.window.perspective.pane.AlternativeOfProcessPanel;
 import model.spem.ProcessRepository;
 import model.spem.SimulationFacade;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -46,6 +48,8 @@ public class ShowResultsPanel extends JPanel {
 	private SimulationFacade simulationFacade;
 	private SimulationManagerFacade simulationManagerFacade;
 	private SortedMap resultadoGlobal = new TreeMap(); // hoje, 16 nov, 11:41 veja comentarios abaixo
+	private RestClientProxy restClientProxy;
+
 	 
 	public ShowResultsPanel(ExperimentationPanel experimentationPanel, SimulationFacade simulationFacade, AlternativeOfProcessPanel alternativeOfProcessPanel) {
 		this.experimentationPanel =  experimentationPanel;
@@ -92,7 +96,7 @@ public class ShowResultsPanel extends JPanel {
  		configuraTableListener();
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 185, 1096, 504);
+		scrollPane.setBounds(16, 185, 1067, 504);
 		add(scrollPane);
 		
 		textArea = new JTextArea();
@@ -103,7 +107,7 @@ public class ShowResultsPanel extends JPanel {
 		add(btnShowResults);
 		
 		JButton btnSimulateAnotherAlternative = new JButton("Simulate another alternative of process");
-		btnSimulateAnotherAlternative.setBounds(1114, 468, 290, 29);
+		btnSimulateAnotherAlternative.setBounds(1108, 470, 290, 29);
 		add(btnSimulateAnotherAlternative);
 		
 		JButton btnClear = new JButton("Clear ");
@@ -114,6 +118,45 @@ public class ShowResultsPanel extends JPanel {
 		});
 		btnClear.setBounds(1212, 415, 117, 29);
 		add(btnClear);
+		
+		JButton btnSendHighlightedProcess = new JButton("Send process alternative to the repository");
+		btnSendHighlightedProcess.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message ="There exists a process in the repository with this name. Set it to default?"
+						+ "if you wold like to send it anyway, change its name";
+				indexSelectedRow = table.getSelectedRow();
+				String processAlternativeName = (String)table.getValueAt(indexSelectedRow, 0);
+				System.out.println("row selected...: " + indexSelectedRow );
+				restClientProxy = new RestClientProxy();
+				String resultado = restClientProxy.getProcessName(processAlternativeName);
+				
+				if (resultado.equals("TRUE")) { // there alread exists a process in the repository with this name.
+					int s = JOptionPane.showConfirmDialog(ShowResultsPanel.this, message, "", JOptionPane.YES_NO_OPTION);
+					if (s == 0) { // yes - set it to default
+						restClientProxy.setDefaultProcess(processAlternativeName);
+					} else {  }// no - do nothing
+				} else {  // there is no process with this name in the repository
+					List<ProcessRepository> processAlternatives = simulationFacade.getProcessAlternatives();
+					restClientProxy.printProcesses(processAlternatives);
+					for (ProcessRepository processAlternative: processAlternatives) {
+						if (processAlternative.getName().equals(processAlternativeName)) {
+							try {
+								restClientProxy.sendProcessToRepository(processAlternative);
+								restClientProxy.setDefaultProcess(processAlternativeName);
+								JOptionPane.showMessageDialog(ShowResultsPanel.this, "Process sucessfully sent to the repository. "
+										+ "It is now the current process to be enacted next in the project.");
+							} catch (IOException e1) {
+ 								System.out.println("Problem sending the chosen process to the repository");
+								e1.printStackTrace();
+							}
+						}
+					}
+				}	
+			}
+		});
+		
+		btnSendHighlightedProcess.setBounds(1101, 524, 303, 29);
+		add(btnSendHighlightedProcess);
 		btnSimulateAnotherAlternative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -130,8 +173,6 @@ public class ShowResultsPanel extends JPanel {
 		
 		btnShowResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				
 				String resultadoGlobalCabecalho = simulationManagerFacade.getResultadosCabecalho();
 				textArea.append(resultadoGlobalCabecalho);
  				String resultadoGlobalString = simulationManagerFacade.getResultadosGlobalString(experimentationPanel.getMapQueueVariableType());
