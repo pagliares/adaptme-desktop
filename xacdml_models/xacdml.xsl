@@ -283,7 +283,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
  <xsl:otherwise>
 
   <xsl:text>
-  iae = new InternalActiveEntry(true); //isn't router
+  iae = new InternalActiveEntry(false); //isn't router
   iae.SetId( "</xsl:text>
   <xsl:value-of select="@id"/>
   <xsl:text>"); //mapped by act id
