@@ -77,7 +77,7 @@ public class InternalActiveEntry extends ActiveEntry{
    */
   public InternalActiveEntry(boolean isRouter) {
     super();
-    isRouter = isRouter;
+    this.isRouter = isRouter;
     fq = new Vector(2, 2); //from queue?
     toq = new Vector(2, 2);//to queue?
     fr = new Vector(2, 2);
