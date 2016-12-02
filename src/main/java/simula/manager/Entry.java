@@ -62,7 +62,10 @@ public abstract class Entry implements java.io.Serializable
 	/**
 	 * Sets the id of the entry (unsafe)
 	 */
-	public final void SetId(String v_strId){	id = v_strId;	}
+	public final void SetId(String v_strId){	
+		id = v_strId;	
+		name = id;
+	}
 	/**
 	 * retorna o identificador do observador 
 	 */
