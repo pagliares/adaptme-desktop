@@ -283,9 +283,13 @@ public class Scheduler implements Runnable{
 			do{
 				executed = false;
 
-				for(short i = 0; i < activestates.size(); i++)
-					executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE
-				
+				for(short i = 0; i < activestates.size(); i++) 
+//				{
+					
+//					ActiveState a = (ActiveState)activestates.elementAt(i);
+//					if (a.name.equals("a_1"))
+						executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE
+//				}
 			}while(crescan && executed);	
 		}
 

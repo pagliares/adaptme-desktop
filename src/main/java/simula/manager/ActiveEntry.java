@@ -11,7 +11,7 @@ import java.io.*;
  */
 public abstract class ActiveEntry extends Entry{
   
-	private static int lastid;  // identificador �NICO para os estados ativos 
+	public static int lastid;  // identificador �NICO para os estados ativos 
 	static boolean hasSerialized = true; // "lastid j� foi serializado"
 		
 	// PAGLIARES: antes chamado SimObj
