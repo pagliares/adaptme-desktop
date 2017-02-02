@@ -6,9 +6,9 @@ package simula;
 
 import java.util.*;
 
-import simula.manager.QueueEntry;
+ 
 import simula.manager.SimulationManager;
-
+ 
 public class Scheduler implements Runnable{
 	private Calendar calendar;		// estrutura de armazenamento dos estados ativos a servir
 	private float clock = 0;		// rel�gio da simula��o
@@ -122,7 +122,7 @@ public class Scheduler implements Runnable{
 			simulation = new Thread(this);
 			simulation.setPriority(Thread.MAX_PRIORITY);
 			simulation.start();			// inicia execu��o
-			Log.LogMessage("Scheduler: simulation started");
+			Log.LogMessage("Scheduler: simulation started\n");
 
 			return true;
 		}
@@ -209,7 +209,7 @@ public class Scheduler implements Runnable{
 			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A
 			clock = calendar.getNextClock();
 			
-			Log.LogMessage("Scheduler: clock advanced to " + clock);
+			Log.LogMessage("\nScheduler: clock advanced to " + clock);
 			
 			// Pagliares
 			// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
@@ -237,7 +237,7 @@ public class Scheduler implements Runnable{
 			if(clock == 0.0){			// fim das entidades
 				running = false;
 				termreason = 1;			
-				Log.LogMessage("Scheduler: simulation finished due to end of entities");
+				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
 				Log.Close();
 				break;
 			}
@@ -245,7 +245,7 @@ public class Scheduler implements Runnable{
 			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
 				running = false;
 				termreason = 2;
-				Log.LogMessage("Scheduler: simulation finished due to end of simulation time");
+				Log.LogMessage("\nScheduler: simulation finished due to end of simulation time");
 				Log.Close();
 				break;
 			}
@@ -271,31 +271,83 @@ public class Scheduler implements Runnable{
 			do{
 				activeState = calendar.getNextActiveState();
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
-			}while(calendar.RemoveNext()); // ESTA LIMPANDO A LISTA SEM GENERATE ACTIVITY
+		
+//				changeDelimitersState(activeState); // PAGLIARES'code
+//				printDelimitersStateButTaskAndProcessDuration(activeState); // PAGLIARES'code
+ 
+			}while(calendar.RemoveNext());  
 
-			// PAGLIARES : COMENTEI AS DUAS ABAIXO SO PARA TESTE - da null pointer exception
 			if(!executed)				// se n�o havia nada a ser executado nesse instante
 				continue;				// pula para o pr�ximo sem executar a fase C.
 										// (as atividades podem ter alterado o tempo localmente) AQUI ESTA O ERRO PRECISO CONTROLAR ESTE FLAG EXECUTED
-			// PAGLIARES: COM GENERATE, PASSA DESTE IF
+			 
  			// Fase C
  
 			do{
 				executed = false;
 
-				for(short i = 0; i < activestates.size(); i++) 
-//				{
+				for(short i = 0; i < activestates.size(); i++) {	
+					ActiveState a = (ActiveState)activestates.elementAt(i);
+					executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE	
 					
-//					ActiveState a = (ActiveState)activestates.elementAt(i);
-//					if (a.name.equals("a_1"))
-						executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE
-//				}
+//					changeDelimitersState(a); // PAGLIARES'code
+//					printDelimitersStateButTaskAndProcessDuration(a);
+ 				}
 			}while(crescan && executed);	
 		}
 
 		stopped = true;			// sinaliza o encerramento
 		running = false;
 	}
+	
+//	private void changeDelimitersState(ActiveState activeState) {
+//		switch (activeState.name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
+//		case "Iteration":
+//			if (activeState.getIterationDelimiter().equals("BEGIN"))
+//					activeState.setIterationDelimiter("END");
+//				else
+//					activeState.setIterationDelimiter("BEGIN");	
+//			break;
+//		case "Release":
+//			if (activeState.getReleaseDelimiter().equals("BEGIN"))
+//				activeState.setReleaseDelimiter("END");
+//			else
+//				activeState.setReleaseDelimiter("BEGIN");	
+//		break;
+//		case "Activity":
+//			if (activeState.getActivityDelimiter().equals("BEGIN"))
+//				activeState.setActivityDelimiter("END");
+//			else
+//				activeState.setActivityDelimiter("BEGIN");	
+//		break;
+//		case "Phase":
+//			if (activeState.getPhaseDelimiter().equals("BEGIN"))
+//				activeState.setPhaseDelimiter("END");
+//			else
+//				activeState.setPhaseDelimiter("BEGIN");	
+//		break;
+//		}
+//	}
+	
+//	private void printDelimitersStateButTaskAndProcessDuration(ActiveState activeState) {
+//		switch (activeState.name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
+//		case "Iteration":
+//			Activity activity = (Activity)activeState;
+////			DeadState deadState = (DeadState)activity.getEntities_from_v().get(0);
+//// 			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getIterationDelimiter() + 
+////					"entity clock:"   + deadState.name);
+//			break;
+//		case "Release":
+//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getReleaseDelimiter()+ "clock: "  + clock);
+//			break;
+//		case "Activity":
+//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getActivityDelimiter()+ "clock: "  + clock);
+//			break;
+//		case "Phase":
+//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getPhaseDelimiter()+ "clock: "  + clock);
+//			break;
+//		}
+//	}
 
 	public float getEndclock() {
 		return endclock;
@@ -323,7 +375,7 @@ public class Scheduler implements Runnable{
 			simulation = new Thread(this);
 			simulation.setPriority(Thread.MAX_PRIORITY);
 			simulation.start();			// inicia execu��o
-			Log.LogMessage("Scheduler: simulation started");
+			Log.LogMessage("Scheduler: simulation started\n");
 
 			return true;
 		}

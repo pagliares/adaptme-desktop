@@ -1,5 +1,5 @@
 // Arquivo ActiveState.java
-// Implementação das Classes do Grupo de Modelagem da Biblioteca de Simulação JAVA
+// Implementaï¿½ï¿½o das Classes do Grupo de Modelagem da Biblioteca de Simulaï¿½ï¿½o JAVA
 // 26.Mar.1999	Wladimir
 
 package simula;
@@ -7,21 +7,32 @@ package simula;
 public abstract class ActiveState
 {
 	/**
-	 * referência ao Scheduler para registro e chamadas
+	 * referï¿½ncia ao Scheduler para registro e chamadas
 	 */
 	protected Scheduler s;		
 	/**
-	 * observador (para estatísticas)
+	 * observador (para estatï¿½sticas)
 	 */
 	protected ActiveObserver obs;
 	/**
 	 * nome (para identificar estado para o log)
 	 */
 	public String name = "";		
+	
+	// pagliares
+	// The delimiters are part of regular xacdml activities and routers, that the reason being place here and
+	// not in the Activity subclass. the delimiters are not part of special XACDML activities with no simulation time
+	// like iteration, phase, activity and milestones in SPEM
+//	private String releaseDelimiter =  "";
+//	private String iterationDelimiter =  "";
+//	private String activityDelimiter =  "";
+//	private String phaseDelimiter =  "";
+//	private String milestoneDelimiter =  "";
+	 
 
 	/**
 	 * registra com o Scheduler o estado ativo para ser servido na fase B 
-	 * daqui a time instantes; retorna o instante absoluto em que ocorrerá o serviço.
+	 * daqui a time instantes; retorna o instante absoluto em que ocorrerï¿½ o serviï¿½o.
 	 */
 	final protected float RegisterEvent(float time)
 	{
@@ -49,7 +60,7 @@ public abstract class ActiveState
 	}
 	
 	/**
-	 * Coloca objeto em seu estado inicial para simulação
+	 * Coloca objeto em seu estado inicial para simulaï¿½ï¿½o
 	 */
 	public void Clear()
 	{
@@ -59,12 +70,53 @@ public abstract class ActiveState
 	}
 	
 	/**
-	 * executa fase B com as entidades que devem ser servidas no tempo se simulação time;
-	 * retorna true se alguém foi servido.
+	 * executa fase B com as entidades que devem ser servidas no tempo se simulaï¿½ï¿½o time;
+	 * retorna true se alguï¿½m foi servido.
 	 */
 	public abstract boolean BServed(float time);
 	/**
 	 * executa a fase C; retorna true se algum evento condicional ocorreu.
 	 */
 	public abstract boolean CServed();
+	
+ 
+//	public String getActivityDelimiter() {
+//		return activityDelimiter;
+//	}
+//
+//	public void setActivityDelimiter(String activityDelimiter) {
+//		this.activityDelimiter = activityDelimiter;
+//	}
+//
+//	public String getReleaseDelimiter() {
+//		return releaseDelimiter;
+//	}
+//
+//	public void setReleaseDelimiter(String releaseDelimiter) {
+//		this.releaseDelimiter = releaseDelimiter;
+//	}
+//
+//	public String getIterationDelimiter() {
+//		return iterationDelimiter;
+//	}
+//
+//	public void setIterationDelimiter(String iterationDelimiter) {
+//		this.iterationDelimiter = iterationDelimiter;
+//	}
+//
+//	public String getPhaseDelimiter() {
+//		return phaseDelimiter;
+//	}
+//
+//	public void setPhaseDelimiter(String phaseDelimiter) {
+//		this.phaseDelimiter = phaseDelimiter;
+//	}
+//
+//	public String getMilestoneDelimiter() {
+//		return milestoneDelimiter;
+//	}
+//
+//	public void setMilestoneDelimiter(String milestoneDelimiter) {
+//		this.milestoneDelimiter = milestoneDelimiter;
+//	}
 }

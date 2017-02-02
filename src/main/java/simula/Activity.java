@@ -154,9 +154,17 @@ public class Activity extends ActiveState{
 				obs.Outgoing(inServiceEntities.entities[i]);
 		}
 		
-		for(int i = 0; i < inServiceEntities.entities.length; i++)
+		for(int i = 0; i < inServiceEntities.entities.length; i++) {
 			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
+		
+			// pagliares
+//		   Log.LogMessage("Entity END time...: " + (int)inServiceEntities.entities[i].getActivityEndTime());
+//			changeDelimitersState();
+//
+//			Log.LogMessage("Delimiter...: " + this.getActivityDelimiter());
+
+		}
  		return true;
 	}
 	
@@ -191,6 +199,10 @@ public class Activity extends ActiveState{
 		
 			possible.entities[i] = entity = ((DeadState)entities_from_v.elementAt(i)).dequeue();
 																// retira entidades...
+			
+//			possible.entities[i].setActivityBeginTime(s.GetClock()); // Pagliares' code to calculate
+			// time an entity spends on a process
+			
 			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;
 																// e testa condi��o
 		}
@@ -212,7 +224,7 @@ public class Activity extends ActiveState{
 			((ResourceQ)resources_from_v.elementAt(i)).
 				Acquire(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());
 				
-			Log.LogMessage(name + ":Acquired " + qt + " resources from " +
+			Log.LogMessage("\n" + name + ":Acquired " + qt + " resources from " +
 				((ResourceQ)resources_from_v.elementAt(i)).name);
 		}
 
@@ -225,10 +237,17 @@ public class Activity extends ActiveState{
 				obs.Incoming(possible.entities[i]);
 		}
 
-		for(i = 0; i < possible.entities.length; i++)
+		for(i = 0; i < possible.entities.length; i++) {
 			Log.LogMessage(name + ":Entity " + possible.entities[i].getId() +
 				" got from " + ((DeadState)entities_from_v.elementAt(i)).name);
+			
+			// pagliares
+//			Log.LogMessage("Entity BEGIN time...: " + possible.entities[i].getActivityBeginTime());
+//			changeDelimitersState();
+//			Log.LogMessage("Delimiter...: " + this.getActivityDelimiter());
 
+ 			
+		}
 		return true;
 	}
 	
@@ -428,5 +447,38 @@ public class Activity extends ActiveState{
 		*/
 		return true;
 	}
+
+	public Vector getEntities_from_v() {
+		return entities_from_v;
+	}
+	
+//	private void changeDelimitersState() {
+//		switch (name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
+//		case "Iteration":
+//			if (getIterationDelimiter().equals("BEGIN"))
+//					setIterationDelimiter("END");
+//				else
+//					setIterationDelimiter("BEGIN");	
+//			break;
+//		case "Release":
+//			if (getReleaseDelimiter().equals("BEGIN"))
+//				setReleaseDelimiter("END");
+//			else
+//				setReleaseDelimiter("BEGIN");	
+//		break;
+//		case "Activity":
+//			if (getActivityDelimiter().equals("BEGIN"))
+//				setActivityDelimiter("END");
+//			else
+//				setActivityDelimiter("BEGIN");	
+//		break;
+//		case "Phase":
+//			if (getPhaseDelimiter().equals("BEGIN"))
+//				setPhaseDelimiter("END");
+//			else
+//				setPhaseDelimiter("BEGIN");	
+//		break;
+//		}
+//	}
 	
 }

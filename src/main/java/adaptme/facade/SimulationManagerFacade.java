@@ -496,5 +496,101 @@ public class SimulationManagerFacade {
 	public void setExperimentationPanel(ExperimentationPanel experimentationPanel) {
 		this.experimentationPanel = experimentationPanel;
 	}
+	
+	public void executeFromConsole(float simulationDuration, int numberReplications) {
+		double acumulatedNumberOfDays = 0.0;
+		double acumulatedNumberOfUserStories = 0.0;
+		double acumulateNumberOfIterations = 0.0;
+		double acumulateNumberOfReleases = 0.0;
+		this.numberOfSimulationRuns = numberReplications;
+		numberOfDaysPerReplication = new double[numberReplications];
+		numberOfReleasesPerReplication = new double[numberReplications];
+		numberOfproducedUserStoriesPerReplication = new double[numberReplications];
+		numberOfIterationsPerReplication = new double[numberReplications];
+
+		for (int i = 0; i < numberReplications; i++) {
+			epp = DynamicExperimentationProgramProxyFactory.newInstance();
+
+			epp.setSimulationDuration(simulationDuration);
+			epp.execute(simulationDuration);
+			this.simulationManager = (SimulationManager) epp.getSimulationManager(); // nao funciona no construtor
+																						
+			// output to console implemented by Pagliares
+			// Imprime numero de dias, armazena a replicacao corrente em um mapa para posterior calculo agregado
+
+			simulationManager.OutputSimulationResultsConsole();  
+																 
+			System.out.println("Execution #" + (i + 1));
+			double numberOfDays = simulationManager.getScheduler().GetClock() / 480;
+			numberOfDaysPerReplication[i] = numberOfDays;
+			System.out.println("Project duration: " + numberOfDays + " days"); // 480 minutes = 1 day 
+																				
+			acumulatedNumberOfDays += numberOfDays;
+
+			HashMap queues = simulationManager.getQueues();
+			Set keys = queues.keySet();
+
+			for (Object queueName : keys) {
+				System.out.println("\nQueue name : " + queueName);
+				QueueEntry qe = (QueueEntry) queues.get(queueName);
+
+				// ambas saidas abaixo retornam a variavel count
+				System.out.println("Nunber of entities in queue via getCount: " + qe.deadState.getCount());
+				// System.out.println("numero de entidadas na fila: via ObsLength, basta mudar simobj para o novo nome" + qe.SimObj.getCount());
+			}
+
+			resultadoGlobal.put("run #" + (i + 1), queues);
+
+			if (simulationManager.getScheduler().hasIteration()) {
+				System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
+				numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
+				acumulateNumberOfIterations += simulationManager.getScheduler().getNumberOfIterations();
+				 System.out.println("Displaying results by iteration");
+				 printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
+			} else {
+				System.out.println("number of iterations ..: " + 0);
+				numberOfIterationsPerReplication[i] = 0;
+				acumulateNumberOfIterations += 0;
+			}
+
+			if (simulationManager.getScheduler().hasRelease()) {
+				System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
+				acumulateNumberOfReleases += simulationManager.getScheduler().getNumberOfReleases();
+				numberOfReleasesPerReplication[i] = simulationManager.getScheduler().getNumberOfReleases();
+			} else {
+				System.out.println("number of releases ..: " + 0);
+				acumulateNumberOfReleases += 0;
+				numberOfReleasesPerReplication[i] = 0;
+			}
+
+			System.out.println("\nDisplaying global results");
+
+			// String selectedProcessAlternativeName = showResultsPanel.getSelectedProcessAlternativeName();
+//			int currentProessAlternativeIndex = simulationFacade.getProcessAlternatives().size() - 1;
+//			String selectedProcessAlternativeName = simulationFacade.getProcessAlternatives().get(currentProessAlternativeIndex).getName();
+//
+//			resultsSimulationMap.put(selectedProcessAlternativeName + i, epp); // armazena replicacoes
+//			resultsSimulationMapAdaptMe.put(selectedProcessAlternativeName + i, getResultadosCabecalho()+ "\n" + 
+//			                                getResultadosGlobalString(experimentationPanel.getMapQueueVariableType()));
+			
+			epp.getSimulationManager().getScheduler().Stop();
+			epp.getSimulationManager().getScheduler().Clear();
+
+			epp = null;
+			Activity.counter = 0;
+			ActiveEntry.lastid = 0; // se nao fizer isso, a cada replicacao os numeros de atividades vao so aumentando. Tem impacto na classe Scheduler
+									// metodo run(), onde tento controlar o inicio de uma atividade via Math.random quando mais de uma atividade
+			                        // tem a mesma atividade com predecessora em SPEM ou em outras palavras, quando mais de uma atividade tem como 
+			                        // a mesma fila como previous state.
+		}
+
+		this.averageNumberOfDays = acumulatedNumberOfDays / numberReplications * 10 / 10;
+		this.averageNumberOfIterations = acumulateNumberOfIterations / numberReplications;
+		this.averageNumberOfImplementedUserStories = acumulatedNumberOfUserStories / numberReplications;
+		this.averageNumberOfReleases = acumulateNumberOfReleases / numberReplications;
+
+		System.out.println("Average number of days ..: " + averageNumberOfDays);
+		printResultadosGlobal();
+	}
 
 }

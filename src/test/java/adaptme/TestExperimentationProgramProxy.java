@@ -1,12 +1,14 @@
 package adaptme;
 
+import adaptme.facade.SimulationManagerFacade;
 import simula.manager.SimulationManager;
 
 public class TestExperimentationProgramProxy {
 
 	public static void main(String[] args) {
-		IDynamicExperimentationProgramProxy experimentationProgramProxy = new DynamicExperimentationProgramProxy();
-		experimentationProgramProxy.execute(500);
+		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
+		simulationManagerFacade.executeFromConsole(20000, 1);
+		 
 
 	}
 

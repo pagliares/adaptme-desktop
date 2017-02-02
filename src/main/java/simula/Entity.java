@@ -27,6 +27,9 @@ public class Entity { // pagliares, public para ser acessado via QueueEntry
 	private float timeInLastQueue = 0;			// tempo que passou na �ltima fila
 
 	private HashMap attributes;
+	
+//	public double activityBeginTime = 0.0;
+//	public double activityEndTime = 0.0;
 
 	/**
 	 * constr�i uma entidade e atribui o instante da sua cria��o.
@@ -134,5 +137,21 @@ public class Entity { // pagliares, public para ser acessado via QueueEntry
 	public float getTimeInLastQueue(){
 		return timeInLastQueue;
 	}
+
+//	public double getActivityBeginTime() {
+//		return activityBeginTime;
+//	}
+//
+//	public void setActivityBeginTime(double activityBeginTime) {
+//		this.activityBeginTime = activityBeginTime;
+//	}
+//
+//	public double getActivityEndTime() {
+//		return activityEndTime;
+//	}
+//
+//	public void setActivityEndTime(double activityEndTime) {
+//		this.activityEndTime = activityEndTime;
+//	}
 		
 }

@@ -33,7 +33,11 @@ public class InternalActiveEntry extends ActiveEntry{
    * condi��es (strings) associadas;
    * se router de sa�da, sen�o de entrada
    */
-  private Vector conditions;					
+  private Vector conditions;			
+  
+  // Pagliares
+//  private String activityDelimiter =  "";
+//  private String activityIDfromSPEM = "";
     
   public String toString(){
 	StringBuffer stb = new StringBuffer();
@@ -278,4 +282,16 @@ public class InternalActiveEntry extends ActiveEntry{
 		conditions.trimToSize();
 		quantityUsedResource.trimToSize();
 	}
+//public String getActivityDelimiter() {
+//	return activityDelimiter;
+//}
+//public void setActivityDelimiter(String activityDelimiter) {
+//	this.activityDelimiter = activityDelimiter;
+//}
+//public String getActivityIDfromSPEM() {
+//	return activityIDfromSPEM;
+//}
+//public void setActivityIDfromSPEM(String activityIDfromSPEM) {
+//	this.activityIDfromSPEM = activityIDfromSPEM;
+//}
 }
