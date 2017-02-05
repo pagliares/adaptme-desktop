@@ -106,7 +106,7 @@ public class ExperimentationPanel extends JPanel {
 				showResultsPanel.updateShowResultsPanelTable(numberReplications);
 				simulationFacade.addNumberOfSimulationRuns(numberReplications);
 				float sDuration = Float.parseFloat(simulationDurationTextField.getText());
-				simulationManagerFacade.execute(sDuration, numberReplications);  
+				simulationManagerFacade.execute(sDuration, numberReplications, false);  
 				
 				HashMap queues = simulationManagerFacade.getSimulationManager().getQueues();
 				Set keys = queues.keySet();

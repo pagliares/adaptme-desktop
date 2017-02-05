@@ -108,3 +108,19 @@ hist( as.integer(rlnre(Z, 1000)))
 
 17) Atualizei PersistProcess para ter suporte ao openUp dentro do AdaptMe. SHA-1 5d933bc. Talvez tenha que atualizar 
 PersistProcessWeb
+
+18) erro ArrayIndexOutOfBoundsException quando se define o tamanho de uma fila com 50 e coloca 50 entidades
+(se cadastrar 49 nao da o erro. Alguma variavel vai de zero a 49
+
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Array index out of range: 0
+	at java.util.Vector.get(Vector.java:748)
+	at simula.manager.InternalActiveEntry.setup(InternalActiveEntry.java:188)
+	at simula.manager.InternalActiveEntry.generate(InternalActiveEntry.java:113)
+	at simula.manager.SimulationManager.GenerateModel(SimulationManager.java:600)
+	at adaptme.DynamicExperimentationProgramProxy.execute(DynamicExperimentationProgramProxy.java:143)
+	at adaptme.facade.SimulationManagerFacade.execute(SimulationManagerFacade.java:486)
+	at TestSimulationFromConsole.main(TestSimulationFromConsole.java:12)
+
+19) Para testar do console, execute a classe TestSimulationFromConsole (de dentro do eclipse). Ela chama
+objeto DynamicExperimentationProgramProxy (colar o conteudo a ser testado a partir dos casos de teste na pasta
+implementacao 

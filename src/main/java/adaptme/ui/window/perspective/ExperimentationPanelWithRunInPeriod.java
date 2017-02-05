@@ -123,7 +123,7 @@ public class ExperimentationPanelWithRunInPeriod extends JPanel {
 				int numberReplications = Integer.parseInt(numberOfReplicationsTextField.getText());
 				showResultsPanel.updateShowResultsPanelTable(numberReplications);
 				simulationFacade.addNumberOfSimulationRuns(numberReplications);
-				simulationManagerFacade.execute(Float.parseFloat(simulationDurationTextField.getText()), numberReplications); // TODO buscar do text field
+				simulationManagerFacade.execute(Float.parseFloat(simulationDurationTextField.getText()), numberReplications, false); // TODO buscar do text field
 				tabbedPaneActivity4.setSelectedIndex(2); // show resultsPanel
 			 
 				
