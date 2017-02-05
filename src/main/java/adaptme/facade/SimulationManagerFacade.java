@@ -538,7 +538,8 @@ public class SimulationManagerFacade {
 		dynamicExperimentationProgramProxy.getSimulationManager().getScheduler().Clear();
 
 		dynamicExperimentationProgramProxy = null;
-		Activity.counter = 0;
+//		Activity.counter = 0;
+		Activity.isBeginOfSimulation = true;
 		ActiveEntry.lastid = 0; // se nao fizer isso, a cada replicacao os numeros de atividades vao so aumentando. Tem impacto na classe Scheduler
 								// metodo run(), onde tento controlar o inicio de uma atividade via Math.random quando mais de uma atividade
 		                        // tem a mesma atividade com predecessora em SPEM ou em outras palavras, quando mais de uma atividade tem como 
