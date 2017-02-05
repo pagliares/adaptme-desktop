@@ -114,7 +114,7 @@ public abstract class ActiveEntry extends Entry{
    */
   protected boolean setup(SimulationManager m)
   {
-System.out.println("ActiveEntry.Setup. name = "+name);	  
+//System.out.println("\tActiveEntry.Setup. name = "+name);	  
   	activeState.name = name;
 		if(obsid == null)			// nada para criar
 			return true;

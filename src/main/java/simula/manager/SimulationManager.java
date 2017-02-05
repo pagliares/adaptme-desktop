@@ -803,7 +803,7 @@ public class SimulationManager implements Serializable{
 	 */
 	public synchronized boolean OutputSimulationResults(String filename)
 	{
-		System.out.println("OutputSimulationResults "+filename);
+		System.out.println("Simulation results stored in the file /output/"+filename);
 		PrintStream os;
 		FileOutputStream ofile;
 		
@@ -848,7 +848,7 @@ public class SimulationManager implements Serializable{
 		return true;
 	}
 	
-	public synchronized boolean OutputSimulationResultsConsole(){
+	public synchronized boolean outputSimulationResultsConsoleAsImplementedByWladimir(){
 		System.out.println("OutputSimulationResults ");
 		PrintStream os;
 		FileOutputStream ofile;

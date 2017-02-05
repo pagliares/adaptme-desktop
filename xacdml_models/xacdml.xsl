@@ -54,9 +54,11 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
  }
  
  public void execute(float simulationTime) {
-  System.out.println("\nGeracao de </xsl:text>
-  <xsl:value-of select="@id"/>
-  <xsl:text> atraves de Simulation Manager");
+  // System.out.println("\nGeracao de </xsl:text>
+  // <xsl:value-of select="@id"/>
+  // <xsl:text> atraves de Simulation Manager");
+  // System.out.println("\n\t\t\tSIMULATION RESULTS AS IMPLEMENTED BY WLADIMIR\n");
+  // System.out.println("ACD activiites created");
   
   QueueEntry qe;//queues 
   ResourceEntry re;//resource queues
@@ -105,13 +107,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   //generate the model
 
   if (man.GenerateModel())
-     System.out.println("\nModel successfuly generated!");
-  else
-  {
-     System.out.println("\nThere was an errors during the model generation!");
-     System.out.println("Exiting...");
-     return;
-  }
+  //   System.out.println("\nModel successfuly generated!\n");
+  //else
+  //{
+  //   System.out.println("\nThere was an errors during the model generation!\n");
+  //   System.out.println("Exiting...\n");
+  //   return;
+  //}
 
   //start the simulation
 
@@ -128,7 +130,8 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
    <xsl:value-of select="$time"/>");
   </xsl:variable> -->
   
-    System.out.println("Starting the simulation. Simulation wil run unitl time=" + simulationDuration);
+   //System.out.println("Starting the simulation. Each simulation replication (execution) wil run unitl time=" + simulationDuration + 
+    //		" equivalent to " + simulationDuration/480 + " days\n");
   
 
  
@@ -178,10 +181,10 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
    catch(InterruptedException e) {break;}
   }
 
-  System.out.println("Simulation Stopped!");
+  //System.out.println("Simulation Stopped!\n");
 
   //finally, output the results
-  man.OutputSimulationResults (" <xsl:value-of select="@id"/><xsl:text>.out");</xsl:text>
+  //man.OutputSimulationResults (" <xsl:value-of select="@id"/><xsl:text>.out");</xsl:text>
 
 </xsl:template>
 

@@ -52,7 +52,7 @@ public class ExternalActiveEntry extends ActiveEntry{
    * Seta o ID da Queue associada
    */
   public void setQID(String v_strQID){
-	  System.out.println("EAE: id "+id+".setQID "+v_strQID);
+//	  System.out.println("EAE: id "+id+".setQID "+v_strQID);
 	  qid = v_strQID;
   }
   
@@ -92,8 +92,8 @@ public class ExternalActiveEntry extends ActiveEntry{
 			((Generate)activeState).ConnectQueue(m.GetQueue(qid).deadState);
 		}
 		else	{
-			System.out.println("ExternalActiveEntry.Setup id= "+id+" qid"+qid);
-			System.out.println("ExternalActiveEntry.Setup "+activeState+" "+m.GetQueue(qid));
+			System.out.println("\tExternalActiveEntry.Setup id= "+id+" qid"+qid);
+			System.out.println("\tExternalActiveEntry.Setup "+activeState+" "+m.GetQueue(qid));
 			((Destroy)activeState).ConnectQueue(m.GetQueue(qid).deadState);
 		}
 
