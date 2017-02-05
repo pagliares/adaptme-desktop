@@ -31,7 +31,8 @@ public class Activity extends ActiveState{
 	 */
 	protected boolean blocked;	
 	
-	public static int counter = 0; // Pagliares
+	public static int acounter = 0; // Pagliares
+	public static boolean isBeginOfSimulation = true;
   
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -103,10 +104,16 @@ public class Activity extends ActiveState{
 			
 		InServiceEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue();
 
-		if (counter == 0) { // pagliares 
-			counter = counter +1; // pagliares
+		if (isBeginOfSimulation) { // pagliares 
+			isBeginOfSimulation = false; // pagliares
 			return true; // pagliares
 		}
+		
+//		if (counter ==0) { // pagliares 
+//			counter = counter +1; // pagliares
+//			return true; // pagliares
+//		}
+		
 		if(inServiceEntities == null)								// n�o h� mais nada a servir
 			return false;
 
