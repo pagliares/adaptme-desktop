@@ -303,6 +303,10 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   </xsl:choose>
   <xsl:apply-templates select="entity_class"/>
   <xsl:text>
+  iae.setDependencyType("</xsl:text>
+  <xsl:value-of select="@dependency_type"/>
+  <xsl:text>"); //mapped by act dependency type
+  
   man.AddActiveState(iae);
   </xsl:text>
  </xsl:otherwise>
