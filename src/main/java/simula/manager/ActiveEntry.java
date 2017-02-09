@@ -151,4 +151,10 @@ public abstract class ActiveEntry extends Entry{
 	public float getDistP2(){	return distp2;	}
 	public void setDistP1(float v_fDistP1){	distp1 = v_fDistP1;	}
 	public void setDistP2(float v_fDistP2){	distp2 = v_fDistP2;	}
+	public simula.ActiveState getActiveState() {
+		return activeState;
+	}
+	public void setActiveState(simula.ActiveState activeState) {
+		this.activeState = activeState;
+	}
 }

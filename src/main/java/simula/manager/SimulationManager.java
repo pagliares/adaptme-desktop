@@ -32,7 +32,7 @@ public class SimulationManager implements Serializable{
 											// de t�rmino da simula��o
 	private transient float resettime = 0;  // instante em que as 
 	
-	 
+    public static int quantityOfEntitiesInClass;
 
 	/**
 	 * Creates a new, ready to use SimulationManager
@@ -570,6 +570,7 @@ public class SimulationManager implements Serializable{
 			while(iterator.hasNext()){
 				queueEntry = (QueueEntry)iterator.next();
 				if(!queueEntry.generate(this)){
+					
 					System.err.println("Imposs�vel criar fila " + queueEntry.id);
 					return false;
 				}

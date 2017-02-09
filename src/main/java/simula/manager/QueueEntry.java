@@ -16,7 +16,7 @@ public class QueueEntry extends Entry
 {
 	private static int lastid;	// identificador �NICO para as filas
 	static boolean hasSerialized = true; // "lastid j� foi serializado"
-	public int intialQuantity;
+	public int initialQuantity;
 	
 	/**
 	 * FIFO, STACK, PRIORITY:
@@ -92,14 +92,20 @@ public class QueueEntry extends Entry
 		switch(policy)	{
 			case FIFO: 
 				deadState = new simula.FifoQ(m.scheduler, max); 
+				if (initialQuantity != 0)    // pagliares
+		 			m.quantityOfEntitiesInClass = initialQuantity; // Assume que inicialmente apenas um dea state possui um numero de entidades diferente de zero
 				createAndEnqueueEntities(); // Pagliares
 				break;
 			case STACK:
 				deadState = new simula.StackQ(m.scheduler, max); 
+				if (initialQuantity != 0)    // pagliares
+		 			m.quantityOfEntitiesInClass = initialQuantity; // Assume que inicialmente apenas um dea state possui um numero de entidades diferente de zero
 				createAndEnqueueEntities(); // Pagliares
 				break;
 			case PRIORITY: 
-				deadState = new simula.PriorityQ(m.scheduler, max); 
+				deadState = new simula.PriorityQ(m.scheduler, max);
+				if (initialQuantity != 0)    // pagliares
+		 			m.quantityOfEntitiesInClass = initialQuantity; // Assume que inicialmente apenas um dea state possui um numero de entidades diferente de zero
 				createAndEnqueueEntities(); // Pagliares
 				break;
 			default: 
@@ -139,10 +145,11 @@ public class QueueEntry extends Entry
  	// initial entities on the first queue of the simulation. Make the same to the other options of the 
  	// switch, refactoring 
  	private boolean createAndEnqueueEntities() {
- 		for (int i=0; i < intialQuantity; i++) {
+ 		for (int i=0; i < initialQuantity; i++) {
  			Entity e = new Entity(0); // 0 is the time of creation. I am using zero to indicate before simulation start
  			deadState.enqueue(e);  
  		}
+ 		
  		return true;
  	}
 }
