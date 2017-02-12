@@ -564,7 +564,7 @@ public class SimulationManager implements Serializable{
 			ObserverEntry observerEntry;
 			HistogramEntry histogramEntry;
 			
-			// agora os estados mortos
+			// Gera os dead states 
 
 			iterator = queues.values().iterator();
 			while(iterator.hasNext()){
@@ -588,7 +588,7 @@ public class SimulationManager implements Serializable{
 
 			// da� os ativos
 			
-			// 1.o limpa os objs de simula��o (devido �s InterruptActivity's)
+			// 1.o limpa os objs de simulacaoo (devido as InterruptActivity's)
 			iterator = activestates.values().iterator();
 			while(iterator.hasNext()){
 				activeEntry = (ActiveEntry)iterator.next();
@@ -609,27 +609,32 @@ public class SimulationManager implements Serializable{
 			}
 		}
 		
-		// cria, por �ltimo, as vari�veis globais
+		// cria, por ultimo, as variaveis globais
 		
 		Expression.globals = new Variables();
 		
 		QueueEntry queueEntry = null;
 		ResourceEntry resourceEntry = null;
-		HashMap deadsHashMap = new HashMap(queues.size() + resources.size());
 		
+		// Map that associates a dead state String name with A Dead State Object
+		// renamed by pagliares to include dictionary. Original name deadsHashMap
+		HashMap deadsHashMapDictionay = new HashMap(queues.size() + resources.size());
+		
+		// Preenche deadsHashMapDictionary com dead states
 		iterator = queues.values().iterator();
 		while(iterator.hasNext()){
 			queueEntry = (QueueEntry)iterator.next();
-			deadsHashMap.put(queueEntry.name, queueEntry.deadState);		
+			deadsHashMapDictionay.put(queueEntry.name, queueEntry.deadState);		
 		}
 		
+		// Preenche deadsHashMapDictionary com dead states - resources
 		iterator = resources.values().iterator();
 		while(iterator.hasNext()){
 			resourceEntry = (ResourceEntry)iterator.next();
-			deadsHashMap.put(resourceEntry.name, resourceEntry.SimObj);		
+			deadsHashMapDictionay.put(resourceEntry.name, resourceEntry.SimObj);		
 		}
 		
-		Expression.globals.AssignQueuesTable(deadsHashMap);
+		Expression.globals.AssignQueuesTable(deadsHashMapDictionay);
 		
 		Var var = null;
 		iterator = attributeTable.getVarsIterator();
@@ -648,7 +653,7 @@ public class SimulationManager implements Serializable{
 	{
 		boolean ok = false; // TODO melhor nome: isRunning, isSimulationStarted
 		
-		if(endTime >= 0 && scheduler != null)	// o modelo j� deve ter sido gerado
+		if(endTime >= 0 && scheduler != null)	// o modelo ja deve ter sido gerado. scheduler e gerado no metodo generateModel
 		{
 			Log.Close();
 			Log.OpenFile();

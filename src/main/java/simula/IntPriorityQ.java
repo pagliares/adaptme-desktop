@@ -19,9 +19,9 @@ class IntPriorityQ {
 	/**
 	 * coloca no fim da fila de acordo com o instante de servi�o
 	 */
-	public void Enqueue(InServiceEntitiesUntilDueTime inServiceEntities){
+	public void Enqueue(InServiceTemporaryEntitiesUntilDueTime inServiceEntities){
 		int min, max, cur;	// max pode ser negativo (qdo for inserir no come�o)
-		InServiceEntitiesUntilDueTime inServiceEntities2;
+		InServiceTemporaryEntitiesUntilDueTime inServiceEntities2;
 		// encontra posi��o de inser��o baseado no tempo de servi�o de IntQEntry e.
 		// implementa busca bin�ria, j� que os elementos es�o ordenados por tempo.
 		min = 0;
@@ -29,7 +29,7 @@ class IntPriorityQ {
 		cur = 0;
 		while(min <= max){
 			cur = (min + max) / 2;
-			inServiceEntities2 = (InServiceEntitiesUntilDueTime)queue.elementAt(cur);
+			inServiceEntities2 = (InServiceTemporaryEntitiesUntilDueTime)queue.elementAt(cur);
 			if(inServiceEntities.duetime < inServiceEntities2.duetime)
 				max = cur - 1;
 			else if(inServiceEntities.duetime >= inServiceEntities2.duetime)				// ap�s os de mesma prioridade 
@@ -44,16 +44,16 @@ class IntPriorityQ {
 	 * n�o � checado o tempo de servi�o, portanto s� deve ser usada se for para elemento que
 	 * acabou de ser retirado atrav�s de Dequeue
 	 */
-	public void PutBack(InServiceEntitiesUntilDueTime e){	
+	public void PutBack(InServiceTemporaryEntitiesUntilDueTime e){	
 		queue.insertElementAt(e, 0);
 	}
 	
 	/**
 	 * retira da cabe�a da fila.
 	 */
-	public InServiceEntitiesUntilDueTime Dequeue(){
+	public InServiceTemporaryEntitiesUntilDueTime Dequeue(){
 		try{
-			InServiceEntitiesUntilDueTime inServiceEntities = (InServiceEntitiesUntilDueTime)queue.firstElement();
+			InServiceTemporaryEntitiesUntilDueTime inServiceEntities = (InServiceTemporaryEntitiesUntilDueTime)queue.firstElement();
 			queue.removeElementAt(0);
 			return inServiceEntities;
 		}
@@ -65,9 +65,9 @@ class IntPriorityQ {
 	/**
 	 * retira do fim da fila
 	 */
-	public InServiceEntitiesUntilDueTime FromTail(){
+	public InServiceTemporaryEntitiesUntilDueTime FromTail(){
 		try{
-			InServiceEntitiesUntilDueTime e = (InServiceEntitiesUntilDueTime)queue.lastElement();
+			InServiceTemporaryEntitiesUntilDueTime e = (InServiceTemporaryEntitiesUntilDueTime)queue.lastElement();
 			queue.removeElementAt(queue.size() - 1);
 			return e;
 		}

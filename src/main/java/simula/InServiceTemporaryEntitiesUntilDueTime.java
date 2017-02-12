@@ -4,17 +4,17 @@
 
 package simula;
 
-class InServiceEntitiesUntilDueTime{  // Pagliares: named IntQEntry before I refactor it out
+class InServiceTemporaryEntitiesUntilDueTime{  // Pagliares: named IntQEntry before I refactor it out
 	/**
-	 * vetor de entidades em servi�o
+	 * vetor de entidades em servico
 	 */
 	public Entity entities[];				
 	/**
-	 * instante de fim de servi�o
+	 * instante de fim de servico
 	 */
 	public float duetime;		
 
-	public InServiceEntitiesUntilDueTime(int nentities, float duetime){
+	public InServiceTemporaryEntitiesUntilDueTime(int nentities, float duetime){
 		entities = new Entity[nentities];
 		this.duetime = duetime;
 	}

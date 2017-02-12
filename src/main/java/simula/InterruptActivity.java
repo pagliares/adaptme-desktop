@@ -31,12 +31,12 @@ public class InterruptActivity extends Activity
 	 */
 	public boolean Interrupt(InterruptActivity a)
 	{
-		InServiceEntitiesUntilDueTime e = queueOfEntitiesAndResourcesInService.FromTail(); // interrompe o servi�o mais demorado
+		InServiceTemporaryEntitiesUntilDueTime e = queueOfEntitiesAndResourcesInService.FromTail(); // interrompe o servi�o mais demorado
 		if(e == null)
 			return false;	// n�o tinha servi�o para interromper
 			
 		for(int i = 0; i < e.entities.length; i++)		// devolve as entidades �s respectivas filas
-			((DeadState)entities_from_v.elementAt(i)).putBack(e.entities[i]);
+			((DeadState)dead_states_from_v.elementAt(i)).putBack(e.entities[i]);
 		
 		for(int i = 0; i < resources_from_v.size(); i++)	// e os recursos
 			((ResourceQ)resources_from_v.elementAt(i)).
@@ -58,10 +58,10 @@ public class InterruptActivity extends Activity
 		if(blocked)					// n�o vai interromper ningu�m se estiver bloquado
 			return false;
 			
-		int esize = entities_from_v.size();
+		int esize = dead_states_from_v.size();
 		boolean ok = true;
 		for(int i = 0; i < esize && ok; i++)					
-			ok &= ((DeadState)entities_from_v.elementAt(i)).HasEnough();
+			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
 
 		if(!ok)
 			return false;

@@ -98,7 +98,7 @@ public class Router extends ActiveState{
 		if(blocked)									// n�o faz nada enquanto estiver bloqueado
 			return false;
 
-		InServiceEntitiesUntilDueTime e = service_q.Dequeue();  
+		InServiceTemporaryEntitiesUntilDueTime e = service_q.Dequeue();  
 
 		if(e == null)						// n�o h� mais nada a servir
 			return false;
@@ -184,7 +184,7 @@ public class Router extends ActiveState{
 		if(!ok)					// se alguma entidade ou recurso n�o estiver dispon�vel
 			return false;		// n�o realiza nada e informa scheduler
 		
-		InServiceEntitiesUntilDueTime entry = new InServiceEntitiesUntilDueTime(esize, (float)d.Draw());
+		InServiceTemporaryEntitiesUntilDueTime entry = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw());
 
 		// retira entidades...
 
