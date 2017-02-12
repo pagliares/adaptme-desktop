@@ -51,8 +51,13 @@ public abstract class DeadState
 	/**
 	 * retorna true se h� uma entidade (ou recurso) para ser retirada.
 	 */
-	public boolean HasEnough()	
-	{return 1 <= count;}
+	public boolean HasEnough()	{
+		return 1 <= count;
+	}
+	
+	public boolean hasEnoughBatchProcessing(int quantityOfEntitiesInClass)	{
+		return quantityOfEntitiesInClass == count;
+	}
 	
 	/**
 	 * retorna o tamanho da fila (para ser usado por Observer).

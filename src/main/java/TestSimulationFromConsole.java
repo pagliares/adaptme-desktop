@@ -9,7 +9,7 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-		simulationManagerFacade.execute(28800, 3, true);
+		simulationManagerFacade.execute(20, 1, true);
 		
 		
 		
