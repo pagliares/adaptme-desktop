@@ -16,7 +16,7 @@ public class Activity extends ActiveState{
 	 * resources_from_v, resources_to_v, resources_qt_v:
 	 * vetores que mant�m as liga��es e par�metros
 	 */
-	protected Vector entities_from_v, entities_to_v, conditions_from_v,
+	protected Vector dead_states_from_v, entities_to_v, conditions_from_v,
 					 	resources_from_v, resources_to_v, resources_qt_v;
 													
 	private Distribution d;		// gerador de n�meros aleat�rios de uma dada distribui��o
@@ -31,8 +31,15 @@ public class Activity extends ActiveState{
 	 */
 	protected boolean blocked;	
 	
-	public static int acounter = 0; // Pagliares
-	public static boolean isBeginOfSimulation = true;
+ 	public static boolean isBeginOfSimulation = true;
+	
+	private String dependencyType = "";
+	private String acd_processing_type = "";
+	private String spemType = "";
+	private String processingUnit = "";
+	
+	private int numberOfEntitiesProduced = 0;
+	private double timeWasStarted = 0.0;
   
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -40,7 +47,7 @@ public class Activity extends ActiveState{
 	public Activity(Scheduler s){
 		super(s);
 		// constr�i vetores de liga��es
-		entities_from_v = new Vector(1, 1);
+		dead_states_from_v = new Vector(1, 1);
 		entities_to_v = new Vector(1, 1);
 		conditions_from_v = new Vector(1, 1);
 		resources_from_v = new Vector(1, 1);
@@ -56,9 +63,6 @@ public class Activity extends ActiveState{
 	public void SetServiceTime(Distribution d){
 		this.d = d;
 		RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
-		 
-		// ACHO QUE TENHO QUE COLOCAR A GALERA PARA TRABALHAR AQUI
-//			solucao();
   	}
 	
 	public void ConnectQueues(DeadState from, DeadState to){
@@ -82,7 +86,7 @@ public class Activity extends ActiveState{
 	 */
 	public void ConnectQueues(DeadState from, Expression cond, DeadState to){
 		conditions_from_v.add(cond);
-		entities_from_v.add(from);
+		dead_states_from_v.add(from);
 		entities_to_v.add(to);
 	}
 	
@@ -102,29 +106,22 @@ public class Activity extends ActiveState{
 		if(blocked)									// n�o faz nada enquanto estiver bloqueado
 			return false;
 			
-		InServiceEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue();
+		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue();
 
 		if (isBeginOfSimulation) { // pagliares 
 			isBeginOfSimulation = false; // pagliares
 			return true; // pagliares
 		}
 		
-//		if (counter ==0) { // pagliares 
-//			counter = counter +1; // pagliares
-//			return true; // pagliares
-//		}
-		
 		if(inServiceEntities == null)								// n�o h� mais nada a servir
 			return false;
 
-		
-		
 		if(time < inServiceEntities.duetime){			// servi�o foi interrompido e scheduler n�o foi notificado									
 			queueOfEntitiesAndResourcesInService.PutBack(inServiceEntities);		// devolve � fila para ser servido mais tarde
 			return false;
 		}
 
-		// fim de servi�o!
+		// fim de servico!
 		
 		boolean shouldnotblock = true;
 
@@ -164,14 +161,8 @@ public class Activity extends ActiveState{
 		for(int i = 0; i < inServiceEntities.entities.length; i++) {
 			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
-		
-			// pagliares
-//		   Log.LogMessage("Entity END time...: " + (int)inServiceEntities.entities[i].getActivityEndTime());
-//			changeDelimitersState();
-//
-//			Log.LogMessage("Delimiter...: " + this.getActivityDelimiter());
-
 		}
+		numberOfEntitiesProduced++;
  		return true;
 	}
 	
@@ -189,7 +180,7 @@ public class Activity extends ActiveState{
 			
 		// primeiro verifica se todos os recursos e entidades est�o dispon�veis
 		boolean ok = true;
-		int esize = entities_from_v.size();
+		int esize = dead_states_from_v.size();
 		int i;
 
 		for(i = 0; i < resources_from_v.size() && ok; i++)	// os recursos...
@@ -197,14 +188,14 @@ public class Activity extends ActiveState{
 				HasEnough(((Integer)resources_qt_v.elementAt(i)).intValue());
 
 		for(i = 0; i < esize && ok; i++)					// as entidades...
-			ok &= ((DeadState)entities_from_v.elementAt(i)).HasEnough();
+			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
 
-		InServiceEntitiesUntilDueTime possible = new InServiceEntitiesUntilDueTime(esize, (float)d.Draw());
+		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw());
 		Entity entity;
 		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
 		for(i = 0; i < esize && ok; i++) {					// as condi��es.
 		
-			possible.entities[i] = entity = ((DeadState)entities_from_v.elementAt(i)).dequeue();
+			possible.entities[i] = entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue();
 																// retira entidades...
 			
 //			possible.entities[i].setActivityBeginTime(s.GetClock()); // Pagliares' code to calculate
@@ -218,7 +209,7 @@ public class Activity extends ActiveState{
 			if(i > 0)		// alguma condi��o n�o foi satisfeita
 			{
 				for(i--; i >= 0; i--)		// devolve as entidades �s respectivas filas
-					((DeadState)entities_from_v.elementAt(i)).putBack(possible.entities[i]);
+					((DeadState)dead_states_from_v.elementAt(i)).putBack(possible.entities[i]);
 			}
 
 			return false;
@@ -246,7 +237,7 @@ public class Activity extends ActiveState{
 
 		for(i = 0; i < possible.entities.length; i++) {
 			Log.LogMessage(name + ":Entity " + possible.entities[i].getId() +
-				" got from " + ((DeadState)entities_from_v.elementAt(i)).name);
+				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
 			
 			// pagliares
 //			Log.LogMessage("Entity BEGIN time...: " + possible.entities[i].getActivityBeginTime());
@@ -289,7 +280,7 @@ public class Activity extends ActiveState{
 			name  =  toqueue =   root =    list =  
 		*/
 //		 COLOQUEI A LINHA ABAIXO = PARECE QUE TEM UM CONFLITO ENTRE VARIAVEL LOCAL E NAO LOCAL
-		InServiceEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue(); // RETORNA NULL na primeira passagem, processo com generate e duas atividades
+		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue(); // RETORNA NULL na primeira passagem, processo com generate e duas atividades
  //		InServiceEntities inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue(); // RETORNA NULL na primeira passagem, processo com generate e duas atividades
 
 		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY
@@ -364,7 +355,7 @@ public class Activity extends ActiveState{
 		
 		
 		boolean ok = true;
-		int sizeEntitiesFrom = entities_from_v.size();
+		int sizeEntitiesFrom = dead_states_from_v.size();
 		int i;
 
 		for(i = 0; i < resources_from_v.size() && ok; i++)	// os recursos...
@@ -372,12 +363,12 @@ public class Activity extends ActiveState{
 				HasEnough(((Integer)resources_qt_v.elementAt(i)).intValue());
 
 		for(i = 0; i < sizeEntitiesFrom && ok; i++)					// as entidades...
-			ok &= ((DeadState)entities_from_v.elementAt(i)).HasEnough();
+			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
 
 		// A linha abaixo e minha - 6 sept
 //		inServiceEntities = new InServiceEntities(sizeEntitiesFrom, (float)d.Draw());
 
-		InServiceEntitiesUntilDueTime inServiceEntities = new InServiceEntitiesUntilDueTime(sizeEntitiesFrom, (float)d.Draw());
+		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = new InServiceTemporaryEntitiesUntilDueTime(sizeEntitiesFrom, (float)d.Draw());
 		
 		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
 		FIRST HIT IN THE BREAKPOINT 
@@ -392,7 +383,7 @@ public class Activity extends ActiveState{
 		Entity entity;
 		for(i = 0; i < sizeEntitiesFrom && ok; i++) {					// as condi��es.
 		
-			inServiceEntities.entities[i] = entity = ((DeadState)entities_from_v.elementAt(i)).dequeue();
+			inServiceEntities.entities[i] = entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue();
 																// retira entidades...
 			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;
 																// e testa condi��o
@@ -401,7 +392,7 @@ public class Activity extends ActiveState{
 		if(!ok){
 			if(i > 0){	// alguma condi��o n�o foi satisfeita	
 				for(i--; i >= 0; i--)		// devolve as entidades �s respectivas filas
-					((DeadState)entities_from_v.elementAt(i)).putBack(inServiceEntities.entities[i]);
+					((DeadState)dead_states_from_v.elementAt(i)).putBack(inServiceEntities.entities[i]);
 			}
 			return false;
 		}
@@ -440,7 +431,7 @@ public class Activity extends ActiveState{
 
 		for(i = 0; i < inServiceEntities.entities.length; i++)
 			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
-				" got from " + ((DeadState)entities_from_v.elementAt(i)).name);
+				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
 
 		
 		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
@@ -456,7 +447,63 @@ public class Activity extends ActiveState{
 	}
 
 	public Vector getEntities_from_v() {
-		return entities_from_v;
+		return dead_states_from_v;
+	}
+
+	public static boolean isBeginOfSimulation() {
+		return isBeginOfSimulation;
+	}
+
+	public static void setBeginOfSimulation(boolean isBeginOfSimulation) {
+		Activity.isBeginOfSimulation = isBeginOfSimulation;
+	}
+
+	public String getSpemType() {
+		return spemType;
+	}
+
+	public void setSpemType(String spemType) {
+		this.spemType = spemType;
+	}
+
+	public String getProcessingUnit() {
+		return processingUnit;
+	}
+
+	public void setProcessingUnit(String processingUnit) {
+		this.processingUnit = processingUnit;
+	}
+
+	public int getNumberOfEntitiesProduced() {
+		return numberOfEntitiesProduced;
+	}
+
+	public void setNumberOfEntitiesProduced(int numberOfEntitiesProduced) {
+		this.numberOfEntitiesProduced = numberOfEntitiesProduced;
+	}
+
+	public double getTimeWasStarted() {
+		return timeWasStarted;
+	}
+
+	public void setTimeWasStarted(double timeWasStarted) {
+		this.timeWasStarted = timeWasStarted;
+	}
+
+	public String getDependencyType() {
+		return dependencyType;
+	}
+
+	public void setDependencyType(String dependencyType) {
+		this.dependencyType = dependencyType;
+	}
+
+	public String getAcd_processing_type() {
+		return acd_processing_type;
+	}
+
+	public void setAcd_processing_type(String acd_processing_type) {
+		this.acd_processing_type = acd_processing_type;
 	}
 	
 //	private void changeDelimitersState() {

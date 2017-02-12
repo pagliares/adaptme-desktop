@@ -33,7 +33,12 @@ public class InternalActiveEntry extends ActiveEntry{
    * condi��es (strings) associadas;
    * se router de sa�da, sen�o de entrada
    */
-  private Vector conditions;			
+  private Vector conditions;	
+  
+  private String dependencyType = "";
+  private String acd_processing_type = "";
+  private String spemType = "";
+  private String processingUnit = "";
   
   // Pagliares
 //  private String activityDelimiter =  "";
@@ -89,6 +94,7 @@ public class InternalActiveEntry extends ActiveEntry{
     conditions = new Vector(2, 2); //conditions
     quantityUsedResource = new Vector(2, 2);
     isInternal = true;
+   
   }
   
   public void copyAttributes(Entry v_e) {
@@ -195,6 +201,11 @@ public class InternalActiveEntry extends ActiveEntry{
 					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
 			}
 			
+			// Pagliares
+			Activity a = (Activity)activeState;
+			a.setDependencyType(dependencyType);
+			a.setAcd_processing_type(acd_processing_type);
+			a.setProcessingUnit(processingUnit);
 		}
 		
 		return true;	
@@ -294,4 +305,27 @@ public class InternalActiveEntry extends ActiveEntry{
 //public void setActivityIDfromSPEM(String activityIDfromSPEM) {
 //	this.activityIDfromSPEM = activityIDfromSPEM;
 //}
+ 
+public String getDependencyType() {
+	return dependencyType;
+}
+public void setDependencyType(String dependencyType) {
+	this.dependencyType = dependencyType;
+}
+public String getAcd_processing_type() {
+	return acd_processing_type;
+}
+public void setAcd_processing_type(String acd_processing_type) {
+	this.acd_processing_type = acd_processing_type;
+}
+public void setSpemType(String spemType) {
+	this.spemType = spemType;
+	
+}
+public String getProcessingUnit() {
+	return processingUnit;
+}
+public void setProcessingUnit(String processingUnit) {
+	this.processingUnit = processingUnit;
+}
 }

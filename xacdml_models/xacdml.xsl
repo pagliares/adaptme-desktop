@@ -193,7 +193,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:text>
   qe = new QueueEntry();
   qe.SetId("</xsl:text><xsl:value-of select="@id"/><xsl:text>");//mapped by dead id</xsl:text>
-  qe.intialQuantity = <xsl:value-of select="type/@init"/>;
+  qe.initialQuantity = <xsl:value-of select="type/@init"/>;
   qe.setMax((short)<xsl:value-of select="type/@size"/><xsl:text>);
   </xsl:text>
    
@@ -210,6 +210,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   re.setInit((short) </xsl:text>
   <xsl:value-of select="type/@init"/>
   <xsl:text>);
+  
   </xsl:text>
   <xsl:apply-templates select="observer"/>
   <xsl:text>man.AddResource(re);</xsl:text>
@@ -303,10 +304,18 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   </xsl:choose>
   <xsl:apply-templates select="entity_class"/>
   <xsl:text>
+  iae.setSpemType("</xsl:text>
+  <xsl:value-of select="@spem_type"/>
+  <xsl:text>"); //mapped by spem_type
   iae.setDependencyType("</xsl:text>
   <xsl:value-of select="@dependency_type"/>
   <xsl:text>"); //mapped by act dependency type
-  
+  iae.setAcd_processing_type("</xsl:text>
+  <xsl:value-of select="@acd_processing_type"/>
+  <xsl:text>"); //mapped by acd_processing_type
+  iae.setProcessingUnit("</xsl:text>
+  <xsl:value-of select="@processing_unit"/>
+  <xsl:text>"); //mapped by spem_type
   man.AddActiveState(iae);
   </xsl:text>
  </xsl:otherwise>
