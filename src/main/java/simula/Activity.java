@@ -38,8 +38,7 @@ public class Activity extends ActiveState{
 	private String spemType = "";
 	private String processingUnit = "";
 	
-	private int numberOfEntitiesProduced = 0;
-	private double timeWasStarted = 0.0;
+	 
   
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -162,8 +161,7 @@ public class Activity extends ActiveState{
 			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
 		}
-		numberOfEntitiesProduced++;
- 		return true;
+  		return true;
 	}
 	
 	public boolean CServed(){
@@ -197,9 +195,6 @@ public class Activity extends ActiveState{
 		
 			possible.entities[i] = entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue();
 																// retira entidades...
-			
-//			possible.entities[i].setActivityBeginTime(s.GetClock()); // Pagliares' code to calculate
-			// time an entity spends on a process
 			
 			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;
 																// e testa condi��o
@@ -238,214 +233,10 @@ public class Activity extends ActiveState{
 		for(i = 0; i < possible.entities.length; i++) {
 			Log.LogMessage(name + ":Entity " + possible.entities[i].getId() +
 				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
-			
-			// pagliares
-//			Log.LogMessage("Entity BEGIN time...: " + possible.entities[i].getActivityBeginTime());
-//			changeDelimitersState();
-//			Log.LogMessage("Delimiter...: " + this.getActivityDelimiter());
-
- 			
 		}
 		return true;
 	}
 	
-	private boolean solucao() {
-		
-				return true;
-	}
-	
-	/**
-	 * implementa protocolo.
-	 */
-	public boolean BServedBackup(float time){
-		// Pagliares
-		// TODO CT-00 -  SO GENERATE (First pass). VARIAVEIS: inServiceEntities =  
-		// TODO CT-00 PAGLIARES: (Second pass) ANTES DA INSTRUCAO SO GENERATE: list =  null   , root = generate,  child = nao existe 
-				
-				 
-		// @TODO PAGLIARES: (First pass) ANTES DA INSTRUCAO SO ACTIVITY: list =   null  , root =  activity   ,  child =  nao existe
-		// @TODO PAGLIARES: (Second pass) ANTES DA INSTRUCAO SO ACTIVITY: list =  null    , root =  null (PROBLEMA)   ,  child =  nao existe
-				
-		// @TODO PAGLIARES (CT_03): (First pass) ANTES DA INSTRUCAO GENERATE AND TWO ACTIVITIES: list = null     , root = activity a_1      ,  child = nao existe 
-		// @TODO PAGLIARES(CT_03) (Second pass) ANTES DA INSTRUCAO GENERATE AND TWO ACTIVITIES: list =  null     , root =  activity a_1      ,  child =   nao existe
- 
-		
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0
-			inServiceEntities =  nao existe
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-//		 COLOQUEI A LINHA ABAIXO = PARECE QUE TEM UM CONFLITO ENTRE VARIAVEL LOCAL E NAO LOCAL
-		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue(); // RETORNA NULL na primeira passagem, processo com generate e duas atividades
- //		InServiceEntities inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue(); // RETORNA NULL na primeira passagem, processo com generate e duas atividades
-
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0
-			inServiceEntities =  NULL
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		
-		
-		if(inServiceEntities == null)								// n�o h� mais nada a servir
-			return false; // PAGLIARES. AQUI FAZ O FLAG EXECUTED RETORNAR FALSE
-
-		for(int i = 0; i < entities_to_v.size(); i++)	{	// as entidades...
-			DeadState deadState = (DeadState)entities_to_v.elementAt(i);	// obt�m fila associada
-			if(deadState.HasSpace())										// se tem espa�o
-				deadState.enqueue(inServiceEntities.entities[i]);									// envia ao estado morto
-		}
-		
-		for(int i = 0; i < resources_to_v.size(); i++){		// e os recursos.
-			int qt;
-			ResourceQ resourceQueue = (ResourceQ)resources_to_v.elementAt(i);	// obt�m fila associada
-			resourceQueue.Release(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());// envia ao estado morto
-			Log.LogMessage(name + ":Released " + qt + " resources to " +
-				((ResourceQ)resources_to_v.elementAt(i)).name);
-		}
-
-		if(obs != null){
-			if(queueOfEntitiesAndResourcesInService.IsEmpty())
-				obs.StateChange(Observer.IDLE);
-			for(int i = 0; i < inServiceEntities.entities.length; i++)
-				obs.Outgoing(inServiceEntities.entities[i]);
-		}
-		
-		for(int i = 0; i < inServiceEntities.entities.length; i++)
-			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
-				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
-			
-		// NAO CHEGA NESTE PONTO inServiceEntities FICA NULL, FAZENDO COM QUE O METODO RETORNE COM FALSE
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name:      toqueue =              root =    list =  
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		
- 		return true;
-	}
-	
-	/**
-	 * implementa protocolo.
-	 */
-	public boolean CServedBackup(){
-         // CONTINUAR DAQUI. PARECE QUE O PROBLE E QUE SEM GENERATE, INSERVICE ENTITIES NAO EG CRIADO
-		// primeiro verifica se todos os recursos e entidades est�o dispon�veis
-		
-		
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0  entity
-			inServiceEntities =  nao existe
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		
-		
-		boolean ok = true;
-		int sizeEntitiesFrom = dead_states_from_v.size();
-		int i;
-
-		for(i = 0; i < resources_from_v.size() && ok; i++)	// os recursos...
-			ok &= ((ResourceQ)resources_from_v.elementAt(i)).
-				HasEnough(((Integer)resources_qt_v.elementAt(i)).intValue());
-
-		for(i = 0; i < sizeEntitiesFrom && ok; i++)					// as entidades...
-			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
-
-		// A linha abaixo e minha - 6 sept
-//		inServiceEntities = new InServiceEntities(sizeEntitiesFrom, (float)d.Draw());
-
-		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = new InServiceTemporaryEntitiesUntilDueTime(sizeEntitiesFrom, (float)d.Draw());
-		
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0  entity
-			inServiceEntities =  nao existe
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		
-		Entity entity;
-		for(i = 0; i < sizeEntitiesFrom && ok; i++) {					// as condi��es.
-		
-			inServiceEntities.entities[i] = entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue();
-																// retira entidades...
-			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;
-																// e testa condi��o
-		}
-
-		if(!ok){
-			if(i > 0){	// alguma condi��o n�o foi satisfeita	
-				for(i--; i >= 0; i--)		// devolve as entidades �s respectivas filas
-					((DeadState)dead_states_from_v.elementAt(i)).putBack(inServiceEntities.entities[i]);
-			}
-			return false;
-		}
-
-		// obt�m os recursos
-
-		for(i = 0; i < resources_from_v.size(); i++){
-			int quantity;	
-			((ResourceQ)resources_from_v.elementAt(i)).
-				Acquire(quantity = ((Integer)resources_qt_v.elementAt(i)).intValue());
-				
-			Log.LogMessage(name + ":Acquired " + quantity + " resources from " +
-				((ResourceQ)resources_from_v.elementAt(i)).name);
-		}
-
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0
-			inServiceEntities =  nao existe
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		
-		inServiceEntities.duetime = RegisterEvent(inServiceEntities.duetime);		// notifica scheduler
-		queueOfEntitiesAndResourcesInService.Enqueue(inServiceEntities);							// coloca na fila de servi�o
-		
-		 
-		
-		if(obs != null){
-			obs.StateChange(Observer.BUSY);
-			for(i = 0; i < inServiceEntities.entities.length; i++)
-				obs.Incoming(inServiceEntities.entities[i]);
-		}
-
-		for(i = 0; i < inServiceEntities.entities.length; i++)
-			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
-				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
-
-		
-		/* TODO CT-02 - PROCESS  WITH PRIORITIZE USER STORIES ONLY (NAO CAI AQUI NESTE CASO TESTE)
-		FIRST HIT IN THE BREAKPOINT 
-			VARIAVEIS: time = 3.52   entity = nao existe   this.inservice = false  
-			name: a_o     toq = nao existe             this.s.calendar.root =null    this.s.calendar.list = activity a_0
-			inServiceEntities =  nao existe
-		SECOND HIT IN THE BREAKPOINT 
-			VARIAVEIS: time =    entity =    inservice =    
-			name  =  toqueue =   root =    list =  
-		*/
-		return true;
-	}
-
 	public Vector getEntities_from_v() {
 		return dead_states_from_v;
 	}
@@ -474,22 +265,6 @@ public class Activity extends ActiveState{
 		this.processingUnit = processingUnit;
 	}
 
-	public int getNumberOfEntitiesProduced() {
-		return numberOfEntitiesProduced;
-	}
-
-	public void setNumberOfEntitiesProduced(int numberOfEntitiesProduced) {
-		this.numberOfEntitiesProduced = numberOfEntitiesProduced;
-	}
-
-	public double getTimeWasStarted() {
-		return timeWasStarted;
-	}
-
-	public void setTimeWasStarted(double timeWasStarted) {
-		this.timeWasStarted = timeWasStarted;
-	}
-
 	public String getDependencyType() {
 		return dependencyType;
 	}
@@ -505,34 +280,4 @@ public class Activity extends ActiveState{
 	public void setAcd_processing_type(String acd_processing_type) {
 		this.acd_processing_type = acd_processing_type;
 	}
-	
-//	private void changeDelimitersState() {
-//		switch (name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
-//		case "Iteration":
-//			if (getIterationDelimiter().equals("BEGIN"))
-//					setIterationDelimiter("END");
-//				else
-//					setIterationDelimiter("BEGIN");	
-//			break;
-//		case "Release":
-//			if (getReleaseDelimiter().equals("BEGIN"))
-//				setReleaseDelimiter("END");
-//			else
-//				setReleaseDelimiter("BEGIN");	
-//		break;
-//		case "Activity":
-//			if (getActivityDelimiter().equals("BEGIN"))
-//				setActivityDelimiter("END");
-//			else
-//				setActivityDelimiter("BEGIN");	
-//		break;
-//		case "Phase":
-//			if (getPhaseDelimiter().equals("BEGIN"))
-//				setPhaseDelimiter("END");
-//			else
-//				setPhaseDelimiter("BEGIN");	
-//		break;
-//		}
-//	}
-	
 }

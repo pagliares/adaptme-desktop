@@ -31,6 +31,7 @@ public class Scheduler implements Runnable{
 	private float iterationDuration;  // pagliares
 	private float releaseDuration;  // pagliares
 	
+	// CODIGO A SER REMOVIDO QUANDO ITERACAO FOR REPRESENTADA POR DUMMY ACTIVITIES
 	private int numberOfIterations = 1; // Pagliares. Precisa ser um. vide metodo run sobreescrito
 	private int numberOfReleases = 0; // Pagliares. diferentemente de iteration, so contamos release quando entrega
 	private int multiploIterations = 2; // Pagliares: usado para se contar apenas uma vez uma iteracao quando o clock for maior que a duracao da iteracao
@@ -106,12 +107,12 @@ public class Scheduler implements Runnable{
 	public synchronized boolean Run(double endtime){
 		hasIteration = false;
 		hasRelease = false;
-		if(endtime < 0.0)				// rel�gio n�o pode ser negativo
-			return false;				// se for 0.0 executa at� acabarem as entidades
+		if(endtime < 0.0)				// relogio nao pode ser negativo
+			return false;				// se for 0.0 executa ate acabarem as entidades ( @TODO DUMMY ACTIVITY TIP)
 
 		if(!running) { // @TODO INICIA A SIMULACAO PELA PRIMEIRA VEZ
 		
-			if(activestates.isEmpty())	// se n�o h� nenhum estado ativo registrado, 
+			if(activestates.isEmpty())	// se nao ha nenhum estado ativo registrado, 
 				return false;			// como executar?
 			activestates.trimToSize();
 			running = true;
@@ -206,41 +207,42 @@ public class Scheduler implements Runnable{
 		
 		while(running){
 			
-			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A
-			clock = calendar.getNextClock();
+			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A // quando chega aqui pela primeira vez, ja esta agendada atividades no calendar
+			clock = calendar.getNextClock(); // @TODO colocar breakpoint aqui para verificar o porque de estar agendando inicialmente mais tarefas para alguns testes de caso
+			Log.LogMessage("\nBegin of phase A - 3 Phase approach");
+			Log.LogMessage("\tScheduler: clock advanced to " + clock);
 			
-			Log.LogMessage("\nScheduler: clock advanced to " + clock);
+			storeResultsIfEndOfIteration();
 			
-			// Pagliares
-			// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
-			// precisa de um tick a mais de clock, pelo menos para iniciar uma nova
+			storeResultsIfEndOfRelease();
 			
-			if ((int)clock/iterationDuration > multiploIterations) {
-				    multiploIterations++;
-					numberOfIterations++;
-					// insere os resultados da iteracao. Fazer o mesmo para atividades
-					getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getQueues());
-					// para observers
-					// getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getObservers());
-			}
-			
-			// Pagliares
-			// Se clock corrente for multiplo do tempo de release definido como parametro, indica o fim de release
-			// precisa de um tick a mais de clock, pelo menos para iniciar uma nova 
-			if ((int)clock/releaseDuration > multiploRelease) {
-					multiploRelease++;
-					numberOfReleases++;
-			}
-			
-			// verifica se simula��o chegou ao fim
+			// verifica se simulacao chegou ao fim
 
-			if(clock == 0.0){			// fim das entidades
+			ActiveState activeState;
+			
+             // acho que matei, Clock == zero so termina quando SPEM TYPE for TASK
+			
+			// Se for uma dummy activity nao pode parar com clock zero sendo a unica atividade
+//			activeState = calendar.getNextActiveState();
+//			Activity activity = (Activity) activeState;
+//			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
+//				if(clock == 0.0){			// fim das entidades
+//					running = false;
+//					termreason = 1;			
+//					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+//					Log.Close();
+//					break;
+//				}
+//			}
+			
+			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
 				running = false;
 				termreason = 1;			
 				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
 				Log.Close();
 				break;
 			}
+			
 			
 			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
 				running = false;
@@ -250,104 +252,83 @@ public class Scheduler implements Runnable{
 				break;
 			}
 			
-			// pagliares - Gera excecao para outros processos 
-//			QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
-//			QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
-//			if (lastQueue.deadState.count == firstQueue.intialQuantity) {
-//				running = false;
-//				termreason = 1;			
-//				Log.LogMessage("Scheduler: simulation finished due to end of entities");
-//				Log.Close();
-//				break;
-//			}
+			Log.LogMessage("End of phase A");
 
 			boolean executed;			// se algum evento B ou C foi executado
 			
 			// Fase B
-			
+			Log.LogMessage("\nBegin of phase B - 3 Phase approach");
+			//	Log.LogMessage("\tSimulation clock at begin of phase B : " + s.GetClock() +   "(ticks)," + s.GetClock()/60 + "(hours), " + s.GetClock()/480 + "(days)");
+
 			executed = false;
-			ActiveState activeState;
 
 			do{
 				activeState = calendar.getNextActiveState();
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
-		
-//				changeDelimitersState(activeState); // PAGLIARES'code
-//				printDelimitersStateButTaskAndProcessDuration(activeState); // PAGLIARES'code
- 
 			}while(calendar.RemoveNext());  
 
-			if(!executed)				// se n�o havia nada a ser executado nesse instante
-				continue;				// pula para o pr�ximo sem executar a fase C.
-										// (as atividades podem ter alterado o tempo localmente) AQUI ESTA O ERRO PRECISO CONTROLAR ESTE FLAG EXECUTED
-			 
+			if(!executed)				// se n�o havia nada a ser executado nesse instante pula para o pr�ximo sem executar a fase C.
+				continue;				// (as atividades podem ter alterado o tempo localmente)  
+ 			
+			Log.LogMessage("End of phase B");
+			
  			// Fase C
- 
+			Log.LogMessage("\nBegin of phase C - 3 Phase approach");
+			
 			do{
 				executed = false;
 
 				for(short i = 0; i < activestates.size(); i++) {	
 					ActiveState a = (ActiveState)activestates.elementAt(i);
 					executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE	
-					
-//					changeDelimitersState(a); // PAGLIARES'code
-//					printDelimitersStateButTaskAndProcessDuration(a);
  				}
+				
 			}while(crescan && executed);	
+			
+		    Log.LogMessage("End of phase C");
 		}
 
 		stopped = true;			// sinaliza o encerramento
 		running = false;
+		
+		
+		 // pagliares - Gera excecao para outros processos 
+		//                     QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
+		//                     QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
+		//                     if (lastQueue.deadState.count == firstQueue.intialQuantity) {
+		//                             running = false;
+		//                             termreason = 1;                 
+		//                             Log.LogMessage("Scheduler: simulation finished due to end of entities");
+		//                             Log.Close();
+		//                             break;
+
+	}
+
+	private void storeResultsIfEndOfRelease() {
+		// Pagliares
+		// Se clock corrente for multiplo do tempo de release definido como parametro, indica o fim de release
+		// precisa de um tick a mais de clock, pelo menos para iniciar uma nova 
+		if ((int)clock/releaseDuration > multiploRelease) {
+				multiploRelease++;
+				numberOfReleases++;
+		}
+	}
+
+	private void storeResultsIfEndOfIteration() {
+		// Pagliares
+		// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
+		// precisa de um tick a mais de clock, pelo menos para iniciar uma nova
+		
+		if ((int)clock/iterationDuration > multiploIterations) {
+			    multiploIterations++;
+				numberOfIterations++;
+				// insere os resultados da iteracao. Fazer o mesmo para atividades
+				getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getQueues());
+				// para observers
+				// getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getObservers());
+		}
 	}
 	
-//	private void changeDelimitersState(ActiveState activeState) {
-//		switch (activeState.name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
-//		case "Iteration":
-//			if (activeState.getIterationDelimiter().equals("BEGIN"))
-//					activeState.setIterationDelimiter("END");
-//				else
-//					activeState.setIterationDelimiter("BEGIN");	
-//			break;
-//		case "Release":
-//			if (activeState.getReleaseDelimiter().equals("BEGIN"))
-//				activeState.setReleaseDelimiter("END");
-//			else
-//				activeState.setReleaseDelimiter("BEGIN");	
-//		break;
-//		case "Activity":
-//			if (activeState.getActivityDelimiter().equals("BEGIN"))
-//				activeState.setActivityDelimiter("END");
-//			else
-//				activeState.setActivityDelimiter("BEGIN");	
-//		break;
-//		case "Phase":
-//			if (activeState.getPhaseDelimiter().equals("BEGIN"))
-//				activeState.setPhaseDelimiter("END");
-//			else
-//				activeState.setPhaseDelimiter("BEGIN");	
-//		break;
-//		}
-//	}
-	
-//	private void printDelimitersStateButTaskAndProcessDuration(ActiveState activeState) {
-//		switch (activeState.name){ // ISSO E TASK, NAO E LEVADO EM CONSIDERACAO. JUSTIFICA A NECESSIDADE DO ATRIBUTO SPEM_TYPE PARA ALL BUT TASK
-//		case "Iteration":
-//			Activity activity = (Activity)activeState;
-////			DeadState deadState = (DeadState)activity.getEntities_from_v().get(0);
-//// 			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getIterationDelimiter() + 
-////					"entity clock:"   + deadState.name);
-//			break;
-//		case "Release":
-//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getReleaseDelimiter()+ "clock: "  + clock);
-//			break;
-//		case "Activity":
-//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getActivityDelimiter()+ "clock: "  + clock);
-//			break;
-//		case "Phase":
-//			System.out.println("Delimiter for XACDML " + activeState.name + "   " + activeState.getPhaseDelimiter()+ "clock: "  + clock);
-//			break;
-//		}
-//	}
 
 	public float getEndclock() {
 		return endclock;
@@ -409,6 +390,14 @@ public class Scheduler implements Runnable{
 	
 	public boolean hasIteration() {
 		return hasIteration;
+	}
+
+	public SimulationManager getSimulationManager() {
+		return simulationManager;
+	}
+
+	public void setSimulationManager(SimulationManager simulationManager) {
+		this.simulationManager = simulationManager;
 	}
 	
 }
