@@ -33,13 +33,12 @@ public class Activity extends ActiveState{
 	
  	public static boolean isBeginOfSimulation = true;
 	
-	private String dependencyType = "";
-	private String acd_processing_type = "";
-	private String spemType = "";
-	private String processingUnit = "";
+	private String dependencyType;
+	private String acd_processing_type;
+	private String spemType;
+	private String processingUnit;
+	private int numberOfEntitiesProduced = 0;
 	
-	 
-  
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
 	 */
@@ -53,6 +52,13 @@ public class Activity extends ActiveState{
 		resources_to_v = new Vector(1, 1);
 		resources_qt_v = new Vector(1, 1);
 		queueOfEntitiesAndResourcesInService = new IntPriorityQ();
+		
+		// SPEM extension
+		 dependencyType = "";
+		 acd_processing_type = "";
+		 spemType = "";
+		 processingUnit = "";
+		 numberOfEntitiesProduced = 0;
 	}
 	
 	/**
@@ -161,6 +167,7 @@ public class Activity extends ActiveState{
 			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
 		}
+		numberOfEntitiesProduced++;
   		return true;
 	}
 	
