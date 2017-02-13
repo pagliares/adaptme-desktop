@@ -40,6 +40,7 @@ public class Activity extends ActiveState{
 	private String acd_processing_type;
 	private String spemType;
 	private String processingUnit;
+	private int spemWBSIndex;
 	private int numberOfEntitiesProduced = 0;
 	
 	/**
@@ -70,7 +71,9 @@ public class Activity extends ActiveState{
 	 */
 	public void SetServiceTime(Distribution d){
 		this.d = d;
-		RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
+		if (spemWBSIndex == 1) {
+			RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
+		}
   	}
 	
 	public void ConnectQueues(DeadState from, DeadState to){
@@ -336,5 +339,12 @@ public class Activity extends ActiveState{
 			}
 		}
 		return true;
+	}
+	
+	public int getSpemWBSIndex() {
+		return spemWBSIndex;
+	}
+	public void setSpemWBSIndex(int spemWBSIndex) {
+		this.spemWBSIndex = spemWBSIndex;
 	}
 }

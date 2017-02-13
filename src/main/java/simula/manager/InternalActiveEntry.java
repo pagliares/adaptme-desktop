@@ -168,8 +168,18 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
-			if (spemWBSIndex == 1) { // Refatorar para pegar o elemento com primeiro indice do SPEM
-			switch(servicedist){
+			
+			// Pagliares - Tem que ser antes do switch pois o codigo SetServiceTime depende do spemWBSIndex estar setado
+			// observer que tem que existir um elemento com wbs index = 1 para funcionar. Isso torna o atributo wbs index
+			// obrigatorio em xacdml. Se nao existisse, inicialmente nenhuma atividade seria agendada e a simulacao terminaria
+			// veja implementacao de SetServiceTime
+			Activity a = (Activity)activeState;
+			a.setDependencyType(dependencyType);
+			a.setAcd_processing_type(acd_processing_type);
+			a.setProcessingUnit(processingUnit);
+			a.setSpemWBSIndex(spemWBSIndex);
+						
+ 			switch(servicedist){
 				case NONE: break;
 				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
 				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
@@ -179,7 +189,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case LOGNORMAL: ((Activity)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
-			}
+			 
 			String sexp;
 			Expression exp;
 			
@@ -203,11 +213,7 @@ public class InternalActiveEntry extends ActiveEntry{
 					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
 			}
 			
-			// Pagliares
-			Activity a = (Activity)activeState;
-			a.setDependencyType(dependencyType);
-			a.setAcd_processing_type(acd_processing_type);
-			a.setProcessingUnit(processingUnit);
+			
 		}
 		
 		return true;	
@@ -334,6 +340,10 @@ public int getSpemWBSIndex() {
 	return spemWBSIndex;
 }
 public void setSpemWBSIndex(String spemWBSIndex) {
-	this.spemWBSIndex = Integer.parseInt(spemWBSIndex);
+	if (spemWBSIndex.equals("")) {
+		this.spemWBSIndex = 0;
+	} else { 
+		this.spemWBSIndex = Integer.parseInt(spemWBSIndex);
+	}
 }
 }
