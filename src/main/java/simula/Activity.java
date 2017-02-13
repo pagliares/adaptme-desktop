@@ -7,6 +7,9 @@ package simula;
 import java.sql.Time;
 import java.util.*;
 
+import simula.manager.InternalActiveEntry;
+import simula.manager.SimulationManager;
+
  
  
 public class Activity extends ActiveState{
@@ -152,7 +155,7 @@ public class Activity extends ActiveState{
 			int qt;
 			ResourceQ q = (ResourceQ)resources_to_v.elementAt(i);	// obt�m fila associada
 			q.Release(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());// envia ao estado morto
-			Log.LogMessage(name + ":Released " + qt + " resources to " +
+			Log.LogMessage("\t" + name + ":Released " + qt + " resources to " +
 				((ResourceQ)resources_to_v.elementAt(i)).name);
 		}
 
@@ -164,7 +167,7 @@ public class Activity extends ActiveState{
 		}
 		
 		for(int i = 0; i < inServiceEntities.entities.length; i++) {
-			Log.LogMessage(name + ":Entity " + inServiceEntities.entities[i].getId() +
+			Log.LogMessage("\t" + name + ":Entity " + inServiceEntities.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
 		}
 		numberOfEntitiesProduced++;
@@ -172,6 +175,15 @@ public class Activity extends ActiveState{
 	}
 	
 	public boolean CServed(){
+		
+		// If the activity has FINISH-TO-START dependency and PROCESS-BY-CLASS, we need to verify the condition 
+		// if the class of entities has been produced by the previous task
+		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && acd_processing_type.equalsIgnoreCase("PROCESS-BY-CLASS")) {
+				boolean isProcessByClassOfEntitiesConditionSatisfied = isProcessByClassOfEntitiesConditionSatisfied();	
+				if (isProcessByClassOfEntitiesConditionSatisfied == false) {
+					return false;
+				}
+		}
 		
 		// primeiro tenta resolve o estado bloqueado, se for o caso
 		if(blocked){
@@ -224,7 +236,7 @@ public class Activity extends ActiveState{
 			((ResourceQ)resources_from_v.elementAt(i)).
 				Acquire(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());
 				
-			Log.LogMessage("\n" + name + ":Acquired " + qt + " resources from " +
+			Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " +
 				((ResourceQ)resources_from_v.elementAt(i)).name);
 		}
 
@@ -238,7 +250,7 @@ public class Activity extends ActiveState{
 		}
 
 		for(i = 0; i < possible.entities.length; i++) {
-			Log.LogMessage(name + ":Entity " + possible.entities[i].getId() +
+			Log.LogMessage("\t"+ name + ":Entity " + possible.entities[i].getId() +
 				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
 		}
 		return true;
@@ -286,5 +298,43 @@ public class Activity extends ActiveState{
 
 	public void setAcd_processing_type(String acd_processing_type) {
 		this.acd_processing_type = acd_processing_type;
+	}
+	
+	private boolean isProcessByClassOfEntitiesConditionSatisfied() {
+		Log.LogMessage("\n\t" + name + ": dependency type =\"FINISH-TO-START\" , acd_processing_type = \"PROCESS-BY-CLASS\"");
+
+		int esize = dead_states_from_v.size();
+		String previousQueueName = "";
+
+		for (int i = 0; i < esize; i++) {
+			DeadState incomingQueue = (DeadState) this.getEntities_from_v().get(i);
+			System.out.println("Task: " + name + "   Incoming queue name:  " + incomingQueue.name + "  incoming queue count: "+ incomingQueue.count);
+			previousQueueName = incomingQueue.name;
+		}
+
+		// In order to start an activity with finish-to-start dependency and processing type by class of entities 
+		// we first must verify if the previous activity has already finished (producing the class of entities)
+		// this is done by comparing the counter of entities produced by the previous activity with the number of entities describring
+		// the class of entities. The previous activity is identified when the output Dead State of the previous activity is the 
+		// same the input dead state of the current activity
+		Iterator it =  s.getSimulationManager().GetActiveStatesIterator();
+
+		while (it.hasNext()){
+
+			InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
+			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
+
+			if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { 
+				System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
+				Activity ac = (Activity)internalActivityEntry.getActiveState();
+				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
+		     
+			    if (ac.numberOfEntitiesProduced != SimulationManager.quantityOfEntitiesInClass) {
+			    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish\n");
+			    	return false;
+			    }
+			}
+		}
+		return true;
 	}
 }

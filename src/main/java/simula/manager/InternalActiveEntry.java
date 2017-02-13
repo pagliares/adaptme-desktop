@@ -167,6 +167,7 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
+//			if (name.equalsIgnoreCase("Task A")) { // Refatorar para pegar o elemento com primeiro indice do SPEM
 			switch(servicedist){
 				case NONE: break;
 				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
@@ -177,7 +178,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case LOGNORMAL: ((Activity)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
-			
+//			}
 			String sexp;
 			Expression exp;
 			
