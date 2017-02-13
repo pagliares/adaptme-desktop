@@ -39,6 +39,7 @@ public class InternalActiveEntry extends ActiveEntry{
   private String acd_processing_type = "";
   private String spemType = "";
   private String processingUnit = "";
+  private int spemWBSIndex = 1; // The index zero is for the Delivery Process, of not interest for the simulation
   
   // Pagliares
 //  private String activityDelimiter =  "";
@@ -167,7 +168,7 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
-//			if (name.equalsIgnoreCase("Task A")) { // Refatorar para pegar o elemento com primeiro indice do SPEM
+			if (spemWBSIndex == 1) { // Refatorar para pegar o elemento com primeiro indice do SPEM
 			switch(servicedist){
 				case NONE: break;
 				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
@@ -178,7 +179,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case LOGNORMAL: ((Activity)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
-//			}
+			}
 			String sexp;
 			Expression exp;
 			
@@ -328,5 +329,11 @@ public String getProcessingUnit() {
 }
 public void setProcessingUnit(String processingUnit) {
 	this.processingUnit = processingUnit;
+}
+public int getSpemWBSIndex() {
+	return spemWBSIndex;
+}
+public void setSpemWBSIndex(String spemWBSIndex) {
+	this.spemWBSIndex = Integer.parseInt(spemWBSIndex);
 }
 }

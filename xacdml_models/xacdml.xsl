@@ -304,6 +304,9 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   </xsl:choose>
   <xsl:apply-templates select="entity_class"/>
   <xsl:text>
+  iae.setSpemWBSIndex("</xsl:text>
+  <xsl:value-of select="@spem_wbs_index"/>
+  <xsl:text>"); //mapped by spem_wbs_index
   iae.setSpemType("</xsl:text>
   <xsl:value-of select="@spem_type"/>
   <xsl:text>"); //mapped by spem_type
