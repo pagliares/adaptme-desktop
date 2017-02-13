@@ -319,6 +319,9 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   iae.setProcessingUnit("</xsl:text>
   <xsl:value-of select="@processing_unit"/>
   <xsl:text>"); //mapped by spem_type
+  iae.setBoundDelimiter("</xsl:text>
+  <xsl:value-of select="@bound_delimiter"/>
+  <xsl:text>"); //mapped by bound_delimiter
   man.AddActiveState(iae);
   </xsl:text>
  </xsl:otherwise>

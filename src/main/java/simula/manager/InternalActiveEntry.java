@@ -40,7 +40,7 @@ public class InternalActiveEntry extends ActiveEntry{
   private String spemType = "";
   private String processingUnit = "";
   private int spemWBSIndex = 1; // The index zero is for the Delivery Process, of not interest for the simulation
-  
+  private double boundDelimiter = 0.0;
   // Pagliares
 //  private String activityDelimiter =  "";
 //  private String activityIDfromSPEM = "";
@@ -178,6 +178,7 @@ public class InternalActiveEntry extends ActiveEntry{
 			a.setAcd_processing_type(acd_processing_type);
 			a.setProcessingUnit(processingUnit);
 			a.setSpemWBSIndex(spemWBSIndex);
+			a.setBoundDelimiter(boundDelimiter);
 						
  			switch(servicedist){
 				case NONE: break;
@@ -344,6 +345,17 @@ public void setSpemWBSIndex(String spemWBSIndex) {
 		this.spemWBSIndex = 0;
 	} else { 
 		this.spemWBSIndex = Integer.parseInt(spemWBSIndex);
+	}
+}
+
+public double getBoundDelimiter() {
+	return boundDelimiter;
+}
+public void setBoundDelimiter(String boundDelimiter) {
+	if (boundDelimiter.equals("")) {
+		this.boundDelimiter = 0;
+	} else {
+		this.boundDelimiter = Double.parseDouble(boundDelimiter);
 	}
 }
 }

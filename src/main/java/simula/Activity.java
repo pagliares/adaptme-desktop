@@ -41,6 +41,8 @@ public class Activity extends ActiveState{
 	private String spemType;
 	private String processingUnit;
 	private int spemWBSIndex;
+	private double boundDelimiter = 0.0;
+
 	private int numberOfEntitiesProduced = 0;
 	
 	/**
@@ -346,5 +348,12 @@ public class Activity extends ActiveState{
 	}
 	public void setSpemWBSIndex(int spemWBSIndex) {
 		this.spemWBSIndex = spemWBSIndex;
+	}
+	
+	public double getBoundDelimiter() {
+		return boundDelimiter;
+	}
+	public void setBoundDelimiter(double boundDelimiter) {
+		this.boundDelimiter = boundDelimiter;
 	}
 }
