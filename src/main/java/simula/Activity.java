@@ -44,6 +44,8 @@ public class Activity extends ActiveState{
 	private double boundDelimiter = 0.0;
 
 	private int numberOfEntitiesProduced = 0;
+	private double timeWasStarted = 0.0;
+ 
 	
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -190,6 +192,12 @@ public class Activity extends ActiveState{
 				}
 		}
 		
+//		if (boundDelimiter != 0) { // dummy activity
+//			if (s.GetClock() < (timeWasStarted + boundDelimiter)) { // not reached the moment yet
+//				return false;
+//			}
+//		}
+		
 		// primeiro tenta resolve o estado bloqueado, se for o caso
 		if(blocked){
 			blocked = false;
@@ -258,6 +266,8 @@ public class Activity extends ActiveState{
 			Log.LogMessage("\t"+ name + ":Entity " + possible.entities[i].getId() +
 				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
 		}
+		timeWasStarted = s.GetClock();
+ 		Log.LogMessage("\t"+ name + " started at: " + timeWasStarted);
 		return true;
 	}
 	
@@ -355,5 +365,13 @@ public class Activity extends ActiveState{
 	}
 	public void setBoundDelimiter(double boundDelimiter) {
 		this.boundDelimiter = boundDelimiter;
+	}
+
+	public double getTimeWasStarted() {
+		return timeWasStarted;
+	}
+
+	public void setTimeWasStarted(double timeWasStarted) {
+		this.timeWasStarted = timeWasStarted;
 	}
 }
