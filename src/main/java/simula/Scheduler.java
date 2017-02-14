@@ -400,4 +400,8 @@ public class Scheduler implements Runnable{
 		this.simulationManager = simulationManager;
 	}
 	
+	public ActiveState getActiveState(int index) {
+		return (ActiveState)activestates.get(index);
+	}
+	
 }

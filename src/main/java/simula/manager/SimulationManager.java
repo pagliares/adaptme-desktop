@@ -6,6 +6,9 @@ package simula.manager;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 import java.io.*;
 import simula.*;
@@ -20,8 +23,8 @@ import simula.*;
  */
 public class SimulationManager implements Serializable{
 	
-	private HashMap queues, resources, activestates,observers, histograms;
-
+	private HashMap queues, resources,observers, histograms;
+    private Map activestates; 
 	private Vector attributeTables;
 	private AttributeTable attributeTable; // PAGLIARES: antes do refactoring, chamave globals
 	
@@ -40,7 +43,8 @@ public class SimulationManager implements Serializable{
 	public SimulationManager() {
 		queues = new HashMap();
 		resources  = new HashMap();
-		activestates = new HashMap();
+//		activestates = new HashMap();
+		activestates = new LinkedHashMap<>(); // Pagliares. Preciso retornar na ordem de insercao para cadastrar apenas a primeira atividade no inicio da simulacao
 		observers = new HashMap();
 		histograms = new HashMap();
 		attributeTables = new Vector(5, 2);

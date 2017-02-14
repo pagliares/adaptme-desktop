@@ -75,7 +75,7 @@ public class Activity extends ActiveState{
 	 */
 	public void SetServiceTime(Distribution d){
 		this.d = d;
-		if (spemWBSIndex == 1) {
+		if (this.s.getActiveState(0).name.equals(this.name)) {
 			RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
 		}
   	}
