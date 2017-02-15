@@ -217,9 +217,14 @@ public class Activity extends ActiveState{
 			ok &= ((ResourceQ)resources_from_v.elementAt(i)).
 				HasEnough(((Integer)resources_qt_v.elementAt(i)).intValue());
 
+		Log.LogMessage("\n\t" + name + " Resources available? " + ok);
+		 
+		
 		for(i = 0; i < esize && ok; i++)					// as entidades...
 			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
 
+		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
+		
 		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw());
 		Entity entity;
 		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
@@ -233,9 +238,10 @@ public class Activity extends ActiveState{
 		}
 
 		if(!ok){
-			if(i > 0)		// alguma condi��o n�o foi satisfeita
+			Log.LogMessage("\t" + name + " Not all resources or entities are available");
+			if(i > 0)		// alguma condicaoo nao foi satisfeita
 			{
-				for(i--; i >= 0; i--)		// devolve as entidades �s respectivas filas
+				for(i--; i >= 0; i--)		// devolve as entidades as respectivas filas
 					((DeadState)dead_states_from_v.elementAt(i)).putBack(possible.entities[i]);
 			}
 
@@ -253,6 +259,7 @@ public class Activity extends ActiveState{
 				((ResourceQ)resources_from_v.elementAt(i)).name);
 		}
 
+		Log.LogMessage("\t" + name +  " scheduling itself in the calendar to the due time by notifiying the scheduler");
 		possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
 		queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
 		 
