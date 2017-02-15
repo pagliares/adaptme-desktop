@@ -307,6 +307,9 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   iae.setSpemType("</xsl:text>
   <xsl:value-of select="@spem_type"/>
   <xsl:text>"); //mapped by spem_type
+  iae.setFather("</xsl:text>
+  <xsl:value-of select="@father"/>
+  <xsl:text>"); //mapped by father
   iae.setDependencyType("</xsl:text>
   <xsl:value-of select="@dependency_type"/>
   <xsl:text>"); //mapped by dependency_type

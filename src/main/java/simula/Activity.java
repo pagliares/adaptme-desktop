@@ -42,6 +42,7 @@ public class Activity extends ActiveState{
 	private String processingUnit;
 	private int spemWBSIndex;
 	private double timeBox = 0.0;
+	private String father = "";
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0;
@@ -380,5 +381,13 @@ public class Activity extends ActiveState{
 
 	public void setTimeWasStarted(double timeWasStarted) {
 		this.timeWasStarted = timeWasStarted;
+	}
+
+	public String getFather() {
+		return father;
+	}
+
+	public void setFather(String father) {
+		this.father = father;
 	}
 }

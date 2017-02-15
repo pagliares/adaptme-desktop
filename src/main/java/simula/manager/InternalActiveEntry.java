@@ -40,6 +40,7 @@ public class InternalActiveEntry extends ActiveEntry{
   private String spemType = "";
   private String processingUnit = "";
   private double timeBox = 0.0;
+  private String father = "";
   
   public String toString(){
 	StringBuffer stb = new StringBuffer();
@@ -171,6 +172,7 @@ public class InternalActiveEntry extends ActiveEntry{
 			// veja implementacao de SetServiceTime
 			Activity a = (Activity)activeState;
 			a.setDependencyType(dependencyType);
+			a.setFather(father);
 			a.setAcd_processing_type(acd_processing_type);
 			a.setProcessingUnit(processingUnit);
  			a.setTimeBox(timeBox);
@@ -343,5 +345,11 @@ public void setTimeBox(String timeBox) {
 	} else {
 		this.timeBox = Double.parseDouble(timeBox);
 	}
+}
+public String getFather() {
+	return father;
+}
+public void setFather(String father) {
+	this.father = father;
 }
 }
