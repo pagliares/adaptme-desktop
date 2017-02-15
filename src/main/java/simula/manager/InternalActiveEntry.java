@@ -174,6 +174,7 @@ public class InternalActiveEntry extends ActiveEntry{
 			a.setAcd_processing_type(acd_processing_type);
 			a.setProcessingUnit(processingUnit);
  			a.setBoundDelimiter(boundDelimiter);
+ 			a.setSpemType(spemType);
 						
  			switch(servicedist){
 				case NONE: break;
