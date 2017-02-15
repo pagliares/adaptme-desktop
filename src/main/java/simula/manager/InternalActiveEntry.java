@@ -39,7 +39,7 @@ public class InternalActiveEntry extends ActiveEntry{
   private String acd_processing_type = "";
   private String spemType = "";
   private String processingUnit = "";
-  private double boundDelimiter = 0.0;
+  private double timeBox = 0.0;
   
   public String toString(){
 	StringBuffer stb = new StringBuffer();
@@ -173,7 +173,7 @@ public class InternalActiveEntry extends ActiveEntry{
 			a.setDependencyType(dependencyType);
 			a.setAcd_processing_type(acd_processing_type);
 			a.setProcessingUnit(processingUnit);
- 			a.setBoundDelimiter(boundDelimiter);
+ 			a.setTimeBox(timeBox);
  			a.setSpemType(spemType);
 						
  			switch(servicedist){
@@ -334,14 +334,14 @@ public void setProcessingUnit(String processingUnit) {
 	this.processingUnit = processingUnit;
 }
 
-public double getBoundDelimiter() {
-	return boundDelimiter;
+public double getTimeBox() {
+	return timeBox;
 }
-public void setBoundDelimiter(String boundDelimiter) {
-	if (boundDelimiter.equals("")) {
-		this.boundDelimiter = 0;
+public void setTimeBox(String timeBox) {
+	if (timeBox.equals("")) {
+		this.timeBox = 0;
 	} else {
-		this.boundDelimiter = Double.parseDouble(boundDelimiter);
+		this.timeBox = Double.parseDouble(timeBox);
 	}
 }
 }

@@ -41,7 +41,7 @@ public class Activity extends ActiveState{
 	private String spemType;
 	private String processingUnit;
 	private int spemWBSIndex;
-	private double boundDelimiter = 0.0;
+	private double timeBox = 0.0;
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0;
@@ -367,11 +367,11 @@ public class Activity extends ActiveState{
 		this.spemWBSIndex = spemWBSIndex;
 	}
 	
-	public double getBoundDelimiter() {
-		return boundDelimiter;
+	public double geTimeBox() {
+		return timeBox;
 	}
-	public void setBoundDelimiter(double boundDelimiter) {
-		this.boundDelimiter = boundDelimiter;
+	public void setTimeBox(double timeBox) {
+		this.timeBox = timeBox;
 	}
 
 	public double getTimeWasStarted() {

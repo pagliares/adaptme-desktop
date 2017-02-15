@@ -309,16 +309,16 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:text>"); //mapped by spem_type
   iae.setDependencyType("</xsl:text>
   <xsl:value-of select="@dependency_type"/>
-  <xsl:text>"); //mapped by act dependency type
+  <xsl:text>"); //mapped by dependency_type
   iae.setAcd_processing_type("</xsl:text>
   <xsl:value-of select="@acd_processing_type"/>
   <xsl:text>"); //mapped by acd_processing_type
   iae.setProcessingUnit("</xsl:text>
   <xsl:value-of select="@processing_unit"/>
   <xsl:text>"); //mapped by spem_type
-  iae.setBoundDelimiter("</xsl:text>
-  <xsl:value-of select="@bound_delimiter"/>
-  <xsl:text>"); //mapped by bound_delimiter
+  iae.setTimeBox("</xsl:text>
+  <xsl:value-of select="@timebox"/>
+  <xsl:text>"); //mapped by timebox
   man.AddActiveState(iae);
   </xsl:text>
  </xsl:otherwise>

@@ -223,25 +223,28 @@ public class Scheduler implements Runnable{
              // acho que matei, Clock == zero so termina quando SPEM TYPE for TASK
 			
 			// Se for uma dummy activity nao pode parar com clock zero sendo a unica atividade
-//			activeState = calendar.getNextActiveState();
-//			Activity activity = (Activity) activeState;
-//			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
-//				if(clock == 0.0){			// fim das entidades
-//					running = false;
-//					termreason = 1;			
-//					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-//					Log.Close();
-//					break;
-//				}
-//			}
-			
-			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
-				running = false;
-				termreason = 1;			
-				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-				Log.Close();
-				break;
+			activeState = calendar.getNextActiveState();
+			Activity activity = (Activity) activeState;
+			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
+				if(clock == 0.0){			// fim das entidades
+					running = false;
+					termreason = 1;			
+					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+					Log.Close();
+					break;
+				}
 			}
+			
+			
+			// Commenting the lines below and including the lines above resolves the problem of not terminating the simulation at clock 0
+			// However it causes null pointer exception when no more entities exist to be served
+			//			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
+			//				running = false;
+			//				termreason = 1;			
+			//				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+			//				Log.Close();
+			//				break;
+			//			}
 			
 			
 			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
@@ -264,12 +267,15 @@ public class Scheduler implements Runnable{
 
 			do{
 				activeState = calendar.getNextActiveState();
+				Log.LogMessage("\n\tNext activity in the Calendar : " + activeState.name);
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
 			}while(calendar.RemoveNext());  
 
-			if(!executed)				// se n�o havia nada a ser executado nesse instante pula para o pr�ximo sem executar a fase C.
-				continue;				// (as atividades podem ter alterado o tempo localmente)  
- 			
+			if(!executed)	{	
+				Log.LogMessage("\nNothing to be executed at this instant. Jumps to the next, without executing the C-Phase");
+				continue;				// se n�o havia nada a ser executado nesse instante pula para o pr�ximo sem executar a fase C.
+				                  // (as atividades podem ter alterado o tempo localmente)  
+			}
 			Log.LogMessage("End of phase B");
 			
  			// Fase C
@@ -280,7 +286,7 @@ public class Scheduler implements Runnable{
 
 				for(short i = 0; i < activestates.size(); i++) {	
 					ActiveState a = (ActiveState)activestates.elementAt(i);
-					executed |= ((ActiveState)activestates.elementAt(i)).CServed();  // NAO ENTRA AQUI SO COM PRIORITIZE	
+					executed |= ((ActiveState)activestates.elementAt(i)).CServed();   	
  				}
 				
 			}while(crescan && executed);	
@@ -290,18 +296,6 @@ public class Scheduler implements Runnable{
 
 		stopped = true;			// sinaliza o encerramento
 		running = false;
-		
-		
-		 // pagliares - Gera excecao para outros processos 
-		//                     QueueEntry firstQueue = simulationManager.GetQueue("User story input queue");
-		//                     QueueEntry lastQueue = simulationManager.GetQueue("Implemented User stories");
-		//                     if (lastQueue.deadState.count == firstQueue.intialQuantity) {
-		//                             running = false;
-		//                             termreason = 1;                 
-		//                             Log.LogMessage("Scheduler: simulation finished due to end of entities");
-		//                             Log.Close();
-		//                             break;
-
 	}
 
 	private void storeResultsIfEndOfRelease() {
