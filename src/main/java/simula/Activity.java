@@ -45,8 +45,7 @@ public class Activity extends ActiveState{
 	private String father = "";
 
 	private int numberOfEntitiesProduced = 0;
-	private double timeWasStarted = 0.0;
- 
+	private double timeWasStarted = 0.0; 
 	
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
@@ -76,9 +75,11 @@ public class Activity extends ActiveState{
 	 */
 	public void SetServiceTime(Distribution d){
 		this.d = d;
+		 
+		double sampling = d.Draw();
 		if (this.s.getActiveState(0).name.equals(this.name)) {
-			RegisterEvent((float)d.Draw()); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
-		}
+				RegisterEvent((float)sampling); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
+		}		
   	}
 	
 	public void ConnectQueues(DeadState from, DeadState to){
@@ -390,4 +391,6 @@ public class Activity extends ActiveState{
 	public void setFather(String father) {
 		this.father = father;
 	}
+	
+
 }

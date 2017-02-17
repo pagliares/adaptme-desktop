@@ -41,6 +41,7 @@ public class Scheduler implements Runnable{
 	
     private boolean hasRelease;
     private boolean hasIteration;
+    private boolean firstTime = true;
 	
 	
 	
@@ -223,28 +224,30 @@ public class Scheduler implements Runnable{
              // acho que matei, Clock == zero so termina quando SPEM TYPE for TASK
 			
 			// Se for uma dummy activity nao pode parar com clock zero sendo a unica atividade
-			activeState = calendar.getNextActiveState();
-			Activity activity = (Activity) activeState;
-			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
-				if(clock == 0.0){			// fim das entidades
-					running = false;
-					termreason = 1;			
-					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-					Log.Close();
-					break;
-				}
-			}
+//			activeState = calendar.getNextActiveState();
+//			Activity activity = (Activity) activeState;
+//			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
+//				if(clock == 0.0){			// fim das entidades
+//					running = false;
+//					termreason = 1;			
+//					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+//					Log.Close();
+//					break;
+//				}
+//			}
 			
-			
+			if (firstTime == false) {
 			// Commenting the lines below and including the lines above resolves the problem of not terminating the simulation at clock 0
 			// However it causes null pointer exception when no more entities exist to be served
-			//			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
-			//				running = false;
-			//				termreason = 1;			
-			//				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-			//				Log.Close();
-			//				break;
-			//			}
+			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
+				running = false;
+				termreason = 1;			
+				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+				Log.Close();
+				firstTime = false;
+				break;
+			}
+			}
 			
 			
 			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
@@ -396,6 +399,14 @@ public class Scheduler implements Runnable{
 	
 	public ActiveState getActiveState(int index) {
 		return (ActiveState)activestates.get(index);
+	}
+
+	public Vector getActivestates() {
+		return activestates;
+	}
+
+	public void setActivestates(Vector activestates) {
+		this.activestates = activestates;
 	}
 	
 }
