@@ -240,7 +240,7 @@ class Calendar{
 		return list.activeState; // PAGLIARES: Next active state esta em list. root contem o current
   
 	}
-	public float getNextClock() {  
+	public float getNextClock(float clock) {  
 		
 		
 		// se este e o primeiro evento apos o avanco do relogio
@@ -248,7 +248,8 @@ class Calendar{
 			if(root == null){		// se ja removeu todas as entidades...PAGLIARES: in other words, se nao ha mais nenhuma atividade agendada
  				list = null;
 				Scheduler.hasFinishedByLackOfEntities = true; // Pagliares. Now it finishes by lack of entities when this flag is set to true.
-				return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
+				return clock;
+				//return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
 			}
 			
 			TTreeEntry node, child, parent;

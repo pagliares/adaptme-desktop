@@ -205,19 +205,15 @@ public class Scheduler implements Runnable{
 	 * Codigo que roda a simulacao. (rodado numa Thread separada)
 	 */
 	public void run(){
-		boolean hasFinished = false; // tirar
 		while(running){
 			
-			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A // quando chega aqui pela primeira vez, ja esta agendada atividades no calendar
-			clock = calendar.getNextClock(); // @TODO colocar breakpoint aqui para verificar o porque de estar agendando inicialmente mais tarefas para alguns testes de caso
+			// PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A 
+			// When hits this point the first time, it is already scheduled the activities in the calendar (first activity)
+			// I changed the signature of the getNextClock to include the parameter clock. This is done to not return the clock back to zero
+			// after invoking the method
+			clock = calendar.getNextClock(clock); // @TODO colocar breakpoint aqui para verificar o porque de estar agendando inicialmente mais tarefas para alguns testes de caso
 			
-//			float next = calendar.getNextClock(); 
-//			if (next == 0.0) {
-//				 
-//				
-//			} else {
-//				clock = next;
-//			}
+
 			Log.LogMessage("\nBegin of phase A - 3 Phase approach");
 			Log.LogMessage("\tScheduler: clock advanced to " + clock);
 			
