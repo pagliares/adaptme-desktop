@@ -55,10 +55,6 @@ public abstract class DeadState
 		return 1 <= count;
 	}
 	
-	public boolean hasEnoughBatchProcessing(int quantityOfEntitiesInClass)	{
-		return quantityOfEntitiesInClass == count;
-	}
-	
 	/**
 	 * retorna o tamanho da fila (para ser usado por Observer).
 	 */
@@ -107,5 +103,16 @@ public abstract class DeadState
 
 	public void setCount(short count) {
 		this.count = count;
+	}
+	
+	// Pagliares. There is a method acquire in ResourceQ. It overrides this one
+	// including an observer. Verifiy if the Acquire in subclass can be 
+	// eliminated, generalizing the method here.
+	public boolean acquire(int n){ 
+		if (count >= n) {
+			count -= (short)n;
+			return true;
+		} else
+			return false;
 	}
 }

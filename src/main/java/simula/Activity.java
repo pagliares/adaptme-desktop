@@ -47,6 +47,8 @@ public class Activity extends ActiveState{
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
 	
+	// private Vector entities_qt_v = new Vector(1, 1); // Commented lines to be worked when trying to acquire entities in batch mode
+	
 	/**
 	 * constr�i um estado ativo sem conex�es ou tempo de servi�o definidos.
 	 */
@@ -155,14 +157,15 @@ public class Activity extends ActiveState{
 		}
 
 		for(int i = 0; i < entities_to_v.size(); i++)	{	// as entidades...
-			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obt�m fila associada
-			if(q.HasSpace())										// se tem espa�o
+			// int qt; // Commented lines to be worked when trying to acquire entities in batch mode
+			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtem fila associada
+			if(q.HasSpace())										// se tem espaco
 				q.enqueue(inServiceEntities.entities[i]);									// envia ao estado morto
 		}
 		
 		for(int i = 0; i < resources_to_v.size(); i++){		// e os recursos.
 			int qt;
-			ResourceQ q = (ResourceQ)resources_to_v.elementAt(i);	// obt�m fila associada
+			ResourceQ q = (ResourceQ)resources_to_v.elementAt(i);	// obtem fila associada
 			q.Release(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());// envia ao estado morto
 			Log.LogMessage("\t" + name + ":Released " + qt + " resources to " +
 				((ResourceQ)resources_to_v.elementAt(i)).name);
@@ -194,12 +197,6 @@ public class Activity extends ActiveState{
 				}
 		}
 		
-//		if (boundDelimiter != 0) { // dummy activity
-//			if (s.GetClock() < (timeWasStarted + boundDelimiter)) { // not reached the moment yet
-//				return false;
-//			}
-//		}
-		
 		// primeiro tenta resolve o estado bloqueado, se for o caso
 		if(blocked){
 			blocked = false;
@@ -215,28 +212,37 @@ public class Activity extends ActiveState{
 		int esize = dead_states_from_v.size();
 		int i;
 
-		for(i = 0; i < resources_from_v.size() && ok; i++)	// os recursos...
-			ok &= ((ResourceQ)resources_from_v.elementAt(i)).
-				HasEnough(((Integer)resources_qt_v.elementAt(i)).intValue());
-
+		for(i = 0; i < resources_from_v.size() && ok; i++)	{// os recursos...
+			ResourceQ resourceQ = (ResourceQ)resources_from_v.elementAt(i);
+			Integer quantityOfResourcesUsed = ((Integer)resources_qt_v.elementAt(i)).intValue();
+			
+			ok &= resourceQ.HasEnough(quantityOfResourcesUsed);
+		}
+		
 		Log.LogMessage("\n\t" + name + " Resources available? " + ok);
 		 
+		for(i = 0; i < esize && ok; i++)	{				// as entidades...
+			DeadState deadState = (DeadState)dead_states_from_v.elementAt(i);
+			ok &= deadState.HasEnough();
+		}
 		
-		for(i = 0; i < esize && ok; i++)					// as entidades...
-			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough();
+		// Commented lines to be worked when trying to acquire entities in batch mode
+		//		for(i = 0; i < esize && ok; i++)					// as entidades...
+		//			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough(((Integer)entities_qt_v.elementAt(i)).intValue());
 
 		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
 		
 		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw());
-		Entity entity;
-		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
-		for(i = 0; i < esize && ok; i++) {					// as condi��es.
 		
-			possible.entities[i] = entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue();
-																// retira entidades...
+		Entity entity;
+		
+		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
+		for(i = 0; i < esize && ok; i++) {					// as condicoes.
 			
-			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;
-																// e testa condi��o
+		    entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue(); // retira entidades...
+			possible.entities[i] = entity;
+			
+			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condi��o
 		}
 
 		if(!ok){
@@ -250,15 +256,16 @@ public class Activity extends ActiveState{
 			return false;
 		}
 
-		// obt�m os recursos
-
+		// obtem os recursos
 		for(i = 0; i < resources_from_v.size(); i++){
-			int qt;	
-			((ResourceQ)resources_from_v.elementAt(i)).
-				Acquire(qt = ((Integer)resources_qt_v.elementAt(i)).intValue());
+			
+			int qt = ((Integer)resources_qt_v.elementAt(i)).intValue();
+			ResourceQ resourceQ = ((ResourceQ)resources_from_v.elementAt(i));
+			String resourceQueueName = ((ResourceQ)resources_from_v.elementAt(i)).name;
+			
+			resourceQ.Acquire(qt);
 				
-			Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " +
-				((ResourceQ)resources_from_v.elementAt(i)).name);
+			Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " + resourceQueueName);
 		}
 
 		Log.LogMessage("\t" + name +  " scheduling itself in the calendar to the due time by notifiying the scheduler");
@@ -272,9 +279,20 @@ public class Activity extends ActiveState{
 		}
 
 		for(i = 0; i < possible.entities.length; i++) {
-			Log.LogMessage("\t"+ name + ":Entity " + possible.entities[i].getId() +
-				" got from " + ((DeadState)dead_states_from_v.elementAt(i)).name);
+			String deadStateName = ((DeadState)dead_states_from_v.elementAt(i)).name;
+			long entityId = possible.entities[i].getId();
+			
+			Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
 		}
+		
+		// Commented lines to be worked when trying to acquire entities in batch mode
+		//		for(i = 0; i < esize && ok; i++)					// as entidades...
+		//			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough(((Integer)entities_qt_v.elementAt(i)).intValue());
+		//					int qt;
+		//					DeadState deadState = (DeadState)(dead_states_from_v.elementAt(i));
+		//					deadState.Acquire(qt = ((Integer)entities_qt_v.elementAt(i)).intValue());
+		//					Log.LogMessage("\t" + name + ":Acquired " + qt + " entities from " +
+		//							((DeadState)dead_states_from_v.elementAt(i)).name);
 		timeWasStarted = s.GetClock();
  		Log.LogMessage("\t"+ name + " started at: " + timeWasStarted);
 		return true;
@@ -392,5 +410,11 @@ public class Activity extends ActiveState{
 		this.father = father;
 	}
 	
-
+	// Commented lines to be worked when trying to acquire entities in batch mode
+	//	public void ConnectQueues(DeadState from, Expression cond, DeadState to, int qty_needed){
+	//		dead_states_from_v.add(from);
+	//		conditions_from_v.add(cond);
+	//		entities_to_v.add(to);
+	//		entities_qt_v.add(new Integer(qty_needed));
+	//	}
 }

@@ -42,6 +42,8 @@ public class InternalActiveEntry extends ActiveEntry{
   private double timeBox = 0.0;
   private String father = "";
   
+  //private Vector quantityUsedTemporaryEntities;	// Commented lines to be worked when trying to acquire entities in batch mode
+
   public String toString(){
 	StringBuffer stb = new StringBuffer();
 	stb.append("<InternalActiveEntry router=\""+isRouter+"\">\r\n");
@@ -91,6 +93,7 @@ public class InternalActiveEntry extends ActiveEntry{
     tor = new Vector(2, 2);
     conditions = new Vector(2, 2); //conditions
     quantityUsedResource = new Vector(2, 2);
+    //quantityUsedTemporaryEntities = new Vector(2,2); // Commented lines to be worked when trying to acquire entities in batch mode
     isInternal = true;
    
   }
@@ -104,6 +107,7 @@ public class InternalActiveEntry extends ActiveEntry{
 	fr = intEntry.fr;
 	tor = intEntry.tor;
 	quantityUsedResource = intEntry.quantityUsedResource;
+	// quantityUsedTemporaryEntities = intEntry.quantityUsedTemporaryEntities; // Commented lines to be worked when trying to acquire entities in batch mode
 	conditions = intEntry.conditions;
   }
   
@@ -165,11 +169,6 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
-			
-			// Pagliares - Tem que ser antes do switch pois o codigo SetServiceTime depende do spemWBSIndex estar setado
-			// observer que tem que existir um elemento com wbs index = 1 para funcionar. Isso torna o atributo wbs index
-			// obrigatorio em xacdml. Se nao existisse, inicialmente nenhuma atividade seria agendada e a simulacao terminaria
-			// veja implementacao de SetServiceTime
 			Activity a = (Activity)activeState;
 			a.setDependencyType(dependencyType);
 			a.setFather(father);
@@ -192,8 +191,8 @@ public class InternalActiveEntry extends ActiveEntry{
 			String sexp;
 			Expression exp;
 			
-			for(int i = 0; i < toq.size(); i++)
-			{
+			for(int i = 0; i < toq.size(); i++) {
+				
 				sexp = (String)conditions.get(i);
 				if(sexp.equalsIgnoreCase("true"))
 					exp = ConstExpression.TRUE;
@@ -201,18 +200,28 @@ public class InternalActiveEntry extends ActiveEntry{
 					exp = ConstExpression.FALSE;
 				else
 					exp = new Expression(sexp);
-					
-				((Activity)activeState).ConnectQueues(m.GetQueue((String)fq.get(i)).deadState,
-					 exp, m.GetQueue((String)toq.get(i)).deadState);	
+				
+				// Pagliares: refactored Wladimir code to avoid method chaining
+				DeadState fromDeadState = m.GetQueue((String)fq.get(i)).deadState;
+				DeadState toDeadState = m.GetQueue((String)toq.get(i)).deadState;
+				Activity activity = (Activity) activeState;
+				
+				activity.ConnectQueues(fromDeadState, exp, toDeadState);	// antigo
+				
+				// Commented lines to be worked when trying to acquire entities in batch mode
+				//	Integer quantityEntities = ((Integer)(quantityUsedTemporaryEntities.get(i))).intValue();
+				// Attempt to get more than one entity
+				//	activity.ConnectQueues(fromDeadState,exp, toDeadState,quantityEntities);		 
 			}
 			
-			for(int i = 0; i < fr.size(); i++)
-			{
-				((Activity)activeState).ConnectResources(m.GetResource((String)fr.get(i)).SimObj,
-					 m.GetResource((String)tor.get(i)).SimObj, ((Integer)quantityUsedResource.get(i)).intValue());	
+			for(int i = 0; i < fr.size(); i++){
+				ResourceQ fromResourceDeadState = m.GetResource((String)fr.get(i)).SimObj;
+				ResourceQ toResourceDeadState = m.GetResource((String)tor.get(i)).SimObj;
+				Integer quantityOfResourcesUsed = ((Integer)quantityUsedResource.get(i)).intValue();
+				Activity activity = (Activity) activeState;
+				
+				activity.ConnectResources(fromResourceDeadState,toResourceDeadState, quantityOfResourcesUsed);	
 			}
-			
-			
 		}
 		
 		return true;	
@@ -300,56 +309,62 @@ public class InternalActiveEntry extends ActiveEntry{
 		conditions.trimToSize();
 		quantityUsedResource.trimToSize();
 	}
-//public String getActivityDelimiter() {
-//	return activityDelimiter;
-//}
-//public void setActivityDelimiter(String activityDelimiter) {
-//	this.activityDelimiter = activityDelimiter;
-//}
-//public String getActivityIDfromSPEM() {
-//	return activityIDfromSPEM;
-//}
-//public void setActivityIDfromSPEM(String activityIDfromSPEM) {
-//	this.activityIDfromSPEM = activityIDfromSPEM;
-//}
  
-public String getDependencyType() {
+ 
+  public String getDependencyType() {
 	return dependencyType;
-}
-public void setDependencyType(String dependencyType) {
-	this.dependencyType = dependencyType;
-}
-public String getAcd_processing_type() {
-	return acd_processing_type;
-}
-public void setAcd_processing_type(String acd_processing_type) {
-	this.acd_processing_type = acd_processing_type;
-}
-public void setSpemType(String spemType) {
-	this.spemType = spemType;
-	
-}
-public String getProcessingUnit() {
-	return processingUnit;
-}
-public void setProcessingUnit(String processingUnit) {
-	this.processingUnit = processingUnit;
-}
+  }
 
-public double getTimeBox() {
+  public void setDependencyType(String dependencyType) {
+	this.dependencyType = dependencyType;
+  }
+
+  public String getAcd_processing_type() {
+	return acd_processing_type;
+  }
+
+  public void setAcd_processing_type(String acd_processing_type) {
+	this.acd_processing_type = acd_processing_type;
+  }
+
+  public void setSpemType(String spemType) {
+	this.spemType = spemType;	
+  }
+
+  public String getProcessingUnit() {
+	return processingUnit;
+  }
+
+  public void setProcessingUnit(String processingUnit) {
+	this.processingUnit = processingUnit;
+  }
+
+
+  public double getTimeBox() {
 	return timeBox;
-}
-public void setTimeBox(String timeBox) {
-	if (timeBox.equals("")) {
+  }
+
+  public void setTimeBox(String timeBox) {
+	if (timeBox.equals("")) 
 		this.timeBox = 0;
-	} else {
+    else 
 		this.timeBox = Double.parseDouble(timeBox);
-	}
-}
-public String getFather() {
+  }
+
+  public String getFather() {
 	return father;
-}
-public void setFather(String father) {
+  }
+
+  public void setFather(String father) {
 	this.father = father;
-}
+  }
+
+  //Commented lines to be worked when trying to acquire entities in batch mode
+  //  public final void addTemporaryEntiesQty(Object v_o){	
+  //	quantityUsedTemporaryEntities.add(v_o);	
+  //  }
+  
+  //  public final void removeTemporaryEntitiesQty(int v_i){	
+  //	  quantityUsedTemporaryEntities.remove(v_i);	
+  //  }
 }
