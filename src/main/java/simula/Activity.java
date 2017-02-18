@@ -72,13 +72,14 @@ public class Activity extends ActiveState{
 	}
 	
 	/**
-	 * determina o tempo de servi�o de acordo com a distribui��o especificada;
-	 * os par�metros da distribui��o s�o passados na cria��o do objeto.
+	 * determina o tempo de servico de acordo com a distribuicao especificada;
+	 * os parametros da distribuicao sao passados na criacao do objeto.
 	 */
 	public void SetServiceTime(Distribution d){
 		this.d = d;
 		 
 		double sampling = d.Draw();
+		// Pagliares. I am scheduling just the first active state (the first activity added to the simulation manager linked hash map.
 		if (this.s.getActiveState(0).name.equals(this.name)) {
 				RegisterEvent((float)sampling); // PAGLIARES. 20h de depuracao para fazer com que a simulacao funcionasse sem generate activity
 		}		

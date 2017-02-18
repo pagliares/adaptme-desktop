@@ -242,21 +242,12 @@ class Calendar{
 	}
 	public float getNextClock() {  
 		
-		// @TODO PAGLIARES: (First pass) ANTES DA INSTRUCAO SO GENERATE: list =  null   , root = generate,  child = nao existe  
-		// @TODO PAGLIARES: (Second pass) ANTES DA INSTRUCAO SO GENERATE: list =  null   , root = generate,  child = nao existe 
 		
-		 
-		// @TODO PAGLIARES: (First pass) ANTES DA INSTRUCAO SO ACTIVITY: list =   null  , root =  activity   ,  child =  nao existe
-		// @TODO PAGLIARES: (Second pass) ANTES DA INSTRUCAO SO ACTIVITY: list =  null    , root =  null (PROBLEMA)   ,  child =  nao existe
-		
-		// @TODO PAGLIARES (CT_03): (First pass) ANTES DA INSTRUCAO GENERATE AND TWO ACTIVITIES: list = null     , root = activity a_1      ,  child = nao existe 
-		// @TODO PAGLIARES(CT_03) (Second pass) ANTES DA INSTRUCAO GENERATE AND TWO ACTIVITIES: list =  null     , root =  activity a_1      ,  child =   nao existe
-		
-		// se este � o primeiro evento ap�s o avan�o do rel�gio
+		// se este e o primeiro evento apos o avanco do relogio
 		if(list == null){
-			if(root == null){		// se j� removeu todas as entidades...
-				                    // @TODO PAGLIARES: in other words, se nao ha mais nenhuma atividade agendada
-				list = null;
+			if(root == null){		// se ja removeu todas as entidades...PAGLIARES: in other words, se nao ha mais nenhuma atividade agendada
+ 				list = null;
+				Scheduler.hasFinishedByLackOfEntities = true; // Pagliares. Now it finishes by lack of entities when this flag is set to true.
 				return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
 			}
 			

@@ -122,16 +122,17 @@ public class InternalActiveEntry extends ActiveEntry{
 	}
   	
   /**
-   * Ajusta os par�metros referentes aos Router's e Activity's
+   * Ajusta os parametros referentes aos Router's e Activity's
+   * PAGLIARES: This method is the bridge between InternalActiveEntry and ActiveState. It schedule the activities in the calendar for the very first time
    */
-  protected boolean setup(SimulationManager m){
+  protected boolean setup(SimulationManager m){ 
 		if(!super.setup(m))
 			return false;
 		
 		TrimVectors();
 		
 		if(isRouter){
-			switch(servicedist) { // TODO PAGLIARES: AQUI QUE ESTA FAZENDO O SAMPLING
+			switch(servicedist) { 
 			
 				case NONE: break;
 				case CONST: 	((Router)activeState).setServiceTime(new ConstDistribution(m.sample, distp1)); break;
@@ -169,6 +170,8 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
+			
+			// SPEM attributes
 			Activity a = (Activity)activeState;
 			a.setDependencyType(dependencyType);
 			a.setFather(father);

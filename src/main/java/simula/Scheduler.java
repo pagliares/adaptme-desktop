@@ -41,7 +41,7 @@ public class Scheduler implements Runnable{
 	
     private boolean hasRelease;
     private boolean hasIteration;
-    private boolean firstTime = true;
+    public static boolean hasFinishedByLackOfEntities = false;
 	
 	
 	
@@ -205,11 +205,19 @@ public class Scheduler implements Runnable{
 	 * Codigo que roda a simulacao. (rodado numa Thread separada)
 	 */
 	public void run(){
-		
+		boolean hasFinished = false; // tirar
 		while(running){
 			
 			// TODO PAGLIARES: AVANCA O CLOCK DA SIMULACAO - FASE A // quando chega aqui pela primeira vez, ja esta agendada atividades no calendar
 			clock = calendar.getNextClock(); // @TODO colocar breakpoint aqui para verificar o porque de estar agendando inicialmente mais tarefas para alguns testes de caso
+			
+//			float next = calendar.getNextClock(); 
+//			if (next == 0.0) {
+//				 
+//				
+//			} else {
+//				clock = next;
+//			}
 			Log.LogMessage("\nBegin of phase A - 3 Phase approach");
 			Log.LogMessage("\tScheduler: clock advanced to " + clock);
 			
@@ -220,33 +228,24 @@ public class Scheduler implements Runnable{
 			// verifica se simulacao chegou ao fim
 
 			ActiveState activeState;
-			
-             // acho que matei, Clock == zero so termina quando SPEM TYPE for TASK
-			
-			// Se for uma dummy activity nao pode parar com clock zero sendo a unica atividade
-//			activeState = calendar.getNextActiveState();
-//			Activity activity = (Activity) activeState;
-//			if (activity.getSpemType().equalsIgnoreCase("TASK")) { // NAO PODE TERMINAR
-//				if(clock == 0.0){			// fim das entidades
-//					running = false;
-//					termreason = 1;			
-//					Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-//					Log.Close();
-//					break;
-//				}
-//			}
-			
-			if (firstTime == false) {
-			// Commenting the lines below and including the lines above resolves the problem of not terminating the simulation at clock 0
-			// However it causes null pointer exception when no more entities exist to be served
-			if(clock == 0.0){			// fim das entidades - tenho que fazer parar com outro flag e nao clock. por exemplo noMoreEntities =  true
+							
+			// Pagliares. The commented lines below is from Wladimir that finishes the simulation by lack of entities when clock is zero.
+			//			if(clock == 0.0){			 
+			//				running = false;
+			//				termreason = 1;			
+			//				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+			//				Log.Close();
+			//				firstTime = false;
+			//				break;
+			//			}
+
+			// Pagliares. If below programmed by me to replace the commented if above
+			if(hasFinishedByLackOfEntities == true){			// fim das entidades
 				running = false;
 				termreason = 1;			
 				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
 				Log.Close();
-				firstTime = false;
 				break;
-			}
 			}
 			
 			
