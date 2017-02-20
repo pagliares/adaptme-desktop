@@ -197,7 +197,7 @@ public class Generate extends ActiveState
 		
 		if(to_q.HasSpace())	{			// se tem espa�o para entidade na fila
 			to_q.enqueue(entity);
-			Log.LogMessage(name + ":Entity " + entity.getId() + 
+			Log.LogMessage("\t" + name + ":Entity " + entity.getId() + 
 				" generated and sent to " + to_q.name);
 			if(obs != null)
 				obs.Outgoing(entity);
@@ -269,7 +269,7 @@ public class Generate extends ActiveState
 			inservice = true;				// est� "gerando"
 			if(obs != null)
 				obs.StateChange(Observer.IDLE);// para o Generate, o idle-time � o inter-arrival
-			Log.LogMessage(name + ":Scheduled entity generation to " + t);
+			Log.LogMessage("\t" + name + ":Scheduled entity generation to " + t);
 		}
 
 		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
