@@ -304,6 +304,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   </xsl:choose>
   <xsl:apply-templates select="entity_class"/>
   <xsl:text>
+  // Extended XACDML to support SPEM 2.0 - Rodrigo Pagliares
   iae.setSpemType("</xsl:text>
   <xsl:value-of select="@spem_type"/>
   <xsl:text>"); //mapped by spem_type
@@ -313,8 +314,8 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   iae.setDependencyType("</xsl:text>
   <xsl:value-of select="@dependency_type"/>
   <xsl:text>"); //mapped by dependency_type
-  iae.setAcd_processing_type("</xsl:text>
-  <xsl:value-of select="@acd_processing_type"/>
+  iae.setProcessingType("</xsl:text>
+  <xsl:value-of select="@processing_type"/>
   <xsl:text>"); //mapped by acd_processing_type
   iae.setProcessingUnit("</xsl:text>
   <xsl:value-of select="@processing_unit"/>

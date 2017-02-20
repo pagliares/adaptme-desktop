@@ -36,7 +36,7 @@ public class InternalActiveEntry extends ActiveEntry{
   private Vector conditions;	
   
   private String dependencyType = "";
-  private String acd_processing_type = "";
+  private String processingType = "";
   private String spemType = "";
   private String processingUnit = "";
   private double timeBox = 0.0;
@@ -175,7 +175,7 @@ public class InternalActiveEntry extends ActiveEntry{
 			Activity a = (Activity)activeState;
 			a.setDependencyType(dependencyType);
 			a.setFather(father);
-			a.setAcd_processing_type(acd_processing_type);
+			a.setProcessingType(processingType);
 			a.setProcessingUnit(processingUnit);
  			a.setTimeBox(timeBox);
  			a.setSpemType(spemType);
@@ -266,13 +266,21 @@ public class InternalActiveEntry extends ActiveEntry{
 	  return fq;	
   }
  
-  public final Vector getToResource(){	return tor;	}
+  public final Vector getToResource(){	
+	  return tor;	
+  }
  
-  public final Vector getFromResource(){	return fr;	}
+  public final Vector getFromResource(){	
+	  return fr;	
+  }
  
-  public final Vector getConds(){	return conditions;	}
+  public final Vector getConds(){	
+	  return conditions;	
+  }
  
-  public final int toQueueIndexOf(Object v_o){	return toq.indexOf(v_o);	}
+  public final int toQueueIndexOf(Object v_o){	
+	  return toq.indexOf(v_o);	
+  }
  
   public final int fromQueueIndexOf(Object v_o){	return fq.indexOf(v_o);	}
 
@@ -322,12 +330,12 @@ public class InternalActiveEntry extends ActiveEntry{
 	this.dependencyType = dependencyType;
   }
 
-  public String getAcd_processing_type() {
-	return acd_processing_type;
+  public String getProcessingType() {
+	return processingType;
   }
 
-  public void setAcd_processing_type(String acd_processing_type) {
-	this.acd_processing_type = acd_processing_type;
+  public void setProcessingType(String processingType) {
+	this.processingType = processingType;
   }
 
   public void setSpemType(String spemType) {
@@ -341,7 +349,6 @@ public class InternalActiveEntry extends ActiveEntry{
   public void setProcessingUnit(String processingUnit) {
 	this.processingUnit = processingUnit;
   }
-
 
   public double getTimeBox() {
 	return timeBox;

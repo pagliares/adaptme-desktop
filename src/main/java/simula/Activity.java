@@ -37,10 +37,9 @@ public class Activity extends ActiveState{
  	public static boolean isBeginOfSimulation = true;
 	
 	private String dependencyType;
-	private String acd_processing_type;
+	private String processingType;
 	private String spemType;
 	private String processingUnit;
-	private int spemWBSIndex;
 	private double timeBox = 0.0;
 	private String father = "";
 
@@ -65,7 +64,7 @@ public class Activity extends ActiveState{
 		
 		// SPEM extension
 		 dependencyType = "";
-		 acd_processing_type = "";
+		 processingType = "";
 		 spemType = "";
 		 processingUnit = "";
 		 numberOfEntitiesProduced = 0;
@@ -191,7 +190,7 @@ public class Activity extends ActiveState{
 		
 		// If the activity has FINISH-TO-START dependency and PROCESS-BY-CLASS, we need to verify the condition 
 		// if the class of entities has been produced by the previous task
-		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && acd_processing_type.equalsIgnoreCase("PROCESS-BY-CLASS")) {
+		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && processingType.equalsIgnoreCase("PROCESS-BY-CLASS")) {
 				boolean isProcessByClassOfEntitiesConditionSatisfied = isProcessByClassOfEntitiesConditionSatisfied();	
 				if (isProcessByClassOfEntitiesConditionSatisfied == false) {
 					return false;
@@ -371,12 +370,12 @@ public class Activity extends ActiveState{
 		this.dependencyType = dependencyType;
 	}
 
-	public String getAcd_processing_type() {
-		return acd_processing_type;
+	public String getProcessingType() {
+		return processingType;
 	}
 
-	public void setAcd_processing_type(String acd_processing_type) {
-		this.acd_processing_type = acd_processing_type;
+	public void setProcessingType(String processingType) {
+		this.processingType = processingType;
 	}
 	
 	private boolean isProcessByClassOfEntitiesConditionSatisfied() {
@@ -415,13 +414,6 @@ public class Activity extends ActiveState{
 			}
 		}
 		return true;
-	}
-	
-	public int getSpemWBSIndex() {
-		return spemWBSIndex;
-	}
-	public void setSpemWBSIndex(int spemWBSIndex) {
-		this.spemWBSIndex = spemWBSIndex;
 	}
 	
 	public double geTimeBox() {
