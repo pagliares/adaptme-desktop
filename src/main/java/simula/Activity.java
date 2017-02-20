@@ -233,7 +233,19 @@ public class Activity extends ActiveState{
 
 		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
 		
-		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw());
+		float serviceDuration = (float)d.Draw();
+		// The TASK can be started only if the current clock + sevice duration < time_father_started + timebox of the father activity
+		if (spemType.equalsIgnoreCase("TASK") && (father != "")) {
+			boolean mayStart = verifyIfTimeboxIsNotViolated(serviceDuration);
+			if (mayStart == false)
+					return false;
+		}
+		
+		
+		
+		//		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw()); ANTIGO
+		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, serviceDuration);
+
 		
 		Entity entity;
 		
@@ -243,7 +255,7 @@ public class Activity extends ActiveState{
 		    entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue(); // retira entidades...
 			possible.entities[i] = entity;
 			
-			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condi��o
+			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condicao
 		}
 
 		if(!ok){
@@ -269,7 +281,9 @@ public class Activity extends ActiveState{
 			Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " + resourceQueueName);
 		}
 
-		Log.LogMessage("\t" + name +  " scheduling itself in the calendar to the due time by notifiying the scheduler");
+		Log.LogMessage("\t" + name +  " scheduling itself in the calendar to the due time..: " + (serviceDuration + this.s.GetClock()) + 
+				       " by notifiying the scheduler");
+		
 		possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
 		queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
 		 
@@ -296,6 +310,28 @@ public class Activity extends ActiveState{
 		//							((DeadState)dead_states_from_v.elementAt(i)).name);
 		timeWasStarted = s.GetClock();
  		Log.LogMessage("\t"+ name + " started at: " + timeWasStarted);
+		return true;
+	}
+
+	private boolean verifyIfTimeboxIsNotViolated(float serviceDuration) {
+		
+			double timebox = 0.0;  
+			Activity ac = null;
+			Vector v = s.getActivestates();
+			for (int j =0; j < v.size(); j++) {
+				ActiveState a = (ActiveState)v.get(j);
+				if (a.name.equalsIgnoreCase(father)) {
+					 ac = (Activity)a;
+					 timebox = ac.timeBox;
+				}
+			}
+			
+			if (this.s.GetClock() + serviceDuration > ac.timeWasStarted + timebox) {  // cannot start
+				Log.LogMessage("\t" + name + " was not possible to start because there are no entities or resources available or since the current clock..: " + this.s.GetClock() + " + service duration..:" +
+			                   serviceDuration + " > "  + "Time father started..: " + ac.timeWasStarted  + " + timebox..:" + timebox);
+				return false;
+			}
+		
 		return true;
 	}
 	
@@ -344,7 +380,7 @@ public class Activity extends ActiveState{
 	}
 	
 	private boolean isProcessByClassOfEntitiesConditionSatisfied() {
-		Log.LogMessage("\n\t" + name + ": dependency type =\"FINISH-TO-START\" , acd_processing_type = \"PROCESS-BY-CLASS\"");
+		Log.LogMessage("\n\t" + name + ": dependency type =\"FINISH-TO-START\" , processing_type = \"PROCESS-BY-CLASS\"");
 
 		int esize = dead_states_from_v.size();
 		String previousQueueName = "";
