@@ -308,18 +308,18 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   iae.setSpemType("</xsl:text>
   <xsl:value-of select="@spem_type"/>
   <xsl:text>"); //mapped by spem_type
-  iae.setFather("</xsl:text>
-  <xsl:value-of select="@father"/>
-  <xsl:text>"); //mapped by father
+  iae.setParent("</xsl:text>
+  <xsl:value-of select="@parent"/>
+  <xsl:text>"); //mapped by parent
   iae.setDependencyType("</xsl:text>
   <xsl:value-of select="@dependency_type"/>
   <xsl:text>"); //mapped by dependency_type
-  iae.setProcessingType("</xsl:text>
-  <xsl:value-of select="@processing_type"/>
-  <xsl:text>"); //mapped by acd_processing_type
-  iae.setProcessingUnit("</xsl:text>
-  <xsl:value-of select="@processing_unit"/>
-  <xsl:text>"); //mapped by spem_type
+  iae.setConditionToProcess("</xsl:text>
+  <xsl:value-of select="@condition_to_process"/>
+  <xsl:text>"); //mapped by condition_to_process
+  iae.setProcessingQuantity("</xsl:text>
+  <xsl:value-of select="@processing_quantity"/>
+  <xsl:text>"); //mapped processing_quantity
   iae.setTimeBox("</xsl:text>
   <xsl:value-of select="@timebox"/>
   <xsl:text>"); //mapped by timebox

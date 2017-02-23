@@ -36,11 +36,11 @@ public class InternalActiveEntry extends ActiveEntry{
   private Vector conditions;	
   
   private String dependencyType = "";
-  private String processingType = "";
+  private String conditionToProcess = "";
   private String spemType = "";
-  private String processingUnit = "";
+  private String processingQuantity = "";
   private double timeBox = 0.0;
-  private String father = "";
+  private String parent = "";
   
   //private Vector quantityUsedTemporaryEntities;	// Commented lines to be worked when trying to acquire entities in batch mode
 
@@ -174,9 +174,9 @@ public class InternalActiveEntry extends ActiveEntry{
 			// SPEM attributes
 			Activity a = (Activity)activeState;
 			a.setDependencyType(dependencyType);
-			a.setFather(father);
-			a.setProcessingType(processingType);
-			a.setProcessingUnit(processingUnit);
+			a.setParent(parent);
+			a.setConditionToProcess(conditionToProcess);
+			a.setProcessingQuantity(processingQuantity);
  			a.setTimeBox(timeBox);
  			a.setSpemType(spemType);
 						
@@ -330,24 +330,24 @@ public class InternalActiveEntry extends ActiveEntry{
 	this.dependencyType = dependencyType;
   }
 
-  public String getProcessingType() {
-	return processingType;
+  public String getConditionToProcess() {
+	return conditionToProcess;
   }
 
-  public void setProcessingType(String processingType) {
-	this.processingType = processingType;
+  public void setConditionToProcess(String conditionToProcess) {
+	this.conditionToProcess = conditionToProcess;
   }
 
   public void setSpemType(String spemType) {
 	this.spemType = spemType;	
   }
 
-  public String getProcessingUnit() {
-	return processingUnit;
+  public String getProcessingQuantity() {
+	return processingQuantity;
   }
 
-  public void setProcessingUnit(String processingUnit) {
-	this.processingUnit = processingUnit;
+  public void setProcessingQuantity(String processingQuantity) {
+	this.processingQuantity = processingQuantity;
   }
 
   public double getTimeBox() {
@@ -361,12 +361,12 @@ public class InternalActiveEntry extends ActiveEntry{
 		this.timeBox = Double.parseDouble(timeBox);
   }
 
-  public String getFather() {
-	return father;
+  public String getParent() {
+	return parent;
   }
 
-  public void setFather(String father) {
-	this.father = father;
+  public void setParent(String parent) {
+	this.parent = parent;
   }
 
   //Commented lines to be worked when trying to acquire entities in batch mode

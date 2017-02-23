@@ -37,11 +37,11 @@ public class Activity extends ActiveState{
  	public static boolean isBeginOfSimulation = true;
 	
 	private String dependencyType;
-	private String processingType;
+	private String conditionToProcess;
 	private String spemType;
-	private String processingUnit;
+	private String processingQuantity;
 	private double timeBox = 0.0;
-	private String father = "";
+	private String parent = "";
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
@@ -64,9 +64,9 @@ public class Activity extends ActiveState{
 		
 		// SPEM extension
 		 dependencyType = "";
-		 processingType = "";
+		 conditionToProcess = "";
 		 spemType = "";
-		 processingUnit = "";
+		 processingQuantity = "";
 		 numberOfEntitiesProduced = 0;
 	}
 	
@@ -190,7 +190,7 @@ public class Activity extends ActiveState{
 		
 		// If the activity has FINISH-TO-START dependency and PROCESS-BY-CLASS, we need to verify the condition 
 		// if the class of entities has been produced by the previous task
-		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && processingType.equalsIgnoreCase("PROCESS-BY-CLASS")) {
+		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && conditionToProcess.equalsIgnoreCase("PROCESS-BY-CLASS")) {
 				boolean isProcessByClassOfEntitiesConditionSatisfied = isProcessByClassOfEntitiesConditionSatisfied();	
 				if (isProcessByClassOfEntitiesConditionSatisfied == false) {
 					return false;
@@ -234,7 +234,7 @@ public class Activity extends ActiveState{
 		
 		float serviceDuration = (float)d.Draw();
 		// The TASK can be started only if the current clock + sevice duration < time_father_started + timebox of the father activity
-		if (spemType.equalsIgnoreCase("TASK") && (father != "")) {
+		if (spemType.equalsIgnoreCase("TASK") && (parent != "")) {
 			boolean mayStart = verifyIfTimeboxIsNotViolated(serviceDuration);
 			if (mayStart == false)
 					return false;
@@ -319,7 +319,7 @@ public class Activity extends ActiveState{
 			Vector v = s.getActivestates();
 			for (int j =0; j < v.size(); j++) {
 				ActiveState a = (ActiveState)v.get(j);
-				if (a.name.equalsIgnoreCase(father)) {
+				if (a.name.equalsIgnoreCase(parent)) {
 					 ac = (Activity)a;
 					 timebox = ac.timeBox;
 				}
@@ -354,12 +354,12 @@ public class Activity extends ActiveState{
 		this.spemType = spemType;
 	}
 
-	public String getProcessingUnit() {
-		return processingUnit;
+	public String getProcessingQuantity() {
+		return processingQuantity;
 	}
 
-	public void setProcessingUnit(String processingUnit) {
-		this.processingUnit = processingUnit;
+	public void setProcessingQuantity(String processingQuantity) {
+		this.processingQuantity = processingQuantity;
 	}
 
 	public String getDependencyType() {
@@ -370,12 +370,12 @@ public class Activity extends ActiveState{
 		this.dependencyType = dependencyType;
 	}
 
-	public String getProcessingType() {
-		return processingType;
+	public String getConditionToProcess() {
+		return conditionToProcess;
 	}
 
-	public void setProcessingType(String processingType) {
-		this.processingType = processingType;
+	public void setConditionToProcess(String conditionToProcess) {
+		this.conditionToProcess = conditionToProcess;
 	}
 	
 	private boolean isProcessByClassOfEntitiesConditionSatisfied() {
@@ -431,12 +431,12 @@ public class Activity extends ActiveState{
 		this.timeWasStarted = timeWasStarted;
 	}
 
-	public String getFather() {
-		return father;
+	public String getParent() {
+		return parent;
 	}
 
-	public void setFather(String father) {
-		this.father = father;
+	public void setParent(String parent) {
+		this.parent = parent;
 	}
 	
 	// Commented lines to be worked when trying to acquire entities in batch mode
