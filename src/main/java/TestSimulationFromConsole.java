@@ -16,7 +16,9 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-		simulationManagerFacade.execute(20000, 3, true);
+		simulationManagerFacade.execute(4800, 3, true);
+		
+		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
 		
 		//		printStyle1(simulationManagerFacade);
 		
@@ -41,6 +43,11 @@ public class TestSimulationFromConsole {
 		//		printStyle11(simulationManagerFacade); 
 		
 	}
+	
+	private static void printMeanAndStandardDeviationNumberOfDays(SimulationManagerFacade simulationManagerFacade) {
+		System.out.println("\nMean(sd) number of days..: " + Math.round(simulationManagerFacade.calculateMeanNumberOfDays() * 100.00)/100.0 + 
+				          " (" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays() * 100.00)/100.0 + ")" );
+ 	}
 
 	private static void printStyle11(SimulationManagerFacade simulationManagerFacade) {
 		//		 Simulation Report
@@ -58,11 +65,10 @@ public class TestSimulationFromConsole {
 	}
 
 	private static void printStyle10(SimulationManagerFacade simulationManagerFacade) {
-		// Printing averages - Printing Zero for all of them
-				System.out.println(simulationManagerFacade.getAverageNumberOfDays());
-				System.out.println(simulationManagerFacade.getAverageNumberOfImplementedUserStories());
-				System.out.println(simulationManagerFacade.getAverageNumberOfIterations());
-				System.out.println(simulationManagerFacade.getAverageNumberOfReleases());
+ 		System.out.println("mean number of days...: " + simulationManagerFacade.getAverageNumberOfDays());
+		System.out.println("mean number of implemented user stories...: " + simulationManagerFacade.getAverageNumberOfImplementedUserStories());
+		System.out.println("mean number of iterations...: " + simulationManagerFacade.getAverageNumberOfIterations());
+		System.out.println("mean number of releases...: " + simulationManagerFacade.getAverageNumberOfReleases());
 	}
 
 	private static void printStyle9(SimulationManagerFacade simulationManagerFacade) {

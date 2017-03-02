@@ -226,14 +226,14 @@ public class Scheduler implements Runnable{
 			ActiveState activeState;
 							
 			// Pagliares. The commented lines below is from Wladimir that finishes the simulation by lack of entities when clock is zero.
-			//			if(clock == 0.0){			 
-			//				running = false;
-			//				termreason = 1;			
-			//				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-			//				Log.Close();
-			//				firstTime = false;
-			//				break;
-			//			}
+//						if(clock == 0.0){			 
+//							running = false;
+//							termreason = 1;			
+//							Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+//							Log.Close();
+////							firstTime = false;
+//							break;
+//						}
 
 			// Pagliares. If below programmed by me to replace the commented if above
 			if(hasFinishedByLackOfEntities == true){			// fim das entidades

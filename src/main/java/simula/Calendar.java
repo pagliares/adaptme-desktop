@@ -249,7 +249,7 @@ class Calendar{
  				list = null;
 				Scheduler.hasFinishedByLackOfEntities = true; // Pagliares. Now it finishes by lack of entities when this flag is set to true.
 				return clock;
-				//return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
+//				return (float)0.0;  // AQUI QUE ESTA VOLTANDO O CLOCK PARA ZERO (POIS LIST E ROOT SE TORNARAM NULL
 			}
 			
 			TTreeEntry node, child, parent;
@@ -257,7 +257,7 @@ class Calendar{
 			child = root;
 			parent = null;
 
-			// encontra n� com menor duetime
+			// encontra no com menor duetime
 			// PAGLIARES: eh este while entao que pega a proxima atividade agendada e prepara para leva-la para root?
 			while (child.left != null) {
 				parent = child;
