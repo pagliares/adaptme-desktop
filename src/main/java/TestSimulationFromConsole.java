@@ -16,7 +16,7 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-		simulationManagerFacade.execute(4800, 3, true);
+		simulationManagerFacade.execute(480, 1, true);
 		
 		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
 		

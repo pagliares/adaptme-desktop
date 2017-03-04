@@ -45,6 +45,7 @@ public class Activity extends ActiveState{
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
+	private boolean startedWithExceededTimeBox = false;
 	
 	// private Vector entities_qt_v = new Vector(1, 1); // Commented lines to be worked when trying to acquire entities in batch mode
 	
@@ -197,6 +198,8 @@ public class Activity extends ActiveState{
 				}
 		}
 		
+		
+		
 		// primeiro tenta resolve o estado bloqueado, se for o caso
 		if(blocked){
 			blocked = false;
@@ -232,13 +235,33 @@ public class Activity extends ActiveState{
 
 		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
 		
+		
+		// If the activity is an End counterpart, it can only start if the current time > time BEGIN counter part started + timebox
+		if (spemType.equalsIgnoreCase("ACTIVITY") && name.startsWith("END")) {
+			double timeBEGINActivityStarted =  getTimeBEGINActivityStarted(name);
+			double timeBoxBEGINActivity = getBEGINActivityTimebox(name);
+						 
+			if (s.GetClock() < ((timeBEGINActivityStarted + timeBoxBEGINActivity) - 1)) {
+				return false;
+			}
+		}
+		
 		float serviceDuration = (float)d.Draw();
 		// The TASK can be started only if the current clock + sevice duration < time_father_started + timebox of the father activity
 		if (spemType.equalsIgnoreCase("TASK") && (parent != "")) {
 			boolean mayStart = verifyIfTimeboxIsNotViolated(serviceDuration);
-			if (mayStart == false)
-					return false;
-		}
+			if (mayStart == false) {
+				    serviceDuration = (float)getTimeParentStarted(parent) + (float)getParentTimebox(parent) - s.GetClock();
+				    if (serviceDuration < 1) {
+				    	return false;
+				    }
+			        if (startedWithExceededTimeBox == true) {
+			        	return false;
+			        } else {
+					startedWithExceededTimeBox = true; // TODO voltar para false no final, ou deixar uma instancia de cada executar (static ou not?)
+			        }
+			}
+		} 
 		
 		
 		
@@ -311,6 +334,10 @@ public class Activity extends ActiveState{
  		Log.LogMessage("\t"+ name + " started at: " + timeWasStarted);
 		return true;
 	}
+
+	
+
+	
 
 	private boolean verifyIfTimeboxIsNotViolated(float serviceDuration) {
 		
@@ -437,6 +464,60 @@ public class Activity extends ActiveState{
 
 	public void setParent(String parent) {
 		this.parent = parent;
+	}
+	
+	private double getParentTimebox(String parent) {
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			if (activeState.name.equalsIgnoreCase(parent)) {
+				return activeState.timeBox;
+			}
+		}
+		return 0;
+	}
+	
+	private double getTimeParentStarted(String parent) {
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			if (activeState.name.equalsIgnoreCase(parent)) {
+				return activeState.timeWasStarted;
+			}
+		}
+		return 0;
+	}
+	
+	private double getBEGINActivityTimebox(String endActivityName) {
+		String endActivitySufix = endActivityName.substring(4);
+		String beginActivitySufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginActivitySufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endActivitySufix.equalsIgnoreCase(beginActivitySufix))){
+				return activeState.timeBox;
+			}
+		}
+		return 0;
+	}
+	
+	private double getTimeBEGINActivityStarted(String endActivityName) {
+		String endActivitySufix = endActivityName.substring(4);
+		String beginActivitySufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginActivitySufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endActivitySufix.equalsIgnoreCase(beginActivitySufix))){
+				return activeState.timeWasStarted;
+			}
+		}
+		return 0;
 	}
 	
 	// Commented lines to be worked when trying to acquire entities in batch mode
