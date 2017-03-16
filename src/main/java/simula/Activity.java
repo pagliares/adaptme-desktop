@@ -30,7 +30,7 @@ public class Activity extends ActiveState{
 	protected IntPriorityQ queueOfEntitiesAndResourcesInService;
 		
 	/**
-	 * se est� bloqueado
+	 * se esta bloqueado
 	 */
 	protected boolean blocked;	
 	
@@ -46,6 +46,11 @@ public class Activity extends ActiveState{
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
 	private boolean startedWithExceededTimeBox = false;
+	
+	private InServiceTemporaryEntitiesUntilDueTime possible = null;
+	private boolean ok = false;
+	
+	private Integer quantityOfTemporaryEntitiesUsed;
 	
 	// private Vector entities_qt_v = new Vector(1, 1); // Commented lines to be worked when trying to acquire entities in batch mode
 	
@@ -126,18 +131,18 @@ public class Activity extends ActiveState{
 		if(blocked)									// n�o faz nada enquanto estiver bloqueado
 			return false;
 			
-		InServiceTemporaryEntitiesUntilDueTime inServiceEntities = queueOfEntitiesAndResourcesInService.Dequeue();
+		InServiceTemporaryEntitiesUntilDueTime inServiceTemporaryEntitiesUntilDueTime = queueOfEntitiesAndResourcesInService.Dequeue();
 
 		if (isBeginOfSimulation) { // pagliares 
 			isBeginOfSimulation = false; // pagliares
 			return true; // pagliares
 		}
 		
-		if(inServiceEntities == null)								// n�o h� mais nada a servir
+		if(inServiceTemporaryEntitiesUntilDueTime == null)								// n�o h� mais nada a servir
 			return false;
 
-		if(time < inServiceEntities.duetime){			// servi�o foi interrompido e scheduler n�o foi notificado									
-			queueOfEntitiesAndResourcesInService.PutBack(inServiceEntities);		// devolve � fila para ser servido mais tarde
+		if(time < inServiceTemporaryEntitiesUntilDueTime.duetime){			// servi�o foi interrompido e scheduler n�o foi notificado									
+			queueOfEntitiesAndResourcesInService.PutBack(inServiceTemporaryEntitiesUntilDueTime);		// devolve � fila para ser servido mais tarde
 			return false;
 		}
 
@@ -151,7 +156,7 @@ public class Activity extends ActiveState{
 		}
 		
 		if(!shouldnotblock){
-			queueOfEntitiesAndResourcesInService.PutBack(inServiceEntities);
+			queueOfEntitiesAndResourcesInService.PutBack(inServiceTemporaryEntitiesUntilDueTime);
 			blocked = true;											// bloqueia
 			Log.LogMessage(name + ":Blocked");
 			return false;
@@ -161,7 +166,7 @@ public class Activity extends ActiveState{
 			// int qt; // Commented lines to be worked when trying to acquire entities in batch mode
 			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtem fila associada
 			if(q.HasSpace())										// se tem espaco
-				q.enqueue(inServiceEntities.entities[i]);									// envia ao estado morto
+				q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[i]);									// envia ao estado morto         PAGLIARES
 		}
 		
 		for(int i = 0; i < resources_to_v.size(); i++){		// e os recursos.
@@ -175,15 +180,15 @@ public class Activity extends ActiveState{
 		if(obs != null){
 			if(queueOfEntitiesAndResourcesInService.IsEmpty())
 				obs.StateChange(Observer.IDLE);
-			for(int i = 0; i < inServiceEntities.entities.length; i++)
-				obs.Outgoing(inServiceEntities.entities[i]);
+			for(int i = 0; i < inServiceTemporaryEntitiesUntilDueTime.entities.length; i++)
+				obs.Outgoing(inServiceTemporaryEntitiesUntilDueTime.entities[i]);
 		}
 		
-		for(int i = 0; i < inServiceEntities.entities.length; i++) {
-			Log.LogMessage("\t" + name + ":Entity " + inServiceEntities.entities[i].getId() +
+		for(int i = 0; i < inServiceTemporaryEntitiesUntilDueTime.entities.length; i++) {                        // PRECISO COLOCAR TODAS DO BATCH EM INSERVICEENTITIES NO C
+			Log.LogMessage("\t" + name + ":Entity " + inServiceTemporaryEntitiesUntilDueTime.entities[i].getId() +
 				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
 		}
-		numberOfEntitiesProduced++;
+		numberOfEntitiesProduced++;                                                                                        // PAGLIARES SOMAR O BATCH
   		return true;
 	}
 	
@@ -198,43 +203,45 @@ public class Activity extends ActiveState{
 				}
 		}
 		
-		
-		
-		// primeiro tenta resolve o estado bloqueado, se for o caso
+		// Tenta resolver o estado bloqueado, se for o caso
 		if(blocked){
 			blocked = false;
 			while(BServed(s.GetClock()));	// extrai todos os bloqueados
 							
-			if(blocked)		// se ainda estiver bloqueado, n�o faz nada
+			if(blocked)		// se ainda estiver bloqueado, nao faz nada
 				return false;
 			Log.LogMessage(name + ":Unblocked");
 		}
 			
-		// primeiro verifica se todos os recursos e entidades est�o dispon�veis
-		boolean ok = true;
-		int esize = dead_states_from_v.size();
+		// Verifica se todos os recursos e entidades estao disponiveis
+		ok = true;
+		int quantityIncomingDeadStates = dead_states_from_v.size();
 		int i;
 
-		for(i = 0; i < resources_from_v.size() && ok; i++)	{// os recursos...
-			ResourceQ resourceQ = (ResourceQ)resources_from_v.elementAt(i);
-			Integer quantityOfResourcesUsed = ((Integer)resources_qt_v.elementAt(i)).intValue();
-			
-			ok &= resourceQ.HasEnough(quantityOfResourcesUsed);
+		// Resources are only engaged in tasks 
+		if (spemType.equalsIgnoreCase("TASK")) {
+			for(i = 0; i < resources_from_v.size() && ok; i++)	{// os recursos...
+				ResourceQ resourceQ = (ResourceQ)resources_from_v.elementAt(i);
+				Integer quantityOfResourcesUsed = ((Integer)resources_qt_v.elementAt(i)).intValue();
+				ok &= resourceQ.HasEnough(quantityOfResourcesUsed);
+			}
 		}
 		
 		Log.LogMessage("\n\t" + name + " Resources available? " + ok);
+		
+		boolean isResourceAvailable = ok;
 		 
-		for(i = 0; i < esize && ok; i++)	{				// as entidades...
+		for(i = 0; i < quantityIncomingDeadStates && ok; i++)	{				// as entidades...
 			DeadState deadState = (DeadState)dead_states_from_v.elementAt(i);
 			ok &= deadState.HasEnough();
 		}
 		
-		// Commented lines to be worked when trying to acquire entities in batch mode
-		//		for(i = 0; i < esize && ok; i++)					// as entidades...
-		//			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough(((Integer)entities_qt_v.elementAt(i)).intValue());
-
 		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
+		boolean isTemoporaryEntitiesAvailable = ok;
 		
+//		if (isResourceAvailable == false && isTemoporaryEntitiesAvailable == false) {
+//			return false;
+//		}
 		
 		// If the activity is an End counterpart, it can only start if the current time > time BEGIN counter part started + timebox
 		if (spemType.equalsIgnoreCase("ACTIVITY") && name.startsWith("END")) {
@@ -263,81 +270,86 @@ public class Activity extends ActiveState{
 			}
 		} 
 		
-		
-		
-		//		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, (float)d.Draw()); ANTIGO
-		InServiceTemporaryEntitiesUntilDueTime possible = new InServiceTemporaryEntitiesUntilDueTime(esize, serviceDuration);
+		if (processingQuantity.equalsIgnoreCase("BATCH")) {
+			configureBatchProcessing(serviceDuration);
+		} else {
 
-		
-		Entity entity;
-		
-		// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
-		for(i = 0; i < esize && ok; i++) {					// as condicoes.
-			
-		    entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue(); // retira entidades...
-			possible.entities[i] = entity;
-			
-			ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condicao
-		}
+			possible = new InServiceTemporaryEntitiesUntilDueTime(1, serviceDuration);
 
-		if(!ok){
-			Log.LogMessage("\t" + name + " Not all resources or entities are available");
-			if(i > 0)		// alguma condicaoo nao foi satisfeita
-			{
-				for(i--; i >= 0; i--)		// devolve as entidades as respectivas filas
-					((DeadState)dead_states_from_v.elementAt(i)).putBack(possible.entities[i]);
+			Entity entity;
+		
+			// possible.entities[i] insere a entidade que ira trabalhar vindo da fila
+			for(i = 0; i < quantityIncomingDeadStates && ok; i++) {					// as condicoes.
+			
+				entity = ((DeadState)dead_states_from_v.elementAt(i)).dequeue(); // retira entidades...
+				possible.entities[i] = entity;
+			
+				ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condicao
 			}
 
-			return false;
+			if(!ok){
+				Log.LogMessage("\t" + name + " Not all resources or entities are available");
+				if(i > 0)		// alguma condicaoo nao foi satisfeita
+				{
+					for(i--; i >= 0; i--)		// devolve as entidades as respectivas filas
+						((DeadState)dead_states_from_v.elementAt(i)).putBack(possible.entities[i]);
+				}
+
+				return false;
+			}
+		
 		}
 
-		// obtem os recursos
-		for(i = 0; i < resources_from_v.size(); i++){
-			
-			int qt = ((Integer)resources_qt_v.elementAt(i)).intValue();
-			ResourceQ resourceQ = ((ResourceQ)resources_from_v.elementAt(i));
-			String resourceQueueName = ((ResourceQ)resources_from_v.elementAt(i)).name;
-			
-			resourceQ.Acquire(qt);
-				
-			Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " + resourceQueueName);
+		if (spemType.equalsIgnoreCase("TASK")) {
+			// obtem os recursos
+			for(i = 0; i < resources_from_v.size(); i++){
+				int qt = ((Integer)resources_qt_v.elementAt(i)).intValue();
+				ResourceQ resourceQ = ((ResourceQ)resources_from_v.elementAt(i));
+				String resourceQueueName = ((ResourceQ)resources_from_v.elementAt(i)).name;	
+				resourceQ.Acquire(qt);		
+				Log.LogMessage("\t" + name + ":Acquired " + qt + " resources from " + resourceQueueName);
+			}
 		}
 
 		Log.LogMessage("\t" + name +  " scheduling itself in the calendar to the due time..: " + (serviceDuration + this.s.GetClock()) + 
 				       " by notifiying the scheduler");
 		
-		possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
-		queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
-		 
-		if(obs != null){
-			obs.StateChange(Observer.BUSY);
-			for(i = 0; i < possible.entities.length; i++)
-				obs.Incoming(possible.entities[i]);
-		}
+		if (processingQuantity.equalsIgnoreCase("BATCH")) {
+			notificaSchedulerBatchMode();
+			if(obs != null){
+				obs.StateChange(Observer.BUSY);
+				for(i = 0; i < possible.entities.length; i++)
+					obs.Incoming(possible.entities[i]);
+			}
 
-		for(i = 0; i < possible.entities.length; i++) {
-			String deadStateName = ((DeadState)dead_states_from_v.elementAt(i)).name;
-			long entityId = possible.entities[i].getId();
+			for(i = 0; i < possible.entities.length; i++) {
+				String deadStateName = ((DeadState)dead_states_from_v.elementAt(0)).name;
+				long entityId = possible.entities[i].getId();
 			
-			Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+			}
+		} else {
+			possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
+			queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
+		 
+			if(obs != null){
+				obs.StateChange(Observer.BUSY);
+				for(i = 0; i < possible.entities.length; i++)
+					obs.Incoming(possible.entities[i]);
+			}
+
+			for(i = 0; i < possible.entities.length; i++) {
+				String deadStateName = ((DeadState)dead_states_from_v.elementAt(i)).name;
+				long entityId = possible.entities[i].getId();
+			
+				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+			}
 		}
-		
-		// Commented lines to be worked when trying to acquire entities in batch mode
-		//		for(i = 0; i < esize && ok; i++)					// as entidades...
-		//			ok &= ((DeadState)dead_states_from_v.elementAt(i)).HasEnough(((Integer)entities_qt_v.elementAt(i)).intValue());
-		//					int qt;
-		//					DeadState deadState = (DeadState)(dead_states_from_v.elementAt(i));
-		//					deadState.Acquire(qt = ((Integer)entities_qt_v.elementAt(i)).intValue());
-		//					Log.LogMessage("\t" + name + ":Acquired " + qt + " entities from " +
-		//							((DeadState)dead_states_from_v.elementAt(i)).name);
+		 
 		timeWasStarted = s.GetClock();
  		Log.LogMessage("\t"+ name + " started at: " + timeWasStarted);
 		return true;
 	}
-
-	
-
-	
 
 	private boolean verifyIfTimeboxIsNotViolated(float serviceDuration) {
 		
@@ -520,6 +532,45 @@ public class Activity extends ActiveState{
 		return 0;
 	}
 	
+	private void configureBatchProcessing(float serviceDuration) {
+		Entity entity;
+		
+		DeadState deadState = (DeadState)dead_states_from_v.elementAt(0);
+		int quantityInIncomingDeadState = deadState.count;
+		possible = new InServiceTemporaryEntitiesUntilDueTime(quantityInIncomingDeadState, serviceDuration);
+		
+		for (int i= 0; i < quantityInIncomingDeadState; i++) {
+			entity = deadState.dequeue();
+			possible.entities[i] = entity;
+			// ok &= ((Expression)conditions_from_v.elementAt(i)).Evaluate(entity) != 0;// e testa condicao
+		}
+	}
+	
+	
+	private void notificaSchedulerBatchMode() {
+		Entity entity;
+		
+		DeadState deadState = (DeadState)dead_states_from_v.elementAt(0);
+		int quantityInIncomingDeadState = deadState.count;
+		
+		for (int i= 0; i < quantityInIncomingDeadState; i++) {
+			possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
+			queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
+	 
+			if(obs != null){
+				obs.StateChange(Observer.BUSY);
+				for(i = 0; i < possible.entities.length; i++)
+					obs.Incoming(possible.entities[i]);
+			}
+
+			for(i = 0; i < possible.entities.length; i++) {
+				String deadStateName = ((DeadState)dead_states_from_v.elementAt(i)).name;
+				long entityId = possible.entities[i].getId();
+		
+				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+			}
+		}
+	}
 	// Commented lines to be worked when trying to acquire entities in batch mode
 	//	public void ConnectQueues(DeadState from, Expression cond, DeadState to, int qty_needed){
 	//		dead_states_from_v.add(from);
