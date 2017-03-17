@@ -19,7 +19,7 @@ public class Activity extends ActiveState{
 	 * resources_from_v, resources_to_v, resources_qt_v:
 	 * vetores que mant�m as liga��es e par�metros
 	 */
-	protected Vector dead_states_from_v, entities_to_v, conditions_from_v,
+	protected Vector dead_states_from_v, dead_states_to_v, conditions_from_v,
 					 	resources_from_v, resources_to_v, resources_qt_v;
 													
 	private Distribution d;		// gerador de n�meros aleat�rios de uma dada distribui��o
@@ -61,7 +61,7 @@ public class Activity extends ActiveState{
 		super(s);
 		// constr�i vetores de liga��es
 		dead_states_from_v = new Vector(1, 1);
-		entities_to_v = new Vector(1, 1);
+		dead_states_to_v = new Vector(1, 1);
 		conditions_from_v = new Vector(1, 1);
 		resources_from_v = new Vector(1, 1);
 		resources_to_v = new Vector(1, 1);
@@ -112,7 +112,7 @@ public class Activity extends ActiveState{
 	public void ConnectQueues(DeadState from, Expression cond, DeadState to){
 		conditions_from_v.add(cond);
 		dead_states_from_v.add(from);
-		entities_to_v.add(to);
+		dead_states_to_v.add(to);
 	}
 	
 	/**
@@ -150,8 +150,8 @@ public class Activity extends ActiveState{
 		
 		boolean shouldnotblock = true;
 
-		for(int i = 0; i < entities_to_v.size(); i++){		// as entidades...
-			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obt�m fila associada
+		for(int i = 0; i < dead_states_to_v.size(); i++){		// as entidades...
+			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obt�m fila associada
 			shouldnotblock &= q.HasSpace();												// condi��o para n�o bloquear
 		}
 		
@@ -162,11 +162,13 @@ public class Activity extends ActiveState{
 			return false;
 		}
 
-		for(int i = 0; i < entities_to_v.size(); i++)	{	// as entidades...
+		for(int i = 0; i < dead_states_to_v.size(); i++)	{	// as entidades...
 			// int qt; // Commented lines to be worked when trying to acquire entities in batch mode
-			DeadState q = (DeadState)entities_to_v.elementAt(i);	// obtem fila associada
+			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obtem fila associada
 			if(q.HasSpace())										// se tem espaco
-				q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[i]);									// envia ao estado morto         PAGLIARES
+				for (int j = 0; j < inServiceTemporaryEntitiesUntilDueTime.entities.length; j++) {
+					q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[i]);									// envia ao estado morto         PAGLIARES
+				}
 		}
 		
 		for(int i = 0; i < resources_to_v.size(); i++){		// e os recursos.
@@ -184,11 +186,17 @@ public class Activity extends ActiveState{
 				obs.Outgoing(inServiceTemporaryEntitiesUntilDueTime.entities[i]);
 		}
 		
-		for(int i = 0; i < inServiceTemporaryEntitiesUntilDueTime.entities.length; i++) {                        // PRECISO COLOCAR TODAS DO BATCH EM INSERVICEENTITIES NO C
+		for(int i = 0; i < inServiceTemporaryEntitiesUntilDueTime.entities.length; i++) {                        
 			Log.LogMessage("\t" + name + ":Entity " + inServiceTemporaryEntitiesUntilDueTime.entities[i].getId() +
-				" sent to " + ((DeadState)entities_to_v.elementAt(i)).name);
+				" sent to " + ((DeadState)dead_states_to_v.elementAt(0)).name);  // TODO generalize for all output dead states
 		}
-		numberOfEntitiesProduced++;                                                                                        // PAGLIARES SOMAR O BATCH
+		
+		if (processingQuantity.equalsIgnoreCase("BATCH")) {
+			numberOfEntitiesProduced = numberOfEntitiesProduced + possible.entities.length;                                                                                        
+
+		} else {
+		numberOfEntitiesProduced++;   
+		} 
   		return true;
 	}
 	
@@ -239,9 +247,13 @@ public class Activity extends ActiveState{
 		Log.LogMessage("\t" + name + " Temporary entities available? " + ok);
 		boolean isTemoporaryEntitiesAvailable = ok;
 		
-//		if (isResourceAvailable == false && isTemoporaryEntitiesAvailable == false) {
-//			return false;
-//		}
+		if (isResourceAvailable == false && isTemoporaryEntitiesAvailable == false) {
+			return false;
+		}
+		
+		if (isTemoporaryEntitiesAvailable == false) {
+			return false;
+		}
 		
 		// If the activity is an End counterpart, it can only start if the current time > time BEGIN counter part started + timebox
 		if (spemType.equalsIgnoreCase("ACTIVITY") && name.startsWith("END")) {
@@ -323,10 +335,10 @@ public class Activity extends ActiveState{
 			}
 
 			for(i = 0; i < possible.entities.length; i++) {
-				String deadStateName = ((DeadState)dead_states_from_v.elementAt(0)).name;
+//				String deadStateName = ((DeadState)dead_states_from_v.elementAt(0)).name;
 				long entityId = possible.entities[i].getId();
 			
-				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+//				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
 			}
 		} else {
 			possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
@@ -551,9 +563,8 @@ public class Activity extends ActiveState{
 		Entity entity;
 		
 		DeadState deadState = (DeadState)dead_states_from_v.elementAt(0);
-		int quantityInIncomingDeadState = deadState.count;
-		
-		for (int i= 0; i < quantityInIncomingDeadState; i++) {
+ 
+		for (int i= 0; i < possible.entities.length; i++) {
 			possible.duetime = RegisterEvent(possible.duetime);		// notifica scheduler
 			queueOfEntitiesAndResourcesInService.Enqueue(possible);							// coloca na fila de servi�o
 	 
@@ -564,18 +575,11 @@ public class Activity extends ActiveState{
 			}
 
 			for(i = 0; i < possible.entities.length; i++) {
-				String deadStateName = ((DeadState)dead_states_from_v.elementAt(i)).name;
 				long entityId = possible.entities[i].getId();
 		
-				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadStateName);
+				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadState.name);
 			}
 		}
 	}
-	// Commented lines to be worked when trying to acquire entities in batch mode
-	//	public void ConnectQueues(DeadState from, Expression cond, DeadState to, int qty_needed){
-	//		dead_states_from_v.add(from);
-	//		conditions_from_v.add(cond);
-	//		entities_to_v.add(to);
-	//		entities_qt_v.add(new Integer(qty_needed));
-	//	}
+	
 }
