@@ -23,6 +23,7 @@ import adaptme.ui.window.perspective.ShowResultsTableModel;
 import adaptme.ui.window.perspective.VariableType;
 import executive.queue.Queue;
 import model.spem.SimulationFacade;
+import simula.ActiveState;
 import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
@@ -624,6 +625,25 @@ public class SimulationManagerFacade {
 		                        // tem a mesma atividade com predecessora em SPEM ou em outras palavras, quando mais de uma atividade tem como 
 		                        // a mesma fila como previous state.
 	}
+	
+	// pagliares
+		public int getQuantityOfSPEMActivitiesCompleted() {
+			Iterator iterator = simulationManager.GetActiveStatesIterator();
+			while (iterator.hasNext()){
+				InternalActiveEntry activeState = (InternalActiveEntry)iterator.next();
+				if (activeState.getSpemType().equalsIgnoreCase("ACTIVITY") && (activeState.getName().startsWith("BEGIN_"))) {
+					float endClock = simulationManager.getScheduler().getEndclock();
+					float endClockDays = simulationManager.getScheduler().getEndclock()/480;
+					int resultado = (int)(endClock / activeState.getTimeBox());
+					System.out.print("Quantity of " + "\"" + activeState.getName().split("_")[1]  +  "\"" + " activities..: " );
+					return resultado;
+				}
+				
+				
+ 			}
+			return 0;
+			
+		}
 	
 	// TODO remove this method after finishing the code to extend XACDML in order to support iteration and releases
 //		private double reportByRelease(double acumulateNumberOfReleases, int i) {

@@ -17,6 +17,7 @@ public class TestSimulationFromConsole {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 		simulationManagerFacade.execute(25000, 1, true);
+		System.out.println(simulationManagerFacade.getQuantityOfSPEMActivitiesCompleted());
 		
 		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
 		

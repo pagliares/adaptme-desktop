@@ -42,6 +42,8 @@ public class InternalActiveEntry extends ActiveEntry{
   private double timeBox = 0.0;
   private String parent = "";
   
+  
+  
   //private Vector quantityUsedTemporaryEntities;	// Commented lines to be worked when trying to acquire entities in batch mode
 
   public String toString(){
@@ -368,13 +370,7 @@ public class InternalActiveEntry extends ActiveEntry{
   public void setParent(String parent) {
 	this.parent = parent;
   }
-
-  //Commented lines to be worked when trying to acquire entities in batch mode
-  //  public final void addTemporaryEntiesQty(Object v_o){	
-  //	quantityUsedTemporaryEntities.add(v_o);	
-  //  }
-  
-  //  public final void removeTemporaryEntitiesQty(int v_i){	
-  //	  quantityUsedTemporaryEntities.remove(v_i);	
-  //  }
+public String getSpemType() {
+	return spemType;
+} 
 }

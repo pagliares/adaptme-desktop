@@ -51,7 +51,7 @@ public class Activity extends ActiveState{
 	private boolean ok = false;
 	
 	private Integer quantityOfTemporaryEntitiesUsed;
-	
+ 	
 	// private Vector entities_qt_v = new Vector(1, 1); // Commented lines to be worked when trying to acquire entities in batch mode
 	
 	/**
@@ -195,7 +195,7 @@ public class Activity extends ActiveState{
 			numberOfEntitiesProduced = numberOfEntitiesProduced + possible.entities.length;                                                                                        
 
 		} else {
-		numberOfEntitiesProduced++;   
+			numberOfEntitiesProduced++;   
 		} 
   		return true;
 	}
@@ -580,6 +580,5 @@ public class Activity extends ActiveState{
 				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadState.name);
 			}
 		}
-	}
-	
+	}	
 }
