@@ -627,21 +627,36 @@ public class SimulationManagerFacade {
 	}
 	
 	// pagliares
-		public int getQuantityOfSPEMActivitiesCompleted() {
+		public void printQuantityOfSPEMActivitiesCompleted() {
+			Map<String, Integer> mapaQuantidadeCadaAtividadeExecutada = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
+			Set<String> keys = mapaQuantidadeCadaAtividadeExecutada.keySet();
+			for (String key: keys) {
+				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + mapaQuantidadeCadaAtividadeExecutada.get(key) +  " times");
+			}
+			
+			
+		}
+		
+		public void printQuantityOfSPEMIterationsAndReleasesCompleted() {
 			Iterator iterator = simulationManager.GetActiveStatesIterator();
 			while (iterator.hasNext()){
 				InternalActiveEntry activeState = (InternalActiveEntry)iterator.next();
-				if (activeState.getSpemType().equalsIgnoreCase("ACTIVITY") && (activeState.getName().startsWith("BEGIN_"))) {
-					float endClock = simulationManager.getScheduler().getEndclock();
-					float endClockDays = simulationManager.getScheduler().getEndclock()/480;
-					int resultado = (int)(endClock / activeState.getTimeBox());
-					System.out.print("Quantity of " + "\"" + activeState.getName().split("_")[1]  +  "\"" + " activities..: " );
-					return resultado;
-				}
+				if (activeState.getSpemType().equalsIgnoreCase("ITERATION") && (activeState.getName().startsWith("BEGIN_"))) {  // Need of the timebox value
+					double timebox = activeState.getTimeBox();
+					float endTime = simulationManager.getScheduler().getClockOnEnding();
+					float endTimeDays = endTime/480;
+					int resultado = (int)(endTimeDays / timebox);
+					System.out.print("Quantity of " + "\"" + activeState.getName().split("_")[1]  +  "\" : " + resultado + "\n");
+ 				}
 				
 				
  			}
-			return 0;
+//			return 0;
+//			Map<String, Integer> mapQuantityEachExecutedIteration = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
+//			Set<String> keys = mapaQuantidadeCadaAtividadeExecutada.keySet();
+//			for (String key: keys) {
+//				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + mapQuantityEachExecutedIteration.get(key) +  " times");
+//			}
 			
 		}
 	

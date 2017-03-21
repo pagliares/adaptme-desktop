@@ -42,7 +42,10 @@ public class Scheduler implements Runnable{
     private boolean hasRelease;
     private boolean hasIteration;
     public static boolean hasFinishedByLackOfEntities = false;
+    private float clockOnEnding;
 	
+    
+    private Map<String, Integer> mapaQuantidadeCadaAtividadeSimulada = new HashMap<>();
 	
 	
 	/**
@@ -237,6 +240,7 @@ public class Scheduler implements Runnable{
 
 			// Pagliares. If below programmed by me to replace the commented if above
 			if(hasFinishedByLackOfEntities == true){			// fim das entidades
+				clockOnEnding = s.GetClock();
 				running = false;
 				termreason = 1;			
 				Log.LogMessage("\nScheduler: simulation finished due to end of entities");
@@ -246,6 +250,7 @@ public class Scheduler implements Runnable{
 			
 			
 			if(clock >= endclock && endclock != 0.0){	// fim do intervalo
+				clockOnEnding = s.GetClock();
 				running = false;
 				termreason = 2;
 				Log.LogMessage("\nScheduler: simulation finished due to end of simulation time");
@@ -267,6 +272,20 @@ public class Scheduler implements Runnable{
 				activeState = calendar.getNextActiveState();
 				Log.LogMessage("\n\tNext activity in the Calendar : " + activeState.name);
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
+				
+				// CONTANDO O NUMERO DE ATIVIDADES - 18/03/2017
+				Activity act = (Activity) activeState;
+				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
+					
+                    if (mapaQuantidadeCadaAtividadeSimulada.containsKey(act.name)) {
+                    	Integer n = (mapaQuantidadeCadaAtividadeSimulada.get(act.name))+1;
+                    	mapaQuantidadeCadaAtividadeSimulada.put(act.name, n++);
+                    } else {
+                    	mapaQuantidadeCadaAtividadeSimulada.put(act.name, new Integer(1));
+                    }
+				}
+				// FIM DA CONTAGEM DO NUMERO DE ATIVIDADES - 18/03/2017
+				
 			}while(calendar.RemoveNext());  
 
 			if(!executed)	{	
@@ -402,6 +421,15 @@ public class Scheduler implements Runnable{
 
 	public void setActivestates(Vector activestates) {
 		this.activestates = activestates;
+	}
+
+	public Map<String, Integer> getMapaQuantidadeCadaAtividadeSimulada() {
+		return mapaQuantidadeCadaAtividadeSimulada;
+	}
+
+	public float getClockOnEnding() {
+		// TODO Auto-generated method stub
+		return clockOnEnding;
 	}
 	
 }
