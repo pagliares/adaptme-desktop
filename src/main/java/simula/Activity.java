@@ -167,7 +167,7 @@ public class Activity extends ActiveState{
 			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obtem fila associada
 			if(q.HasSpace())										// se tem espaco
 				for (int j = 0; j < inServiceTemporaryEntitiesUntilDueTime.entities.length; j++) {
-					q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[i]);									// envia ao estado morto         PAGLIARES
+					q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[j]);									// envia ao estado morto         PAGLIARES
 				}
 		}
 		
