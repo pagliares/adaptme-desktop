@@ -197,6 +197,10 @@ public class Activity extends ActiveState{
 		} else {
 			numberOfEntitiesProduced++;   
 		} 
+		
+		if ((this.getSpemType().equalsIgnoreCase("ITERATION") && (this.name.startsWith("END_")))) {
+			numberOfEntitiesProduced = 0;
+		}
   		return true;
 	}
 	
@@ -204,7 +208,7 @@ public class Activity extends ActiveState{
 		
 		// If the activity has FINISH-TO-START dependency and PROCESS-BY-CLASS, we need to verify the condition 
 		// if the class of entities has been produced by the previous task
-		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && conditionToProcess.equalsIgnoreCase("PROCESS-BY-CLASS")) {
+		if (dependencyType.equalsIgnoreCase("FINISH-TO-START") && conditionToProcess.equalsIgnoreCase("ALL-ENTITIES-AVAILABLE")) {
 				boolean isProcessByClassOfEntitiesConditionSatisfied = isProcessByClassOfEntitiesConditionSatisfied();	
 				if (isProcessByClassOfEntitiesConditionSatisfied == false) {
 					return false;
@@ -263,6 +267,21 @@ public class Activity extends ActiveState{
 			if (s.GetClock() < ((timeBEGINActivityStarted + timeBoxBEGINActivity) - 1)) {
 				return false;
 			}
+		}
+		
+		// If the activity is an End counterpart, it can only start if the current clock > time BEGIN counterpart started + timebox
+		if (spemType.equalsIgnoreCase("ITERATION") && name.startsWith("END")) {
+					double timeBEGINIterationOrReleaseStarted =  getTimeBEGINIterationOrReleaseStarted(name);
+					double timeBoxBEGINIterationOrRelease = getBEGINIterationOrReleaseTimebox(name);
+					
+					double flagTimeWithoutTruncation = (timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1;
+					int flagTime = (int) ((timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1);
+					double currentClockWithoutTruncation = s.GetClock();
+					double currentClockTruncated = (int) currentClockWithoutTruncation;
+					if (currentClockWithoutTruncation < (flagTime)) {
+						return false;
+					}
+					System.out.println("End of iteration");
 		}
 		
 		float serviceDuration = (float)d.Draw();
@@ -430,7 +449,7 @@ public class Activity extends ActiveState{
 	}
 	
 	private boolean isProcessByClassOfEntitiesConditionSatisfied() {
-		Log.LogMessage("\n\t" + name + ": dependency type =\"FINISH-TO-START\" , processing_type = \"PROCESS-BY-CLASS\"");
+		Log.LogMessage("\n\t" + name + ": dependency type =\"FINISH-TO-START\" , condition_to_process = \"ALL-ENTITIES-AVAILABLE\"");
 
 		int esize = dead_states_from_v.size();
 		String previousQueueName = "";
@@ -459,7 +478,7 @@ public class Activity extends ActiveState{
 				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
 		     
 			    if (ac.numberOfEntitiesProduced != SimulationManager.quantityOfEntitiesInClass) {
-			    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish\n");
+			    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");
 			    	return false;
 			    }
 			}
@@ -538,6 +557,36 @@ public class Activity extends ActiveState{
 			activeState = (Activity)activities.get(i);
 			beginActivitySufix = activeState.name.substring(6);
 			if ((activeState.name.startsWith("BEGIN_")) && (endActivitySufix.equalsIgnoreCase(beginActivitySufix))){
+				return activeState.timeWasStarted;
+			}
+		}
+		return 0;
+	}
+	
+	private double getBEGINIterationOrReleaseTimebox(String endIterationOrReleaseName) {
+		String endIterationOrReleaseSufix = endIterationOrReleaseName.substring(4);
+		String beginIterationOrReleaseSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginIterationOrReleaseSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
+				return activeState.timeBox;
+			}
+		}
+		return 0;
+	}
+	
+	private double getTimeBEGINIterationOrReleaseStarted(String endIterationOrReleaseName) {
+		String endIterationOrReleaseSufix = endIterationOrReleaseName.substring(4);
+		String beginIterationOrReleaseSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginIterationOrReleaseSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
 				return activeState.timeWasStarted;
 			}
 		}
