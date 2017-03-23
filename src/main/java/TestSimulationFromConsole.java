@@ -16,15 +16,28 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-		simulationManagerFacade.execute(30000, 1, true);
+		simulationManagerFacade.execute(130000, 1, true);
 		
 		simulationManagerFacade.printQuantityOfSPEMActivitiesCompleted();
-		
+
 		System.out.println();
 		
 		simulationManagerFacade.printQuantityOfSPEMIterationsAndReleasesCompleted();
 		
+//		simulationManagerFacade.printReportWitSPEMMilestonesReached();
+		
 		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//		printStyle1(simulationManagerFacade);
 		

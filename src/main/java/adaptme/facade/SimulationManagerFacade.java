@@ -630,11 +630,17 @@ public class SimulationManagerFacade {
 		public void printQuantityOfSPEMActivitiesCompleted() {
 			Map<String, Integer> mapaQuantidadeCadaAtividadeExecutada = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
 			Set<String> keys = mapaQuantidadeCadaAtividadeExecutada.keySet();
+			int quantity = 0;
+			
+			
 			for (String key: keys) {
-				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + mapaQuantidadeCadaAtividadeExecutada.get(key) +  " times");
+				quantity = mapaQuantidadeCadaAtividadeExecutada.get(key);
+				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + quantity +  " times");
 			}
 			
-			
+			if (quantity == 0){
+				System.out.println("\nThere are no SPEM activities in the simulated process");
+			}
 		}
 		
 		public void printQuantityOfSPEMIterationsAndReleasesCompleted() {
