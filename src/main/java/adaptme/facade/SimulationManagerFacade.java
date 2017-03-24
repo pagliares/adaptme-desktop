@@ -27,6 +27,7 @@ import simula.ActiveState;
 import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
+import simulator.spem.xacdml.results.PhaseResults;
 
 public class SimulationManagerFacade {
 
@@ -641,6 +642,21 @@ public class SimulationManagerFacade {
 			if (quantity == 0){
 				System.out.println("\nThere are no SPEM activities in the simulated process");
 			}
+		}
+		
+		public void printPhaseResults() {
+			Map<String, PhaseResults> mapWithPhaseResults = simulationManager.getScheduler().getMapWithPhaseResults();
+			Set<String> keys = mapWithPhaseResults.keySet();
+ 			
+			if (keys.size() == 0){
+				System.out.println("\nThere are no SPEM activities in the simulated process");
+			} else  {
+			  for (String key: keys) {
+				PhaseResults phaseResult = mapWithPhaseResults.get(key);
+				System.out.println(key.split("_")[1] + phaseResult);
+			  }
+			}
+			
 		}
 		
 		public void printQuantityOfSPEMIterationsAndReleasesCompleted() {

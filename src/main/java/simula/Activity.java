@@ -201,6 +201,7 @@ public class Activity extends ActiveState{
 		if ((this.getSpemType().equalsIgnoreCase("ITERATION") && (this.name.startsWith("END_")))) {
 			numberOfEntitiesProduced = 0;
 		}
+		
   		return true;
 	}
 	
@@ -562,7 +563,7 @@ public class Activity extends ActiveState{
 		}
 		return 0;
 	}
-	
+		
 	private double getBEGINIterationOrReleaseTimebox(String endIterationOrReleaseName) {
 		String endIterationOrReleaseSufix = endIterationOrReleaseName.substring(4);
 		String beginIterationOrReleaseSufix = "";

@@ -8,6 +8,7 @@ import java.util.*;
 
  
 import simula.manager.SimulationManager;
+import simulator.spem.xacdml.results.PhaseResults;
  
 public class Scheduler implements Runnable{
 	private Calendar calendar;		// estrutura de armazenamento dos estados ativos a servir
@@ -46,6 +47,8 @@ public class Scheduler implements Runnable{
 	
     
     private Map<String, Integer> mapaQuantidadeCadaAtividadeSimulada = new HashMap<>();
+    private Map<String, PhaseResults> mapWithPhaseResults = new HashMap<>();
+
 	
 	
 	/**
@@ -273,7 +276,7 @@ public class Scheduler implements Runnable{
 				Log.LogMessage("\n\tNext activity in the Calendar : " + activeState.name);
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
 				
-				// CONTANDO O NUMERO DE ATIVIDADES - 18/03/2017
+				// Store the number of activities in a map with the results
 				Activity act = (Activity) activeState;
 				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
 					
@@ -283,9 +286,16 @@ public class Scheduler implements Runnable{
                     } else {
                     	mapaQuantidadeCadaAtividadeSimulada.put(act.name, new Integer(1));
                     }
-				}
-				// FIM DA CONTAGEM DO NUMERO DE ATIVIDADES - 18/03/2017
+				} 
 				
+				else if ((executed) && act.getSpemType().equalsIgnoreCase("PHASE") && act.name.startsWith("END_")) {  // Store the phase results in a map
+					 if (!(mapWithPhaseResults.containsKey(act.name))) {
+	                    	double timePhaseStarted = getBEGINPhaseStarted(act.name);
+							double TimePhaseFinished = s.GetClock();
+						    PhaseResults phaseResults = new PhaseResults(timePhaseStarted,TimePhaseFinished);
+						    mapWithPhaseResults.put(act.name, phaseResults);
+	                    }
+				}
 			}while(calendar.RemoveNext());  
 
 			if(!executed)	{	
@@ -430,6 +440,25 @@ public class Scheduler implements Runnable{
 	public float getClockOnEnding() {
 		// TODO Auto-generated method stub
 		return clockOnEnding;
+	}
+
+	public Map<String, PhaseResults> getMapWithPhaseResults() {
+		return mapWithPhaseResults;
+	}
+	
+	private double getBEGINPhaseStarted(String endAPhaseName) {
+		String endPhaseSufix = endAPhaseName.substring(4);
+		String beginPhaseSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginPhaseSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endPhaseSufix.equalsIgnoreCase(beginPhaseSufix))){
+				return activeState.getTimeWasStarted();
+			}
+		}
+		return 0;
 	}
 	
 }
