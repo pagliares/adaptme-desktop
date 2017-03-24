@@ -16,11 +16,13 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-		simulationManagerFacade.execute(130000, 1, true);
+		simulationManagerFacade.execute(330000, 1, true);
 		
 		simulationManagerFacade.printQuantityOfSPEMActivitiesCompleted();
 		
 		simulationManagerFacade.printPhaseResults();
+		
+		simulationManagerFacade.printMilestoneResults();
 
 		System.out.println();
 		

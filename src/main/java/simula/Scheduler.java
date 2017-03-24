@@ -8,6 +8,7 @@ import java.util.*;
 
  
 import simula.manager.SimulationManager;
+import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
  
 public class Scheduler implements Runnable{
@@ -48,6 +49,7 @@ public class Scheduler implements Runnable{
     
     private Map<String, Integer> mapaQuantidadeCadaAtividadeSimulada = new HashMap<>();
     private Map<String, PhaseResults> mapWithPhaseResults = new HashMap<>();
+    private Map<String, MilestoneResults> mapWithMilestoneResults = new HashMap<>();
 
 	
 	
@@ -295,6 +297,12 @@ public class Scheduler implements Runnable{
 						    PhaseResults phaseResults = new PhaseResults(timePhaseStarted,TimePhaseFinished);
 						    mapWithPhaseResults.put(act.name, phaseResults);
 	                    }
+				} else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
+					 if (!(mapWithMilestoneResults.containsKey(act.name))) {
+	                    	double timeMilestoneWasReached = s.GetClock();
+ 						    MilestoneResults milestoneResults = new MilestoneResults(timeMilestoneWasReached);
+						    mapWithMilestoneResults.put(act.name, milestoneResults);
+	                    }
 				}
 			}while(calendar.RemoveNext());  
 
@@ -444,6 +452,10 @@ public class Scheduler implements Runnable{
 
 	public Map<String, PhaseResults> getMapWithPhaseResults() {
 		return mapWithPhaseResults;
+	}
+	
+	public Map<String, MilestoneResults> getMapWithMilestoneResults() {
+		return mapWithMilestoneResults;
 	}
 	
 	private double getBEGINPhaseStarted(String endAPhaseName) {

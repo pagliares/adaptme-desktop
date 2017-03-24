@@ -27,6 +27,7 @@ import simula.ActiveState;
 import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
+import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
 
 public class SimulationManagerFacade {
@@ -654,6 +655,21 @@ public class SimulationManagerFacade {
 			  for (String key: keys) {
 				PhaseResults phaseResult = mapWithPhaseResults.get(key);
 				System.out.println(key.split("_")[1] + phaseResult);
+			  }
+			}
+			
+		}
+		
+		public void printMilestoneResults() {
+			Map<String, MilestoneResults> mapWithMilestoneResults = simulationManager.getScheduler().getMapWithMilestoneResults();
+			Set<String> keys = mapWithMilestoneResults.keySet();
+ 			
+			if (keys.size() == 0){
+				System.out.println("\nThere are no SPEM milestones in the simulated process");
+			} else  {
+			  for (String key: keys) {
+				MilestoneResults milestoneResult = mapWithMilestoneResults.get(key);
+				System.out.println(key + milestoneResult);
 			  }
 			}
 			
