@@ -23,10 +23,12 @@ public class TestSimulationFromConsole {
 		simulationManagerFacade.printPhaseResults();
 		
 		simulationManagerFacade.printMilestoneResults();
+		
+		simulationManagerFacade.printIterationAndReleaseResults(); // Releaseses are treated as iterations in SPEM 2.0
+
 
 		System.out.println();
 		
-		simulationManagerFacade.printQuantityOfSPEMIterationsAndReleasesCompleted();
 		
 //		simulationManagerFacade.printReportWitSPEMMilestonesReached();
 		

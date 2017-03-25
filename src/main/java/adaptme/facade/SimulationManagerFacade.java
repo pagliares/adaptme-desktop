@@ -27,6 +27,7 @@ import simula.ActiveState;
 import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
+import simulator.spem.xacdml.results.IterationResults;
 import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
 
@@ -675,58 +676,17 @@ public class SimulationManagerFacade {
 			
 		}
 		
-		public void printQuantityOfSPEMIterationsAndReleasesCompleted() {
-			Iterator iterator = simulationManager.GetActiveStatesIterator();
-			while (iterator.hasNext()){
-				InternalActiveEntry activeState = (InternalActiveEntry)iterator.next();
-				if (activeState.getSpemType().equalsIgnoreCase("ITERATION") && (activeState.getName().startsWith("BEGIN_"))) {  // Need of the timebox value
-					double timebox = activeState.getTimeBox();
-					float endTime = simulationManager.getScheduler().getClockOnEnding();
-					float endTimeDays = endTime/480;
-					int resultado = (int)(endTimeDays / timebox);
-					System.out.print("Quantity of " + "\"" + activeState.getName().split("_")[1]  +  "\" : " + resultado + "\n");
- 				}
-				
-				
- 			}
-//			return 0;
-//			Map<String, Integer> mapQuantityEachExecutedIteration = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
-//			Set<String> keys = mapaQuantidadeCadaAtividadeExecutada.keySet();
-//			for (String key: keys) {
-//				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + mapQuantityEachExecutedIteration.get(key) +  " times");
-//			}
-			
+		public void printIterationAndReleaseResults() {
+			Map<String, IterationResults> mapWithIterationResults = simulationManager.getScheduler().getMapWithIterationResults();
+			Set<String> keys = mapWithIterationResults.keySet();
+ 			
+			if (keys.size() == 0){
+				System.out.println("\nThere are no SPEM iterations or releases in the simulated process");
+			} else  {
+			  for (String key: keys) {
+				IterationResults iterationResults = mapWithIterationResults.get(key);
+				System.out.println(iterationResults);
+			  }
+			}	
 		}
-	
-	// TODO remove this method after finishing the code to extend XACDML in order to support iteration and releases
-//		private double reportByRelease(double acumulateNumberOfReleases, int i) {
-//			if (simulationManager.getScheduler().hasRelease()) {
-//				System.out.println("number of releases ..: " + simulationManager.getScheduler().getNumberOfReleases());
-//				acumulateNumberOfReleases += simulationManager.getScheduler().getNumberOfReleases();
-//				numberOfReleasesPerReplication[i] = simulationManager.getScheduler().getNumberOfReleases();
-//			} else {
-//				System.out.println("number of releases ..: " + 0);
-//				acumulateNumberOfReleases += 0;
-//				numberOfReleasesPerReplication[i] = 0;
-//			}
-//			return acumulateNumberOfReleases;
-//		}
-
-		// TODO remove this method after finishing the code to extend XACDML in order to support iteration and releases
-//		private double reportByIteration(double acumulateNumberOfIterations, int i) {
-//			// Iteration and Release seen as ACD activities that does not advance the simulation clock
-//			if (simulationManager.getScheduler().hasIteration()) {
-//				System.out.println("number of iterations ..: " + simulationManager.getScheduler().getNumberOfIterations());
-//				numberOfIterationsPerReplication[i] = simulationManager.getScheduler().getNumberOfIterations();
-//				acumulateNumberOfIterations += simulationManager.getScheduler().getNumberOfIterations();
-//				 System.out.println("Displaying results by iteration");
-//				 printObserversReportByIteration(simulationManager.getSimulationResultsByIteration());
-//			} else {
-//				System.out.println("number of iterations ..: " + 0);
-//				numberOfIterationsPerReplication[i] = 0;
-//				acumulateNumberOfIterations += 0;
-//			}
-//			return acumulateNumberOfIterations;
-//		}
-	
 }
