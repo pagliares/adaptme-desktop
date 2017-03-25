@@ -8,6 +8,7 @@ import java.util.*;
 
  
 import simula.manager.SimulationManager;
+import simulator.spem.xacdml.results.IterationResults;
 import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
  
@@ -50,6 +51,8 @@ public class Scheduler implements Runnable{
     private Map<String, Integer> mapaQuantidadeCadaAtividadeSimulada = new HashMap<>();
     private Map<String, PhaseResults> mapWithPhaseResults = new HashMap<>();
     private Map<String, MilestoneResults> mapWithMilestoneResults = new HashMap<>();
+    private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
+
 
 	
 	
@@ -294,14 +297,22 @@ public class Scheduler implements Runnable{
 					 if (!(mapWithPhaseResults.containsKey(act.name))) {
 	                    	double timePhaseStarted = getBEGINPhaseStarted(act.name);
 							double TimePhaseFinished = s.GetClock();
-						    PhaseResults phaseResults = new PhaseResults(timePhaseStarted,TimePhaseFinished);
+						    PhaseResults phaseResults = new PhaseResults(act.name, timePhaseStarted,TimePhaseFinished);
 						    mapWithPhaseResults.put(act.name, phaseResults);
 	                    }
 				} else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
 					 if (!(mapWithMilestoneResults.containsKey(act.name))) {
 	                    	double timeMilestoneWasReached = s.GetClock();
- 						    MilestoneResults milestoneResults = new MilestoneResults(timeMilestoneWasReached);
+ 						    MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
 						    mapWithMilestoneResults.put(act.name, milestoneResults);
+	                    }
+				} else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
+					 if (!(mapWithIterationResults.containsKey(act.name))) {
+						    double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
+							double TimeIterationFinished = s.GetClock(); 
+							IterationResults.counter++;
+							IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
+						    mapWithIterationResults.put(act.name, iterationResults);
 	                    }
 				}
 			}while(calendar.RemoveNext());  
@@ -458,6 +469,10 @@ public class Scheduler implements Runnable{
 		return mapWithMilestoneResults;
 	}
 	
+	public Map<String, IterationResults> getMapWithIterationResults() {
+		return mapWithIterationResults;
+	}
+	
 	private double getBEGINPhaseStarted(String endAPhaseName) {
 		String endPhaseSufix = endAPhaseName.substring(4);
 		String beginPhaseSufix = "";
@@ -467,6 +482,21 @@ public class Scheduler implements Runnable{
 			activeState = (Activity)activities.get(i);
 			beginPhaseSufix = activeState.name.substring(6);
 			if ((activeState.name.startsWith("BEGIN_")) && (endPhaseSufix.equalsIgnoreCase(beginPhaseSufix))){
+				return activeState.getTimeWasStarted();
+			}
+		}
+		return 0;
+	}
+	
+	private double getBEGINIterationOrReleaseStarted(String endAIterationName) {
+		String endIterationSufix = endAIterationName.substring(4);
+		String beginIterationSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginIterationSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endIterationSufix.equalsIgnoreCase(beginIterationSufix))){
 				return activeState.getTimeWasStarted();
 			}
 		}
