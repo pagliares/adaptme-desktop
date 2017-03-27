@@ -6,7 +6,7 @@ package simula;
 
 import java.util.*;
 
- 
+import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 import simulator.spem.xacdml.results.IterationResults;
 import simulator.spem.xacdml.results.MilestoneResults;
@@ -307,16 +307,38 @@ public class Scheduler implements Runnable{
 						    mapWithMilestoneResults.put(act.name, milestoneResults);
 	                    }
 				} else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
+					 
 					 if (!(mapWithIterationResults.containsKey(act.name))) {
 						    double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
 							double TimeIterationFinished = s.GetClock(); 
-							IterationResults.counter++;
-							IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
-						    mapWithIterationResults.put(act.name, iterationResults);
+							
+							if (mapWithIterationResults.containsKey(act.name)) {
+								mapWithIterationResults.get(act.name).addQuantityOfIterations();
+							} else {
+							    IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
+							    mapWithIterationResults.put(act.name, iterationResults);
+							}
+							System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
+						    printNumberOfEntitiesInEachDeadState();
+						    moveEntitiesBackToInitialState(act);
+						    
+						    System.out.println("Snapshot after moving the entities");
+						    printNumberOfEntitiesInEachDeadState();
+						     act.RegisterEvent(s.clock);  // talvez tenha que registrar nao aqui e sim apos lo while
+						    System.out.println("size of entity class befor moving " + SimulationManager.quantityOfEntitiesInClass);
+
+						     SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
+						    System.out.println("size of entity class befor moving " + SimulationManager.quantityOfEntitiesInClass);
+
+						    
 	                    }
 				}
 			}while(calendar.RemoveNext());  
-
+			
+//			if ((executed) && ((Activity)activeState).getSpemType().equalsIgnoreCase("ITERATION") && activeState.name.startsWith("END_")) {
+//				activeState.RegisterEvent(s.clock); 
+//			}
+ 
 			if(!executed)	{	
 				Log.LogMessage("\nNothing to be executed at this instant. Jumps to the next, without executing the C-Phase");
 				continue;				// se n�o havia nada a ser executado nesse instante pula para o pr�ximo sem executar a fase C.
@@ -502,5 +524,65 @@ public class Scheduler implements Runnable{
 		}
 		return 0;
 	}
+	
+	// tem uma versao deste metodo em SimulationManagerFacade. Reconciliar
+	private void printNumberOfEntitiesInEachDeadState() { 
+		// Show the number of entities in all dead states
+		System.out.println("\tPrinting the number of entities in each dead state");
+		HashMap queues = simulationManager.getQueues();
+		Set keys = queues.keySet();
+
+		for (Object queueName : keys) {
+			System.out.println("\n\t\tQueue name : " + queueName);
+			QueueEntry qe = (QueueEntry) queues.get(queueName);
+
+			// Both below outputs return the count variable
+			System.out.println("\t\tNunber of entities in queue via getCount: " + qe.deadState.getCount());
+			// System.out.println("numero de entidadas na fila: via ObsLength, basta mudar simobj para o novo nome" + qe.SimObj.getCount());
+		}
+	}
+	
+    private void moveEntitiesBackToInitialState(Activity activity) {
+    	if (activity.getSpemType().equalsIgnoreCase("ITERATION") && activity.name.startsWith("END_"))
+    		System.out.println("\nMoving entities in intermediary deadstates to the initial dead state");
+    	    // need to find the incoming dead state of the BEGIN iterationCounterpart
+    	     DeadState incomingDeadStateBeginCounterpart = getIncomingDeadStateOfBEGINIterationCounterpart(activity);
+    	     String incomingDeadStateBeginCounterpartName = incomingDeadStateBeginCounterpart.name;
+    	     
+    	     DeadState outcomingDeadStateEndIteration = (DeadState)activity.dead_states_to_v.get(0);
+    	     String outcomingDeadStateEndIterationName = outcomingDeadStateEndIteration.name;
+    	     
+    	    HashMap queues = simulationManager.getQueues();
+    		Set keys = queues.keySet();
+            int quantityOfEntities = 0;
+    		for (Object queueName : keys) {
+    			QueueEntry qe = (QueueEntry) queues.get(queueName);
+    			quantityOfEntities = qe.deadState.count;
+    			if ((quantityOfEntities != 0) && (queueName != outcomingDeadStateEndIterationName)) {
+    				for (int i= 0; i < quantityOfEntities; i++) {
+    					Entity entity = qe.deadState.dequeue();
+    						 if (entity != null)
+    							 incomingDeadStateBeginCounterpart.enqueue(entity);
+    					}
+    				}
+    			}	
+    }
+    
+    private DeadState getIncomingDeadStateOfBEGINIterationCounterpart(Activity activity) {
+		String endIterationSufix = activity.name.substring(4);
+		String beginIterationSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginIterationSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endIterationSufix.equalsIgnoreCase(beginIterationSufix))){
+				DeadState incomingDeadState = (DeadState)activeState.getEntities_from_v().get(0);
+				return (incomingDeadState);
+			}
+		}
+		return null;
+	}
+
 	
 }

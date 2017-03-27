@@ -457,7 +457,7 @@ public class Activity extends ActiveState{
 
 		for (int i = 0; i < esize; i++) {
 			DeadState incomingQueue = (DeadState) this.getEntities_from_v().get(i);
-			System.out.println("Task: " + name + "   Incoming queue name:  " + incomingQueue.name + "  incoming queue count: "+ incomingQueue.count);
+//			System.out.println("Task: " + name + "   Incoming queue name:  " + incomingQueue.name + "  incoming queue count: "+ incomingQueue.count);
 			previousQueueName = incomingQueue.name;
 		}
 
@@ -474,9 +474,9 @@ public class Activity extends ActiveState{
 			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
 
 			if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { 
-				System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
+//				System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
 				Activity ac = (Activity)internalActivityEntry.getActiveState();
-				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
+//				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
 		     
 			    if (ac.numberOfEntitiesProduced != SimulationManager.quantityOfEntitiesInClass) {
 			    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");

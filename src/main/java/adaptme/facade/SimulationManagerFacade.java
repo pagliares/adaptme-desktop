@@ -651,7 +651,7 @@ public class SimulationManagerFacade {
 			Set<String> keys = mapWithPhaseResults.keySet();
  			
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM activities in the simulated process");
+				System.out.println("\nThere are no SPEM phases in the simulated process");
 			} else  {
 			  for (String key: keys) {
 				PhaseResults phaseResult = mapWithPhaseResults.get(key);
