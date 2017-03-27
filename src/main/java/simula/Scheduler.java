@@ -8,6 +8,7 @@ import java.util.*;
 
 import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
+import simulator.spem.xacdml.results.ActivityResults;
 import simulator.spem.xacdml.results.IterationResults;
 import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
@@ -47,15 +48,13 @@ public class Scheduler implements Runnable{
     public static boolean hasFinishedByLackOfEntities = false;
     private float clockOnEnding;
 	
-    
-    private Map<String, Integer> mapaQuantidadeCadaAtividadeSimulada = new HashMap<>();
-    private Map<String, PhaseResults> mapWithPhaseResults = new HashMap<>();
-    private Map<String, MilestoneResults> mapWithMilestoneResults = new HashMap<>();
+    // TODO Tradeoff analysis if it is worthwhile to create only one map with SPEM results as object associated to one key 
+    // and benefit from the polymorphism. Maybe tranforming SPEMResults in abstract with the abstract methods to determine the begin/finish of the activity
+    private Map<String, ActivityResults> mapWithActivityResults = new LinkedHashMap<>();
+    private Map<String, PhaseResults> mapWithPhaseResults = new LinkedHashMap<>();
+    private Map<String, MilestoneResults> mapWithMilestoneResults = new LinkedHashMap<>();
     private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
 
-
-	
-	
 	/**
 	 * retorna refer�ncia ao objeto ativo
 	 */
@@ -285,11 +284,13 @@ public class Scheduler implements Runnable{
 				Activity act = (Activity) activeState;
 				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
 					
-                    if (mapaQuantidadeCadaAtividadeSimulada.containsKey(act.name)) {
-                    	Integer n = (mapaQuantidadeCadaAtividadeSimulada.get(act.name))+1;
-                    	mapaQuantidadeCadaAtividadeSimulada.put(act.name, n++);
+                    if (mapWithActivityResults.containsKey(act.name)) {
+                    	ActivityResults activityResults = (mapWithActivityResults.get(act.name));
+                    	activityResults.addQuantityOfActivities();
+                    	mapWithActivityResults.put(act.name, activityResults); // talvez esta linha nao seja necessaria, por nao ser imutavel
                     } else {
-                    	mapaQuantidadeCadaAtividadeSimulada.put(act.name, new Integer(1));
+                    	ActivityResults activityResults = new ActivityResults(act.name); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
+                    	mapWithActivityResults.put(act.name, activityResults);
                     }
 				} 
 				
@@ -474,8 +475,8 @@ public class Scheduler implements Runnable{
 		this.activestates = activestates;
 	}
 
-	public Map<String, Integer> getMapaQuantidadeCadaAtividadeSimulada() {
-		return mapaQuantidadeCadaAtividadeSimulada;
+	public Map<String, ActivityResults> getMapaQuantidadeCadaAtividadeSimulada() {
+		return mapWithActivityResults;
 	}
 
 	public float getClockOnEnding() {
@@ -547,7 +548,9 @@ public class Scheduler implements Runnable{
     		System.out.println("\nMoving entities in intermediary deadstates to the initial dead state");
     	    // need to find the incoming dead state of the BEGIN iterationCounterpart
     	     DeadState incomingDeadStateBeginCounterpart = getIncomingDeadStateOfBEGINIterationCounterpart(activity);
+//    	     DeadState q0 = (DeadState)activity.getEntities_from_v().get(0);
     	     String incomingDeadStateBeginCounterpartName = incomingDeadStateBeginCounterpart.name;
+//    	     String incomingDeadStateBeginCounterpartName = q0.name;
     	     
     	     DeadState outcomingDeadStateEndIteration = (DeadState)activity.dead_states_to_v.get(0);
     	     String outcomingDeadStateEndIterationName = outcomingDeadStateEndIteration.name;
@@ -563,6 +566,7 @@ public class Scheduler implements Runnable{
     					Entity entity = qe.deadState.dequeue();
     						 if (entity != null)
     							 incomingDeadStateBeginCounterpart.enqueue(entity);
+//    							 q0.enqueue(entity);
     					}
     				}
     			}	
