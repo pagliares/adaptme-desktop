@@ -1,27 +1,18 @@
 package simulator.spem.xacdml.results;
 
-public class IterationResults {
+public class IterationResults extends SPEMResults {
 	
-	private String iterationOrReleaseName;
 	private double timeIterationOrReleaseStarted;
 	private double timeIterationOrReleaseFinished;
 	private int quantityOfIterations = 0;
 	
-	public IterationResults(String iterationOrReleaseName, double timeIterationOrReleaseStarted,
+	public IterationResults(String name, double timeIterationOrReleaseStarted,
 			double timeIterationOrFinished) {
-		super();
-		this.iterationOrReleaseName = iterationOrReleaseName;
+		super(name);
+	 
 		this.timeIterationOrReleaseStarted = timeIterationOrReleaseStarted;
 		this.timeIterationOrReleaseFinished = timeIterationOrFinished;
 		quantityOfIterations++;
-	}
-
-	public String getIterationOrReleaseName() {
-		return iterationOrReleaseName;
-	}
-
-	public void setIterationOrReleaseName(String iterationOrReleaseName) {
-		this.iterationOrReleaseName = iterationOrReleaseName;
 	}
 
 	public double getTimeIterationOrReleaseStarted() {
@@ -30,14 +21,6 @@ public class IterationResults {
 
 	public void setTimeIterationOrReleaseStarted(double timeIterationOrReleaseStarted) {
 		this.timeIterationOrReleaseStarted = timeIterationOrReleaseStarted;
-	}
-
-	public double getTimeIterationOrFinished() {
-		return timeIterationOrReleaseFinished;
-	}
-
-	public void setTimeIterationOrFinished(double timeIterationOrFinished) {
-		this.timeIterationOrReleaseFinished = timeIterationOrFinished;
 	}
 
 	public int getQuantityOfIterations() {
@@ -50,8 +33,20 @@ public class IterationResults {
 	
 	@Override
 	public String toString() {
-		String result = iterationOrReleaseName.split("_")[1] + " started at (day)..: " + Math.ceil(timeIterationOrReleaseStarted/480)  +  ", finished at (day)..: " + Math.ceil(timeIterationOrReleaseFinished/480)
+		String result = getName().split("_")[1] + " started at (day)..: " + Math.ceil(timeIterationOrReleaseStarted/480)  +  ", finished at (day)..: " + Math.ceil(timeIterationOrReleaseFinished/480)
 				+ " and was executed  " + quantityOfIterations  +  " times";
 		return result;
+	}
+
+	@Override
+	public double getTimeWorkBreakdownElementStarted() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTimeWorkBreakdownElementFinished() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

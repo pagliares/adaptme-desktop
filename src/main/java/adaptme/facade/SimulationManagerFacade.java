@@ -27,6 +27,7 @@ import simula.ActiveState;
 import simula.Activity;
 import simula.Scheduler;
 import simula.manager.*;
+import simulator.spem.xacdml.results.ActivityResults;
 import simulator.spem.xacdml.results.IterationResults;
 import simulator.spem.xacdml.results.MilestoneResults;
 import simulator.spem.xacdml.results.PhaseResults;
@@ -630,15 +631,15 @@ public class SimulationManagerFacade {
 	}
 	
 	// pagliares
-		public void printQuantityOfSPEMActivitiesCompleted() {
-			Map<String, Integer> mapaQuantidadeCadaAtividadeExecutada = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
-			Set<String> keys = mapaQuantidadeCadaAtividadeExecutada.keySet();
+		public void printActivityResults() {
+			Map<String, ActivityResults> mapWithActivityResults = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
+			Set<String> keys = mapWithActivityResults.keySet();
 			int quantity = 0;
 			
 			
 			for (String key: keys) {
-				quantity = mapaQuantidadeCadaAtividadeExecutada.get(key);
-				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + quantity +  " times");
+				ActivityResults activityResult = mapWithActivityResults.get(key);
+				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + activityResult.getQuantityOfActivities() +  " times");
 			}
 			
 			if (quantity == 0){

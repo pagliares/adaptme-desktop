@@ -18,7 +18,7 @@ public class TestSimulationFromConsole {
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 		simulationManagerFacade.execute(330000, 1, true);
 		
-		simulationManagerFacade.printQuantityOfSPEMActivitiesCompleted();
+		simulationManagerFacade.printActivityResults();
 		
 		simulationManagerFacade.printPhaseResults();
 		

@@ -1,13 +1,11 @@
 package simulator.spem.xacdml.results;
 
-public class MilestoneResults {
+public class MilestoneResults extends SPEMResults {
 	
-	private String milestoneName;
 	private double timeReached;
  	
 	public MilestoneResults(String milestoneName, double timeReached) {
-		super();
-		this.milestoneName = milestoneName;
+		super(milestoneName);
 		this.timeReached = timeReached;
  	}
 	
@@ -21,15 +19,17 @@ public class MilestoneResults {
 	
 	@Override
 	public String toString() {
-		String result = milestoneName + " reached at (day)..: " + Math.ceil(timeReached/480);
+		String result = getName() + " reached at (day)..: " + Math.ceil(timeReached/480);
 		return result;
 	}
 
-	public String getMilestoneName() {
-		return milestoneName;
+	@Override
+	public double getTimeWorkBreakdownElementStarted() {
+		return 0;
 	}
 
-	public void setMilestoneName(String milestoneName) {
-		this.milestoneName = milestoneName;
-	}
+	@Override
+	public double getTimeWorkBreakdownElementFinished() {
+		return 0;
+	}	 
 }
