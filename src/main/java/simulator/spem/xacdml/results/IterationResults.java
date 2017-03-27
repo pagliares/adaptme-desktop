@@ -5,7 +5,7 @@ public class IterationResults {
 	private String iterationOrReleaseName;
 	private double timeIterationOrReleaseStarted;
 	private double timeIterationOrReleaseFinished;
-	public static int counter = 0;
+	private int quantityOfIterations = 0;
 	
 	public IterationResults(String iterationOrReleaseName, double timeIterationOrReleaseStarted,
 			double timeIterationOrFinished) {
@@ -13,7 +13,7 @@ public class IterationResults {
 		this.iterationOrReleaseName = iterationOrReleaseName;
 		this.timeIterationOrReleaseStarted = timeIterationOrReleaseStarted;
 		this.timeIterationOrReleaseFinished = timeIterationOrFinished;
-		 
+		quantityOfIterations++;
 	}
 
 	public String getIterationOrReleaseName() {
@@ -40,14 +40,18 @@ public class IterationResults {
 		this.timeIterationOrReleaseFinished = timeIterationOrFinished;
 	}
 
-	public static int getCounter() {
-		return counter;
+	public int getQuantityOfIterations() {
+		return quantityOfIterations;
+	}
+	
+	public void addQuantityOfIterations() {
+		quantityOfIterations++;
 	}
 	
 	@Override
 	public String toString() {
 		String result = iterationOrReleaseName.split("_")[1] + " started at (day)..: " + Math.ceil(timeIterationOrReleaseStarted/480)  +  ", finished at (day)..: " + Math.ceil(timeIterationOrReleaseFinished/480)
-				+ " and was executed  " + counter  +  " times";
+				+ " and was executed  " + quantityOfIterations  +  " times";
 		return result;
 	}
 }
