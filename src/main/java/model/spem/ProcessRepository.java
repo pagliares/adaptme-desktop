@@ -147,6 +147,10 @@ public class ProcessRepository implements Serializable {
 	public void clearListOfTasks() {
 		listProcessContentRepositoryWithTasksOnly.clear();
 	}
+	
+	public void clearListOfTasksAndContainers() {
+		processContents.clear();
+	}
 
 	public List<ProcessContentRepository> getListProcessContentRepositoryWithParticularProcessContentOnly(
 			List<ProcessContentRepository> listOfProcessContentRepository, String processContentName) {
