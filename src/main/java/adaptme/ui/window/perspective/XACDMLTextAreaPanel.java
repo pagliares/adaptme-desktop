@@ -88,7 +88,7 @@ public class XACDMLTextAreaPanel extends JPanel {
 		JButton btnGenerateXacdml = new JButton("Generate XACDML");
 		btnGenerateXacdml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository);
+				
 
 				String result = null;
 				textArea.setText("");
@@ -99,8 +99,11 @@ public class XACDMLTextAreaPanel extends JPanel {
 				List<Role> roles = roleResourcePanel.getRoles();
 				List<WorkProductXACDML> workProducts = workProdutResourcesPanel.getWorkProducts();
 
-				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), roles, workProducts,roleResourcePanel, 
+				xACDMLBuilderFacade = new XACDMLBuilderFacade(processRepository, mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), roles, workProducts,roleResourcePanel, 
 						workProdutResourcesPanel);
+//				result = xACDMLBuilderFacade.buildXACDML(mainPanelSimulationOfAlternativeOfProcess, acdIDTextField.getText(), roles, workProducts,roleResourcePanel, 
+//						workProdutResourcesPanel);
+				result = xACDMLBuilderFacade.buildExtendedXACDML();
 				textArea.append(result);
 			}
 		});

@@ -99,8 +99,23 @@ public class XACDMLBuilderFacade {
 	
 	private Parameters parametersDistributionRegularActivity;
 	
-	public XACDMLBuilderFacade(ProcessRepository calibratedProcessRepository) {
+	private MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess;
+	private String acdId;
+	private List<Role> roles;
+	private List<WorkProductXACDML> workProducts;
+	private RoleResourcesPanel roleResourcePanel;
+	private WorkProductResourcesPanel workProductResourcesPanel;
+	
+	public XACDMLBuilderFacade(ProcessRepository calibratedProcessRepository, MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
+			String acdId, List<Role> roles, List<WorkProductXACDML> workProducts,
+			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProductResourcesPanel) {
 		this.calibratedProcessRepository = calibratedProcessRepository;
+		this.mainPanelSimulationOfAlternativeOfProcess = mainPanelSimulationOfAlternativeOfProcess;
+		this.acdId = acdId;
+		this.roles = roles;
+		this.workProducts = workProducts;
+		this.roleResourcePanel = roleResourcePanel;
+		this.workProductResourcesPanel = workProductResourcesPanel;
  	}
 	 
 	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
@@ -121,6 +136,50 @@ public class XACDMLBuilderFacade {
 
 		return generateXACDML();
 
+	}
+	
+	public String buildExtendedXACDML() {
+
+		createSimulationDuration(acdId);
+
+		createPermanentEntitiesAndResourceQueues(roles, roleResourcePanel);
+
+		createGenerateActivitiesAndQueuesForTemporaryEntities(workProductResourcesPanel, workProducts);
+		
+		recursiveGenenerateXACDML(calibratedProcessRepository.getProcessContents().get(0));
+		
+//		createExtendedXACDMLActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
+		
+//		createSpecialActivitiesForIterationAndRelease();
+		
+//		createDestroyActivities(roles, workProducts);
+
+		return generateXACDML();
+
+	}
+	
+	private void recursiveGenenerateXACDML(ProcessContentRepository processContentRepository) {
+		String name = processContentRepository.getName();
+		List<ProcessContentRepository> children = processContentRepository.getChildren();
+		if (children.size() == 0) {   // ROOT, TASK, OR MILESTONE
+			if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
+				createExtendedXACDMLActivity(processContentRepository, name);
+ 			} else if (processContentRepository.getType().equals(ProcessContentType.MILESTONE)) {
+ 				createExtendedXACDMLActivity(processContentRepository, name);
+			} else { // root
+				System.out.println("There is no workbreakdown element to be parsed");
+			}
+			return;
+		} else {  // Phase, Iteration, or activity
+			createExtendedXACDMLActivity(processContentRepository, "BEGIN_"+name); // BEGIN COUNTERPART
+
+			for (ProcessContentRepository child: children) {
+				
+			    recursiveGenenerateXACDML(child);
+			    
+			}
+			createExtendedXACDMLActivity(processContentRepository, "END_"+name); // END COUNTERPART
+		}	
 	}
 	
 	private void createSpecialActivitiesForIterationAndRelease() {
@@ -546,6 +605,217 @@ public class XACDMLBuilderFacade {
 			}
 			acd.getAct().add(regularActivity);	
 		}	
+	}
+	
+	private void createExtendedXACDMLActivity(ProcessContentRepository processContentRepository, String name) {
+		 
+ //		calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
+//		calibratedProcessRepository.clearListOfTasksAndContainers();
+	
+		regularActivity = factory.createAct();
+//		regularActivity.setId(processContentRepository.getName());
+		regularActivity.setId(name);
+		
+		int entityClassIdCounter = 1; 
+			 
+		next = factory.createNext();   
+		previous = factory.createPrev();
+		entityClass = factory.createEntityClass(); 
+		deadTemporalEntity = factory.createDead();
+		
+		// Configuring  entity class for permanent entities. If more than one resource, include call getAdditionalPerformers on processContentRepository  
+//		String roleName = processContentRepository.getMainRole().getName();
+//		String queueNameRole = null;
+//		JTable roleTable = roleResourcePanel.getTableRole();
+//						 
+//		for (int i = 0; i < roleTable.getRowCount(); i++) {
+//			String roleNameTable = (roleTable.getModel().getValueAt(i, 0)).toString();
+//			if (roleNameTable.equals(roleName)) {
+//				queueNameRole = (roleTable.getModel().getValueAt(i, 1)).toString();
+//			}
+//		}
+			
+//		for (Dead queue : acd.getDead()) {
+//				
+//			if (queue.getId().equals(queueNameRole)) {   
+//				entityClass.setId("role" + entityClassIdCounter); // tem que existir para evitar o erro IDREF no momento de marshalling
+//																		 
+//				previous.setId(queue.getId());
+//				previous.setDead(queue);
+//	 
+//				next.setId(queue.getId());
+//				next.setDead(queue);  // recebe Object. O que acontece se eu passar queue.getId()
+//					 
+//				entityClass.setPrev(previous);
+//				entityClass.setNext(next);
+//			}
+//		}
+		
+//		regularActivity.getEntityClass().add(entityClass);
+			 
+		// Configuring  entity class for non-permanent entities 
+			 
+//	 	next = factory.createNext();   
+//		previous = factory.createPrev();
+//			 
+//		deadTemporalEntity = factory.createDead();
+			
+			 
+			// mantive a implementacao como lista, para no futuro poder escalar. No momento, todos casos de teste sao 1 x 1 
+//			List<String> inputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+//			List<String> outputQueuesNameForSpecificProcessContentRepository = new ArrayList<>();
+//			
+//			
+//			String workpProductOutputNamePredecessor = "";
+//			Dead predecessorQueue = null;
+//			List<ProcessContentRepository> listPredecessorsProcessContentRepository = processContentRepository.getPredecessors();
+//					
+//			String taskNameXACDML;
+//			String predecessorTaskName;
+//			
+//			for (WorkProductXACDML workProductXACDML: workProducts) {
+//				
+//				taskNameXACDML = workProductXACDML.getTaskName();
+//				if (taskNameXACDML.equals(processContentRepository.getName())) {
+//					
+//					if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Input")) {
+//						inputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+//					}
+//					
+//					if (workProductXACDML.getInputOrOutput().equalsIgnoreCase("Output")) {
+//						outputQueuesNameForSpecificProcessContentRepository.add(workProductXACDML.getQueueName());
+//					}			
+//				} 
+//				
+				// preciso criar uma entidade para cada saida
+//				for (String queueName : outputQueuesNameForSpecificProcessContentRepository) {
+//					 entityClass = factory.createEntityClass();
+//					 entityClass.setId("temp ec");
+//					 
+//					 // configura next  
+//					 for (String queueName1 : outputQueuesNameForSpecificProcessContentRepository) {
+//							for (Dead q1 : acd.getDead()) {
+//								if (q1.getId().equals(queueName1)) {
+//									next.setId(q1.getId());
+//									next.setDead(q1);
+//									entityClass.setNext(next);	
+//								}
+//							}
+//						}	
+					 
+					 // configure prev
+//						if (listPredecessorsProcessContentRepository.size() != 0) { // se tem predecessor explicito
+//						predecessorTaskName = listPredecessorsProcessContentRepository.get(0).getName(); // ta pegando so o name do predecessor. Suficiente aparentemetne
+						// preciso pegar o nome da fila de saida da atividade anterior
+						
+						// se tem predecessor, buscamos a fila de saida deste predecessor
+						 
+//						if (!predecessorTaskName.equals("")) {
+//
+//							List<Act> activities = acd.getAct();
+//							for (Act act: activities) {
+//								if (predecessorTaskName.equals(act.getId())) {
+//									List<EntityClass> entities = act.getEntityClass();
+//									for (EntityClass entityClass: entities) {
+//										Next next = (Next)entityClass.getNext();
+//										predecessorQueue = (Dead)next.getDead();
+//										 
+//									}
+//								}  
+//							}
+//							previous.setId(predecessorQueue.getId());
+//							previous.setDead(predecessorQueue);
+//							entityClass.setPrev(previous);
+//						}
+//						
+//						
+//				} else {  // nao tem predecessor explicito
+//					for (String queueName1 : inputQueuesNameForSpecificProcessContentRepository) {  // so vai ter 1 por enquanto
+//						for (Dead queue : acd.getDead()) {
+//						if (queue.getId().equals(queueName1)) {
+//							 
+//								previous.setId(queue.getId());
+//								previous.setDead(queue);
+//								entityClass.setPrev(previous);
+//							 
+//						}
+//					}
+//				}
+//				}
+//				}		
+//			}
+//			
+//			System.out.println("input queue names.." + inputQueuesNameForSpecificProcessContentRepository);
+//			System.out.println("output queue names.." + outputQueuesNameForSpecificProcessContentRepository);
+//				
+//			regularActivity.getEntityClass().add(entityClass);
+//
+//			
+//			parametersDistributionRegularActivity = processContentRepository.getSample().getParameters(); // talvez pegar direto do painel
+//
+//			distribution = factory.createStat();
+//
+//			if (parametersDistributionRegularActivity instanceof ConstantParameters) {
+//				constantParameters = (ConstantParameters) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("CONST");
+//				distribution.setParm1(Double.toString(constantParameters.getValue()));
+//
+//			} else if (parametersDistributionRegularActivity instanceof UniformParameters) {
+//				uniformParameters = (UniformParameters) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("UNIFORM");
+//				distribution.setParm1(Double.toString(uniformParameters.getLow()));
+//				distribution.setParm2(Double.toString(uniformParameters.getHigh()));
+//
+//			} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
+//				negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("NEGEXP");
+//				distribution.setParm1(Double.toString(negativeExponential.getAverage()));
+//
+//			} else if (parametersDistributionRegularActivity instanceof NormalParameters) {
+//				normalParameters = (NormalParameters) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("NORMAL");
+//				distribution.setParm1(Double.toString(normalParameters.getMean()));
+//				distribution.setParm2(Double.toString(normalParameters.getStandardDeviation()));
+//
+//			} else if (parametersDistributionRegularActivity instanceof PoissonParameters) {
+//				poissonParameters = (PoissonParameters) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("POISSON");
+//				distribution.setParm1(Double.toString(poissonParameters.getMean()));
+//			} else if (parametersDistributionRegularActivity instanceof LogNormalParameters) {
+//				logNormalParameters = (LogNormalParameters) parametersDistributionRegularActivity;
+//				distribution = factory.createStat();
+//				distribution.setType("LOGNORMAL");
+//				distribution.setParm1(Double.toString(logNormalParameters.getScale()));
+//				distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+//			}
+//			regularActivity.setStat(distribution);
+			
+			// configura os observer para as regular activities
+			// Configruando os observers
+//			List<IntegratedLocalAndRepositoryViewPanel> listOfIntegratedLocalandRepositoryViewPanels = mainPanelSimulationOfAlternativeOfProcess
+//					.getListIntegratedLocalAndRepositoryViewPanel();
+//
+//			for (IntegratedLocalAndRepositoryViewPanel i : listOfIntegratedLocalandRepositoryViewPanels) {
+//				if (processContentRepository.getName().equals(i.getName())) {
+//					listOfActivityObservers = null;
+//					LocalViewPanel localViewPanel = i.getLocalViewPanel();
+//					LocalViewBottomPanel localViewBottomPanel = localViewPanel.getLocalViewBottomPanel();
+//					 
+//					listOfActivityObservers = localViewBottomPanel.getObservers();
+//					for (ActObserver actObserver : listOfActivityObservers) {
+//						 
+//							regularActivity.getActObserver().add(actObserver);
+//						 
+//					}
+//				}
+//			}
+			acd.getAct().add(regularActivity);	
+			
 	}
 
 	
