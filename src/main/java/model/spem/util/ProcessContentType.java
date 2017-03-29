@@ -1,6 +1,6 @@
 package model.spem.util;
 
 public enum ProcessContentType {
-    PHASE, ITERATION, MILESTONE, ACTIVITY, TASK;
+    DELIVERY_PROCESS, PHASE, ITERATION, MILESTONE, ACTIVITY, TASK;
 
 }

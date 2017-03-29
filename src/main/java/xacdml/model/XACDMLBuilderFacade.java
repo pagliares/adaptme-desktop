@@ -145,8 +145,10 @@ public class XACDMLBuilderFacade {
 		createPermanentEntitiesAndResourceQueues(roles, roleResourcePanel);
 
 		createGenerateActivitiesAndQueuesForTemporaryEntities(workProductResourcesPanel, workProducts);
-		
-		recursiveGenenerateXACDML(calibratedProcessRepository.getProcessContents().get(0));
+				
+		for (ProcessContentRepository pcr : calibratedProcessRepository.getProcessContents()) {
+			recursiveGenenerateXACDML2(pcr);
+		}
 		
 //		createExtendedXACDMLActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
 		
@@ -180,6 +182,28 @@ public class XACDMLBuilderFacade {
 			}
 			createExtendedXACDMLActivity(processContentRepository, "END_"+name); // END COUNTERPART
 		}	
+	}
+	
+	
+	private void recursiveGenenerateXACDML2(ProcessContentRepository processContentRepository) {
+		String name = processContentRepository.getName();
+		List<ProcessContentRepository> children = processContentRepository.getChildren();
+ 		
+		if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
+				createExtendedXACDMLActivity(processContentRepository, name);
+				return;
+ 		} else if (processContentRepository.getType().equals(ProcessContentType.MILESTONE)) {
+ 				createExtendedXACDMLActivity(processContentRepository, name);
+ 				return;
+ 		} else if (processContentRepository.getType().equals(ProcessContentType.DELIVERY_PROCESS)) {
+ 	 			return;
+ 		} else {
+				createExtendedXACDMLActivity(processContentRepository, "BEGIN_"+name); // BEGIN COUNTERPART
+				for (ProcessContentRepository child: children) {
+					recursiveGenenerateXACDML(child);  
+				}
+				createExtendedXACDMLActivity(processContentRepository, "END_"+name); // END COUNTERPART
+ 		}
 	}
 	
 	private void createSpecialActivitiesForIterationAndRelease() {
