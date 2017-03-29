@@ -26,6 +26,7 @@ import javax.swing.table.TableColumnModel;
 
 import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
+import model.spem.util.ProcessContentType;
 import simulator.base.Policy;
 import simulator.base.QueueType;
 import simulator.base.WorkProductXACDML;
@@ -216,6 +217,135 @@ public class WorkProductResourcesPanel {
 			}
 		}
 	}
+	
+	public void setModelComboBoxWorkProductForExtendedXACDML(ProcessContentRepository processContentRepository) {
+		int i = 0;
+		Set<MethodContentRepository> setOfInputMethodContentRepository;
+		Set<MethodContentRepository> setOfOutputMethodContentRepository;
+
+		List<ProcessContentRepository> children = processContentRepository.getChildren();
+		if (children.size() == 0) {   // ROOT, TASK, OR MILESTONE
+//			if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
+//				createExtendedXACDMLActivity(processContentRepository, name);
+// 			} else if (processContentRepository.getType().equals(ProcessContentType.MILESTONE)) {
+// 				createExtendedXACDMLActivity(processContentRepository, name);
+//			} else { // root
+//				System.out.println("There is no workbreakdown element to be parsed");
+//			}
+			return;
+		} else {
+			 
+		if (processContentRepository.getType().equals(ProcessContentType.TASK)) {
+			setOfInputMethodContentRepository = processContentRepository.getInputMethodContentsRepository();
+			setOfOutputMethodContentRepository = processContentRepository.getOutputMethodContentsRepository();
+
+			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) { // TORNAR RECURSIVO
+
+				WorkProductXACDML workProduct = new WorkProductXACDML();
+				workProduct.setName(mcr.getName());
+				workProduct.setInputOrOutput("OUTPUT");
+				workProduct.setTaskName(processContentRepository.getName());
+
+				workProducts.add(workProduct); // colocamos todos produtos de
+												// trabalho de saida
+				i++;
+
+				generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i,
+						"Generate activity for demand work product : " + mcr.getName());
+				generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(
+						new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
+				listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
+
+				queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
+						mcr.getName() + " output queue", "queue observers");
+				queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+				listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
+
+				generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
+						mcr.getName() + " output queue", "generate activity observers");
+				generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+				listOfGenerateActivityWorkProductResourcesObserversPanel
+						.add(generateActivityWorkProductResourcesObserversPanel);
+
+			}
+			System.out.println("value of i after all output" + i);
+
+			for (MethodContentRepository mcr : setOfInputMethodContentRepository) {
+
+				WorkProductXACDML workProduct = new WorkProductXACDML();
+				workProduct.setName(mcr.getName());
+				workProduct.setInputOrOutput("INPUT");
+				workProduct.setTaskName(processContentRepository.getName());
+
+				// So estou colocando se nao tivier
+//				if (!workProducts.contains(workProduct)) {
+					workProducts.add(workProduct);
+					i++;
+
+					generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i,
+							"Generate activity for demand work product : " + mcr.getName());
+					generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(
+							new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
+
+					listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
+
+					queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
+							mcr.getName() + " input queue", "queue observers");
+					queueWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+					listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
+
+					generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
+							mcr.getName() + " input queue", "generate activity observers");
+					generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField(mcr.getName() + " queue");
+					listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
+//				}
+			}
+		}
+			System.out.println("value of i after all input" + i);
+
+//			Collections.sort(workProducts); // ordenando para facilitar a
+											// visualizacao nas tabelas da
+											// atividade 3.1 e 4.1
+
+			model = new WorkProductTableModel(workProducts, listOfQueueWorkProductResourcesObserversPanel,
+					listOfGenerateActivityWorkProductResourcesObserversPanel);
+			tableWorkProduct.setModel(model);
+			configuraColunas();
+			topPanel.setLayout(gl_topPanel);
+
+			tableWorkProduct.changeSelection(0, 0, false, false); // seleciona a primeira linha da tabela por default
+																	 
+			// adiciono inicialmente apenas o panel para configuracao de observers de queue. Nao adiciono observers e distributions de generate activities
+			outerProbabilityPanel.add(
+					(WorkProductResourcesQueueObserversPanel) listOfQueueWorkProductResourcesObserversPanel.get(0),
+					BorderLayout.WEST);
+//		}
+
+		for (int j = 0; j < workProducts.size(); j++) {
+			if (workProducts.get(j).getInputOrOutput().equalsIgnoreCase("Input")) {
+				tableWorkProduct.setValueAt(workProducts.get(j).getName() + " input queue", j, 3);
+				tableWorkProduct.setValueAt(QueueType.QUEUE, j, 4);
+				tableWorkProduct.setValueAt(Policy.FIFO, j, 7);
+			}
+
+		}
+
+		for (int w = 0; w < workProducts.size(); w++) {
+			if (workProducts.get(w).getInputOrOutput().equalsIgnoreCase("Output")) {
+				tableWorkProduct.setValueAt(workProducts.get(w).getName() + " output queue" + w, w, 3);
+				tableWorkProduct.setValueAt(QueueType.QUEUE, w, 4);
+				tableWorkProduct.setValueAt(Policy.FIFO, w, 7);
+			}
+		}
+		}
+		for (ProcessContentRepository child: children) {
+			setModelComboBoxWorkProductForExtendedXACDML(child);
+		}
+	}
+	
+	
+	
+	
 	public void configuraTableListener() { 
 		
 		// Listener disparado ao selecionar uma linha da tabela

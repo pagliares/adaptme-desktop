@@ -624,8 +624,10 @@ public class AlternativeOfProcessPanel {
 		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
 		completeListOfProcessContentRepository = processRepository.getProcessContents();
 		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
-		
 		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
+
+		//	setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
+        //	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
 		
 		workProductResourcesPanel.configuraTableListener();
 		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
