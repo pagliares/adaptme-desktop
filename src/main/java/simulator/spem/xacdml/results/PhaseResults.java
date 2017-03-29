@@ -19,7 +19,7 @@ public class PhaseResults extends SPEMResults {
 	
 	@Override
 	public String toString() {
-		String result = getName() + " started at (day)..: " + Math.ceil(timePhaseStarted/480)  +  " finished at (day)  : " +  Math.ceil(timePhaseFinished/480);
+		String result = "\n"+ getName().split("_")[1] + " started at (day)..: " + Math.ceil(timePhaseStarted/480)  +  " finished at (day)  : " +  Math.ceil(timePhaseFinished/480);
 		return result;
 	}
 

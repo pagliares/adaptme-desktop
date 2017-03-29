@@ -656,7 +656,7 @@ public class SimulationManagerFacade {
 			} else  {
 			  for (String key: keys) {
 				PhaseResults phaseResult = mapWithPhaseResults.get(key);
-				System.out.println(key.split("_")[1] + phaseResult);
+				System.out.println(phaseResult);
 			  }
 			}
 			
@@ -671,7 +671,7 @@ public class SimulationManagerFacade {
 			} else  {
 			  for (String key: keys) {
 				MilestoneResults milestoneResult = mapWithMilestoneResults.get(key);
-				System.out.println(key + milestoneResult);
+				System.out.println("\nMilestone reached ! " +  milestoneResult);
 			  }
 			}
 			
