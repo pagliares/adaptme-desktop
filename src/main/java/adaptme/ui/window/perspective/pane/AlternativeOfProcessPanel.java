@@ -90,6 +90,7 @@ import adaptme.ui.window.perspective.ShowResultsPanel;
 import adaptme.ui.window.perspective.WorkProductResourcesPanel;
 import adaptme.util.EPFConstants;
 import adaptme.util.RestoreMe;
+import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
 import model.spem.SimulationFacade;
@@ -588,6 +589,28 @@ public class AlternativeOfProcessPanel {
 
 		PersistProcess persistProcess = new PersistProcess();
 		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
+		
+		// Adicionando as filas nos SPEM containers
+ 		
+        List<ProcessContentRepository> tasks = processRepository.getTasks();
+        MethodContentRepository workProduct = tasks.get(0).getInputMethodContentsRepository().iterator().next();
+        
+		
+		for (ProcessContentRepository pcr: processRepository.getProcessContents()) {
+			if (pcr.getType().equals(ProcessContentType.ITERATION)) {
+				pcr.addInputMethodContent(workProduct);
+				pcr.addOutputMethodContent(workProduct);				
+			} else if (pcr.getType().equals(ProcessContentType.ACTIVITY)) {
+				pcr.addInputMethodContent(workProduct);
+				pcr.addOutputMethodContent(workProduct);
+			} if (pcr.getType().equals(ProcessContentType.PHASE)) {
+				pcr.addInputMethodContent(workProduct);
+				pcr.addOutputMethodContent(workProduct);
+			} if (pcr.getType().equals(ProcessContentType.MILESTONE)) {
+				pcr.addInputMethodContent(workProduct);
+				pcr.addOutputMethodContent(workProduct);
+			}
+		} 
 		 
 		simulationFacade.addProcessAlternative(processRepository);
 		
