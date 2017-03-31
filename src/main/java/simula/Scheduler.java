@@ -313,7 +313,7 @@ public class Scheduler implements Runnable{
 						    double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
 							double TimeIterationFinished = s.GetClock(); 
 							
-							if (mapWithIterationResults.containsKey(act.name)) {
+							if (mapWithIterationResults.containsKey(act.name)) {  // duplicado com o if anterior?
 								mapWithIterationResults.get(act.name).addQuantityOfIterations();
 							} else {
 							    IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
@@ -321,24 +321,37 @@ public class Scheduler implements Runnable{
 							}
 							System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
 						    printNumberOfEntitiesInEachDeadState();
+						    System.out.println("size of entity class before moving " + SimulationManager.quantityOfEntitiesInClass);
+
 						    moveEntitiesBackToInitialState(act);
 						    
 						    System.out.println("Snapshot after moving the entities");
 						    printNumberOfEntitiesInEachDeadState();
-						     act.RegisterEvent(s.clock);  // talvez tenha que registrar nao aqui e sim apos lo while
-						    System.out.println("size of entity class befor moving " + SimulationManager.quantityOfEntitiesInClass);
+//						     act.RegisterEvent(s.clock);  // talvez tenha que registrar nao aqui e sim apos lo while
 
-						     SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
-						    System.out.println("size of entity class befor moving " + SimulationManager.quantityOfEntitiesInClass);
+						    SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
+						    System.out.println("size of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
+						    
+						    for (Object o: this.activestates) {
+						    	Activity a = (Activity)o;
+						    	a.setNumberOfEntitiesProduced(0);
+						    	
+						    }
+						    
+						    Activity activity = act.getBEGINIterationActiveState(act.name); 
+						    // pegando a anterior ao Begin_Iteration
+						    Activity previousBeginIteration = activity.getPreviousActivity(activity.name); 
+
+						    
+						    previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);
+						    
+						  
+
 
 						    
 	                    }
 				}
 			}while(calendar.RemoveNext());  
-			
-//			if ((executed) && ((Activity)activeState).getSpemType().equalsIgnoreCase("ITERATION") && activeState.name.startsWith("END_")) {
-//				activeState.RegisterEvent(s.clock); 
-//			}
  
 			if(!executed)	{	
 				Log.LogMessage("\nNothing to be executed at this instant. Jumps to the next, without executing the C-Phase");

@@ -594,6 +594,56 @@ public class Activity extends ActiveState{
 		return 0;
 	}
 	
+	public Activity getBEGINIterationActiveState(String endIterationOrReleaseName) {
+		String endIterationOrReleaseSufix = endIterationOrReleaseName.substring(4);
+		String beginIterationOrReleaseSufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginIterationOrReleaseSufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
+				return activeState;
+			}
+		}
+		return null;
+	}
+	
+	public Activity getPreviousActivity(String endIterationOrReleaseName) {
+ 
+		int esize = dead_states_from_v.size();
+		String previousQueueName = "";
+
+		for (int i = 0; i < esize; i++) {
+			DeadState incomingQueue = (DeadState) this.getEntities_from_v().get(i);
+//			System.out.println("Task: " + name + "   Incoming queue name:  " + incomingQueue.name + "  incoming queue count: "+ incomingQueue.count);
+			previousQueueName = incomingQueue.name;
+		}
+
+		// In order to start an activity with finish-to-start dependency and processing type by class of entities 
+		// we first must verify if the previous activity has already finished (producing the class of entities)
+		// this is done by comparing the counter of entities produced by the previous activity with the number of entities describring
+		// the class of entities. The previous activity is identified when the output Dead State of the previous activity is the 
+		// same the input dead state of the current activity
+		Iterator it =  s.getSimulationManager().GetActiveStatesIterator();
+
+		while (it.hasNext()){
+
+			InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
+			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
+
+			if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { // Achou
+//				System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
+				Activity ac = (Activity)internalActivityEntry.getActiveState();
+				return ac;
+//				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
+		      
+			}
+		}
+		return null;
+	}
+	
+	
 	private void configureBatchProcessing(float serviceDuration) {
 		Entity entity;
 		
@@ -630,5 +680,13 @@ public class Activity extends ActiveState{
 				Log.LogMessage("\t"+ name + ":Entity " + entityId + " got from " + deadState.name);
 			}
 		}
+	}
+
+	public int getNumberOfEntitiesProduced() {
+		return numberOfEntitiesProduced;
+	}
+
+	public void setNumberOfEntitiesProduced(int numberOfEntitiesProduced) {
+		this.numberOfEntitiesProduced = numberOfEntitiesProduced;
 	}	
 }
