@@ -19,6 +19,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import model.spem.util.BehaviourAtEndOfIterationType;
+import model.spem.util.ConditionToProcessType;
+import model.spem.util.DependencyType;
+import model.spem.util.ProcessContentType;
+import model.spem.util.ProcessingQuantityType;
+
 
 /**
  * 
@@ -39,18 +45,51 @@ public class Act {
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     protected String id;
+    
+    @XmlAttribute(name = "spem_type", required = true)
+    protected ProcessContentType processContentType;
+    
+    @XmlAttribute(name = "dependency_type", required = false)
+    protected DependencyType dependencyType;
+    
+    @XmlAttribute(name = "processing_quantity", required = false)
+    private ProcessingQuantityType processingQuantity;
+    
+    @XmlAttribute(name = "condition_to_process", required = false)
+    private ConditionToProcessType conditionToProcess;
+    
+    @XmlAttribute(name = "behaviour", required = false)
+	private BehaviourAtEndOfIterationType behaviour;
+	
+    @XmlAttribute(name = "timebox", required = false)
+	private double timebox;
+    
+    @XmlAttribute(name = "parent", required = false)
+	private String parent;
+    
+    @XmlAttribute(name = "need", required = false)
+	private int quantityResourcesNeededByActivity;
+    
     protected Graphic graphic;
+    
     @XmlElement(required = true)
     protected Stat stat;
+    
 //    @XmlElement(name = "entity_class", required = true)
     @XmlElement(name = "entity_class", required = false) // para permitir gerar a tag <act> sem entity
     													 // para iteration and release
     protected List<EntityClass> entityClass;
+    
     protected List<Whenprev> whenprev;
+    
     @XmlElement(name = "observer")
     protected List<ActObserver> actObserver;
+    
     protected Interrupting interrupting;
+    
     protected Interrupted interrupted;
+    
+ 
 
     /**
      * Gets the value of the id property.
@@ -263,5 +302,61 @@ public class Act {
     public String toString() {
     	return id;
     }
+
+	public ProcessContentType getProcessContentType() {
+		return processContentType;
+	}
+
+	public void setProcessContentType(ProcessContentType processContentType) {
+		this.processContentType = processContentType;
+	}
+
+	public ProcessingQuantityType getProcessingQuantity() {
+		return processingQuantity;
+	}
+
+	public void setProcessingQuantity(ProcessingQuantityType processingQuantity) {
+		this.processingQuantity = processingQuantity;
+	}
+
+	public ConditionToProcessType getConditionToProcess() {
+		return conditionToProcess;
+	}
+
+	public void setConditionToProcess(ConditionToProcessType conditionToProcess) {
+		this.conditionToProcess = conditionToProcess;
+	}
+
+	public BehaviourAtEndOfIterationType getBehaviour() {
+		return behaviour;
+	}
+
+	public void setBehaviour(BehaviourAtEndOfIterationType behaviour) {
+		this.behaviour = behaviour;
+	}
+
+	public double getTimebox() {
+		return timebox;
+	}
+
+	public void setTimebox(double timebox) {
+		this.timebox = timebox;
+	}
+
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public int getQuantityResourcesNeededByActivity() {
+		return quantityResourcesNeededByActivity;
+	}
+
+	public void setQuantityResourcesNeededByActivity(int quantityResourcesNeededByActivity) {
+		this.quantityResourcesNeededByActivity = quantityResourcesNeededByActivity;
+	}
 
 }
