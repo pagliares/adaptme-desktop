@@ -842,28 +842,6 @@ public class XACDMLBuilderFacade {
 						 
 					}
 					
-//					regularActivity.setProcessContentType(ProcessContentType.ITERATION); // TESTE
-//					regularActivity.setBehaviour(BehaviourAtEndOfIterationType.MOVE_BACK);
-//					regularActivity.setConditionToProcess(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
-//					regularActivity.setParent("Parent");
-//					regularActivity.setProcessingQuantity(ProcessingQuantityType.BATCH);
-//					regularActivity.setQuantityResourcesNeededByActivity(2);
-//					
-// 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
-// 					
-// 					System.out.println(extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem());
-// 					
-// 					System.out.println(extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem());
-// 					
-// 					System.out.println(extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem());
-// 					
-// 					System.out.println(extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem());
-// 					
-// 					System.out.println("Text field .." + extendedXACDMLAttributesPanel.getTimeboxTextField().getText());
-					
-					
-					// aqui
-					
 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
 					
 					ProcessContentType pct =(ProcessContentType)extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem();
@@ -875,7 +853,6 @@ public class XACDMLBuilderFacade {
 					String timebox  = extendedXACDMLAttributesPanel.getTimeboxTextField().getText();
 //					String quantityOfResourcesNeeded  = extendedXACDMLAttributesPanel.getQuantityOfResourcesNeededTextField().getText();
 					
-					// Displaying on console for debug purposes. 
 					regularActivity.setProcessContentType(pct);  
 					regularActivity.setBehaviour(baeit);
 					regularActivity.setConditionToProcess(ctpt);
@@ -884,6 +861,7 @@ public class XACDMLBuilderFacade {
 				    regularActivity.setDependencyType(dependencyType);
 //				    regularActivity.setQuantityResourcesNeededByActivity((Integer.parseInt(quantityOfResourcesNeeded)));
 						
+					// Displaying on console for debug purposes. 
  				    System.out.println("ProcessContent type: " + pct);
 					System.out.println("behaviour type: " + baeit);
 					System.out.println("condition to process: " + ctpt);
@@ -898,8 +876,6 @@ public class XACDMLBuilderFacade {
 			
 	}
 
-	
-	
 	public void bindEntityClassesToQueues(ProcessContentRepository processContentRepository, List<WorkProductXACDML> workProducts) {
 		next = factory.createNext();   
 		previous = factory.createPrev();
