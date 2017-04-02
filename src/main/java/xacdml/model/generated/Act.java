@@ -359,4 +359,12 @@ public class Act {
 		this.quantityResourcesNeededByActivity = quantityResourcesNeededByActivity;
 	}
 
+	public DependencyType getDependencyType() {
+		return dependencyType;
+	}
+
+	public void setDependencyType(DependencyType dependencyType) {
+		this.dependencyType = dependencyType;
+	}
+
 }
