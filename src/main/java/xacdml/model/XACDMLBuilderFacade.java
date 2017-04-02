@@ -39,6 +39,7 @@ import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
 import model.spem.util.BehaviourAtEndOfIterationType;
 import model.spem.util.ConditionToProcessType;
+import model.spem.util.DependencyType;
 import model.spem.util.ProcessContentType;
 import model.spem.util.ProcessingQuantityType;
 import simulator.base.Role;
@@ -841,26 +842,57 @@ public class XACDMLBuilderFacade {
 						 
 					}
 					
-					regularActivity.setProcessContentType(ProcessContentType.ITERATION); // TESTE
-					regularActivity.setBehaviour(BehaviourAtEndOfIterationType.MOVE_BACK);
-					regularActivity.setConditionToProcess(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
-					regularActivity.setParent("Parent");
-					regularActivity.setProcessingQuantity(ProcessingQuantityType.BATCH);
-					regularActivity.setQuantityResourcesNeededByActivity(2);
+//					regularActivity.setProcessContentType(ProcessContentType.ITERATION); // TESTE
+//					regularActivity.setBehaviour(BehaviourAtEndOfIterationType.MOVE_BACK);
+//					regularActivity.setConditionToProcess(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
+//					regularActivity.setParent("Parent");
+//					regularActivity.setProcessingQuantity(ProcessingQuantityType.BATCH);
+//					regularActivity.setQuantityResourcesNeededByActivity(2);
+//					
+// 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
+// 					
+// 					System.out.println(extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem());
+// 					
+// 					System.out.println(extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem());
+// 					
+// 					System.out.println(extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem());
+// 					
+// 					System.out.println(extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem());
+// 					
+// 					System.out.println("Text field .." + extendedXACDMLAttributesPanel.getTimeboxTextField().getText());
 					
- 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
- 					
- 					System.out.println(extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem());
- 					
- 					System.out.println(extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem());
- 					
- 					System.out.println(extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem());
- 					
- 					System.out.println(extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem());
- 					
- 					System.out.println("Text field .." + extendedXACDMLAttributesPanel.getTimeboxTextField().getText());
-
-			}
+					
+					// aqui
+					
+					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
+					
+					ProcessContentType pct =(ProcessContentType)extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem();
+					DependencyType dependencyType = (DependencyType)extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem();
+					ProcessingQuantityType pqt = (ProcessingQuantityType)extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem();
+					String parent = extendedXACDMLAttributesPanel.getParentTextField().getText();					 
+					ConditionToProcessType ctpt = (ConditionToProcessType)extendedXACDMLAttributesPanel.getConditionToProcessComboBox().getSelectedItem();
+					BehaviourAtEndOfIterationType baeit = (BehaviourAtEndOfIterationType)extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem();
+					String timebox  = extendedXACDMLAttributesPanel.getTimeboxTextField().getText();
+//					String quantityOfResourcesNeeded  = extendedXACDMLAttributesPanel.getQuantityOfResourcesNeededTextField().getText();
+					
+					// Displaying on console for debug purposes. 
+					regularActivity.setProcessContentType(pct);  
+					regularActivity.setBehaviour(baeit);
+					regularActivity.setConditionToProcess(ctpt);
+					regularActivity.setParent(parent);
+					regularActivity.setProcessingQuantity(pqt);
+				    regularActivity.setDependencyType(dependencyType);
+//				    regularActivity.setQuantityResourcesNeededByActivity((Integer.parseInt(quantityOfResourcesNeeded)));
+						
+ 				    System.out.println("ProcessContent type: " + pct);
+					System.out.println("behaviour type: " + baeit);
+					System.out.println("condition to process: " + ctpt);
+					System.out.println("Parent: " + parent);
+					System.out.println("Processing quantity: " + pqt);
+					System.out.println("Dependency type: " + dependencyType);
+//					System.out.println("quantity of resources needed: " + quantityOfResourcesNeeded);
+					System.out.println("Timebox: " + timebox);
+				}
 			}	
 			acd.getAct().add(regularActivity);	
 			

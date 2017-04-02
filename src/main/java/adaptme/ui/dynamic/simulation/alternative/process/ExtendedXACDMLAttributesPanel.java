@@ -39,8 +39,9 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 	private JLabel conditionToProcessLabel;
 	private JComboBox<ConditionToProcessType> conditionToProcessComboBox;
 	
-
-
+	private JLabel quantityOfResourcesNeededLabels;
+	private JTextField quantityOfResourcesNeededTextField;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -272,5 +273,17 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 
 	public void setConditionToProcessComboBox(JComboBox<ConditionToProcessType> conditionToProcessComboBox) {
 		this.conditionToProcessComboBox = conditionToProcessComboBox;
+	}
+
+
+
+	public JTextField getQuantityOfResourcesNeededTextField() {
+		return quantityOfResourcesNeededTextField;
+	}
+
+
+
+	public void setQuantityOfResourcesNeededTextField(JTextField quantityOfResourcesNeededTextField) {
+		this.quantityOfResourcesNeededTextField = quantityOfResourcesNeededTextField;
 	}
 }
