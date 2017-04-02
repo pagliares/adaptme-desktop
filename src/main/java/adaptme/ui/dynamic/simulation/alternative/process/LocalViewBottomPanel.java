@@ -23,8 +23,16 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import model.spem.ProcessContentRepository;
+import model.spem.derived.BestFitDistribution;
+import model.spem.util.ConditionToProcessType;
+import model.spem.util.DependencyType;
+import model.spem.util.ProcessContentType;
+import model.spem.util.ProcessingQuantityType;
 import simulator.base.ActiveObserverType;
 import xacdml.model.generated.ActObserver;
+import java.awt.FlowLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class LocalViewBottomPanel extends JPanel {
 	
@@ -43,9 +51,11 @@ public class LocalViewBottomPanel extends JPanel {
 
 	private JButton addObserverButton;
 	private JButton removeObserverButton;
+	private JPanel extendeXACDMLAttributesPanel;
 
 	 
 	public LocalViewBottomPanel(ProcessContentRepository processContentRepository) {
+		setBorder(null);
 		this.processContentRepository = processContentRepository;
 		
 		observerTypeJComboBox = new JComboBox<>();
@@ -68,12 +78,13 @@ public class LocalViewBottomPanel extends JPanel {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{549, 0};
-		gridBagLayout.rowHeights = new int[]{86, 206, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowHeights = new int[]{86, 235, 327, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JPanel activeObserverTopPanel = new JPanel();
+		activeObserverTopPanel.setBorder(null);
 		GridBagConstraints gbc_activeObserverTopPanel = new GridBagConstraints();
 		gbc_activeObserverTopPanel.fill = GridBagConstraints.BOTH;
 		gbc_activeObserverTopPanel.insets = new Insets(0, 0, 5, 0);
@@ -144,7 +155,9 @@ public class LocalViewBottomPanel extends JPanel {
 		activeObserverTopPanel.add(removeObserverButton, gbc_removeObserverButton);
 		
 		JPanel activeObserverBottomPanel = new JPanel();
+		activeObserverBottomPanel.setBorder(null);
 		GridBagConstraints gbc_activeObserverBottomPanel = new GridBagConstraints();
+		gbc_activeObserverBottomPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_activeObserverBottomPanel.fill = GridBagConstraints.BOTH;
 		gbc_activeObserverBottomPanel.gridx = 0;
 		gbc_activeObserverBottomPanel.gridy = 1;
@@ -156,6 +169,24 @@ public class LocalViewBottomPanel extends JPanel {
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 
 		activeObserverBottomPanel.add(scrollPane);
+		
+		extendeXACDMLAttributesPanel = new ExtendedXACDMLAttributesPanel();
+		extendeXACDMLAttributesPanel.setBorder(null);
+		GridBagConstraints gbc_extendeXACDMLAttributesPanel = new GridBagConstraints();
+		gbc_extendeXACDMLAttributesPanel.fill = GridBagConstraints.BOTH;
+		gbc_extendeXACDMLAttributesPanel.gridx = 0;
+		gbc_extendeXACDMLAttributesPanel.gridy = 2;
+		add(extendeXACDMLAttributesPanel, gbc_extendeXACDMLAttributesPanel);
+		GroupLayout gl_extendeXACDMLAttributesPanel = new GroupLayout(extendeXACDMLAttributesPanel);
+		gl_extendeXACDMLAttributesPanel.setHorizontalGroup(
+			gl_extendeXACDMLAttributesPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 557, Short.MAX_VALUE)
+		);
+		gl_extendeXACDMLAttributesPanel.setVerticalGroup(
+			gl_extendeXACDMLAttributesPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 171, Short.MAX_VALUE)
+		);
+		extendeXACDMLAttributesPanel.setLayout(gl_extendeXACDMLAttributesPanel);
 	}
 	
 	public void configuraColunas() {
@@ -183,5 +214,13 @@ public class LocalViewBottomPanel extends JPanel {
 	
 	public List<ActObserver> getObservers() {
 		return observersTableModel.getObservers();
+	}
+
+	public JPanel getExtendeXACDMLAttributesPanel() {
+		return extendeXACDMLAttributesPanel;
+	}
+
+	public void setExtendeXACDMLAttributesPanel(JPanel extendeXACDMLAttributesPanel) {
+		this.extendeXACDMLAttributesPanel = extendeXACDMLAttributesPanel;
 	}
 }

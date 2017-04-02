@@ -1,5 +1,6 @@
 package xacdml.model;
 
+import java.awt.Component;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import adaptme.ui.dynamic.simulation.alternative.process.ExtendedXACDMLAttributesPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.IntegratedLocalAndRepositoryViewPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.LocalViewBottomPanel;
 import adaptme.ui.dynamic.simulation.alternative.process.LocalViewPanel;
@@ -35,7 +37,10 @@ import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
+import model.spem.util.BehaviourAtEndOfIterationType;
+import model.spem.util.ConditionToProcessType;
 import model.spem.util.ProcessContentType;
+import model.spem.util.ProcessingQuantityType;
 import simulator.base.Role;
 import simulator.base.WorkProductXACDML;
 import xacdml.model.generated.Acd;
@@ -118,25 +123,25 @@ public class XACDMLBuilderFacade {
 		this.workProductResourcesPanel = workProductResourcesPanel;
  	}
 	 
-	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
-			String acdId, List<Role> roles, List<WorkProductXACDML> workProducts,
-			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel) {
-
-		createSimulationDuration(acdId);
-
-		createPermanentEntitiesAndResourceQueues(roles, roleResourcePanel);
-
-		createGenerateActivitiesAndQueuesForTemporaryEntities(workProdutResourcesPanel, workProducts);
-		
-		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
-		
-		createSpecialActivitiesForIterationAndRelease();
-		
-//		createDestroyActivities(roles, workProducts);
-
-		return generateXACDML();
-
-	}
+//	public String buildXACDML(MainPanelSimulationOfAlternativeOfProcess mainPanelSimulationOfAlternativeOfProcess,
+//			String acdId, List<Role> roles, List<WorkProductXACDML> workProducts,
+//			RoleResourcesPanel roleResourcePanel, WorkProductResourcesPanel workProdutResourcesPanel) {
+//
+//		createSimulationDuration(acdId);
+//
+//		createPermanentEntitiesAndResourceQueues(roles, roleResourcePanel);
+//
+//		createGenerateActivitiesAndQueuesForTemporaryEntities(workProdutResourcesPanel, workProducts);
+//		
+//		createRegularActivities(workProducts, mainPanelSimulationOfAlternativeOfProcess, roleResourcePanel);
+//		
+//		createSpecialActivitiesForIterationAndRelease();
+//		
+////		createDestroyActivities(roles, workProducts);
+//
+//		return generateXACDML();
+//
+//	}
 	
 	public String buildExtendedXACDML() {
 
@@ -835,8 +840,28 @@ public class XACDMLBuilderFacade {
 							regularActivity.getActObserver().add(actObserver);
 						 
 					}
-				}
+					
+					regularActivity.setProcessContentType(ProcessContentType.ITERATION); // TESTE
+					regularActivity.setBehaviour(BehaviourAtEndOfIterationType.MOVE_BACK);
+					regularActivity.setConditionToProcess(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
+					regularActivity.setParent("Parent");
+					regularActivity.setProcessingQuantity(ProcessingQuantityType.BATCH);
+					regularActivity.setQuantityResourcesNeededByActivity(2);
+					
+ 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
+ 					
+ 					System.out.println(extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem());
+ 					
+ 					System.out.println(extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem());
+ 					
+ 					System.out.println(extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem());
+ 					
+ 					System.out.println(extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem());
+ 					
+ 					System.out.println("Text field .." + extendedXACDMLAttributesPanel.getTimeboxTextField().getText());
+
 			}
+			}	
 			acd.getAct().add(regularActivity);	
 			
 	}
