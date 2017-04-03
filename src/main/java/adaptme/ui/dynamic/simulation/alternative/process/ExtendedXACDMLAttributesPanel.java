@@ -59,12 +59,13 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		
 		spemTypeLabel = new JLabel("SPEM type");
 	    spemTypeComboBox = new JComboBox<ProcessContentType>();
+	    spemTypeComboBox.addItem(ProcessContentType.TASK);
 	    spemTypeComboBox.addItem(ProcessContentType.ACTIVITY);
 	    spemTypeComboBox.addItem(ProcessContentType.DELIVERY_PROCESS);
 	    spemTypeComboBox.addItem(ProcessContentType.ITERATION);
 	    spemTypeComboBox.addItem(ProcessContentType.MILESTONE);
 	    spemTypeComboBox.addItem(ProcessContentType.PHASE);
-	    spemTypeComboBox.addItem(ProcessContentType.TASK);
+	    
 	    
 		
 		timeboxLabel = new JLabel("Timebox");

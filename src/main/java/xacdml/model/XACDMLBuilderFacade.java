@@ -853,13 +853,35 @@ public class XACDMLBuilderFacade {
 					String timebox  = extendedXACDMLAttributesPanel.getTimeboxTextField().getText();
 //					String quantityOfResourcesNeeded  = extendedXACDMLAttributesPanel.getQuantityOfResourcesNeededTextField().getText();
 					
-					regularActivity.setProcessContentType(pct);  
-					regularActivity.setBehaviour(baeit);
+					regularActivity.setProcessContentType(pct); 
+					
+					if (pct.toString().equalsIgnoreCase("ITERATION")) {
+						regularActivity.setBehaviour(baeit);
+					}
+					
+					if ((pct.toString().equalsIgnoreCase("ITERATION") || (pct.toString().equalsIgnoreCase("ACTIVITY")))) {
+						//regularActivity.setTimebox(Double.parseDouble(timebox));
+						regularActivity.setTimebox(0.0);
+					}
+					
 					regularActivity.setConditionToProcess(ctpt);
-					regularActivity.setParent(parent);
+					
+					if (parent.trim() != "") {
+						regularActivity.setParent(parent);
+					}
+					
+					
+					if (pct.toString().equalsIgnoreCase("TASK")) {
+						//regularActivity.setQuantityResourcesNeededByActivity((Integer.parseInt(quantityOfResourcesNeeded)));
+					}
+					
+					// All workbreakdown elements may have processing quantity attribute
 					regularActivity.setProcessingQuantity(pqt);
-				    regularActivity.setDependencyType(dependencyType);
-//				    regularActivity.setQuantityResourcesNeededByActivity((Integer.parseInt(quantityOfResourcesNeeded)));
+					
+				    if (dependencyType.equals(DependencyType.FINISH_TO_START)) {  // Create a NONE literal in the DependencyType?
+				    	regularActivity.setDependencyType(dependencyType);
+				    }
+
 						
 					// Displaying on console for debug purposes. 
  				    System.out.println("ProcessContent type: " + pct);
@@ -868,8 +890,9 @@ public class XACDMLBuilderFacade {
 					System.out.println("Parent: " + parent);
 					System.out.println("Processing quantity: " + pqt);
 					System.out.println("Dependency type: " + dependencyType);
-//					System.out.println("quantity of resources needed: " + quantityOfResourcesNeeded);
 					System.out.println("Timebox: " + timebox);
+					
+				
 				}
 			}	
 			acd.getAct().add(regularActivity);	
