@@ -335,6 +335,7 @@ public class Scheduler implements Runnable{
 						    for (Object o: this.activestates) {
 						    	Activity a = (Activity)o;
 						    	a.setNumberOfEntitiesProduced(0);
+						    	a.setStartedWithExceededTimeBox(false);
 						    	
 						    }
 						    
