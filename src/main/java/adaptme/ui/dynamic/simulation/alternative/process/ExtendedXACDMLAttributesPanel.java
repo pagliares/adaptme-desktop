@@ -9,6 +9,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import javax.swing.JComboBox;
 
+import model.spem.ProcessContentRepository;
 import model.spem.util.BehaviourAtEndOfIterationType;
 import model.spem.util.ConditionToProcessType;
 import model.spem.util.DependencyType;
@@ -22,7 +23,6 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 	private JComboBox<BehaviourAtEndOfIterationType> behaviourAtTheEndOfIterationComboBox;
 	
 	private JLabel spemTypeLabel;
-	private JComboBox<ProcessContentType> spemTypeComboBox;
 	
 	private JLabel timeboxLabel;
 	private JTextField timeboxTextField;
@@ -41,11 +41,13 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 	
 	private JLabel quantityOfResourcesNeededLabels;
 	private JTextField quantityOfResourcesNeededTextField;
+	private JTextField quantityOfResourcesTextField;
+	private JTextField spemTypeTextField;
 	
 	/**
 	 * Create the panel.
 	 */
-	public ExtendedXACDMLAttributesPanel() {
+	public ExtendedXACDMLAttributesPanel(ProcessContentRepository workbreakdownElement) {
 		setBorder(null);
 		
 		extendedXacdmlAttributesLabel = new JLabel("Extended XACDML attributes:");
@@ -55,22 +57,23 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		behaviourAtTheEndOfIterationComboBox = new JComboBox<>();
 		behaviourAtTheEndOfIterationComboBox.addItem(BehaviourAtEndOfIterationType.MOVE_BACK);
 		behaviourAtTheEndOfIterationComboBox.addItem(BehaviourAtEndOfIterationType.DO_NOT_MOVE_BACK);
-
+		
+		if (workbreakdownElement.getType().equals(ProcessContentType.ITERATION)) {
+			behaviourAtTheEndOfIterationComboBox.setEditable(false);
+		}
 		
 		spemTypeLabel = new JLabel("SPEM type");
-	    spemTypeComboBox = new JComboBox<ProcessContentType>();
-	    spemTypeComboBox.addItem(ProcessContentType.TASK);
-	    spemTypeComboBox.addItem(ProcessContentType.ACTIVITY);
-	    spemTypeComboBox.addItem(ProcessContentType.DELIVERY_PROCESS);
-	    spemTypeComboBox.addItem(ProcessContentType.ITERATION);
-	    spemTypeComboBox.addItem(ProcessContentType.MILESTONE);
-	    spemTypeComboBox.addItem(ProcessContentType.PHASE);
-	    
-	    
+		spemTypeTextField = new JTextField();
+		spemTypeTextField.setEditable(false);
+		spemTypeTextField.setText(workbreakdownElement.getType().toString());
+		spemTypeTextField.setColumns(10);
 		
 		timeboxLabel = new JLabel("Timebox");
 		timeboxTextField = new JTextField();
 		timeboxTextField.setColumns(10);
+		if (workbreakdownElement.getType().equals(ProcessContentType.ITERATION) ||(workbreakdownElement.getType().equals(ProcessContentType.ACTIVITY))) {
+			timeboxTextField.setEditable(false);
+		}
 		
 		processingQuantityLabel = new JLabel("Processing quantity");
 		processingQuantityComboBox = new JComboBox<>();
@@ -80,6 +83,9 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		parentLabel = new JLabel("Parent");
 		parentTextField = new JTextField();
 		parentTextField.setColumns(10);
+		if (workbreakdownElement.getFather() != null) {
+			parentTextField.setEditable(false);
+		}
 		
 		dependencyTypeLabel = new JLabel("Dependency type");
 		dependencyTypeComboBox = new JComboBox<>();
@@ -92,52 +98,55 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		conditionToProcessComboBox = new JComboBox<>();
 		conditionToProcessComboBox.addItem(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
 		conditionToProcessComboBox.addItem(ConditionToProcessType.SINGLE_ENTITY_AVAILABLE);
-
 		
+		JLabel quantityOfResourcesLabel = new JLabel("Quantity of resources needed to perform the task");
+		
+		quantityOfResourcesTextField = new JTextField();
+		quantityOfResourcesTextField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(extendedXacdmlAttributesLabel, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(spemTypeLabel)
+					.addGap(12)
+					.addComponent(spemTypeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(105)
+					.addComponent(timeboxLabel)
+					.addGap(26)
+					.addComponent(timeboxTextField, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(processingQuantityLabel)
+					.addGap(12)
+					.addComponent(processingQuantityComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(61)
+					.addComponent(parentLabel)
+					.addGap(12)
+					.addComponent(parentTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(dependencyTypeLabel)
+					.addGap(1)
+					.addComponent(dependencyTypeComboBox, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(conditionToProcessLabel)
+					.addGap(7)
+					.addComponent(conditionToProcessComboBox, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(extendedXacdmlAttributesLabel, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(spemTypeLabel)
-							.addGap(12)
-							.addComponent(spemTypeComboBox, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-							.addGap(123)
-							.addComponent(timeboxLabel)
-							.addGap(26)
-							.addComponent(timeboxTextField, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(processingQuantityLabel)
-							.addGap(12)
-							.addComponent(processingQuantityComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(61)
-							.addComponent(parentLabel)
-							.addGap(12)
-							.addComponent(parentTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(119)
-							.addComponent(dependencyTypeComboBox, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(149)
-							.addComponent(conditionToProcessComboBox, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(behaviourAtTheEndOfIterationLabel, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(233)
-									.addComponent(behaviourAtTheEndOfIterationComboBox, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(dependencyTypeLabel))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(conditionToProcessLabel)))
-					.addContainerGap(6, Short.MAX_VALUE))
+							.addGap(233)
+							.addComponent(behaviourAtTheEndOfIterationComboBox, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE))
+						.addComponent(behaviourAtTheEndOfIterationLabel, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(6)
+					.addComponent(quantityOfResourcesLabel)
+					.addGap(7)
+					.addComponent(quantityOfResourcesTextField, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -151,12 +160,12 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 							.addComponent(spemTypeLabel))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(2)
-							.addComponent(spemTypeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(spemTypeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(6)
 							.addComponent(timeboxLabel))
 						.addComponent(timeboxTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(13)
+					.addGap(12)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(6)
@@ -170,24 +179,32 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 						.addComponent(parentTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(17)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(dependencyTypeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)
-							.addComponent(dependencyTypeLabel)))
+							.addComponent(dependencyTypeLabel))
+						.addComponent(dependencyTypeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(5)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(conditionToProcessComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)
-							.addComponent(conditionToProcessLabel)))
+							.addComponent(conditionToProcessLabel))
+						.addComponent(conditionToProcessComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(16)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(behaviourAtTheEndOfIterationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)
-							.addComponent(behaviourAtTheEndOfIterationLabel))
-						.addComponent(behaviourAtTheEndOfIterationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(behaviourAtTheEndOfIterationLabel)))
+					.addGap(9)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(6)
+							.addComponent(quantityOfResourcesLabel))
+						.addComponent(quantityOfResourcesTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 		);
 		setLayout(groupLayout);
+		
+	
 
 	}
 
@@ -203,19 +220,6 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 			JComboBox<BehaviourAtEndOfIterationType> behaviourAtTheEndOfIterationComboBox) {
 		this.behaviourAtTheEndOfIterationComboBox = behaviourAtTheEndOfIterationComboBox;
 	}
-
-
-
-	public JComboBox<ProcessContentType> getSpemTypeComboBox() {
-		return spemTypeComboBox;
-	}
-
-
-
-	public void setSpemTypeComboBox(JComboBox<ProcessContentType> spemTypeComboBox) {
-		this.spemTypeComboBox = spemTypeComboBox;
-	}
-
 
 
 	public JTextField getTimeboxTextField() {
@@ -286,5 +290,17 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 
 	public void setQuantityOfResourcesNeededTextField(JTextField quantityOfResourcesNeededTextField) {
 		this.quantityOfResourcesNeededTextField = quantityOfResourcesNeededTextField;
+	}
+
+
+
+	public JTextField getSpemTypeTextField() {
+		return spemTypeTextField;
+	}
+
+
+
+	public void setSpemTypeTextField(JTextField spemTypeTextField) {
+		this.spemTypeTextField = spemTypeTextField;
 	}
 }

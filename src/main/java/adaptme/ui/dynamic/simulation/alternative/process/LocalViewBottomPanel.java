@@ -170,7 +170,7 @@ public class LocalViewBottomPanel extends JPanel {
 
 		activeObserverBottomPanel.add(scrollPane);
 		
-		extendeXACDMLAttributesPanel = new ExtendedXACDMLAttributesPanel();
+		extendeXACDMLAttributesPanel = new ExtendedXACDMLAttributesPanel(processContentRepository);
 		extendeXACDMLAttributesPanel.setBorder(null);
 		GridBagConstraints gbc_extendeXACDMLAttributesPanel = new GridBagConstraints();
 		gbc_extendeXACDMLAttributesPanel.fill = GridBagConstraints.BOTH;

@@ -844,7 +844,11 @@ public class XACDMLBuilderFacade {
 					
 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
 					
-					ProcessContentType pct =(ProcessContentType)extendedXACDMLAttributesPanel.getSpemTypeComboBox().getSelectedItem();
+					String temp =extendedXACDMLAttributesPanel.getSpemTypeTextField().getText();
+					
+					ProcessContentType pct = ProcessContentType.valueOf(temp);
+
+					
 					DependencyType dependencyType = (DependencyType)extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem();
 					ProcessingQuantityType pqt = (ProcessingQuantityType)extendedXACDMLAttributesPanel.getProcessingQuantityComboBox().getSelectedItem();
 					String parent = extendedXACDMLAttributesPanel.getParentTextField().getText();					 
