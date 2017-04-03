@@ -45,7 +45,7 @@ public class Activity extends ActiveState{
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
-	private boolean startedWithExceededTimeBox = false;
+	public boolean startedWithExceededTimeBox = false;
 	
 	private InServiceTemporaryEntitiesUntilDueTime possible = null;
 	private boolean ok = false;
@@ -272,7 +272,7 @@ public class Activity extends ActiveState{
 		
 		// If the activity is an End counterpart, it can only start if the current clock > time BEGIN counterpart started + timebox
 		if (spemType.equalsIgnoreCase("ITERATION") && name.startsWith("END")) {
-					double timeBEGINIterationOrReleaseStarted =  getTimeBEGINIterationOrReleaseStarted(name);
+			double timeBEGINIterationOrReleaseStarted =  getTimeBEGINIterationOrReleaseStarted(name);
 					double timeBoxBEGINIterationOrRelease = getBEGINIterationOrReleaseTimebox(name);
 					
 					double flagTimeWithoutTruncation = (timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1;
@@ -292,7 +292,7 @@ public class Activity extends ActiveState{
 			if (mayStart == false) {
 				    serviceDuration = (float)getTimeParentStarted(parent) + (float)getParentTimebox(parent) - s.GetClock();
 				    if (serviceDuration < 1) {
-				    	return false;
+//				    	return false;
 				    }
 			        if (startedWithExceededTimeBox == true) {
 			        	return false;
@@ -396,7 +396,10 @@ public class Activity extends ActiveState{
 				}
 			}
 			
-			if (this.s.GetClock() + serviceDuration > ac.timeWasStarted + timebox) {  // cannot start
+			double predictedFinishTime = this.s.GetClock() + serviceDuration;
+			double limit = ac.timeWasStarted + timebox;
+			
+			if (predictedFinishTime > limit) {  // cannot start
 				Log.LogMessage("\t" + name + " was not possible to start because there are no entities or resources available or since the current clock..: " + this.s.GetClock() + " + service duration..:" +
 			                   serviceDuration + " > "  + "Time father started..: " + ac.timeWasStarted  + " + timebox..:" + timebox);
 				return false;
@@ -688,5 +691,13 @@ public class Activity extends ActiveState{
 
 	public void setNumberOfEntitiesProduced(int numberOfEntitiesProduced) {
 		this.numberOfEntitiesProduced = numberOfEntitiesProduced;
+	}
+
+	public boolean isStartedWithExceededTimeBox() {
+		return startedWithExceededTimeBox;
+	}
+
+	public void setStartedWithExceededTimeBox(boolean startedWithExceededTimeBox) {
+		this.startedWithExceededTimeBox = startedWithExceededTimeBox;
 	}	
 }
