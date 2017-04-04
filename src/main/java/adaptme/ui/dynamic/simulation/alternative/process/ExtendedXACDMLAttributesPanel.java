@@ -19,12 +19,15 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class ExtendedXACDMLAttributesPanel extends JPanel {
 
-	private JLabel behaviourAtTheEndOfIterationLabel;
 	private JLabel extendedXacdmlAttributesLabel;
+
+	
+	private JLabel behaviourAtTheEndOfIterationLabel;
 	private JComboBox<BehaviourAtEndOfIterationType> behaviourAtTheEndOfIterationComboBox;
 	
 	private JLabel spemTypeLabel;
-	
+	private JTextField spemTypeTextField;
+
 	private JLabel timeboxLabel;
 	private JTextField timeboxTextField;
 	
@@ -40,10 +43,9 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 	private JLabel conditionToProcessLabel;
 	private JComboBox<ConditionToProcessType> conditionToProcessComboBox;
 	
-	private JLabel quantityOfResourcesNeededLabels;
-	private JTextField quantityOfResourcesNeededTextField;
-	private JTextField quantityOfResourcesTextField;
-	private JTextField spemTypeTextField;
+	private JLabel quantityOfResourcesLabel;
+  	private JTextField quantityOfResourcesTextField;
+  	
 	
 	/**
 	 * Create the panel.
@@ -107,7 +109,7 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		conditionToProcessComboBox.addItem(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
 		conditionToProcessComboBox.addItem(ConditionToProcessType.SINGLE_ENTITY_AVAILABLE);
 		
-		JLabel quantityOfResourcesLabel = new JLabel("Quantity of resources needed to perform the task");
+		quantityOfResourcesLabel = new JLabel("Quantity of resources needed to perform the task");
 		
 		quantityOfResourcesTextField = new JTextField();
 		quantityOfResourcesTextField.setColumns(10);
@@ -292,21 +294,7 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 	public void setConditionToProcessComboBox(JComboBox<ConditionToProcessType> conditionToProcessComboBox) {
 		this.conditionToProcessComboBox = conditionToProcessComboBox;
 	}
-
-
-
-	public JTextField getQuantityOfResourcesNeededTextField() {
-		return quantityOfResourcesNeededTextField;
-	}
-
-
-
-	public void setQuantityOfResourcesNeededTextField(JTextField quantityOfResourcesNeededTextField) {
-		this.quantityOfResourcesNeededTextField = quantityOfResourcesNeededTextField;
-	}
-
-
-
+	
 	public JTextField getSpemTypeTextField() {
 		return spemTypeTextField;
 	}
@@ -315,5 +303,17 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 
 	public void setSpemTypeTextField(JTextField spemTypeTextField) {
 		this.spemTypeTextField = spemTypeTextField;
+	}
+
+
+
+	public JTextField getQuantityOfResourcesTextField() {
+		return quantityOfResourcesTextField;
+	}
+
+
+
+	public void setQuantityOfResourcesTextField(JTextField quantityOfResourcesTextField) {
+		this.quantityOfResourcesTextField = quantityOfResourcesTextField;
 	}
 }
