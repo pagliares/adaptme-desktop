@@ -309,49 +309,41 @@ public class Scheduler implements Runnable{
 	                    }
 				} else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
 					 
-					 if (!(mapWithIterationResults.containsKey(act.name))) {
-						    double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
-							double TimeIterationFinished = s.GetClock(); 
-							
-							if (mapWithIterationResults.containsKey(act.name)) {  // duplicado com o if anterior?
-								mapWithIterationResults.get(act.name).addQuantityOfIterations();
-							} else {
-							    IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
-							    mapWithIterationResults.put(act.name, iterationResults);
-							}
-							System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
-						    printNumberOfEntitiesInEachDeadState();
-						    System.out.println("size of entity class before moving " + SimulationManager.quantityOfEntitiesInClass);
+					double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
+					double TimeIterationFinished = s.GetClock(); 
+					
+					if ((mapWithIterationResults.containsKey(act.name))) {
+						mapWithIterationResults.get(act.name).addQuantityOfIterations();
+					} else {
+						IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
+						mapWithIterationResults.put(act.name, iterationResults);
+					}
+					
+					System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
+					printNumberOfEntitiesInEachDeadState();
+				    System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
 
-						    moveEntitiesBackToInitialState(act);
+				    moveEntitiesBackToInitialState(act);
 						    
-						    System.out.println("Snapshot after moving the entities");
-						    printNumberOfEntitiesInEachDeadState();
-//						     act.RegisterEvent(s.clock);  // talvez tenha que registrar nao aqui e sim apos lo while
+				    System.out.println("\nSnapshot after moving the entities");
+					printNumberOfEntitiesInEachDeadState();
 
-						    SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
-						    System.out.println("size of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
+					SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
+					System.out.println("\nsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
 						    
-						    for (Object o: this.activestates) {
-						    	Activity a = (Activity)o;
-						    	a.setNumberOfEntitiesProduced(0);
-						    	a.setStartedWithExceededTimeBox(false);
-						    	
-						    }
+				    for (Object o: this.activestates) {
+					   Activity activity = (Activity)o;
+					   activity.setNumberOfEntitiesProduced(0);
+					   activity.setStartedWithExceededTimeBox(false);
+					 }
 						    
-						    Activity activity = act.getBEGINIterationActiveState(act.name); 
-						    // pegando a anterior ao Begin_Iteration
-						    Activity previousBeginIteration = activity.getPreviousActivity(activity.name); 
+					 Activity activity = act.getBEGINIterationActiveState(act.name); 
+					 // pegando a anterior ao Begin_Iteration
+					 Activity previousBeginIteration = activity.getPreviousActivity(activity.name); 
 
-						    
-						    previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);
-						    
-						  
-
-
-						    
-	                    }
-				}
+				     previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	    	    
+	            }
+				
 			}while(calendar.RemoveNext());  
  
 			if(!executed)	{	
