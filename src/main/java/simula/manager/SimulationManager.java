@@ -42,9 +42,10 @@ public class SimulationManager implements Serializable{
 	 * Creates a new, ready to use SimulationManager
 	 */
 	public SimulationManager() {
-		queues = new HashMap();
+		//		queues = new HashMap();
+		queues = new LinkedHashMap(); // Pagliares. Para ter uma saida ordenada por insercao e poder facilitar os testes 
 		resources  = new HashMap();
-//		activestates = new HashMap();
+		//		activestates = new HashMap();
 		activestates = new LinkedHashMap<>(); // Pagliares. Preciso retornar na ordem de insercao para cadastrar apenas a primeira atividade no inicio da simulacao
 		observers = new HashMap();
 		histograms = new HashMap();
