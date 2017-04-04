@@ -22,6 +22,7 @@ import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LocalViewPanel implements UpdatePanel {
 	
@@ -60,7 +61,7 @@ public class LocalViewPanel implements UpdatePanel {
 		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 		scrollPaneParameters.setViewportBorder(null);
 		focusListener = new ProbabilityDistributionPanelListener();
-		distributionJComboBox.setSelectedIndex(0); // normal select by default
+		//distributionJComboBox.setSelectedIndex(0); // normal select by default
 													// with lines below setting
 													// initial values
 		bestFitDistributionParameters = Parameters.createParameter(BestFitDistribution.CONSTANT);
@@ -88,48 +89,51 @@ public class LocalViewPanel implements UpdatePanel {
 			scrollPaneParameters.repaint();
 			processContentRepository.getSample().setParameters(bestFitDistributionParameters);
 		});
-
-		localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
-		localViewBottomPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagLayout gridBagLayout = (GridBagLayout) localViewBottomPanel.getLayout();
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0 };
-		gridBagLayout.rowHeights = new int[] { 57, 150 };
-		gridBagLayout.columnWeights = new double[] { 0.0 };
-		gridBagLayout.columnWidths = new int[] { 549 };
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addComponent(lblSession))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-					.addGap(69)
-					.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
-				.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(18)
-					.addComponent(lblSession)
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.getVerticalScrollBar().setUnitIncrement(16);
+		
+				localViewBottomPanel = new LocalViewBottomPanel(processContentRepository);
+				scrollPane_1.setViewportView(localViewBottomPanel);
+				GroupLayout gl_panel = new GroupLayout(panel);
+				gl_panel.setHorizontalGroup(
+					gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(5)
-							.addComponent(lblBestFitProbbility))
-						.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(22)
-					.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-					.addGap(6)
-					.addComponent(localViewBottomPanel, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
-					.addGap(146))
-		);
-		panel.setLayout(gl_panel);
+							.addGap(6)
+							.addComponent(lblSession))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(6)
+							.addComponent(lblBestFitProbbility, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(6)
+							.addComponent(scrollPaneParameters, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+							.addGap(84))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(229)
+							.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				);
+				gl_panel.setVerticalGroup(
+					gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(18)
+									.addComponent(lblSession)
+									.addGap(23)
+									.addComponent(lblBestFitProbbility))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(57)
+									.addComponent(distributionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addGap(20)
+							.addComponent(scrollPaneParameters, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+							.addGap(11)
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+							.addGap(4))
+				);
+				panel.setLayout(gl_panel);
 	}
 
     public String getDistribution() {
@@ -143,7 +147,7 @@ public class LocalViewPanel implements UpdatePanel {
     
     @Override
     public JPanel getPanel() {
-	return panel;
+    	return panel;
     }
 
     @Override

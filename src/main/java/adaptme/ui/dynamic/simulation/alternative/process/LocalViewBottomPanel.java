@@ -33,6 +33,7 @@ import xacdml.model.generated.ActObserver;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LocalViewBottomPanel extends JPanel {
 	
@@ -75,22 +76,8 @@ public class LocalViewBottomPanel extends JPanel {
 		tableObservers.changeSelection(observersTableModel.getRowCount() -1, 0, false, false);  // seleciona a primeira linha da tabela por default
 		tableObservers.setValueAt(ActiveObserverType.ACTIVE, observersTableModel.getRowCount()-1, 1);
 		
-		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{549, 0};
-		gridBagLayout.rowHeights = new int[]{86, 235, 327, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
-		
 		JPanel activeObserverTopPanel = new JPanel();
 		activeObserverTopPanel.setBorder(null);
-		GridBagConstraints gbc_activeObserverTopPanel = new GridBagConstraints();
-		gbc_activeObserverTopPanel.fill = GridBagConstraints.BOTH;
-		gbc_activeObserverTopPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_activeObserverTopPanel.gridx = 0;
-		gbc_activeObserverTopPanel.gridy = 0;
-		add(activeObserverTopPanel, gbc_activeObserverTopPanel);
 		GridBagLayout gbl_activeObserverTopPanel = new GridBagLayout();
 		gbl_activeObserverTopPanel.columnWidths = new int[]{86, 155, 39, 225, 0};
 		gbl_activeObserverTopPanel.rowHeights = new int[]{28, 29, 0};
@@ -156,37 +143,42 @@ public class LocalViewBottomPanel extends JPanel {
 		
 		JPanel activeObserverBottomPanel = new JPanel();
 		activeObserverBottomPanel.setBorder(null);
-		GridBagConstraints gbc_activeObserverBottomPanel = new GridBagConstraints();
-		gbc_activeObserverBottomPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_activeObserverBottomPanel.fill = GridBagConstraints.BOTH;
-		gbc_activeObserverBottomPanel.gridx = 0;
-		gbc_activeObserverBottomPanel.gridy = 1;
-		add(activeObserverBottomPanel, gbc_activeObserverBottomPanel);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(400,145));
 		scrollPane.setViewportView(tableObservers);
 		tableObservers.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-
-		activeObserverBottomPanel.add(scrollPane);
+		GroupLayout gl_activeObserverBottomPanel = new GroupLayout(activeObserverBottomPanel);
+		gl_activeObserverBottomPanel.setHorizontalGroup(
+			gl_activeObserverBottomPanel.createParallelGroup(Alignment.TRAILING)
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+		);
+		gl_activeObserverBottomPanel.setVerticalGroup(
+			gl_activeObserverBottomPanel.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+		);
+		activeObserverBottomPanel.setLayout(gl_activeObserverBottomPanel);
 		
 		extendeXACDMLAttributesPanel = new ExtendedXACDMLAttributesPanel(processContentRepository);
 		extendeXACDMLAttributesPanel.setBorder(null);
-		GridBagConstraints gbc_extendeXACDMLAttributesPanel = new GridBagConstraints();
-		gbc_extendeXACDMLAttributesPanel.fill = GridBagConstraints.BOTH;
-		gbc_extendeXACDMLAttributesPanel.gridx = 0;
-		gbc_extendeXACDMLAttributesPanel.gridy = 2;
-		add(extendeXACDMLAttributesPanel, gbc_extendeXACDMLAttributesPanel);
-		GroupLayout gl_extendeXACDMLAttributesPanel = new GroupLayout(extendeXACDMLAttributesPanel);
-		gl_extendeXACDMLAttributesPanel.setHorizontalGroup(
-			gl_extendeXACDMLAttributesPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 557, Short.MAX_VALUE)
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(activeObserverTopPanel, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+				.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, 510, GroupLayout.PREFERRED_SIZE)
+				.addComponent(extendeXACDMLAttributesPanel, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
 		);
-		gl_extendeXACDMLAttributesPanel.setVerticalGroup(
-			gl_extendeXACDMLAttributesPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 171, Short.MAX_VALUE)
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(activeObserverTopPanel, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+					.addGap(11)
+					.addComponent(activeObserverBottomPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(extendeXACDMLAttributesPanel, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+					.addGap(16))
 		);
-		extendeXACDMLAttributesPanel.setLayout(gl_extendeXACDMLAttributesPanel);
+		setLayout(groupLayout);
 	}
 	
 	public void configuraColunas() {

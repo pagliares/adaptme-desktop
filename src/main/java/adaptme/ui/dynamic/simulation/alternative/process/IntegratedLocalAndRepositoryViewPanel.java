@@ -34,14 +34,29 @@ public class IntegratedLocalAndRepositoryViewPanel extends JPanel {
 		
 		JComponent panel_1 = new RepositoryViewPanel(processContentRepository).getPanel();
 		
-		
+		splitPane.setDividerLocation(300);
 		
  		
 //		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Repository view", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		splitPane.setLeftComponent(panel);
+	    splitPane.setLeftComponent(panel);
 		splitPane.setRightComponent(panel_1);
-		this.add(splitPane);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 1170, Short.MAX_VALUE)
+					.addGap(9))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		setLayout(groupLayout);
 
 	}
 
