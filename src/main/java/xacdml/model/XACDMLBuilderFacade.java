@@ -844,9 +844,10 @@ public class XACDMLBuilderFacade {
 					
 					ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
 					
-					String temp =extendedXACDMLAttributesPanel.getSpemTypeTextField().getText();
+ 					
+					String spemType =extendedXACDMLAttributesPanel.getSpemTypeTextField().getText();
 					
-					ProcessContentType pct = ProcessContentType.valueOf(temp);
+					ProcessContentType pct = ProcessContentType.valueOf(spemType);
 
 					
 					DependencyType dependencyType = (DependencyType)extendedXACDMLAttributesPanel.getDependencyTypeComboBox().getSelectedItem();
@@ -855,7 +856,7 @@ public class XACDMLBuilderFacade {
 					ConditionToProcessType ctpt = (ConditionToProcessType)extendedXACDMLAttributesPanel.getConditionToProcessComboBox().getSelectedItem();
 					BehaviourAtEndOfIterationType baeit = (BehaviourAtEndOfIterationType)extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().getSelectedItem();
 					String timebox  = extendedXACDMLAttributesPanel.getTimeboxTextField().getText();
-//					String quantityOfResourcesNeeded  = extendedXACDMLAttributesPanel.getQuantityOfResourcesNeededTextField().getText();
+					String quantityOfResourcesNeeded  = extendedXACDMLAttributesPanel.getQuantityOfResourcesTextField().getText();
 					
 					regularActivity.setProcessContentType(pct); 
 					
@@ -865,18 +866,23 @@ public class XACDMLBuilderFacade {
 					
 					if ((pct.toString().equalsIgnoreCase("ITERATION") || (pct.toString().equalsIgnoreCase("ACTIVITY")))) {
 						//regularActivity.setTimebox(Double.parseDouble(timebox));
-						regularActivity.setTimebox(0.0);
+						if (!timebox.equals("")) {
+							regularActivity.setTimebox(Double.parseDouble(timebox));
+						}
 					}
 					
 					regularActivity.setConditionToProcess(ctpt);
 					
-					if (parent.trim() != "") {
+					if (!parent.trim().equals("")) {
 						regularActivity.setParent(parent);
 					}
 					
 					
 					if (pct.toString().equalsIgnoreCase("TASK")) {
-						//regularActivity.setQuantityResourcesNeededByActivity((Integer.parseInt(quantityOfResourcesNeeded)));
+						if (!quantityOfResourcesNeeded.equals("")) {
+						   regularActivity.setQuantityResourcesNeededByActivity(Integer.parseInt(quantityOfResourcesNeeded));
+						   // In this case, behaviour do not make sense. Create a literal NONE for the BehaviourAtEndOfIteration enum?
+						}
 					}
 					
 					// All workbreakdown elements may have processing quantity attribute
