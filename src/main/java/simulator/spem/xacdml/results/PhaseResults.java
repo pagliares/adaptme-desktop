@@ -7,7 +7,7 @@ public class PhaseResults extends SPEMResults {
 	public PhaseResults(String phaseName, double timePhaseStarted, double timePhaseFinished) {
 		super(phaseName);
 		this.timePhaseStarted = timePhaseStarted;
-		timePhaseFinished = timePhaseFinished;
+		this.timePhaseFinished = timePhaseFinished;
 	}
 	
 	public double getTimePhaseStarted() {
