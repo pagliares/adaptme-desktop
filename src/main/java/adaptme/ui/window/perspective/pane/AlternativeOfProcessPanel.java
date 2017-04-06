@@ -592,25 +592,25 @@ public class AlternativeOfProcessPanel {
 		
 		// Adicionando as filas nos SPEM containers
  		
-        List<ProcessContentRepository> tasks = processRepository.getTasks();
-        MethodContentRepository workProduct = tasks.get(0).getInputMethodContentsRepository().iterator().next();
-        
-		
-		for (ProcessContentRepository pcr: processRepository.getProcessContents()) {
-			if (pcr.getType().equals(ProcessContentType.ITERATION)) {
-				pcr.addInputMethodContent(workProduct);
-				pcr.addOutputMethodContent(workProduct);				
-			} else if (pcr.getType().equals(ProcessContentType.ACTIVITY)) {
-				pcr.addInputMethodContent(workProduct);
-				pcr.addOutputMethodContent(workProduct);
-			} if (pcr.getType().equals(ProcessContentType.PHASE)) {
-				pcr.addInputMethodContent(workProduct);
-				pcr.addOutputMethodContent(workProduct);
-			} if (pcr.getType().equals(ProcessContentType.MILESTONE)) {
-				pcr.addInputMethodContent(workProduct);
-				pcr.addOutputMethodContent(workProduct);
-			}
-		} 
+//        List<ProcessContentRepository> tasks = processRepository.getTasks();
+//        MethodContentRepository workProduct = tasks.get(0).getInputMethodContentsRepository().iterator().next();
+//        
+//		
+//		for (ProcessContentRepository pcr: processRepository.getProcessContents()) {
+//			if (pcr.getType().equals(ProcessContentType.ITERATION)) {
+//				pcr.addInputMethodContent(workProduct);
+//				pcr.addOutputMethodContent(workProduct);				
+//			} else if (pcr.getType().equals(ProcessContentType.ACTIVITY)) {
+//				pcr.addInputMethodContent(workProduct);
+//				pcr.addOutputMethodContent(workProduct);
+//			} if (pcr.getType().equals(ProcessContentType.PHASE)) {
+//				pcr.addInputMethodContent(workProduct);
+//				pcr.addOutputMethodContent(workProduct);
+//			} if (pcr.getType().equals(ProcessContentType.MILESTONE)) {
+//				pcr.addInputMethodContent(workProduct);
+//				pcr.addOutputMethodContent(workProduct);
+//			}
+//		} 
 		 
 		simulationFacade.addProcessAlternative(processRepository);
 		
@@ -649,8 +649,8 @@ public class AlternativeOfProcessPanel {
 		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
 		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
 
-		//	setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
-        //	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
+//			setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
+//        	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
 		
 		workProductResourcesPanel.configuraTableListener();
 		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
