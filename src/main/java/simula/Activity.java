@@ -128,7 +128,7 @@ public class Activity extends ActiveState{
 	 */
 	public boolean BServed(float time){
 		
-		if(blocked)									// n�o faz nada enquanto estiver bloqueado
+		if(blocked)									// nao faz nada enquanto estiver bloqueado
 			return false;
 			
 		InServiceTemporaryEntitiesUntilDueTime inServiceTemporaryEntitiesUntilDueTime = queueOfEntitiesAndResourcesInService.Dequeue();
@@ -151,7 +151,7 @@ public class Activity extends ActiveState{
 		boolean shouldnotblock = true;
 
 		for(int i = 0; i < dead_states_to_v.size(); i++){		// as entidades...
-			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obt�m fila associada
+			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obtem fila associada
 			shouldnotblock &= q.HasSpace();												// condi��o para n�o bloquear
 		}
 		
@@ -167,7 +167,7 @@ public class Activity extends ActiveState{
 			DeadState q = (DeadState)dead_states_to_v.elementAt(i);	// obtem fila associada
 			if(q.HasSpace())										// se tem espaco
 				for (int j = 0; j < inServiceTemporaryEntitiesUntilDueTime.entities.length; j++) {
-					q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[j]);									// envia ao estado morto         PAGLIARES
+					q.enqueue(inServiceTemporaryEntitiesUntilDueTime.entities[j]);									 
 				}
 		}
 		
@@ -271,18 +271,19 @@ public class Activity extends ActiveState{
 		}
 		
 		// If the activity is an End counterpart, it can only start if the current clock > time BEGIN counterpart started + timebox
+		// notice the exception when the iteration must be started when all entities have been processed between the timebox being reached
 		if (spemType.equalsIgnoreCase("ITERATION") && name.startsWith("END")) {
 			double timeBEGINIterationOrReleaseStarted =  getTimeBEGINIterationOrReleaseStarted(name);
-					double timeBoxBEGINIterationOrRelease = getBEGINIterationOrReleaseTimebox(name);
+			double timeBoxBEGINIterationOrRelease = getBEGINIterationOrReleaseTimebox(name);
 					
-					double flagTimeWithoutTruncation = (timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1;
-					int flagTime = (int) ((timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1);
-					double currentClockWithoutTruncation = s.GetClock();
-					double currentClockTruncated = (int) currentClockWithoutTruncation;
-					if (currentClockWithoutTruncation < (flagTime)) {
-						return false;
-					}
-					System.out.println("End of iteration");
+			double flagTimeWithoutTruncation = (timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1;
+			int flagTime = (int) ((timeBEGINIterationOrReleaseStarted + timeBoxBEGINIterationOrRelease) - 1);
+			double currentClockWithoutTruncation = s.GetClock();
+			double currentClockTruncated = (int) currentClockWithoutTruncation;
+			if (currentClockWithoutTruncation < (flagTime)) {
+				return false;
+			}
+			System.out.println("End of iteration");
 		}
 		
 		float serviceDuration = (float)d.Draw();
