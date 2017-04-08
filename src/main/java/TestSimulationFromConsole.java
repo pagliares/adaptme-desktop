@@ -17,11 +17,11 @@ public class TestSimulationFromConsole {
 		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 
-		simulationManagerFacade.execute(30000, 1, true);  // AGILE
+//		simulationManagerFacade.execute(30000, 1, true);  // AGILE
 		
 //		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
 		
-//		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
+		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
 		
 		simulationManagerFacade.printActivityResults();
 		

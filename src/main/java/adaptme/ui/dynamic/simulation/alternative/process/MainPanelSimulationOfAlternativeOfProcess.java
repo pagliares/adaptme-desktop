@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -41,25 +40,8 @@ public class MainPanelSimulationOfAlternativeOfProcess implements UpdatePanel {
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
 	 
-		splitPane = new JSplitPane() 
-{
-			private final int location = 350;
-
-			{
-				setDividerLocation(location);
-			}
-
-			@Override
-			public int getDividerLocation() {
-				return location;
-			}
-
-			@Override
-			public int getLastDividerLocation() {
-				return location;
-			}
-		};
-		 
+		splitPane = new JSplitPane();
+		splitPane.setDividerLocation(350);
 		panel.add(splitPane);
 		// splitPane.setDividerLocation(300);
 

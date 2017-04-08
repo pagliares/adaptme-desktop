@@ -5,12 +5,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,17 +20,13 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
 import adaptme.repository.web.client.RestClientProxy;
 import adaptme.ui.dynamic.UpdatePanel;
 import model.spem.ProcessContentRepository;
-import model.spem.derived.BestFitDistribution;
 import model.spem.measurement.DurationMeasurement;
 import model.spem.measurement.Measurement;
 
@@ -114,32 +108,24 @@ public class RepositoryViewPanel implements UpdatePanel {
 					.addGap(53))
 		);
 		histogramConfigPanel.setLayout(gl_histogramConfigPanel);
-		
-		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(4)
-								.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(sampleSizeValueLabel))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(4)
-								.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(4)
-								.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(histogramConfigPanel, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(4)
-							.addComponent(histogramChartPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)))
-					.addContainerGap())
+					.addGap(4)
+					.addComponent(lblProcessElement, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(4)
+					.addComponent(lblSampleSize, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(10)
+					.addComponent(histogramConfigPanel, GroupLayout.PREFERRED_SIZE, 405, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(4)
+					.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(4)
+					.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -147,16 +133,13 @@ public class RepositoryViewPanel implements UpdatePanel {
 					.addGap(8)
 					.addComponent(lblProcessElement)
 					.addGap(13)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSampleSize)
-						.addComponent(sampleSizeValueLabel))
+					.addComponent(lblSampleSize)
 					.addGap(18)
 					.addComponent(histogramConfigPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
-					.addGap(90)
-					.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-					.addGap(45))
+					.addComponent(histogramChartPanel, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE)
+					.addGap(130)
+					.addComponent(lblMessagem, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
 		);
 		panel.setLayout(gl_panel);
 	}

@@ -206,7 +206,7 @@ public class XACDMLBuilderFacade {
  		} else {
 				createExtendedXACDMLActivity(processContentRepository, "BEGIN_"+name); // BEGIN COUNTERPART
 				for (ProcessContentRepository child: children) {
-					recursiveGenenerateXACDML(child);  
+					recursiveGenenerateXACDML2(child);  
 				}
 				createExtendedXACDMLActivity(processContentRepository, "END_"+name); // END COUNTERPART
  		}
@@ -639,10 +639,9 @@ public class XACDMLBuilderFacade {
 	
 	private void createExtendedXACDMLActivity(ProcessContentRepository processContentRepository, String name) {
 		 
-		//	calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
-		//	calibratedProcessRepository.clearListOfTasksAndContainers();
-	
-		regularActivity = factory.createAct();
+	    calibratedProcessRepository.clearListOfTasks(); // Este metodo removeu um erro muito dificil que era a geracao de varias tarefas no xacdml duplicada
+//	    calibratedProcessRepository.clearListOfTasksAndContainers();
+	    regularActivity = factory.createAct();
 		regularActivity.setId(name);
 		
 		int entityClassIdCounter = 1; 
