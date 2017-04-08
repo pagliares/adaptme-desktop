@@ -1,6 +1,7 @@
 package adaptme.ui.panel.base.process;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.DropMode;
 import javax.swing.GroupLayout;
@@ -10,9 +11,11 @@ import javax.swing.JScrollPane;
 
 import org.eclipse.epf.uma.Process;
 import org.eclipse.epf.uma.VariabilityType;
+import org.eclipse.epf.uma.WorkBreakdownElement;
 import org.jdesktop.swingx.JXTreeTable;
 
 import adaptme.base.MethodLibraryHash;
+import adaptme.ui.components.model.DependencyTableModel;
 import adaptme.ui.components.model.MouseAdapterWorkBreakdownStructure;
 import adaptme.ui.components.model.SPEMWorkBreakdownStructureTreeTableModel;
 import adaptme.ui.components.renderer.TreeTableCellRenderCustom;
@@ -27,6 +30,7 @@ public class PanelSPEMWorkBreakdownStructure extends JPanel {
 
 	private JXTreeTable treeTable;
 	private SPEMWorkBreakdownStructureTreeTableModel treeTableModel;
+	private PanelDependencyTable panelDependencyTable;
 
 	public PanelSPEMWorkBreakdownStructure(Process process, MethodLibraryHash hash) {
 
@@ -44,7 +48,10 @@ public class PanelSPEMWorkBreakdownStructure extends JPanel {
 		Process root = new Process();
 		root.setVariabilityType(VariabilityType.NA);
 		root.getBreakdownElementOrRoadmap().add(process);
-		treeTableModel = new SPEMWorkBreakdownStructureTreeTableModel(root, hash);
+		
+		panelDependencyTable = new PanelDependencyTable(new ArrayList<>());
+		
+		treeTableModel = new SPEMWorkBreakdownStructureTreeTableModel(this, root, hash);
 		treeTable.setTreeTableModel(treeTableModel);
 		treeTable.setTreeCellRenderer(new TreeTableCellRenderCustom(hash));
 		treeTable.setShowGrid(true, true);
@@ -54,18 +61,38 @@ public class PanelSPEMWorkBreakdownStructure extends JPanel {
 		treeTable.setDragEnabled(true);
 		treeTable.setDropMode(DropMode.ON_OR_INSERT);
 		treeTable.expandAll();
-		treeTable.addMouseListener(new MouseAdapterWorkBreakdownStructure(treeTable, treeTableModel, hash));
+		treeTable.addMouseListener(new MouseAdapterWorkBreakdownStructure(this, treeTable, treeTableModel, hash));
 		scrollPane.setViewportView(treeTable);
-
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(scrollPane,
-				GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(scrollPane,
-				Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+						.addComponent(panelDependencyTable, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
+					.addGap(2))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+					.addGap(1)
+					.addComponent(panelDependencyTable, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+					.addGap(3))
+		);
 		setLayout(groupLayout);
 	}
 
 	public void save() {
 
+	}
+
+
+	public void updateDependencyModel(WorkBreakdownElement element) {
+		if(element == null){
+			panelDependencyTable.setTableModel(new DependencyTableModel(new ArrayList<>()));
+			return;
+		}
+		panelDependencyTable.setTableModel(new DependencyTableModel(((WorkBreakdownElement) element).getPredecessor(), hash));		
 	}
 }

@@ -18,6 +18,7 @@ import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 
 import adaptme.base.MethodLibraryHash;
 import adaptme.base.ObjectFactory;
+import adaptme.ui.panel.base.process.PanelSPEMWorkBreakdownStructure;
 
 public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableModel {
 
@@ -26,9 +27,11 @@ public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableM
 	private Activity activity;
 
 	private int columnCount = 6;
+	private PanelSPEMWorkBreakdownStructure panelSPEMWorkBreakdownStructure;
 
-	public SPEMWorkBreakdownStructureTreeTableModel(Activity activity, MethodLibraryHash hash) {
+	public SPEMWorkBreakdownStructureTreeTableModel(PanelSPEMWorkBreakdownStructure panelSPEMWorkBreakdownStructure, Activity activity, MethodLibraryHash hash) {
 		super(activity);
+		this.panelSPEMWorkBreakdownStructure = panelSPEMWorkBreakdownStructure;
 		this.activity = activity;
 		this.hash = hash;
 		indexList = new ArrayList<>();
@@ -309,6 +312,7 @@ public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableM
 		List<WorkOrder> predecessorsList = element.getPredecessor();
 		predecessorsList.clear();
 		if (predecessors.isEmpty()) {
+			panelSPEMWorkBreakdownStructure.updateDependencyModel(null);
 			return;
 		}
 		predecessors = predecessors.replaceAll(" ", "");
@@ -323,7 +327,7 @@ public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableM
 					(WorkBreakdownElement) hash.getHashMap().get(indexList.get(Integer.parseInt(index)).getId()));
 			predecessorsList.add(workOrder);
 		}
-		System.out.println();
+		panelSPEMWorkBreakdownStructure.updateDependencyModel(element);
 	}
 
 	@Override
