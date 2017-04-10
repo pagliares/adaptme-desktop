@@ -284,14 +284,16 @@ public class Scheduler implements Runnable{
 				Activity act = (Activity) activeState;
 				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
 					
-                    if (mapWithActivityResults.containsKey(act.name)) {
-                    	ActivityResults activityResults = (mapWithActivityResults.get(act.name));
-                    	activityResults.addQuantityOfActivities();
+                    if (!mapWithActivityResults.containsKey(act.name)) {
+                    	double timeActivityStarted = getBEGINActivityStarted(act.name);
+						double timeActivityFinished = s.GetClock();
+						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
+                    
                     	mapWithActivityResults.put(act.name, activityResults); // talvez esta linha nao seja necessaria, por nao ser imutavel
                     } else {
-                    	ActivityResults activityResults = new ActivityResults(act.name); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
-                    	mapWithActivityResults.put(act.name, activityResults);
-                    }
+                    	ActivityResults activityResults = (mapWithActivityResults.get(act.name));
+                    	activityResults.addQuantityOfActivities();
+                     }
 				} 
 				
 				else if ((executed) && act.getSpemType().equalsIgnoreCase("PHASE") && act.name.startsWith("END_")) {  // Store the phase results in a map
@@ -339,9 +341,10 @@ public class Scheduler implements Runnable{
 						    
 					 Activity activity = act.getBEGINIterationActiveState(act.name); 
 					 // pegando a anterior ao Begin_Iteration
-					 Activity previousBeginIteration = activity.getPreviousActivity(activity.name); 
-
-				     previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	    	    
+					 Activity previousBeginIteration = activity.getPreviousActivity(activity.name);  
+					 if (previousBeginIteration != null) {
+						 previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	  
+					 }
 	            }
 				
 			}while(calendar.RemoveNext());  
@@ -433,74 +436,7 @@ public class Scheduler implements Runnable{
 		return false;
 	}
 
-	public int getNumberOfIterations() {
-		return numberOfIterations;
-	}
-
-	public void setNumberOfIterations(int numberOfIterations) {
-		this.numberOfIterations = numberOfIterations;
-	}
-
-	public int getNumberOfReleases() {
-		return numberOfReleases;
-	}
-
-	public HashMap<String, HashMap> getSimulationResultsByIteration() {
-		return simulationResultsByIteration;
-	}
-
-	public void setSimulationResultsByIteration(HashMap<String, HashMap> simulationResultsByIteration) {
-		this.simulationResultsByIteration = simulationResultsByIteration;
-	}
 	
-	public boolean hasRelease() {
-		return hasRelease;
-	}
-	
-	public boolean hasIteration() {
-		return hasIteration;
-	}
-
-	public SimulationManager getSimulationManager() {
-		return simulationManager;
-	}
-
-	public void setSimulationManager(SimulationManager simulationManager) {
-		this.simulationManager = simulationManager;
-	}
-	
-	public ActiveState getActiveState(int index) {
-		return (ActiveState)activestates.get(index);
-	}
-
-	public Vector getActivestates() {
-		return activestates;
-	}
-
-	public void setActivestates(Vector activestates) {
-		this.activestates = activestates;
-	}
-
-	public Map<String, ActivityResults> getMapaQuantidadeCadaAtividadeSimulada() {
-		return mapWithActivityResults;
-	}
-
-	public float getClockOnEnding() {
-		// TODO Auto-generated method stub
-		return clockOnEnding;
-	}
-
-	public Map<String, PhaseResults> getMapWithPhaseResults() {
-		return mapWithPhaseResults;
-	}
-	
-	public Map<String, MilestoneResults> getMapWithMilestoneResults() {
-		return mapWithMilestoneResults;
-	}
-	
-	public Map<String, IterationResults> getMapWithIterationResults() {
-		return mapWithIterationResults;
-	}
 	
 	private double getBEGINPhaseStarted(String endAPhaseName) {
 		String endPhaseSufix = endAPhaseName.substring(4);
@@ -511,6 +447,21 @@ public class Scheduler implements Runnable{
 			activeState = (Activity)activities.get(i);
 			beginPhaseSufix = activeState.name.substring(6);
 			if ((activeState.name.startsWith("BEGIN_")) && (endPhaseSufix.equalsIgnoreCase(beginPhaseSufix))){
+				return activeState.getTimeWasStarted();
+			}
+		}
+		return 0;
+	}
+	
+	private double getBEGINActivityStarted(String endActivityName) {
+		String endActivitySufix = endActivityName.substring(4);
+		String beginActivitySufix = "";
+		Vector activities  = s.getActivestates();
+		Activity activeState;
+		for (int i =0; i < activities.size(); i++) {
+			activeState = (Activity)activities.get(i);
+			beginActivitySufix = activeState.name.substring(6);
+			if ((activeState.name.startsWith("BEGIN_")) && (endActivitySufix.equalsIgnoreCase(beginActivitySufix))){
 				return activeState.getTimeWasStarted();
 			}
 		}
@@ -592,6 +543,75 @@ public class Scheduler implements Runnable{
 			}
 		}
 		return null;
+	}
+    
+    public int getNumberOfIterations() {
+		return numberOfIterations;
+	}
+
+	public void setNumberOfIterations(int numberOfIterations) {
+		this.numberOfIterations = numberOfIterations;
+	}
+
+	public int getNumberOfReleases() {
+		return numberOfReleases;
+	}
+
+	public HashMap<String, HashMap> getSimulationResultsByIteration() {
+		return simulationResultsByIteration;
+	}
+
+	public void setSimulationResultsByIteration(HashMap<String, HashMap> simulationResultsByIteration) {
+		this.simulationResultsByIteration = simulationResultsByIteration;
+	}
+	
+	public boolean hasRelease() {
+		return hasRelease;
+	}
+	
+	public boolean hasIteration() {
+		return hasIteration;
+	}
+
+	public SimulationManager getSimulationManager() {
+		return simulationManager;
+	}
+
+	public void setSimulationManager(SimulationManager simulationManager) {
+		this.simulationManager = simulationManager;
+	}
+	
+	public ActiveState getActiveState(int index) {
+		return (ActiveState)activestates.get(index);
+	}
+
+	public Vector getActivestates() {
+		return activestates;
+	}
+
+	public void setActivestates(Vector activestates) {
+		this.activestates = activestates;
+	}
+
+	public Map<String, ActivityResults> getMapaQuantidadeCadaAtividadeSimulada() {
+		return mapWithActivityResults;
+	}
+
+	public float getClockOnEnding() {
+		// TODO Auto-generated method stub
+		return clockOnEnding;
+	}
+
+	public Map<String, PhaseResults> getMapWithPhaseResults() {
+		return mapWithPhaseResults;
+	}
+	
+	public Map<String, MilestoneResults> getMapWithMilestoneResults() {
+		return mapWithMilestoneResults;
+	}
+	
+	public Map<String, IterationResults> getMapWithIterationResults() {
+		return mapWithIterationResults;
 	}
 
 	
