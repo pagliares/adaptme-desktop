@@ -50,11 +50,12 @@ public class Scheduler implements Runnable{
 	
     // TODO Tradeoff analysis if it is worthwhile to create only one map with SPEM results as object associated to one key 
     // and benefit from the polymorphism. Maybe tranforming SPEMResults in abstract with the abstract methods to determine the begin/finish of the activity
-    private Map<String, ActivityResults> mapWithActivityResults = new LinkedHashMap<>();
+    private Map<String, List<ActivityResults>> mapWithActivityResults = new LinkedHashMap<>();
     private Map<String, PhaseResults> mapWithPhaseResults = new LinkedHashMap<>();
     private Map<String, MilestoneResults> mapWithMilestoneResults = new LinkedHashMap<>();
     private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
-
+    
+ 
 	/**
 	 * retorna refer�ncia ao objeto ativo
 	 */
@@ -284,15 +285,25 @@ public class Scheduler implements Runnable{
 				Activity act = (Activity) activeState;
 				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
 					
+					
                     if (!mapWithActivityResults.containsKey(act.name)) {
                     	double timeActivityStarted = getBEGINActivityStarted(act.name);
 						double timeActivityFinished = s.GetClock();
 						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
-                    
-                    	mapWithActivityResults.put(act.name, activityResults); // talvez esta linha nao seja necessaria, por nao ser imutavel
-                    } else {
-                    	ActivityResults activityResults = (mapWithActivityResults.get(act.name));
-                    	activityResults.addQuantityOfActivities();
+						List<ActivityResults> lista = new ArrayList<>();
+						lista.add(activityResults);
+						mapWithActivityResults.put(act.name, lista); // talvez esta linha nao seja necessaria, por nao ser imutavel
+                     } else {
+                    	List<ActivityResults> listActivityResults = (mapWithActivityResults.get(act.name));
+                    	
+                    	double timeActivityStarted = getBEGINActivityStarted(act.name);
+						double timeActivityFinished = s.GetClock();
+						
+						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
+                    	
+						listActivityResults.add(activityResults);
+						
+                    	
                      }
 				} 
 				
@@ -593,7 +604,7 @@ public class Scheduler implements Runnable{
 		this.activestates = activestates;
 	}
 
-	public Map<String, ActivityResults> getMapaQuantidadeCadaAtividadeSimulada() {
+	public Map<String, List<ActivityResults>> getMapWithActivityResults() {
 		return mapWithActivityResults;
 	}
 

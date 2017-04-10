@@ -632,19 +632,31 @@ public class SimulationManagerFacade {
 	
 	// pagliares
 		public void printActivityResults() {
-			Map<String, ActivityResults> mapWithActivityResults = simulationManager.getScheduler().getMapaQuantidadeCadaAtividadeSimulada();
+			Map<String, List<ActivityResults>> mapWithActivityResults = simulationManager.getScheduler().getMapWithActivityResults();
 			Set<String> keys = mapWithActivityResults.keySet();
-			int quantity = 0;
+ 
 			
 			
 			for (String key: keys) {
-				ActivityResults activityResult = mapWithActivityResults.get(key);
-				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + activityResult.getQuantityOfActivities() +  " times");
+				List<ActivityResults> activityResultsList = mapWithActivityResults.get(key);
+				if (activityResultsList.size() == 0){
+					System.out.println("\nThere are no SPEM activities in the simulated process");
+				} else {
+					System.out.println("\nThe activity named \'" +  key.split("_")[1] + " was executed " + activityResultsList.size()  +  " times");
+ 					
+				}
+				
+				for (int i = 1; i <=  activityResultsList.size(); i++) {
+					ActivityResults ac = activityResultsList.get(i-1);
+					System.out.println("\n\t - In the execution # " + i + ", it started at (day) : " + ((int)ac.getTimeWorkBreakdownElementStarted()/480 + 1) +  
+							" and finished at (day) : " + ((int)ac.getTimeWorkBreakdownElementFinished()/480 + 1 ));
+					
+				}
 			}
+//				System.out.println("\nThe activity named \'" +  key.split("_")[1] +  "\' was executed " + ActivityResults.getQuantityOfActivities() +  " times");
+//			}
 			
-			if (quantity == 0){
-				System.out.println("\nThere are no SPEM activities in the simulated process");
-			}
+			
 		}
 		
 		public void printPhaseResults() {
