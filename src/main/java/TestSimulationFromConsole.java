@@ -19,16 +19,22 @@ public class TestSimulationFromConsole {
 
 //		simulationManagerFacade.execute(30000, 1, true);  // AGILE
 		
-		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
+//		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
 		
-//		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
+		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
 		
+		System.out.println("\n\n---------------------------   REPORT FOR SPEM ACTIVITIES, PHASES, MILESTONES, AND ITERATIONS   -----------------------------");
+		
+		System.out.println("\n[Activities] ");
 		simulationManagerFacade.printActivityResults();
 		
+		System.out.println("\n[Phases] ");
 		simulationManagerFacade.printPhaseResults();
 		
+		System.out.println("\n[Milestones] ");
 		simulationManagerFacade.printMilestoneResults();
 		
+		System.out.println("\n[Iterations] ");
 		simulationManagerFacade.printIterationAndReleaseResults(); // Releaseses are treated as iterations in SPEM 2.0
 
 		System.out.println();

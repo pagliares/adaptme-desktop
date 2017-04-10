@@ -51,7 +51,7 @@ public class Scheduler implements Runnable{
     // TODO Tradeoff analysis if it is worthwhile to create only one map with SPEM results as object associated to one key 
     // and benefit from the polymorphism. Maybe tranforming SPEMResults in abstract with the abstract methods to determine the begin/finish of the activity
     private Map<String, List<ActivityResults>> mapWithActivityResults = new LinkedHashMap<>();
-    private Map<String, PhaseResults> mapWithPhaseResults = new LinkedHashMap<>();
+    private Map<String, List<PhaseResults>> mapWithPhaseResults = new LinkedHashMap<>();
     private Map<String, MilestoneResults> mapWithMilestoneResults = new LinkedHashMap<>();
     private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
     
@@ -284,8 +284,6 @@ public class Scheduler implements Runnable{
 				// Store the number of activities in a map with the results
 				Activity act = (Activity) activeState;
 				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
-					
-					
                     if (!mapWithActivityResults.containsKey(act.name)) {
                     	double timeActivityStarted = getBEGINActivityStarted(act.name);
 						double timeActivityFinished = s.GetClock();
@@ -299,11 +297,8 @@ public class Scheduler implements Runnable{
                     	double timeActivityStarted = getBEGINActivityStarted(act.name);
 						double timeActivityFinished = s.GetClock();
 						
-						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
-                    	
-						listActivityResults.add(activityResults);
-						
-                    	
+						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)        	
+						listActivityResults.add(activityResults);	
                      }
 				} 
 				
@@ -312,15 +307,29 @@ public class Scheduler implements Runnable{
 	                    	double timePhaseStarted = getBEGINPhaseStarted(act.name);
 							double TimePhaseFinished = s.GetClock();
 						    PhaseResults phaseResults = new PhaseResults(act.name, timePhaseStarted,TimePhaseFinished);
-						    mapWithPhaseResults.put(act.name, phaseResults);
-	                    }
-				} else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
+						    List<PhaseResults> list = new ArrayList<>();
+						    list.add(phaseResults);
+						    mapWithPhaseResults.put(act.name, list);
+	                    } else {
+	                    	List<PhaseResults> listPhaseResults = (mapWithPhaseResults.get(act.name));
+	                    	
+	                    	double timeActivityStarted = getBEGINActivityStarted(act.name);
+							double timeActivityFinished = s.GetClock();
+							
+							PhaseResults phaseResults = new PhaseResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)        	
+							listPhaseResults.add(phaseResults);	
+	                     }
+				} 
+			
+				else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
 					 if (!(mapWithMilestoneResults.containsKey(act.name))) {
 	                    	double timeMilestoneWasReached = s.GetClock();
  						    MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
 						    mapWithMilestoneResults.put(act.name, milestoneResults);
 	                    }
-				} else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
+				} 
+				
+				else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
 					 
 					double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
 					double TimeIterationFinished = s.GetClock(); 
@@ -613,7 +622,7 @@ public class Scheduler implements Runnable{
 		return clockOnEnding;
 	}
 
-	public Map<String, PhaseResults> getMapWithPhaseResults() {
+	public Map<String, List<PhaseResults>> getMapWithPhaseResults() {
 		return mapWithPhaseResults;
 	}
 	
