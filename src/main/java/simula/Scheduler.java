@@ -52,7 +52,7 @@ public class Scheduler implements Runnable{
     // and benefit from the polymorphism. Maybe tranforming SPEMResults in abstract with the abstract methods to determine the begin/finish of the activity
     private Map<String, List<ActivityResults>> mapWithActivityResults = new LinkedHashMap<>();
     private Map<String, List<PhaseResults>> mapWithPhaseResults = new LinkedHashMap<>();
-    private Map<String, MilestoneResults> mapWithMilestoneResults = new LinkedHashMap<>();
+    private Map<String, List<MilestoneResults>> mapWithMilestoneResults = new LinkedHashMap<>();
     private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
     
  
@@ -325,8 +325,17 @@ public class Scheduler implements Runnable{
 					 if (!(mapWithMilestoneResults.containsKey(act.name))) {
 	                    	double timeMilestoneWasReached = s.GetClock();
  						    MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
-						    mapWithMilestoneResults.put(act.name, milestoneResults);
-	                    }
+ 						    List<MilestoneResults> list = new ArrayList<>();
+						    list.add(milestoneResults);
+						    mapWithMilestoneResults.put(act.name, list);
+	                    } else {
+	                    	List<MilestoneResults> listMilestoneResults = (mapWithMilestoneResults.get(act.name));
+	                    	
+	                    	double timeMilestoneWasReached = s.GetClock();
+							
+							MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
+							listMilestoneResults.add(milestoneResults);	
+	                     }
 				} 
 				
 				else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
@@ -626,7 +635,7 @@ public class Scheduler implements Runnable{
 		return mapWithPhaseResults;
 	}
 	
-	public Map<String, MilestoneResults> getMapWithMilestoneResults() {
+	public Map<String, List<MilestoneResults>> getMapWithMilestoneResults() {
 		return mapWithMilestoneResults;
 	}
 	

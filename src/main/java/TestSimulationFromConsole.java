@@ -19,9 +19,9 @@ public class TestSimulationFromConsole {
 
 //		simulationManagerFacade.execute(30000, 1, true);  // AGILE
 		
-//		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
+		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
 		
-		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
+//		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
 		
 		System.out.println("\n\n---------------------------   REPORT FOR SPEM ACTIVITIES, PHASES, MILESTONES, AND ITERATIONS   -----------------------------");
 		

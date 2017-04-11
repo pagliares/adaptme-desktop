@@ -672,15 +672,22 @@ public class SimulationManagerFacade {
 		}
 		
 		public void printMilestoneResults() {
-			Map<String, MilestoneResults> mapWithMilestoneResults = simulationManager.getScheduler().getMapWithMilestoneResults();
+			Map<String, List<MilestoneResults>> mapWithMilestoneResults = simulationManager.getScheduler().getMapWithMilestoneResults();
 			Set<String> keys = mapWithMilestoneResults.keySet();
- 			
+			List<MilestoneResults> milestoneResultsList = null;
+			
 			if (keys.size() == 0){
 				System.out.println("\nThere are no SPEM milestones in the simulated process");
 			} else  {
 			  for (String key: keys) {
-				MilestoneResults milestoneResult = mapWithMilestoneResults.get(key);
-				System.out.println("\nMilestone reached ! " +  milestoneResult);
+				milestoneResultsList = mapWithMilestoneResults.get(key);
+				System.out.println("\nMilestone " +  key + " reached !" );
+				
+
+		          for (int i = 1; i <=  milestoneResultsList.size(); i++) {
+		            	MilestoneResults mr = milestoneResultsList.get(i-1);
+		            	System.out.println("\n\t it was reached at (day) : " + ((int)mr.getTimeReached()/480 + 1));
+		          }
 			  }
 			}
 			
