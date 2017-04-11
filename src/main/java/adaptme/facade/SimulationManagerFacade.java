@@ -694,16 +694,22 @@ public class SimulationManagerFacade {
 		}
 		
 		public void printIterationAndReleaseResults() {
-			Map<String, IterationResults> mapWithIterationResults = simulationManager.getScheduler().getMapWithIterationResults();
+			Map<String, List<IterationResults>> mapWithIterationResults = simulationManager.getScheduler().getMapWithIterationResults();
 			Set<String> keys = mapWithIterationResults.keySet();
- 			
+			List<IterationResults> iterationResultsList = null;
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM iterations or releases in the simulated process");
+				System.out.println("\nThere are no SPEM iteration in the simulated process");
 			} else  {
-			  for (String key: keys) {
-				IterationResults iterationResults = mapWithIterationResults.get(key);
-				System.out.println(iterationResults);
-			  }
-			}	
+				 for (String key: keys) {
+					 iterationResultsList = mapWithIterationResults.get(key);
+					 System.out.println("\nThe iteration named \'" +  key.split("_")[1] + " was executed " + iterationResultsList.size()  +  " times");
+				 
+			          for (int i = 1; i <=  iterationResultsList.size(); i++) {
+			            	IterationResults ir = iterationResultsList.get(i-1);
+			            	System.out.println("\n\t - In the execution # " + i + ", it started at (day) : " + ((int)ir.getTimeWorkBreakdownElementStarted()/480 + 1) +  
+						" and finished at (day) : " + ((int)ir.getTimeWorkBreakdownElementFinished()/480 + 1 ));
+			          }
+				 }	 
+			  }	
 		}
 }

@@ -53,7 +53,7 @@ public class Scheduler implements Runnable{
     private Map<String, List<ActivityResults>> mapWithActivityResults = new LinkedHashMap<>();
     private Map<String, List<PhaseResults>> mapWithPhaseResults = new LinkedHashMap<>();
     private Map<String, List<MilestoneResults>> mapWithMilestoneResults = new LinkedHashMap<>();
-    private Map<String, IterationResults> mapWithIterationResults = new LinkedHashMap<>();
+    private Map<String, List<IterationResults>> mapWithIterationResults = new LinkedHashMap<>();
     
  
 	/**
@@ -339,16 +339,21 @@ public class Scheduler implements Runnable{
 				} 
 				
 				else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
-					 
-					double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
-					double TimeIterationFinished = s.GetClock(); 
-					
-					if ((mapWithIterationResults.containsKey(act.name))) {
-						mapWithIterationResults.get(act.name).addQuantityOfIterations();
-					} else {
+
+					if (!(mapWithIterationResults.containsKey(act.name))) {
+						double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
+						double TimeIterationFinished = s.GetClock(); 
 						IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
-						mapWithIterationResults.put(act.name, iterationResults);
-					}
+						List<IterationResults> list = new ArrayList<>();
+					    list.add(iterationResults);
+					    mapWithIterationResults.put(act.name, list);
+ 					} else {
+ 						List<IterationResults> listIterationResults = (mapWithIterationResults.get(act.name));
+ 						double timeIterationStarted = getBEGINActivityStarted(act.name);
+						double timeIterationFinished = s.GetClock();
+						IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, timeIterationFinished);
+						listIterationResults.add(iterationResults);	
+ 					}
 					
 					System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
 					printNumberOfEntitiesInEachDeadState();
@@ -639,7 +644,7 @@ public class Scheduler implements Runnable{
 		return mapWithMilestoneResults;
 	}
 	
-	public Map<String, IterationResults> getMapWithIterationResults() {
+	public Map<String, List<IterationResults>> getMapWithIterationResults() {
 		return mapWithIterationResults;
 	}
 
