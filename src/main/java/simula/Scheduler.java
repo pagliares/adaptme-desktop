@@ -355,17 +355,21 @@ public class Scheduler implements Runnable{
 						listIterationResults.add(iterationResults);	
  					}
 					
-					System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
-					printNumberOfEntitiesInEachDeadState();
-				    System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
+//					System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
+//					printNumberOfEntitiesInEachDeadState();
+					
+//				    System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
+					Log.LogMessage("\n\tsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
+					
 
 				    moveEntitiesBackToInitialState(act);
 						    
-				    System.out.println("\nSnapshot after moving the entities");
-					printNumberOfEntitiesInEachDeadState();
+//				    System.out.println("\nSnapshot after moving the entities");
+//					printNumberOfEntitiesInEachDeadState();
 
 					SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
-					System.out.println("\nsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
+//					System.out.println("\nsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
+					Log.LogMessage("\n\tsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass + "\n");
 						    
 				    for (Object o: this.activestates) {
 					   Activity activity = (Activity)o;
@@ -535,8 +539,9 @@ public class Scheduler implements Runnable{
 	}
 	
     private void moveEntitiesBackToInitialState(Activity activity) {
-    	if (activity.getSpemType().equalsIgnoreCase("ITERATION") && activity.name.startsWith("END_"))
-    		System.out.println("\nMoving entities in intermediary deadstates to the initial dead state");
+    	if (activity.getSpemType().equalsIgnoreCase("ITERATION") && activity.name.startsWith("END_")) {
+//    		System.out.println("\nMoving entities in intermediary deadstates to the initial dead state");
+    		Log.LogMessage("\n\tMoving entities in intermediary deadstates to the initial dead state");
     	    // need to find the incoming dead state of the BEGIN iterationCounterpart
     	     DeadState incomingDeadStateBeginCounterpart = getIncomingDeadStateOfBEGINIterationCounterpart(activity);
 //    	     DeadState q0 = (DeadState)activity.getEntities_from_v().get(0);
@@ -561,6 +566,7 @@ public class Scheduler implements Runnable{
     					}
     				}
     			}	
+    	}
     }
     
     private DeadState getIncomingDeadStateOfBEGINIterationCounterpart(Activity activity) {

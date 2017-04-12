@@ -283,7 +283,6 @@ public class Activity extends ActiveState{
 			if (currentClockWithoutTruncation < (flagTime)) {
 				return false;
 			}
-			System.out.println("End of iteration");
 		}
 		
 		float serviceDuration = (float)d.Draw();
