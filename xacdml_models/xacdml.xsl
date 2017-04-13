@@ -17,7 +17,7 @@ import simula.manager.*;
 </xsl:text>
 <xsl:apply-templates/>
 <xsl:text>
-  System.out.println("\nThat's all folks!");
+ // System.out.println("\nThat's all folks!");
  }
 }</xsl:text>
 </xsl:template>
