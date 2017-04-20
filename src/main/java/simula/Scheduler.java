@@ -31,22 +31,15 @@ public class Scheduler implements Runnable{
 									// para permitir a��es de emerg�ncia (parada)
 
 	private SimulationManager simulationManager;
-	
-	private float iterationDuration;  // pagliares
-	private float releaseDuration;  // pagliares
-	
-	// CODIGO A SER REMOVIDO QUANDO ITERACAO FOR REPRESENTADA POR DUMMY ACTIVITIES
-	private int numberOfIterations = 1; // Pagliares. Precisa ser um. vide metodo run sobreescrito
-	private int numberOfReleases = 0; // Pagliares. diferentemente de iteration, so contamos release quando entrega
-	private int multiploIterations = 2; // Pagliares: usado para se contar apenas uma vez uma iteracao quando o clock for maior que a duracao da iteracao
-	private int multiploRelease = 1; // Pagliares: usado para se contar apenas uma vez uma release quando o clock for maior que a duracao da iteracao
-	
-	private HashMap<String, HashMap>simulationResultsByIteration = new HashMap<>();
-	
-    private boolean hasRelease;
-    private boolean hasIteration;
+		
     public static boolean hasFinishedByLackOfEntities = false;
     private float clockOnEnding;
+    
+    private boolean hasIteration = false;
+    private boolean hasRelease = false;
+    private double iterationTimeBox = 0.0;
+    private double releaseTimeBox = 0.0;
+    private double activityTimeBox = 0.0;
 	
     // TODO Tradeoff analysis if it is worthwhile to create only one map with SPEM results as object associated to one key 
     // and benefit from the polymorphism. Maybe tranforming SPEMResults in abstract with the abstract methods to determine the begin/finish of the activity
@@ -114,7 +107,7 @@ public class Scheduler implements Runnable{
 	}
 	
 	/**
-	 * Inicia execu�ao da simulacao numa thread separada
+	 * Inicia execucao da simulacao numa thread separada
 	 */
 	public synchronized boolean Run(double endtime){
 		hasIteration = false;
@@ -224,27 +217,22 @@ public class Scheduler implements Runnable{
 			// after invoking the method
 			clock = calendar.getNextClock(clock); // @TODO colocar breakpoint aqui para verificar o porque de estar agendando inicialmente mais tarefas para alguns testes de caso
 			
-
 			Log.LogMessage("\nBegin of phase A - 3 Phase approach");
 			Log.LogMessage("\tScheduler: clock advanced to " + clock);
-			
-			storeResultsIfEndOfIteration();
-			
-			storeResultsIfEndOfRelease();
 			
 			// verifica se simulacao chegou ao fim
 
 			ActiveState activeState;
 							
 			// Pagliares. The commented lines below is from Wladimir that finishes the simulation by lack of entities when clock is zero.
-//						if(clock == 0.0){			 
-//							running = false;
-//							termreason = 1;			
-//							Log.LogMessage("\nScheduler: simulation finished due to end of entities");
-//							Log.Close();
-////							firstTime = false;
-//							break;
-//						}
+			//	if(clock == 0.0){			 
+			//		running = false;
+			//		termreason = 1;			
+			//		Log.LogMessage("\nScheduler: simulation finished due to end of entities");
+			//		Log.Close();
+			//		firstTime = false;
+			//		break;
+			//	}
 
 			// Pagliares. If below programmed by me to replace the commented if above
 			if(hasFinishedByLackOfEntities == true){			// fim das entidades
@@ -281,29 +269,30 @@ public class Scheduler implements Runnable{
 				Log.LogMessage("\n\tNext activity in the Calendar : " + activeState.name);
 				executed |= activeState.BServed(clock);	// se ao menos um executou, fica registrado
 				
-				// Store the number of activities in a map with the results
-				Activity act = (Activity) activeState;
-				if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
-                    if (!mapWithActivityResults.containsKey(act.name)) {
-                    	double timeActivityStarted = getBEGINActivityStarted(act.name);
-						double timeActivityFinished = s.GetClock();
-						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)
-						List<ActivityResults> lista = new ArrayList<>();
-						lista.add(activityResults);
-						mapWithActivityResults.put(act.name, lista); // talvez esta linha nao seja necessaria, por nao ser imutavel
-                     } else {
-                    	List<ActivityResults> listActivityResults = (mapWithActivityResults.get(act.name));
-                    	
-                    	double timeActivityStarted = getBEGINActivityStarted(act.name);
-						double timeActivityFinished = s.GetClock();
-						
-						ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)        	
-						listActivityResults.add(activityResults);	
-                     }
-				} 
+				if (!(activeState instanceof Generate)) {
+					// Store the number of activities in a map with the results
+					Activity act = (Activity) activeState;
+					if ((executed) && act.getSpemType().equalsIgnoreCase("ACTIVITY") && act.name.startsWith("END_")) {
+						double timeActivityStarted = 0.0;
+						double timeActivityFinished = 0.0;
+						if (!mapWithActivityResults.containsKey(act.name)) {  // Create a new ActivityResults and insert it into the map
+							timeActivityStarted = getBEGINActivityStarted(act.name);
+							timeActivityFinished = s.GetClock();
+							ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished);  
+							List<ActivityResults> activityResultsList = new ArrayList<>();
+							activityResultsList.add(activityResults);
+							mapWithActivityResults.put(act.name, activityResultsList); // talvez esta linha nao seja necessaria, por nao ser imutavel
+						} else {
+							List<ActivityResults> listActivityResults = (mapWithActivityResults.get(act.name));
+							timeActivityStarted = getBEGINActivityStarted(act.name);
+							timeActivityFinished = s.GetClock();
+							ActivityResults activityResults = new ActivityResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)        	
+							listActivityResults.add(activityResults);	
+						}
+					} 
 				
-				else if ((executed) && act.getSpemType().equalsIgnoreCase("PHASE") && act.name.startsWith("END_")) {  // Store the phase results in a map
-					 if (!(mapWithPhaseResults.containsKey(act.name))) {
+					else if ((executed) && act.getSpemType().equalsIgnoreCase("PHASE") && act.name.startsWith("END_")) {  // Store the phase results in a map
+						if (!(mapWithPhaseResults.containsKey(act.name))) {
 	                    	double timePhaseStarted = getBEGINPhaseStarted(act.name);
 							double TimePhaseFinished = s.GetClock();
 						    PhaseResults phaseResults = new PhaseResults(act.name, timePhaseStarted,TimePhaseFinished);
@@ -319,10 +308,10 @@ public class Scheduler implements Runnable{
 							PhaseResults phaseResults = new PhaseResults(act.name, timeActivityStarted, timeActivityFinished); // verificar se no mapa usa-se ou no o prefixo do nome (END_)        	
 							listPhaseResults.add(phaseResults);	
 	                     }
-				} 
+					} 
 			
-				else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
-					 if (!(mapWithMilestoneResults.containsKey(act.name))) {
+					else if ((executed) && act.getSpemType().equalsIgnoreCase("MILESTONE")) {  // Store the phase results in a map
+						if (!(mapWithMilestoneResults.containsKey(act.name))) {
 	                    	double timeMilestoneWasReached = s.GetClock();
  						    MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
  						    List<MilestoneResults> list = new ArrayList<>();
@@ -336,54 +325,54 @@ public class Scheduler implements Runnable{
 							MilestoneResults milestoneResults = new MilestoneResults(act.name, timeMilestoneWasReached);
 							listMilestoneResults.add(milestoneResults);	
 	                     }
-				} 
+					} 
 				
-				else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
+					else if ((executed) && act.getSpemType().equalsIgnoreCase("ITERATION") && act.name.startsWith("END_")) {  // Store the iteration/release results in a map
 
-					if (!(mapWithIterationResults.containsKey(act.name))) {
-						double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
-						double TimeIterationFinished = s.GetClock(); 
-						IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
-						List<IterationResults> list = new ArrayList<>();
-					    list.add(iterationResults);
-					    mapWithIterationResults.put(act.name, list);
- 					} else {
- 						List<IterationResults> listIterationResults = (mapWithIterationResults.get(act.name));
- 						double timeIterationStarted = getBEGINActivityStarted(act.name);
-						double timeIterationFinished = s.GetClock();
-						IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, timeIterationFinished);
-						listIterationResults.add(iterationResults);	
- 					}
+						if (!(mapWithIterationResults.containsKey(act.name))) {
+							double timeIterationStarted = getBEGINIterationOrReleaseStarted(act.name);
+							double TimeIterationFinished = s.GetClock(); 
+							IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, TimeIterationFinished);
+							List<IterationResults> list = new ArrayList<>();
+							list.add(iterationResults);
+							mapWithIterationResults.put(act.name, list);
+						} else {
+							List<IterationResults> listIterationResults = (mapWithIterationResults.get(act.name));
+							double timeIterationStarted = getBEGINActivityStarted(act.name);
+							double timeIterationFinished = s.GetClock();
+							IterationResults iterationResults = new IterationResults(act.name, timeIterationStarted, timeIterationFinished);
+							listIterationResults.add(iterationResults);	
+						}
 					
-//					System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
-//					printNumberOfEntitiesInEachDeadState();
+						// System.out.println("Snapshot at the end of the iteration. Printing the number of entities in each dead state");
+						// printNumberOfEntitiesInEachDeadState();
 					
-//				    System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
-					Log.LogMessage("\n\tsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
+						// System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
+						Log.LogMessage("\n\tsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
 					
+						moveEntitiesBackToInitialState(act);
+						
+						// System.out.println("\nSnapshot after moving the entities");
+						//	printNumberOfEntitiesInEachDeadState();
 
-				    moveEntitiesBackToInitialState(act);
+						SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
+						//	System.out.println("\nsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
+						Log.LogMessage("\n\tsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass + "\n");
 						    
-//				    System.out.println("\nSnapshot after moving the entities");
-//					printNumberOfEntitiesInEachDeadState();
-
-					SimulationManager.quantityOfEntitiesInClass = getIncomingDeadStateOfBEGINIterationCounterpart(act).count;
-//					System.out.println("\nsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass);
-					Log.LogMessage("\n\tsize of entity class after moving " + SimulationManager.quantityOfEntitiesInClass + "\n");
+						for (Object o: this.activestates) {
+							Activity activity = (Activity)o;
+							activity.setNumberOfEntitiesProduced(0);
+							activity.setStartedWithExceededTimeBox(false);
+						}
 						    
-				    for (Object o: this.activestates) {
-					   Activity activity = (Activity)o;
-					   activity.setNumberOfEntitiesProduced(0);
-					   activity.setStartedWithExceededTimeBox(false);
-					 }
-						    
-					 Activity activity = act.getBEGINIterationActiveState(act.name); 
-					 // pegando a anterior ao Begin_Iteration
-					 Activity previousBeginIteration = activity.getPreviousActivity(activity.name);  
-					 if (previousBeginIteration != null) {
-						 previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	  
-					 }
-	            }
+						Activity activity = act.getBEGINIterationActiveState(act.name); 
+						// pegando a anterior ao Begin_Iteration
+						Activity previousBeginIteration = activity.getPreviousActivity(activity.name);  
+						if (previousBeginIteration != null) {
+							previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	  
+						}
+					}
+				}
 				
 			}while(calendar.RemoveNext());  
  
@@ -414,42 +403,16 @@ public class Scheduler implements Runnable{
 		running = false;
 	}
 
-	private void storeResultsIfEndOfRelease() {
-		// Pagliares
-		// Se clock corrente for multiplo do tempo de release definido como parametro, indica o fim de release
-		// precisa de um tick a mais de clock, pelo menos para iniciar uma nova 
-		if ((int)clock/releaseDuration > multiploRelease) {
-				multiploRelease++;
-				numberOfReleases++;
-		}
-	}
-
-	private void storeResultsIfEndOfIteration() {
-		// Pagliares
-		// Se clock corrente for multiplo do tempo de iteracao definido como parametro, indica o fim de  nova iteracao
-		// precisa de um tick a mais de clock, pelo menos para iniciar uma nova
-		
-		if ((int)clock/iterationDuration > multiploIterations) {
-			    multiploIterations++;
-				numberOfIterations++;
-				// insere os resultados da iteracao. Fazer o mesmo para atividades
-				getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getQueues());
-				// para observers
-				// getSimulationResultsByIteration().put("Iteration" + (numberOfIterations - 1), simulationManager.getObservers());
-		}
-	}
-	
-
 	public float getEndclock() {
 		return endclock;
 	}
 	
 	// Pagliares TODO - VERIFICAR SE PRECISA SER ATUALIZADO COM O CONTEUDO DO METODO ORIGINAL QUE FOI SOBRECARREGADO
-	public synchronized boolean Run(double endtime, float iterationTime, float releaseTime){
+	public synchronized boolean Run(double endtime, float iterationTimeBox, float releaseTimeBox){
 		hasIteration = true;
 		hasRelease = true;
-		this.iterationDuration = iterationTime;
-		this.releaseDuration = releaseTime;
+		this.iterationTimeBox = iterationTimeBox;
+		this.releaseTimeBox = releaseTimeBox;
 		
 		if(endtime < 0.0)				// relogio nao pode ser negativo
 			return false;				// se for 0.0 executa ate acabarem as entidades
@@ -585,40 +548,16 @@ public class Scheduler implements Runnable{
 		return null;
 	}
     
-    public int getNumberOfIterations() {
-		return numberOfIterations;
-	}
-
-	public void setNumberOfIterations(int numberOfIterations) {
-		this.numberOfIterations = numberOfIterations;
-	}
-
-	public int getNumberOfReleases() {
-		return numberOfReleases;
-	}
-
-	public HashMap<String, HashMap> getSimulationResultsByIteration() {
-		return simulationResultsByIteration;
-	}
-
-	public void setSimulationResultsByIteration(HashMap<String, HashMap> simulationResultsByIteration) {
-		this.simulationResultsByIteration = simulationResultsByIteration;
-	}
-	
-	public boolean hasRelease() {
-		return hasRelease;
-	}
-	
-	public boolean hasIteration() {
-		return hasIteration;
-	}
-
 	public SimulationManager getSimulationManager() {
 		return simulationManager;
 	}
 
 	public void setSimulationManager(SimulationManager simulationManager) {
 		this.simulationManager = simulationManager;
+	}
+	
+	public float getClockOnEnding() {
+		return clockOnEnding;
 	}
 	
 	public ActiveState getActiveState(int index) {
@@ -637,11 +576,6 @@ public class Scheduler implements Runnable{
 		return mapWithActivityResults;
 	}
 
-	public float getClockOnEnding() {
-		// TODO Auto-generated method stub
-		return clockOnEnding;
-	}
-
 	public Map<String, List<PhaseResults>> getMapWithPhaseResults() {
 		return mapWithPhaseResults;
 	}
@@ -653,6 +587,4 @@ public class Scheduler implements Runnable{
 	public Map<String, List<IterationResults>> getMapWithIterationResults() {
 		return mapWithIterationResults;
 	}
-
-	
 }
