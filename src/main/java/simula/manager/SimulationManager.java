@@ -655,17 +655,14 @@ public class SimulationManager implements Serializable{
 	/**
 	 * Executa simula��o at� instante endTime
 	 */
-	public synchronized boolean ExecuteSimulation(float endTime)
-	{
+	public synchronized boolean ExecuteSimulation(float endTime){
 		boolean ok = false; // TODO melhor nome: isRunning, isSimulationStarted
 		
-		if(endTime >= 0 && scheduler != null)	// o modelo ja deve ter sido gerado. scheduler e gerado no metodo generateModel
-		{
+		if(endTime >= 0 && scheduler != null) {	// o modelo ja deve ter sido gerado. scheduler e gerado no metodo generateModel
 			Log.Close();
 			Log.OpenFile();
 			ok = scheduler.Run(endTime);
-			if(ok)
-			{
+			if(ok){
 				endtime = endTime;
 				isRunning = true;
 			}
@@ -813,8 +810,7 @@ public class SimulationManager implements Serializable{
 	 * Depois da simula��o terminada, escreve os resultados
 	 * das estat�sticas nos arquivos de sa�da
 	 */
-	public synchronized boolean OutputSimulationResults(String filename)
-	{
+	public synchronized boolean OutputSimulationResults(String filename){    // TODO NAO ESTA SENDO CHAMADO POR NINGUEM. VERFICAR A NECESSIDADE
 		System.out.println("Simulation results stored in the file /output/"+filename);
 		PrintStream os;
 		FileOutputStream ofile;
@@ -892,8 +888,7 @@ public class SimulationManager implements Serializable{
 	}
 	
 	
-	public synchronized String getSimulationResults()
-	{
+	public synchronized String getSimulationResults(){
 		String result = null;
 		result = "OutputSimulationResults \n";
 		result+= "\r\n                    Simulation Report";
@@ -906,15 +901,12 @@ public class SimulationManager implements Serializable{
 		Iterator it;
 		
 		it = observers.values().iterator();
-		while(it.hasNext())
-		{
-//			((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
+		while(it.hasNext()){
+			//((ObserverEntry)it.next()).DoReportConsole(s.GetClock() - resettime);
 			result += ((ObserverEntry)it.next()).getReportConsole(scheduler.GetClock() - resettime).toString();
 		}
 		
-	
 		result+= "\r\nSimulation Report End";
-		 
 		return result;
 	}
 	
@@ -939,27 +931,17 @@ public class SimulationManager implements Serializable{
 	public void printObserversReport(ObserverEntry observerEntry) { 
 		 
 		observerEntry.DoReportConsole(scheduler.GetClock() - resettime);
-	 
-	
-}
-	
-	
+	}
 	
 	public void printWeightedAverage(ObserverEntry observerEntry) { 
 		 
 		System.out.println(observerEntry.getAvearageWeighted(scheduler.GetClock() - resettime));
-	 
-	 
-	
-}
+	}
 	
 	public void printStandardDeviationWeighted(ObserverEntry observerEntry) { 
 		 
 		System.out.println(observerEntry.getStandardDeviationWeighted(scheduler.GetClock() - resettime));
-	 
-	 
-	
-}
+	}
 	
 	public void printVarianceWeighted(ObserverEntry observerEntry) { 
 		 
@@ -988,30 +970,21 @@ public class SimulationManager implements Serializable{
 	// pagliares
 	
 	/**
-	 * Executa simula��o at� instante endTime
+	 * Executa simulacao ate instante endTime
 	 */
-	public synchronized boolean ExecuteSimulation(float endTime, float iterationTime, float releaseTime)
-	{
+	public synchronized boolean ExecuteSimulation(float endTime, float iterationTime, float releaseTime){
 		boolean ok = false;
 		
-		if(endTime >= 0 && scheduler != null)	// o modelo j� deve ter sido gerado
-		{
+		if(endTime >= 0 && scheduler != null) {	// o modelo ja deve ter sido gerado
 			Log.Close();
 			Log.OpenFile();
 			ok = scheduler.Run(endTime, iterationTime, releaseTime);
-			if(ok)
-			{
+			if(ok){
 				endtime = endTime;
 				isRunning = true;
 			}
 		}
 		
 		return ok;
-	}
-	
-	// pagliares
-	public HashMap getSimulationResultsByIteration() {
-		return scheduler.getSimulationResultsByIteration();
-		
 	}
 }	
