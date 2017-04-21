@@ -1,8 +1,11 @@
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 import adaptme.DynamicExperimentationProgramProxy;
 import adaptme.IDynamicExperimentationProgramProxy;
@@ -14,32 +17,106 @@ import simula.manager.SimulationManager;
 public class TestSimulationFromConsole {
 
 	public static void main(String[] args) {
-		
+	
+		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
+		int quantityOfReplications = 2;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
-
-//		simulationManagerFacade.execute(30000, 1, true);  // AGILE
-		
-		simulationManagerFacade.execute(9600, 1, true); // PROBLEM REPORT
-		
-//		simulationManagerFacade.execute(33000, 1, true); // PAINTING/COATING 
-		
-		System.out.println("\n\n---------------------------   REPORT FOR SPEM ACTIVITIES, PHASES, MILESTONES, AND ITERATIONS   -----------------------------");
-		
-		System.out.println("\n[Activities] ");
-		simulationManagerFacade.printActivityResults();
-		
-		System.out.println("\n[Phases] ");
-		simulationManagerFacade.printPhaseResults();
-		
-		System.out.println("\n[Milestones] ");
-		simulationManagerFacade.printMilestoneResults();
-		
-		System.out.println("\n[Iterations] ");
-		simulationManagerFacade.printIterationAndReleaseResults(); // Releaseses are treated as iterations in SPEM 2.0
-
+		String processToBeSimulated = "AGILE";
+		simulationManagerFacade.execute(28800, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (28800 = 60 days)
 		System.out.println();
+		
+		//System.out.println("\n\n----------------------------------------   RESULTS BY REPLICATION   -------------------------------------------\n");
+
+		Map<String, IDynamicExperimentationProgramProxy> results  = simulationManagerFacade.getResultsSimulationMap();
+		
+		Set<String> set = results.keySet();
+		
+		for (String replication: set){
+			System.out.println(replication);
+			System.out.println();
+			IDynamicExperimentationProgramProxy dynamicExperimentationProgramProxy = results.get(replication);
+			SimulationManager simulationManager = (SimulationManager) dynamicExperimentationProgramProxy.getSimulationManager();
+			
+			HashMap queues = simulationManager.getQueues();
+			double projectDuration = Math.round(simulationManager.getScheduler().getClockOnEnding()/480) * 10.0/10.0;
+ 			System.out.println("\t[Project duration]  " + (projectDuration) + " days");
+			System.out.println();
+			simulationManagerFacade.printNumberOfEntitiesInEachDeadState(queues);
+			printReportForActivitiesPhasesMilestonesIterations(simulationManagerFacade);
+		}
+		
+		System.out.println("\n\n----------------------------------------   GLOBAL RESULTS   -------------------------------------------\n");
+		
+		double meanNumberOfDays = simulationManagerFacade.calculateMeanNumberOfDays();
+		double sdNumberOfDays = simulationManagerFacade.calculateStandardDeviationNumberOfDays();
+		System.out.println("Mean (sd) number of days..." + meanNumberOfDays + "(" + sdNumberOfDays + ")");
+		
+		if (processToBeSimulated.equalsIgnoreCase("AGILE")) {
+			
+			// Calculating the mean(sd) number of iterations and releases
+			Map<String, Integer> mapWithAcumulatedNumberOfIterations = simulationManagerFacade.getMapWithAcumulatedIterationResults();
+			Set<String> keys = mapWithAcumulatedNumberOfIterations.keySet();
+			
+			for (String key: keys) {
+				Integer acumulatedNumberOfIterations  = mapWithAcumulatedNumberOfIterations.get(key);
+ 				
+ 				double meanNumberOfIterations = acumulatedNumberOfIterations/quantityOfReplications;
+ 
+				Map<String, List<Integer>>  mapWithNumberOfIterationsPerReplication = simulationManagerFacade.getMapWithNumberOfIterationsPerReplication();
+ 
+				StandardDeviation sd = new StandardDeviation();
+				List<Integer> lista  = mapWithNumberOfIterationsPerReplication.get(key);
 				
-		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
+				double [] a = new double[lista.size()];
+				for (int i= 0; i < lista.size(); i++) {
+					a[i] = lista.get(i);
+				}
+  				double sdNumberOfIterations = sd.evaluate(a);
+			
+				System.out.println("Mean (sd) number of ITERATION named " + "\'"+ key + "\' " + meanNumberOfIterations + "(" + sdNumberOfIterations + ")");
+ 
+			}
+		
+			
+			// Calculating the mean(sd) number of user stories produced. Notice that a produced user story may be in more than one dead state
+			// (i.e. it can be on q4 - input dead state of activity END_iteration, q5 - input dead state of activity END_Release
+			// q6 - output dead state of activity END_Release)
+			int [][] matrixWithResults = simulationManagerFacade.createMatrixWithResultsOfAllReplications();
+		
+			String deadStateName = "q4 - input dead state of activity END_iteration";
+			double meanQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			double sdQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
+								meanQuantityOfEntitiesInQ4 + "(" + sdQuantityOfEntitiesInQ4 + ")");
+
+			deadStateName = "q5 - input dead state of activity END_Release";
+			double meanQuantityOfEntitiesInQ5 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			double sdQuantityOfEntitiesInQ5 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
+					meanQuantityOfEntitiesInQ5 + "(" + sdQuantityOfEntitiesInQ5 + ")");	
+			
+			deadStateName = "q6 - output dead state of activity END_Release";
+			double sdQuantityOfEntitiesInQ6 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			double meanQuantityOfEntitiesInQ6 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
+					meanQuantityOfEntitiesInQ6 + "(" + sdQuantityOfEntitiesInQ6 + ")");
+  
+		}
+		
+		Map<String, Integer> mapWithAcumulatedNumberOfActivities = simulationManagerFacade.getMapWithAcumulatedActiviitesResults();
+		Set<String> keys1 = mapWithAcumulatedNumberOfActivities.keySet();
+		
+		for (String key: keys1) {
+			System.out.println("Mean (sd) number of ACTIVITY named " + "\'"+ key + "\' " + (double)mapWithAcumulatedNumberOfActivities.get(key)/quantityOfReplications);
+		}
+		
+		// Notice that does not make sense to calculate the number of times a milestone is reached or a phase is executed
+			
+		
+		
+// 		printReportForActivitiesPhasesMilestonesIterations(simulationManagerFacade);
+
+//		printMeanAndStandardDeviationNumberOfDays(simulationManagerFacade);
 		
 		//		printStyle1(simulationManagerFacade);
 		
@@ -61,16 +138,33 @@ public class TestSimulationFromConsole {
 		
 		//		printStyle10(simulationManagerFacade);
   		
-		//		printStyle11(simulationManagerFacade); 
+		//		printStyle11(outputSimulationResultsConsoleAsImplementedByWladimir); 
 		
 	}
 	
+	private static void printReportForActivitiesPhasesMilestonesIterations(SimulationManagerFacade simulationManagerFacade) {		
+		System.out.println("\n\t[Activities] ");
+		simulationManagerFacade.printActivityResults();
+		
+		System.out.println("\n\t[Phases] ");
+		simulationManagerFacade.printPhaseResults();
+		
+		System.out.println("\n\t[Milestones] ");
+		simulationManagerFacade.printMilestoneResults();
+		
+		System.out.println("\n\t[Iterations] ");
+		simulationManagerFacade.printIterationAndReleaseResults(); // Releaseses are treated as iterations in SPEM 2.0
+
+		System.out.println();
+		
+	}
+
 	private static void printMeanAndStandardDeviationNumberOfDays(SimulationManagerFacade simulationManagerFacade) {
 		System.out.println("\nMean(sd) number of days..: " + Math.round(simulationManagerFacade.calculateMeanNumberOfDays() * 100.00)/100.0 + 
 				          " (" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays() * 100.00)/100.0 + ")" );
  	}
 
-	private static void printStyle11(SimulationManagerFacade simulationManagerFacade) {
+	private static void outputSimulationResultsConsoleAsImplementedByWladimir(SimulationManagerFacade simulationManagerFacade) {
 		//		 Simulation Report
 		//		 Simulation ended at time 0.0
 		//		 Statistics collected from instant 0.0 during 0.0 time units.
@@ -142,12 +236,12 @@ public class TestSimulationFromConsole {
 		//		<Q_super>
 		//		<Entry id="q1" obsid="Work product input queue observer 2" name="q1"/>
 		//		</Q_super>
-				Map<String, IDynamicExperimentationProgramProxy> resultadosGlobal =	simulationManagerFacade.getResultadoGlobal();
-				Set<String> keys = resultadosGlobal.keySet();
-				for (String key: keys) {
-					System.out.println(key);
-					System.out.println(resultadosGlobal.get(key));
-				}
+//				Map<String, IDynamicExperimentationProgramProxy> resultadosGlobal =	simulationManagerFacade.getResultadoGlobal();
+//				Set<String> keys = resultadosGlobal.keySet();
+//				for (String key: keys) {
+//					System.out.println(key);
+//					System.out.println(resultadosGlobal.get(key));
+//				}
 	}
 
 	private static void printStyle2(SimulationManagerFacade simulationManagerFacade) {

@@ -1,5 +1,6 @@
 package adaptme.facade;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class SimulationManagerFacade {
 	private ShowResultsPanel showResultsPanel;
 	private SimulationFacade simulationFacade;
 
-	private SortedMap resultadoGlobal = new TreeMap();
+	private Map<String, HashMap<String, QueueEntry>> resultadoGlobal = new TreeMap();
 	
 	private double averageNumberOfDays;
 	private double averageNumberOfImplementedUserStories;
@@ -54,25 +55,36 @@ public class SimulationManagerFacade {
 	private double[] numberOfDaysPerReplication; // TODO generalizar depois
 	private double[] numberOfproducedUserStoriesPerReplication; // TODO// generalizar depois
 	private double[] numberOfReleasesPerReplication; // TODO generalizar depois
-	private double[] numberOfIterationsPerReplication; // TODO generalizar depois para release e nao replication. Aparentemetente refatorar para criar
+	private List<Integer> numberOfIterationsPerReplication; // TODO generalizar depois para release e nao replication. Aparentemetente refatorar para criar
 														// classes Release e iteration para manter
 	private double acumulatedNumberOfDays = 0.0;
-	private double acumulateNumberOfIterations = 0.0;
-	private double acumulateNumberOfReleases = 0.0;
+	private double acumulatedNumberOfIterations = 0.0;
+	private double acumulatedNumberOfReleases = 0.0;
 	
 	private ExperimentationPanel experimentationPanel;
 	
 	private HashMap queues;
+	
+	private Map<String, Integer> mapWithAcumulatedIterationResults;
+	private Map<String, Integer> mapWithAcumulatedActivityResults;
+	
+	private Map<String, List<Integer>> mapWithNumberOfIterationsPerReplication;
 
 	private SimulationManagerFacade() {
 		resultsSimulationMap = new HashMap<>();
 		resultsSimulationMapAdaptMe = new TreeMap<>();
+		mapWithAcumulatedIterationResults = new HashMap<>();
+		mapWithAcumulatedActivityResults = new HashMap<>();
+		mapWithNumberOfIterationsPerReplication = new HashMap<>();
+		numberOfIterationsPerReplication = new ArrayList<>();
 		dynamicExperimentationProgramProxy = DynamicExperimentationProgramProxyFactory.newInstance();
 	}
 	
 	public void execute(float simulationDuration, int numberReplications, boolean isFromConsole) {
 		
 		double numberOfDays = 0.0;
+		double numberOfIterations = 0.0;
+		
 		double acumulatedNumberOfUserStories = 0.0;
 	 
 		this.numberOfSimulationRuns = numberReplications;
@@ -80,11 +92,10 @@ public class SimulationManagerFacade {
 		
 		this.numberOfReleasesPerReplication = new double[numberReplications];
 		this.numberOfproducedUserStoriesPerReplication = new double[numberReplications];
-		this.numberOfIterationsPerReplication = new double[numberReplications];
+ 
+		System.out.println("\n------------------------- DETAILED RESULTS BY REPLICATION -------------------------------------- \n");
 
-		System.out.println("\n\t\t\tDETAILED RESULTS BY REPLICATION - IMPLEMENTED BY PAGLIARES\n");
-
-		for (int i = 0; i < numberReplications; i++) {
+		for (int i = 1; i <= numberReplications; i++) {
 			
 			dynamicExperimentationProgramProxy = DynamicExperimentationProgramProxyFactory.newInstance();
 			dynamicExperimentationProgramProxy.setSimulationDuration(simulationDuration);	
@@ -93,18 +104,49 @@ public class SimulationManagerFacade {
 			// output to console implemented by Pagliares
 			// Print the number of days, stores the current replication in a map for further aggregate computation
 			this.simulationManager = (SimulationManager) dynamicExperimentationProgramProxy.getSimulationManager(); // nao funciona no construtor
-			System.out.println("\nReplication (execution) #" + (i + 1) + "\n");
+//			System.out.println("\nReplication (execution) #" + (i + 1) + "\n");
 			
 			// Calculates the the number of days of the simulation in this replication and stores for further average computation
 			numberOfDays = simulationManager.getScheduler().GetClock() / 480; 
-			numberOfDaysPerReplication[i] = numberOfDays;											
+			numberOfDaysPerReplication[i-1] = numberOfDays;											
 			acumulatedNumberOfDays += numberOfDays;
-			System.out.println("\tProject duration: " + numberOfDays + " days\n"); // 480 minutes = 1 day 
 			
-            printNumberOfEntitiesInEachDeadState();
+			// Calculates the the number of iterations of the simulation in this replication and stores for further average computation
+			Map<String, List<IterationResults>> mapWithIterationResults= simulationManager.getScheduler().getMapWithIterationResults(); 
+			Set<String> keys = mapWithIterationResults.keySet();
+			
+			List<IterationResults> listWithIterationResults = new ArrayList<>();
+			for (String key : keys) {
+				listWithIterationResults = mapWithIterationResults.get(key);
+				
+				
+				if (mapWithNumberOfIterationsPerReplication.containsKey(key)) {
+					List<Integer> temp = mapWithNumberOfIterationsPerReplication.get(key);
+					temp.add(listWithIterationResults.size());
+			//		mapWithNumberOfIterationsPerReplication.put(key, numberOfIterationsPerReplication);
+
+ 				} else {
+ 					List<Integer> numberOfIterationsPerReplication = new ArrayList<>();
+ 					numberOfIterationsPerReplication.add(listWithIterationResults.size());
+					mapWithNumberOfIterationsPerReplication.put(key, numberOfIterationsPerReplication);
+				}
+				
+				if (mapWithAcumulatedIterationResults.containsKey(key)) {
+					Integer a = mapWithAcumulatedIterationResults.get(key);
+					a += listWithIterationResults.size();
+					mapWithAcumulatedIterationResults.put(key, a);
+				} else {
+					mapWithAcumulatedIterationResults.put(key, listWithIterationResults.size());	
+				}
+			}
+			
+			//	System.out.println("\tProject duration: " + numberOfDays + " days\n"); // 480 minutes = 1 day 
+			
+			queues = simulationManager.getQueues();
+//            printNumberOfEntitiesInEachDeadState(queues);
 
 			// Stores the state of all dead states in this replication in order to compute the mean for dead states at the end of all replications
-			resultadoGlobal.put("run #" + (i + 1), queues);
+			resultadoGlobal.put("run #" + i, queues);
 
 //			acumulateNumberOfIterations = reportByIteration(acumulateNumberOfIterations, i);
 //			acumulateNumberOfReleases = reportByRelease(acumulateNumberOfReleases, i);
@@ -120,8 +162,8 @@ public class SimulationManagerFacade {
 				resultsSimulationMapAdaptMe.put(selectedProcessAlternativeName + i, getResultadosCabecalho()+ "\n" + 
                         getResultadosGlobalString(experimentationPanel.getMapQueueVariableType()));
 			} else {
- 				resultsSimulationMap.put("Replication" + i, dynamicExperimentationProgramProxy); // armazena replicacoes
-				resultsSimulationMapAdaptMe.put("Replication" + i, getResultadosCabecalhoFromConsole()+ "\n" + 
+ 				resultsSimulationMap.put("Replication " + i, dynamicExperimentationProgramProxy); // armazena replicacoes
+				resultsSimulationMapAdaptMe.put("Replication " + i, getResultadosCabecalhoFromConsole()+ "\n" + 
 						getResultadosGlobalStringFromConsole());  
 			}
 
@@ -129,94 +171,7 @@ public class SimulationManagerFacade {
 		}
 	}
 	
-	public double getAverageNumberOfDays() {
-		return averageNumberOfDays;
-	}
-
-	public void setAverageNumberOfDays(double averageNumberOfDays) {
-		this.averageNumberOfDays = averageNumberOfDays;
-	}
-
-	public double getAverageNumberOfImplementedUserStories() {
-		return averageNumberOfImplementedUserStories;
-	}
-
-	public void setAverageNumberOfImplementedUserStories(double averageNumberOfImplementedUserStories) {
-		this.averageNumberOfImplementedUserStories = averageNumberOfImplementedUserStories;
-	}
-
-	public double getAverageNumberOfReleases() {
-		return averageNumberOfReleases;
-	}
-
-	public void setAverageNumberOfReleases(double averageNumberOfReleases) {
-		this.averageNumberOfReleases = averageNumberOfReleases;
-	}
-
-	public double getAverageNumberOfIterations() {
-		return averageNumberOfIterations;
-	}
-
-	public void setAverageNumberOfIteration(double averageNumberOfIterations) {
-		this.averageNumberOfIterations = averageNumberOfIterations;
-	}
-
-	public double getNumberOfSimulationRuns() {
-		return numberOfSimulationRuns;
-	}
-
-	public void setNumberOfSimulationRuns(double numberOfSimulationRuns) {
-		this.numberOfSimulationRuns = numberOfSimulationRuns;
-	}
-
-	public double[] getNumberOfDaysPerReplication() {
-		return numberOfDaysPerReplication;
-	}
 	
-	public String getSimulationEndedTime() {
-		Scheduler scheduler = dynamicExperimentationProgramProxy.getSimulationManager().getScheduler();
-		return (Float.toString(scheduler.getEndclock()));
-	}
-
-	public String getSimulationResults() {
-		return simulationManager.getSimulationResults();
-	}
-
-	
-	public double calculateMeanNumberOfDays() {
-		return acumulatedNumberOfDays/numberOfSimulationRuns;
-	}
-	
-	public double calculateStandardDeviationNumberOfDays() {
-		StandardDeviation sd = new StandardDeviation();
-		return sd.evaluate(numberOfDaysPerReplication);
-	}
-
-	public double calculateStandardDeviationUserStoriesProducede() {
-		StandardDeviation sd = new StandardDeviation();
-		return sd.evaluate(numberOfproducedUserStoriesPerReplication) * 100 / 100;
-	}
-
-	public double calculateStandardDeviationNumberOfReleases() {
-		StandardDeviation sd = new StandardDeviation();
-		return sd.evaluate(numberOfReleasesPerReplication) * 100 / 100;
-	}
-
-	public SimulationManager getSimulationManager() {
-		return simulationManager;
-	}
-
-	public SortedMap getResultadoGlobal() {
-		return resultadoGlobal;
-	}
-
-	public Map<String, String> getResultsSimulationMapAdaptMe() {
-		return resultsSimulationMapAdaptMe;
-	}
-
-	public void setExperimentationPanel(ExperimentationPanel experimentationPanel) {
-		this.experimentationPanel = experimentationPanel;
-	}
 	
 	// TODO remove this method after finishing the code to extend XACDML in order to support iteration and releases
 	private void printGlobalResults(int numberReplications, double acumulatedNumberOfDays,
@@ -232,10 +187,10 @@ public class SimulationManagerFacade {
 		System.out.println("\tAverage number of days ..: " + averageNumberOfDays);
 	}
 
-	private void printNumberOfEntitiesInEachDeadState() {
+	public void printNumberOfEntitiesInEachDeadState(HashMap queues) {
 		// Show the number of entities in all dead states
-		System.out.println("\tPrinting the number of entities in each dead state");
-		queues = simulationManager.getQueues();
+		System.out.println("\t[Dead states snapshot] - Printing the number of entities in each dead state at the end of the replication");
+		
 		Set keys = queues.keySet();
 
 		for (Object queueName : keys) {
@@ -296,85 +251,65 @@ public class SimulationManagerFacade {
 		}
 	}
 
+	 
+	
 	/**
 	 * Algorithm 1 - Determines the dimension of the bidimensional array of
 	 * results 2- Creates the two-dimension array 3 - For each experiment in
 	 * resultadoGlobalSimulacao 3.1 - extract the quantity of entities in each
-	 * queue and stores it in the array 4 - Print array contents
+	 * queue and stores it in the array  
 	 */
-	public void printResultadosGlobal() {
-		// quatro linhas abaixo apenas para descobrir o numero de linhas e
-		// colunas da matriz
-		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos
-														// experimentos como
-														// chave
-		int numeroExperimentos = keys.size();
-		HashMap hm = (HashMap) resultadoGlobal.get(keys.iterator().next());
+	public int[][] createMatrixWithResultsOfAllReplications() {
+		// quatro linhas abaixo apenas para descobrir o numero de linhas e colunas da matriz
+		Set<String> keysWithReplicationNames = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+		int quantityOfExperiments = keysWithReplicationNames.size();
+		
+		Map<String, QueueEntry> hm = resultadoGlobal.get(keysWithReplicationNames.iterator().next());
 		Set<String> chaves = hm.keySet();
-		int numeroFilas = chaves.size();
-		int[][] matrizResultados = new int[numeroExperimentos][numeroFilas];
-		int soma = 0;
-		int quantity = 0;
-		int contadorLinhas = 0; // number of entities in each queue
-		int contadorColunas = 0; // experimentos
+		int quantityOfDeadStates = chaves.size();
+		
+		int[][] matrixWithResults = new int[quantityOfExperiments][quantityOfDeadStates];
+ 		int quantity = 0;
+		int linesCounter = 0; // number of entities in each queue
+		int columnsCounter = 0; // experiments
 
-		for (String experimento : keys) {
-			System.out.println("nome do experimento..: " + experimento);
-			HashMap secondHash = (HashMap) resultadoGlobal.get(experimento);
-			Collection<String> chavesNomeFilasSegundoHash = secondHash.keySet();
+		for (String replication : keysWithReplicationNames) {
+			Map<String, QueueEntry> secondHash = resultadoGlobal.get(replication);
+			Collection<String> keysWithDeadStatesNames = secondHash.keySet();
 
-			for (String queueName : chavesNomeFilasSegundoHash) {
-				if (secondHash.get(queueName) instanceof QueueEntry) {
-					QueueEntry qe1 = (QueueEntry) secondHash.get(queueName);
+			for (String queueName : keysWithDeadStatesNames) {
+				 
+					QueueEntry qe1 =  secondHash.get(queueName);
 					quantity = qe1.deadState.getCount();
-					matrizResultados[contadorLinhas][contadorColunas] = quantity; // nao
-																					// armazeno
-																					// o
-																					// nome
-																					// do
-																					// experimento,
-																					// apenas
-																					// inteiros
-																					// com
-																					// #entities
-				}
-				contadorColunas++;
+					matrixWithResults[linesCounter][columnsCounter] = quantity; // nao armazeno o nome do experimento, apenas inteiros com #enitites
+					columnsCounter++;
+				
 			}
-			contadorLinhas++;
-			contadorColunas = 0;
+			linesCounter++;
+			columnsCounter = 0;
 		}
-		printResultadosGlobal(matrizResultados);
+		return matrixWithResults;
 	}
 
-	private void printResultadosGlobal(int[][] matrizResultados) {
-		System.out.println("Printing the mean and sd of entities in each queue and for each replication");
+	public void printResultadosGlobal(int[][] matrizResultados) {
+		System.out.println("\tPrinting the mean and sd of entities in each queue and for each replication");
 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos
 														// experimentos como
 														// chave
 
-		HashMap secondHash = (HashMap) resultadoGlobal.get(keys.iterator().next());
+		HashMap<String, QueueEntry> secondHash = resultadoGlobal.get(keys.iterator().next());
 		Collection<String> chavesNomeFilasSegundoHash = secondHash.keySet();
 
 		double soma = 0.0;
 		StandardDeviation sd = new StandardDeviation();
 
-		Iterator iterator = chavesNomeFilasSegundoHash.iterator();
+		Iterator<String> iterator = chavesNomeFilasSegundoHash.iterator();
 		double[] numeroEntidadesPorFila = new double[matrizResultados.length];
 
-		for (int j = 0; j < matrizResultados[0].length; j++) { // para uma
-																// determinada
-																// colunas
-																// (celula
-																// representa
-																// quantidade de
-																// entities)
+		for (int j = 0; j < matrizResultados[0].length; j++) { // para uma determinada coluna (celula representa a quantidade de entities)
 			String fila = (String) iterator.next();
-			System.out.println("Fila " + fila);
-			for (int i = 0; i < matrizResultados.length; i++) { // somo todas as
-																// linhas para a
-																// coluna acima
-																// (representa
-																// experimentos)
+ 			System.out.println("Fila " + fila);
+			for (int i = 0; i < matrizResultados.length; i++) { // somo todas as linhas para a coluna acima (representa experimentos)				
 				System.out.println("quantity in replication " + (i + 1) + "..: " + matrizResultados[i][j]);
 				numeroEntidadesPorFila[i] = matrizResultados[i][j];
 				soma = soma + matrizResultados[i][j];
@@ -383,8 +318,98 @@ public class SimulationManagerFacade {
 			System.out.println("Standard deviation..: " + sd.evaluate(numeroEntidadesPorFila));
 			soma = 0.0;
 			numeroEntidadesPorFila = new double[matrizResultados.length];
-
+			System.out.println("");
+			
 		}
+	}
+	
+	public double calculateMeanNumberOfEntitiesInADeadState(int[][] matrixWithResults, String deadStateName) {
+		double mean = 0.0;
+ 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+
+		HashMap<String, QueueEntry> mapWithDeadStatesAtTheEndOfSimulation = resultadoGlobal.get(keys.iterator().next());
+		Collection<String> keyNamesMapWithDeadStatesAtTheEndOfSimulation = mapWithDeadStatesAtTheEndOfSimulation.keySet();
+
+		double sum = 0.0;
+ 
+		Iterator<String> iterator = keyNamesMapWithDeadStatesAtTheEndOfSimulation.iterator();
+		
+		double[] quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+
+		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
+			String queueName = (String) iterator.next();
+ 			if (queueName.equalsIgnoreCase(deadStateName)) {
+  				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
+  					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
+ 					sum = sum + matrixWithResults[i][j];
+ 				}
+ 				mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+  				sum = 0.0;
+ 				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+ 			}}
+		return mean;
+	}
+	
+	public double calculateStandardDeviationNumberOfEntitiesInADeadState(int[][] matrixWithResults, String deadStateName) {
+		double standardDeviation = 0.0;
+ 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+
+		HashMap<String, QueueEntry> mapWithDeadStatesAtTheEndOfSimulation = resultadoGlobal.get(keys.iterator().next());
+		Collection<String> keyNamesMapWithDeadStatesAtTheEndOfSimulation = mapWithDeadStatesAtTheEndOfSimulation.keySet();
+
+		double sum = 0.0;
+		StandardDeviation sd = new StandardDeviation();
+
+		Iterator<String> iterator = keyNamesMapWithDeadStatesAtTheEndOfSimulation.iterator();
+		
+		double[] quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+
+		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
+			String queueName = (String) iterator.next();
+ 			if (queueName.equalsIgnoreCase(deadStateName)) {
+  				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
+  					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
+ 					sum = sum + matrixWithResults[i][j];
+ 				}
+  				 standardDeviation =  Math.round(sd.evaluate(quantyOfEntitiesPerDeadState)) * 100.00/100.00;
+ 				sum = 0.0;
+ 				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+ 			}}
+		return standardDeviation;
+	}
+	
+	public void printResultadosGlobal(int[][] matrixWithResults, String deadStateName) {
+		System.out.println("\t\nPrinting the mean and sd of entities in the " + deadStateName + " dead state");
+		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+
+		HashMap<String, QueueEntry> mapWithDeadStatesAtTheEndOfSimulation = resultadoGlobal.get(keys.iterator().next());
+		Collection<String> keyNamesMapWithDeadStatesAtTheEndOfSimulation = mapWithDeadStatesAtTheEndOfSimulation.keySet();
+
+		double sum = 0.0;
+		StandardDeviation sd = new StandardDeviation();
+
+		Iterator<String> iterator = keyNamesMapWithDeadStatesAtTheEndOfSimulation.iterator();
+		
+		double[] quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+
+		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
+			String queueName = (String) iterator.next();
+ 			if (queueName.equalsIgnoreCase(deadStateName)) {
+ 				System.out.println("Queue " + queueName);
+ 				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
+ 					System.out.println("quantity in replication " + (i + 1) + "..: " + matrixWithResults[i][j]);
+ 					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
+ 					sum = sum + matrixWithResults[i][j];
+ 				}
+ 				double mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+ 				double standardDeviation =  Math.round(sd.evaluate(quantyOfEntitiesPerDeadState)) * 100.00/100.00;
+ 				System.out.println("mean (sd) of entities in the dead state " + queueName + "..:" + mean);
+ 				System.out.println("Standard deviation..: " + standardDeviation);
+ 				sum = 0.0;
+ 				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+ 				System.out.println("");
+ 			}}
+//		}
 	}
 
 	/**
@@ -454,7 +479,8 @@ public class SimulationManagerFacade {
 														// experimentos como
 														// chave
 		int numeroExperimentos = keys.size();
-		HashMap hm = (HashMap) resultadoGlobal.get(keys.iterator().next());
+		Object o = keys.iterator().next();
+		HashMap hm = (HashMap) resultadoGlobal.get(o);
 		Set<String> chaves = hm.keySet();
 		int numeroFilas = chaves.size();
 		int[][] matrizResultados = new int[numeroExperimentos][numeroFilas];
@@ -580,15 +606,15 @@ public class SimulationManagerFacade {
 		resultadoGlobalString+= "Number of days.....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
                 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
  
-		if (getSimulationManager().getScheduler().hasRelease()) {
-			resultadoGlobalString+= "Number of releases................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
-					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
-		}
-		
-		if (getSimulationManager().getScheduler().hasIteration()) {
-			resultadoGlobalString+= "Number of iterations per release.............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
-					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release  
-		}
+//		if (getSimulationManager().getScheduler().hasRelease()) {
+//			resultadoGlobalString+= "Number of releases................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
+//					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
+//		}
+//		
+//		if (getSimulationManager().getScheduler().hasIteration()) {
+//			resultadoGlobalString+= "Number of iterations per release.............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
+//					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release  
+//		}
 		
 		return resultadoGlobalString;
 	}
@@ -603,15 +629,15 @@ public class SimulationManagerFacade {
 		resultadoGlobalString+= "Number of days.....................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfDays()*100.0)/100.0 +
                 "(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfDays()*100.0)/100.0 + ")" + "\n";
  
-		if (getSimulationManager().getScheduler().hasRelease()) {
-			resultadoGlobalString+= "Number of releases................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
-					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
-		}
-		
-		if (getSimulationManager().getScheduler().hasIteration()) {
-			resultadoGlobalString+= "Number of iterations per release.............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
-					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release  
-		}
+//		if (getSimulationManager().getScheduler().hasRelease()) {
+//			resultadoGlobalString+= "Number of releases................................:  " + Math.round(simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 +
+//					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";
+//		}
+//		
+//		if (getSimulationManager().getScheduler().hasIteration()) {
+//			resultadoGlobalString+= "Number of iterations per release.............:  " + Math.round(simulationManagerFacade.getAverageNumberOfIterations()/simulationManagerFacade.getAverageNumberOfReleases()*100.0)/100.0 + 
+//					"(" + Math.round(simulationManagerFacade.calculateStandardDeviationNumberOfReleases()*100.0)/100.0 + ")" + "\n";; // TODO implementar para release  
+//		}
 		
 		return resultadoGlobalString;
 	}
@@ -636,15 +662,15 @@ public class SimulationManagerFacade {
 			List<ActivityResults> activityResultsList = null;
  
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM activities in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM activities in the simulated process");
 			} else {
 			    for (String key: keys) {
 			       activityResultsList = mapWithActivityResults.get(key);
-				   System.out.println("\nThe activity named \'" +  key.split("_")[1] + " was executed " + activityResultsList.size()  +  " times");
+				   System.out.println("\n\t\tThe activity named \'" +  key.split("_")[1] + " was executed " + activityResultsList.size()  +  " times");
 
 				   for (int i = 1; i <=  activityResultsList.size(); i++) {
 				    	ActivityResults ac = activityResultsList.get(i-1);
-					     System.out.println("\n\t - In the execution # " + i + ", it started at (day) : " + ((int)ac.getTimeWorkBreakdownElementStarted()/480 + 1) +  
+					     System.out.println("\n\t\t\t - In the execution # " + i + ", it started at (day) : " + ((int)ac.getTimeWorkBreakdownElementStarted()/480 + 1) +  
 							" and finished at (day) : " + ((int)ac.getTimeWorkBreakdownElementFinished()/480 + 1 ));
 				   }
 				}
@@ -656,15 +682,15 @@ public class SimulationManagerFacade {
 			Set<String> keys = mapWithPhaseResults.keySet();
 			List<PhaseResults> phaseResultsList = null;
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM phases in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM phases in the simulated process");
 			} else  {
 				 for (String key: keys) {
 					 phaseResultsList = mapWithPhaseResults.get(key);
-					 System.out.println("\nThe phase named \'" +  key.split("_")[1] + " was executed " + phaseResultsList.size()  +  " times");
+					 System.out.println("\n\t\tThe phase named \'" +  key.split("_")[1] + " was executed " + phaseResultsList.size()  +  " times");
 				 
 			          for (int i = 1; i <=  phaseResultsList.size(); i++) {
 			            	PhaseResults fr = phaseResultsList.get(i-1);
-			            	System.out.println("\n\t - In the execution # " + i + ", it started at (day) : " + ((int)fr.getTimeWorkBreakdownElementStarted()/480 + 1) +  
+			            	System.out.println("\n\t\t\t - In the execution # " + i + ", it started at (day) : " + ((int)fr.getTimeWorkBreakdownElementStarted()/480 + 1) +  
 						" and finished at (day) : " + ((int)fr.getTimeWorkBreakdownElementFinished()/480 + 1 ));
 			          }
 				 }	 
@@ -677,11 +703,11 @@ public class SimulationManagerFacade {
 			List<MilestoneResults> milestoneResultsList = null;
 			
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM milestones in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM milestones in the simulated process");
 			} else  {
 			  for (String key: keys) {
 				milestoneResultsList = mapWithMilestoneResults.get(key);
-				System.out.println("\nMilestone " +  key + " reached !" );
+				System.out.println("\n\tMilestone " +  key + " reached !" );
 				
 
 		          for (int i = 1; i <=  milestoneResultsList.size(); i++) {
@@ -698,18 +724,135 @@ public class SimulationManagerFacade {
 			Set<String> keys = mapWithIterationResults.keySet();
 			List<IterationResults> iterationResultsList = null;
 			if (keys.size() == 0){
-				System.out.println("\nThere are no SPEM iteration in the simulated process");
+				System.out.println("\n\tThere are no SPEM iteration in the simulated process");
 			} else  {
 				 for (String key: keys) {
 					 iterationResultsList = mapWithIterationResults.get(key);
-					 System.out.println("\nThe iteration named \'" +  key.split("_")[1] + " was executed " + iterationResultsList.size()  +  " times");
+					 System.out.println("\n\t\tThe iteration named \'" +  key.split("_")[1] + " was executed " + iterationResultsList.size()  +  " times");
 				 
 			          for (int i = 1; i <=  iterationResultsList.size(); i++) {
 			            	IterationResults ir = iterationResultsList.get(i-1);
-			            	System.out.println("\n\t - In the execution # " + i + ", it started at (day) : " + ((int)ir.getTimeWorkBreakdownElementStarted()/480 + 1) +  
+			            	System.out.println("\n\t\t\t - In the execution # " + i + ", it started at (day) : " + ((int)ir.getTimeWorkBreakdownElementStarted()/480 + 1) +  
 						" and finished at (day) : " + ((int)ir.getTimeWorkBreakdownElementFinished()/480 + 1 ));
 			          }
 				 }	 
 			  }	
+		}
+		
+		public double getAverageNumberOfDays() {
+			return averageNumberOfDays;
+		}
+
+		public void setAverageNumberOfDays(double averageNumberOfDays) {
+			this.averageNumberOfDays = averageNumberOfDays;
+		}
+
+		public double getAverageNumberOfImplementedUserStories() {
+			return averageNumberOfImplementedUserStories;
+		}
+
+		public void setAverageNumberOfImplementedUserStories(double averageNumberOfImplementedUserStories) {
+			this.averageNumberOfImplementedUserStories = averageNumberOfImplementedUserStories;
+		}
+
+		public double getAverageNumberOfReleases() {
+			return averageNumberOfReleases;
+		}
+
+		public void setAverageNumberOfReleases(double averageNumberOfReleases) {
+			this.averageNumberOfReleases = averageNumberOfReleases;
+		}
+
+		public double getAverageNumberOfIterations() {
+			return averageNumberOfIterations;
+		}
+
+		public void setAverageNumberOfIteration(double averageNumberOfIterations) {
+			this.averageNumberOfIterations = averageNumberOfIterations;
+		}
+
+		public double getNumberOfSimulationRuns() {
+			return numberOfSimulationRuns;
+		}
+
+		public void setNumberOfSimulationRuns(double numberOfSimulationRuns) {
+			this.numberOfSimulationRuns = numberOfSimulationRuns;
+		}
+
+		public double[] getNumberOfDaysPerReplication() {
+			return numberOfDaysPerReplication;
+		}
+		
+		public String getSimulationEndedTime() {
+			Scheduler scheduler = dynamicExperimentationProgramProxy.getSimulationManager().getScheduler();
+			return (Float.toString(scheduler.getEndclock()));
+		}
+
+		public String getSimulationResults() {
+			return simulationManager.getSimulationResults();
+		}
+
+		public double calculateMeanNumberOfDays() {
+			double result = (double) acumulatedNumberOfDays/numberOfSimulationRuns;
+			return result;
+		}
+		
+		public double calculateStandardDeviationNumberOfDays() {
+			StandardDeviation sd = new StandardDeviation();
+			return sd.evaluate(numberOfDaysPerReplication);
+		}
+		
+		 
+		
+		 
+		
+		public double calculateMeanNumberOfReleases() {
+			return acumulatedNumberOfReleases/numberOfSimulationRuns;
+		}
+		
+		public double calculateMeanNumberOfActivities() {
+ 			return acumulatedNumberOfReleases/numberOfSimulationRuns;
+		}
+
+		public double calculateStandardDeviationUserStoriesProducede() {
+			StandardDeviation sd = new StandardDeviation();
+			return sd.evaluate(numberOfproducedUserStoriesPerReplication) * 100 / 100;
+		}
+
+		public double calculateStandardDeviationNumberOfReleases() {
+			StandardDeviation sd = new StandardDeviation();
+			return sd.evaluate(numberOfReleasesPerReplication) * 100 / 100;
+		}
+
+		public SimulationManager getSimulationManager() {
+			return simulationManager;
+		}
+
+		public Map<String, HashMap<String, QueueEntry>> getResultadoGlobal() {
+			return resultadoGlobal;
+		}
+
+		public Map<String, String> getResultsSimulationMapAdaptMe() {
+			return resultsSimulationMapAdaptMe;
+		}
+
+		public void setExperimentationPanel(ExperimentationPanel experimentationPanel) {
+			this.experimentationPanel = experimentationPanel;
+		}
+
+		public Map<String, Integer> getMapWithAcumulatedIterationResults() {
+			return mapWithAcumulatedIterationResults;
+		}
+		
+		public Map<String, Integer> getMapWithAcumulatedActiviitesResults() {
+			return mapWithAcumulatedActivityResults;
+		}
+		
+		public double getAcumulatedNumberOfIterations() {
+			return acumulatedNumberOfIterations;
+		}
+
+		public Map<String, List<Integer>> getMapWithNumberOfIterationsPerReplication() {
+			return mapWithNumberOfIterationsPerReplication;
 		}
 }
