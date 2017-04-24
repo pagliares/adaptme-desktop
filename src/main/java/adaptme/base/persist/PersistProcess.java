@@ -16,6 +16,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.eclipse.epf.uma.Activity;
+import org.eclipse.epf.uma.DeliveryProcess;
 import org.eclipse.epf.uma.Iteration;
 import org.eclipse.epf.uma.MethodElement;
 import org.eclipse.epf.uma.Milestone;
@@ -68,11 +69,25 @@ public class PersistProcess {
 		buildChildren(process, root, root, null, hash);
 		return root;
 	}
-	
+
+	public ProcessRepository buildProcessWithDeliveryProcessAsRoot(Process process, MethodLibraryHash methodLibraryHash) {
+		this.methodLibraryHash = methodLibraryHash;
+		root = new ProcessRepository();
+		
+		root.setName(process.getPresentationName());
+		
+		Map<String, MethodElement> hash = new HashMap<>();
+		buildHash(process, hash);
+		
+		Boolean isNew = new Boolean(false);
+		ProcessContentRepository deliveryProcessAsRoot = createProcessContentRepository(process, ProcessContentType.DELIVERY_PROCESS, isNew, hash);
+		root.addProcessElement(deliveryProcessAsRoot);
+		buildChildren(process, null, root, deliveryProcessAsRoot, hash);
+		return root;
+	}
 
 	private void buildChildren(Activity process, ProcessRepository root, ProcessRepository processRepository,
 			ProcessContentRepository father, Map<String, MethodElement> hash) {
-	
 		Boolean isNew = new Boolean(false);
 		for (Object object : process.getBreakdownElementOrRoadmap()) {
 			if (object instanceof Milestone) {
@@ -251,6 +266,7 @@ public class PersistProcess {
 			role.setProcessContentRepository(task);
 		}
 		task.setAdditionalRoles(additionallyPerformedByList);
+		
 		List<ProcessContentRepository> predecessorsList = new ArrayList<>();
 		for (WorkOrder workOrder : taskDescriptor.getPredecessor()) {
 			WorkBreakdownElement element = (WorkBreakdownElement) hash.get(workOrder.getValue());
@@ -286,9 +302,18 @@ public class PersistProcess {
 			isNew = false;
 			return processContentRepositoryHashMap.get(element.getName());
 		}
+		
 		ProcessContentRepository processContentRepository = new ProcessContentRepository();
 		processContentRepository.setName(element.getPresentationName());
 		processContentRepository.setType(type);
+		
+		List<MethodContentRepository> allRoles = new ArrayList<>();
+		if(!(element instanceof TaskDescriptor)){
+			allRoles.addAll(getAllRoles((Activity) element, hash));
+		}
+		processContentRepository.setAllRoles(allRoles);
+		
+		
 		processContentRepositoryHashMap.put(element.getPresentationName(), processContentRepository);
 		isNew = true;
 		List<ProcessContentRepository> predecessorsList = new ArrayList<>();
@@ -298,20 +323,49 @@ public class PersistProcess {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
 						ProcessContentType.ITERATION, isNew, hash);
 				predecessorsList.add(predecessorRepository);
-			}
-			if (predecessor instanceof Activity) {
+			}else if (predecessor instanceof Activity) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
 						ProcessContentType.ACTIVITY, isNew, hash);
 				predecessorsList.add(predecessorRepository);
-			}
-			if (predecessor instanceof Phase) {
+			}else if (predecessor instanceof Phase) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
 						ProcessContentType.PHASE, isNew, hash);
+				predecessorsList.add(predecessorRepository);
+			}else if (predecessor instanceof DeliveryProcess) {
+				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
+						ProcessContentType.DELIVERY_PROCESS, isNew, hash);
 				predecessorsList.add(predecessorRepository);
 			}
 		}
 		processContentRepository.setPredecessors(predecessorsList);
 		return processContentRepository;
+	}
+
+	private List<MethodContentRepository> getAllRoles(Activity activity, Map<String, MethodElement> hash) {
+		List<MethodContentRepository> roles = new ArrayList<>();
+		List<Object> children = activity.getBreakdownElementOrRoadmap();
+		Boolean isNew = new Boolean(true);
+		for (Object object : children) {			
+			if (object instanceof TaskDescriptor) {
+				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
+				List<JAXBElement<String>> list = taskDescriptor.getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
+				for (JAXBElement<String> jaxbElement : list) {
+					QName qName = jaxbElement.getName();
+					String localPart = qName.getLocalPart();
+					MethodElement element = hash.get(jaxbElement.getValue());
+					if(element == null){
+						element = (MethodElement) methodLibraryHash.getHashMap().get(jaxbElement.getValue());
+						hash.put(element.getId(), element);
+					}
+					if (localPart == "PerformedPrimarilyBy" || localPart == "AdditionallyPerformedBy") {
+						roles.add(createMethodContentRepository(element.getPresentationName(), MethodContentType.ROLE, isNew));
+					}
+				}
+			}else if(object instanceof Activity || object instanceof Iteration || object instanceof Milestone || object instanceof Phase || object instanceof DeliveryProcess){
+				roles.addAll(getAllRoles((Activity) object, hash));
+			}			
+		}
+		return roles;
 	}
 
 	private MethodContentRepository createMethodContentRepository(String name, MethodContentType type, Boolean isNew) {
@@ -364,6 +418,7 @@ public class PersistProcess {
 	public Set<String> getTaskList() {
 		return taskList;
 	}
+
 	
 	
 	 

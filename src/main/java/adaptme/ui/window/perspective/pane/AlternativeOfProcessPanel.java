@@ -589,8 +589,8 @@ public class AlternativeOfProcessPanel {
 
 		PersistProcess persistProcess = new PersistProcess();
 		processRepository = persistProcess.buildProcess(process, methodLibraryHash);
-//		processRepository = persistProcess.buildProcessWithDeliveryProcessAsRoot(process, methodLibraryHash);
-//      lembrando que a classe ProcessRepository continua existindo com dados basicos do no raiz
+		// @TODO  - the method below is not working yet. Side effect when rendering the tree.
+		//	processRepository = persistProcess.buildProcessWithDeliveryProcessAsRoot(process, methodLibraryHash); 
 		
 		// Adicionando as filas nos SPEM containers
  		

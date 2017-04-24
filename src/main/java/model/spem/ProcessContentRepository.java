@@ -99,6 +99,8 @@ public class ProcessContentRepository implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private MethodContentRepository mainRole;
+    
+    private List<MethodContentRepository> allRoles = new ArrayList<>();
 
     public String getName() {
 	return name;
@@ -285,6 +287,14 @@ public class ProcessContentRepository implements Serializable {
 
 	public void setPlanned(boolean planned) {
 		this.planned = planned;
+	}
+
+	public List<MethodContentRepository> getAllRoles() {
+		return allRoles;
+	}
+
+	public void setAllRoles(List<MethodContentRepository> allRoles) {
+		this.allRoles = allRoles;
 	}
 
 }
