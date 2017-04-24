@@ -20,9 +20,12 @@ public class DependencyTableModel extends AbstractTableModel  {
     private List<WorkOrder> workOrders = new ArrayList<>();
 
 	private MethodLibraryHash hash;
+
+	private SPEMWorkBreakdownStructureTreeTableModel spemWorkBreakdownStructureTreeTableModel;
      
-    public DependencyTableModel(List<WorkOrder> workOrders, MethodLibraryHash hash) {
+    public DependencyTableModel(List<WorkOrder> workOrders, MethodLibraryHash hash, SPEMWorkBreakdownStructureTreeTableModel spemWorkBreakdownStructureTreeTableModel) {
         this.hash = hash;
+		this.spemWorkBreakdownStructureTreeTableModel = spemWorkBreakdownStructureTreeTableModel;
 		this.workOrders.addAll(workOrders);
     }
      
@@ -60,12 +63,12 @@ public class DependencyTableModel extends AbstractTableModel  {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         WorkOrder workOrder = workOrders.get(rowIndex);
-         
+        WorkBreakdownElement element = (WorkBreakdownElement) hash.getHashMap().get(workOrder.getValue());
         switch (columnIndex) {
         case 0:
-                return rowIndex;
+                return spemWorkBreakdownStructureTreeTableModel.getIndexList().indexOf(element);
         case 1:
-                return ((WorkBreakdownElement)hash.getHashMap().get(workOrder.getValue())).getPresentationName();
+                return element.getPresentationName();
         case 2:
                 return workOrder.getLinkType();
         }

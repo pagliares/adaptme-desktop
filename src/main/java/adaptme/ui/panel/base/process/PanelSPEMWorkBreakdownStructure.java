@@ -93,6 +93,6 @@ public class PanelSPEMWorkBreakdownStructure extends JPanel {
 			panelDependencyTable.setTableModel(new DependencyTableModel(new ArrayList<>()));
 			return;
 		}
-		panelDependencyTable.setTableModel(new DependencyTableModel(((WorkBreakdownElement) element).getPredecessor(), hash));		
+		panelDependencyTable.setTableModel(new DependencyTableModel(((WorkBreakdownElement) element).getPredecessor(), hash, treeTableModel));		
 	}
 }

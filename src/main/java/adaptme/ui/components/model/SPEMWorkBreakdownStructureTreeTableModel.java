@@ -369,4 +369,8 @@ public class SPEMWorkBreakdownStructureTreeTableModel extends AbstractTreeTableM
 	public void setColumnCount(int columnCount) {
 		this.columnCount = columnCount;
 	}
+
+	public List<WorkBreakdownElement> getIndexList() {
+		return indexList;
+	}
 }
