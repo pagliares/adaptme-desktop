@@ -91,5 +91,19 @@ public class MethodContentRepository implements Serializable {
     public String toString() {
 	return name;
     }
-
+    public int hashCode(){
+        int hashcode = 0;
+        hashcode = name.length() * 20;
+        hashcode += name.hashCode();
+        return hashcode;
+    }
+     
+    public boolean equals(Object obj){
+        if (obj instanceof MethodContentRepository) {
+        	MethodContentRepository pp = (MethodContentRepository) obj;
+            return pp.name.equals(this.name);
+        } else {
+            return false;
+        }
+    }
 }
