@@ -146,7 +146,7 @@ public class AlternativeOfProcessPanel {
 	private String simulationObjective;
 	
 	private List<ProcessContentRepository> completeListOfProcessContentRepository;
-	private List<ProcessContentRepository> listOfProcessContentRepositoryTasks;
+	private Set<ProcessContentRepository> listOfProcessContentRepositoryTasks;
  	
 
 	public AlternativeOfProcessPanel(AdaptMeUI adaptMeUI, SPEMDrivenPerspectivePanel spemDrivenPerspectivePanel,
@@ -648,7 +648,7 @@ public class AlternativeOfProcessPanel {
 		
 		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
 		completeListOfProcessContentRepository = processRepository.getProcessContents();
-		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepositoryWithTasksOnly(completeListOfProcessContentRepository);
+		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepository(completeListOfProcessContentRepository);
 		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
 
 //			setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
