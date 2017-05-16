@@ -79,8 +79,7 @@ public class PersistProcess {
 		Map<String, MethodElement> hash = new HashMap<>();
 		buildHash(process, hash);
 		
-		Boolean isNew = new Boolean(false);
-		ProcessContentRepository deliveryProcessAsRoot = createProcessContentRepository(process, ProcessContentType.DELIVERY_PROCESS, isNew, hash);
+		ProcessContentRepository deliveryProcessAsRoot = createProcessContentRepository(process, ProcessContentType.DELIVERY_PROCESS, hash);
 		root.addProcessElement(deliveryProcessAsRoot);
 		buildChildren(process, null, root, deliveryProcessAsRoot, hash);
 		return root;
@@ -88,12 +87,12 @@ public class PersistProcess {
 
 	private void buildChildren(Activity process, ProcessRepository root, ProcessRepository processRepository,
 			ProcessContentRepository father, Map<String, MethodElement> hash) {
-		Boolean isNew = new Boolean(false);
+
 		for (Object object : process.getBreakdownElementOrRoadmap()) {
 			if (object instanceof Milestone) {
 				Milestone milestone = (Milestone) object;
 				ProcessContentRepository content = createProcessContentRepository(milestone,
-						ProcessContentType.MILESTONE, isNew, hash);
+						ProcessContentType.MILESTONE, hash);
 				setBreadownElementsAttributes(milestone, content);
 				
 				content.setFather(father);
@@ -106,8 +105,7 @@ public class PersistProcess {
 				content.setProcessRepository(processRepository);
 			} else if (object instanceof Iteration) {
 				Iteration iteration = (Iteration) object;
-				ProcessContentRepository content = createProcessContentRepository(iteration,
-						ProcessContentType.ITERATION, isNew, hash);
+				ProcessContentRepository content = createProcessContentRepository(iteration, ProcessContentType.ITERATION, hash);
 				setBreadownElementsAttributes(iteration, content);
 				content.setFather(father);
 				if (father != null) {
@@ -120,8 +118,7 @@ public class PersistProcess {
 				buildChildren(iteration, null, processRepository, content, hash);
 			} else if (object instanceof Phase) {
 				Phase phase = (Phase) object;
-				ProcessContentRepository content = createProcessContentRepository(phase, ProcessContentType.PHASE,
-						isNew, hash);
+				ProcessContentRepository content = createProcessContentRepository(phase, ProcessContentType.PHASE, hash);
 				setBreadownElementsAttributes(phase, content);
 				content.setFather(father);
 				if (father != null) {
@@ -150,8 +147,7 @@ public class PersistProcess {
 				content.setProcessRepository(processRepository);
 			} else if (object instanceof Activity) {
 				Activity activity = (Activity) object;
-				ProcessContentRepository content = createProcessContentRepository(activity, ProcessContentType.ACTIVITY,
-						isNew, hash);
+				ProcessContentRepository content = createProcessContentRepository(activity, ProcessContentType.ACTIVITY, hash);
 				setBreadownElementsAttributes(activity, content);
 				content.setFather(father);
 				if (father != null) {
@@ -208,143 +204,178 @@ public class PersistProcess {
 
 	}
 
-	private ProcessContentRepository createTask(TaskDescriptor taskDescriptor, Map<String, MethodElement> hash) {
-		List<JAXBElement<String>> list = taskDescriptor.getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
-		List<String> inputNames = new ArrayList<>();
-		List<String> outputNames = new ArrayList<>();
+	private ProcessContentRepository createTask(TaskDescriptor element, Map<String, MethodElement> hash) {
+
+		ProcessContentRepository processContentRepository = createProcessContentRepository(element, ProcessContentType.TASK, hash);		
 		
+		setWorkProducts(processContentRepository, hash, element);
+
 		List<String> performedPrimarilyBy = new ArrayList<>();
 		List<String> additionallyPerformedBy = new ArrayList<>();
+		
+		List<JAXBElement<String>> list = element.getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
 		
 		for (JAXBElement<String> jaxbElement : list) {
 			QName qName = jaxbElement.getName();
 			String localPart = qName.getLocalPart();
-			MethodElement element = hash.get(jaxbElement.getValue());
-			if(element == null){
-				element = (MethodElement) methodLibraryHash.getHashMap().get(jaxbElement.getValue());
-				hash.put(element.getId(), element);
+			MethodElement methodElement = hash.get(jaxbElement.getValue());
+			if(methodElement == null){
+				methodElement = (MethodElement) methodLibraryHash.getHashMap().get(jaxbElement.getValue());
+				hash.put(methodElement.getId(), methodElement);
 			}
-			if (localPart == "MandatoryInput") {
-				inputNames.add(element.getPresentationName());
-			} else if (localPart == "Output") {
-				outputNames.add(element.getPresentationName());
-			} else if (localPart == "PerformedPrimarilyBy") {
-				performedPrimarilyBy.add(element.getPresentationName());
+			if (localPart == "PerformedPrimarilyBy") {
+				performedPrimarilyBy.add(methodElement.getPresentationName());
 			} else if (localPart == "AdditionallyPerformedBy") {
-				additionallyPerformedBy.add(element.getPresentationName());
+				additionallyPerformedBy.add(methodElement.getPresentationName());
 			}
-		}
-		Boolean isNew = new Boolean(false);
-		ProcessContentRepository task = createProcessContentRepository(taskDescriptor, ProcessContentType.TASK, isNew,
-				hash);
-
-		for (String name : inputNames) {
-			MethodContentRepository input = createMethodContentRepository(name, MethodContentType.ARTIFACT, isNew);
-			task.addInputMethodContent(input);
-			input.setProcessContentRepository(task);
-			wordProductList.add(input.getName());
-		}
-
-		for (String name : outputNames) {
-			MethodContentRepository output = createMethodContentRepository(name, MethodContentType.ARTIFACT, isNew);
-			task.addOutputMethodContent(output);
-			output.setProcessContentRepository(task);
-			wordProductList.add(output.getName());
-		}
+		}	
+		
 
 		for (String name : performedPrimarilyBy) {
-			MethodContentRepository role = createMethodContentRepository(name, MethodContentType.ROLE, isNew);
-			task.setMainRole(role);
+			MethodContentRepository role = createMethodContentRepository(name, MethodContentType.ROLE);
+			role.setProcessContentRepository(processContentRepository);
+			processContentRepository.setMainRole(role);
 			rolesList.add(role.getName());
-			role.setProcessContentRepository(task);
 		}
-		List<MethodContentRepository> additionallyPerformedByList = new ArrayList<>();
 		for (String name : additionallyPerformedBy) {
-			MethodContentRepository role = createMethodContentRepository(name, MethodContentType.ROLE, isNew);
-			additionallyPerformedByList.add(role);
+			MethodContentRepository role = createMethodContentRepository(name, MethodContentType.ROLE);
+			role.setProcessContentRepository(processContentRepository);
+			processContentRepository.addAdditionalRoles(role);
 			rolesList.add(role.getName());
-			role.setProcessContentRepository(task);
 		}
-		task.setAdditionalRoles(additionallyPerformedByList);
 		
-		List<ProcessContentRepository> predecessorsList = new ArrayList<>();
-		for (WorkOrder workOrder : taskDescriptor.getPredecessor()) {
-			WorkBreakdownElement element = (WorkBreakdownElement) hash.get(workOrder.getValue());
-			if (element instanceof TaskDescriptor) {
-				ProcessContentRepository predecessorRepository = createProcessContentRepository(element,
-						ProcessContentType.TASK, isNew, hash);
-				predecessorsList.add(predecessorRepository);
-			} else if (element instanceof Activity) {
-				ProcessContentRepository predecessorRepository = createProcessContentRepository(element,
-						ProcessContentType.ACTIVITY, isNew, hash);
-				predecessorsList.add(predecessorRepository);
-			} else if (element instanceof Iteration) {
-				ProcessContentRepository predecessorRepository = createProcessContentRepository(element,
-						ProcessContentType.ITERATION, isNew, hash);
-				predecessorsList.add(predecessorRepository);
-			} else if (element instanceof Milestone) {
-				ProcessContentRepository predecessorRepository = createProcessContentRepository(element,
-						ProcessContentType.MILESTONE, isNew, hash);
-				predecessorsList.add(predecessorRepository);
-			} else if (element instanceof Phase) {
-				ProcessContentRepository predecessorRepository = createProcessContentRepository(element,
-						ProcessContentType.PHASE, isNew, hash);
-				predecessorsList.add(predecessorRepository);
-			}
-		}
-		task.setPredecessors(predecessorsList);
-		return task;
+		setPredecessors(element, hash, processContentRepository);
+		
+		return processContentRepository;
 	}
 
 	private ProcessContentRepository createProcessContentRepository(WorkBreakdownElement element,
-			ProcessContentType type, Boolean isNew, Map<String, MethodElement> hash) {
+			ProcessContentType type, Map<String, MethodElement> hash) {
 		if (processContentRepositoryHashMap.containsKey(element.getName())) {
-			isNew = false;
 			return processContentRepositoryHashMap.get(element.getName());
 		}
 		
 		ProcessContentRepository processContentRepository = new ProcessContentRepository();
 		processContentRepository.setName(element.getPresentationName());
-		processContentRepository.setType(type);
+		processContentRepository.setType(type);		
+
+		setWorkProducts(processContentRepository, hash, element);
+
+		
 		
 		List<MethodContentRepository> allRoles = new ArrayList<>();
-		if(!(element instanceof TaskDescriptor)){
+		if(!(element instanceof TaskDescriptor) && !(element instanceof Milestone)){
 			allRoles.addAll(getAllRoles((Activity) element, hash));
 		}
 		processContentRepository.setAllRoles(allRoles);
 		
 		
 		processContentRepositoryHashMap.put(element.getPresentationName(), processContentRepository);
-		isNew = true;
+		
+		setPredecessors(element, hash, processContentRepository);
+		return processContentRepository;
+	}
+
+
+	private void setWorkProducts(ProcessContentRepository processContentRepository, Map<String, MethodElement> hash, WorkBreakdownElement element) {
+
+		if(element instanceof Activity){
+			Activity process = (Activity) element;
+			for (Object object : process.getBreakdownElementOrRoadmap()) {
+				if(object instanceof Activity){
+					setWorkProducts(processContentRepository, hash, (WorkBreakdownElement) object);
+				} else if(object instanceof TaskDescriptor ||  object instanceof Milestone){
+					setWorkProducts(processContentRepository, hash, (WorkBreakdownElement) object);
+				}
+			}			
+		}else if(element instanceof TaskDescriptor) {
+			
+			List<JAXBElement<String>> list = ((TaskDescriptor) element).getPerformedPrimarilyByOrAdditionallyPerformedByOrAssistedBy();
+			
+			List<String> inputNames = new ArrayList<>();
+			List<String> outputNames = new ArrayList<>();		
+			
+			for (JAXBElement<String> jaxbElement : list) {
+				QName qName = jaxbElement.getName();
+				String localPart = qName.getLocalPart();
+				MethodElement methodElement = hash.get(jaxbElement.getValue());
+				if(methodElement == null){
+					methodElement = (MethodElement) methodLibraryHash.getHashMap().get(jaxbElement.getValue());
+					hash.put(methodElement.getId(), methodElement);
+				}
+				if (localPart == "MandatoryInput") {
+					inputNames.add(methodElement.getPresentationName());
+				} else if (localPart == "Output") {
+					outputNames.add(methodElement.getPresentationName());
+				}
+			}		
+	
+			for (String name : inputNames) {
+				MethodContentRepository input = createMethodContentRepository(name, MethodContentType.ARTIFACT);
+				input.setProcessContentRepository(processContentRepository);
+				processContentRepository.addInputMethodContent(input);
+				wordProductList.add(input.getName());
+			}
+			for (String name : outputNames) {
+				MethodContentRepository output = createMethodContentRepository(name, MethodContentType.ARTIFACT);
+				output.setProcessContentRepository(processContentRepository);
+				processContentRepository.addOutputMethodContent(output);
+				wordProductList.add(output.getName());
+			}
+		}else if(element instanceof Milestone){
+			List<String> list = ((Milestone) element).getRequiredResult();
+			for (String key : list) {
+				MethodElement methodElement = hash.get(key);
+				if(methodElement == null){
+					methodElement = (MethodElement) methodLibraryHash.getHashMap().get(key);
+					hash.put(methodElement.getId(), methodElement);
+				}				
+				MethodContentRepository result = createMethodContentRepository(methodElement.getName(), MethodContentType.ARTIFACT);
+				result.setProcessContentRepository(processContentRepository);
+				processContentRepository.addInputMethodContent(result);
+				processContentRepository.addOutputMethodContent(result);
+			}
+		}
+	}
+	private void setPredecessors(WorkBreakdownElement element, Map<String, MethodElement> hash, ProcessContentRepository processContentRepository) {
+
 		List<ProcessContentRepository> predecessorsList = new ArrayList<>();
+		
 		for (WorkOrder workOrder : element.getPredecessor()) {
 			WorkBreakdownElement predecessor = (WorkBreakdownElement) hash.get(workOrder.getValue());
+			if(predecessor == null){
+				predecessor = (WorkBreakdownElement) methodLibraryHash.getHashMap().get(workOrder.getValue());
+				hash.put(predecessor.getId(), predecessor);
+			}
 			if (predecessor instanceof Iteration) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
-						ProcessContentType.ITERATION, isNew, hash);
+						ProcessContentType.ITERATION, hash);
 				predecessorsList.add(predecessorRepository);
 			}else if (predecessor instanceof Activity) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
-						ProcessContentType.ACTIVITY, isNew, hash);
+						ProcessContentType.ACTIVITY, hash);
 				predecessorsList.add(predecessorRepository);
 			}else if (predecessor instanceof Phase) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
-						ProcessContentType.PHASE, isNew, hash);
+						ProcessContentType.PHASE, hash);
 				predecessorsList.add(predecessorRepository);
 			}else if (predecessor instanceof DeliveryProcess) {
 				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
-						ProcessContentType.DELIVERY_PROCESS, isNew, hash);
+						ProcessContentType.DELIVERY_PROCESS, hash);
+				predecessorsList.add(predecessorRepository);
+			}else if (predecessor instanceof TaskDescriptor) {
+				ProcessContentRepository predecessorRepository = createProcessContentRepository(predecessor,
+						ProcessContentType.TASK, hash);
 				predecessorsList.add(predecessorRepository);
 			}
 		}
 		processContentRepository.setPredecessors(predecessorsList);
-		return processContentRepository;
 	}
 
 	private List<MethodContentRepository> getAllRoles(Activity activity, Map<String, MethodElement> hash) {
 		List<MethodContentRepository> roles = new ArrayList<>();
 		List<Object> children = activity.getBreakdownElementOrRoadmap();
-		Boolean isNew = new Boolean(true);
+
 		for (Object object : children) {			
 			if (object instanceof TaskDescriptor) {
 				TaskDescriptor taskDescriptor = (TaskDescriptor) object;
@@ -358,7 +389,7 @@ public class PersistProcess {
 						hash.put(element.getId(), element);
 					}
 					if (localPart == "PerformedPrimarilyBy" || localPart == "AdditionallyPerformedBy") {
-						roles.add(createMethodContentRepository(element.getPresentationName(), MethodContentType.ROLE, isNew));
+						roles.add(createMethodContentRepository(element.getPresentationName(), MethodContentType.ROLE));
 					}
 				}
 			}else if(object instanceof Activity || object instanceof Iteration || object instanceof Milestone || object instanceof Phase || object instanceof DeliveryProcess){
@@ -368,15 +399,13 @@ public class PersistProcess {
 		return roles;
 	}
 
-	private MethodContentRepository createMethodContentRepository(String name, MethodContentType type, Boolean isNew) {
+	private MethodContentRepository createMethodContentRepository(String name, MethodContentType type) {
 		if (methodContentRepositoryHashMap.containsKey(name)) {
-			isNew = false;
 			return methodContentRepositoryHashMap.get(name);
 		}
 		MethodContentRepository methodContentRepository = new MethodContentRepository();
 		methodContentRepository.setName(name);
 		methodContentRepository.setType(type);
-		isNew = true;
 		return methodContentRepository;
 	}
 
