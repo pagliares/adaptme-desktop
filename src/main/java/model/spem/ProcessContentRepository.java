@@ -210,11 +210,14 @@ public class ProcessContentRepository implements Serializable {
     }
 
     public List<MethodContentRepository> getAdditionalRoles() {
-	return additionalRoles;
+    	return additionalRoles;
     }
 
     public void setAdditionalRoles(List<MethodContentRepository> additionalRoles) {
-	this.additionalRoles = additionalRoles;
+    	this.additionalRoles = additionalRoles;
+    }
+    public void addAdditionalRoles(MethodContentRepository additionalRole) {
+    	additionalRoles.add(additionalRole);
     }
 
     public MethodContentRepository getMainRole() {
@@ -295,6 +298,5 @@ public class ProcessContentRepository implements Serializable {
 
 	public void setAllRoles(List<MethodContentRepository> allRoles) {
 		this.allRoles = allRoles;
-	}
-
+	}	
 }
