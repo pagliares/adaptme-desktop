@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 import adaptme.DynamicExperimentationProgramProxy;
@@ -19,7 +20,7 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 	
 		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
-		int quantityOfReplications = 2;
+		int quantityOfReplications = 3;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 		String processToBeSimulated = "AGILE";
 		simulationManagerFacade.execute(28800, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (28800 = 60 days)
@@ -81,7 +82,16 @@ public class TestSimulationFromConsole {
 			// Calculating the mean(sd) number of user stories produced. Notice that a produced user story may be in more than one dead state
 			// (i.e. it can be on q4 - input dead state of activity END_iteration, q5 - input dead state of activity END_Release
 			// q6 - output dead state of activity END_Release)
+			// matrixWithResults (lines) = number of entities in each queue  matrixWithResults (columns) =  experiments
 			int [][] matrixWithResults = simulationManagerFacade.createMatrixWithResultsOfAllReplications();
+			
+//			String deadStateName = "q4 - input dead state of activity END_iteration";
+			String deadStateName1 = "q5 - input dead state of activity END_Release";
+			String deadStateName2 = "q6 - output dead state of activity END_Release";	
+			
+////			double meanQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateMeanNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
+// 			double sdQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
+//			System.out.println("Mean (sd) number of entities Q4, Q5, Q6 " +   meanQuantityOfEntitiesInQ4Q5Q6 + "(" + sdQuantityOfEntitiesInQ4Q5Q6 + ")");
 		
 			String deadStateName = "q4 - input dead state of activity END_iteration";
 			double meanQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
@@ -100,7 +110,30 @@ public class TestSimulationFromConsole {
 			double meanQuantityOfEntitiesInQ6 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
 			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
 					meanQuantityOfEntitiesInQ6 + "(" + sdQuantityOfEntitiesInQ6 + ")");
-  
+			
+			double meanQuantityOfEntitiesInQ4Q5Q6 = (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6);
+			double sdQuantityOfEntitiesInQ4Q5Q6 = (sdQuantityOfEntitiesInQ4 + sdQuantityOfEntitiesInQ5 + sdQuantityOfEntitiesInQ6); 
+			System.out.println("Mean (sd) number of entities in dead states q4, q5, e q6 " + meanQuantityOfEntitiesInQ4Q5Q6  + 
+					             "  (" + sdQuantityOfEntitiesInQ4Q5Q6 + ")");
+//			1 2 3 = MEDIA 2
+			
+//			2 4 6 = MEDIA 4
+			
+//			1 2 3 2 4 6 = MEDIA = 3 
+
+//			double [] valores = {1, 2, 3};
+//			double [] valores2  = {2, 4, 6};
+//			double [] valores3  = {1, 2, 3, 2, 4, 6};
+//			
+//			Mean mean = new Mean();
+//			StandardDeviation sd = new StandardDeviation();
+//			
+// 			System.out.println("Mean (sd) valores "+ mean.evaluate(valores) + "(" + sd.evaluate(valores) + ")");
+// 			System.out.println("Mean (sd) valores2 "+ mean.evaluate(valores2) + "(" + sd.evaluate(valores2) + ")");
+// 			System.out.println("Mean (sd) valores3 "+ mean.evaluate(valores3) + "(" + sd.evaluate(valores3) + ")");
+// 			
+// 			System.out.println("Mean (sd) valores + valores2 "+ (mean.evaluate(valores) + mean.evaluate(valores2))/2 + "(" + 
+// 			                  (sd.evaluate(valores) + sd.evaluate(valores))+ ")");
 		}
 		
 		Map<String, Integer> mapWithAcumulatedNumberOfActivities = simulationManagerFacade.getMapWithAcumulatedActiviitesResults();

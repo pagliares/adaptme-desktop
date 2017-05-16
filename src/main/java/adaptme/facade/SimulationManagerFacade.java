@@ -350,6 +350,33 @@ public class SimulationManagerFacade {
 		return mean;
 	}
 	
+	public double calculateMeanNumberOfEntitiesForMoreThanOneDeadState(int[][] matrixWithResults, String deadStateName, String deadStateName2, String deadStateName3) {
+		double mean = 0.0;
+ 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+
+		HashMap<String, QueueEntry> mapWithDeadStatesAtTheEndOfSimulation = resultadoGlobal.get(keys.iterator().next());
+		Collection<String> keyNamesMapWithDeadStatesAtTheEndOfSimulation = mapWithDeadStatesAtTheEndOfSimulation.keySet();
+
+		double sum = 0.0;
+ 
+		Iterator<String> iterator = keyNamesMapWithDeadStatesAtTheEndOfSimulation.iterator();
+		
+		double[] quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+
+		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
+			String queueName = (String) iterator.next();
+ 			if ((queueName.equalsIgnoreCase(deadStateName)) || (queueName.equalsIgnoreCase(deadStateName2)) || (queueName.equalsIgnoreCase(deadStateName3))) {
+  				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
+  					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
+ 					sum = sum + matrixWithResults[i][j];
+ 				}
+ 				mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+  				sum = 0.0;
+ 				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+ 			}}
+		return mean;
+	}
+	
 	public double calculateStandardDeviationNumberOfEntitiesInADeadState(int[][] matrixWithResults, String deadStateName) {
 		double standardDeviation = 0.0;
  		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
@@ -367,6 +394,34 @@ public class SimulationManagerFacade {
 		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
 			String queueName = (String) iterator.next();
  			if (queueName.equalsIgnoreCase(deadStateName)) {
+  				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
+  					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
+ 					sum = sum + matrixWithResults[i][j];
+ 				}
+  				 standardDeviation =  Math.round(sd.evaluate(quantyOfEntitiesPerDeadState)) * 100.00/100.00;
+ 				sum = 0.0;
+ 				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
+ 			}}
+		return standardDeviation;
+	}
+	
+	public double calculateStandardDeviationNumberOfEntitiesForMoreThanOneDeadState(int[][] matrixWithResults, String deadStateName, String deadStateName2, String deadStateName3) {
+		double standardDeviation = 0.0;
+ 		Set<String> keys = resultadoGlobal.keySet(); // contem o nome de todos experimentos como chave
+
+		HashMap<String, QueueEntry> mapWithDeadStatesAtTheEndOfSimulation = resultadoGlobal.get(keys.iterator().next());
+		Collection<String> keyNamesMapWithDeadStatesAtTheEndOfSimulation = mapWithDeadStatesAtTheEndOfSimulation.keySet();
+
+		double sum = 0.0;
+		StandardDeviation sd = new StandardDeviation();
+
+		Iterator<String> iterator = keyNamesMapWithDeadStatesAtTheEndOfSimulation.iterator();
+		
+		double[] quantyOfEntitiesPerDeadState = new double[matrixWithResults.length*3];
+
+		for (int j = 0; j < matrixWithResults[0].length; j++) { // For a specific column (cell represents the quantity of entities)
+			String queueName = (String) iterator.next();
+ 			if ((queueName.equalsIgnoreCase(deadStateName)) || (queueName.equalsIgnoreCase(deadStateName2)) || (queueName.equalsIgnoreCase(deadStateName3))) {
   				for (int i = 0; i < matrixWithResults.length; i++) { // Sum all rows for the above column (represents experiments)				
   					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
  					sum = sum + matrixWithResults[i][j];
