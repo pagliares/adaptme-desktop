@@ -2,7 +2,10 @@ package model.spem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,6 +22,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.modelmapper.ModelMapper;
 
 import model.spem.util.ProcessContentType;
 
@@ -53,6 +58,10 @@ public class ProcessRepository implements Serializable {
 	@XmlTransient
 	@Transient
 	private List<ProcessContentRepository> listProcessContentRepositoryWithTasksOnly = new ArrayList<>();
+	
+	@XmlTransient
+	@Transient
+	private LinkedHashSet<ProcessContentRepository> listProcessContentRepository = new LinkedHashSet<>();
 
 	@XmlTransient
 	@Transient
@@ -193,6 +202,32 @@ public class ProcessRepository implements Serializable {
 
 	public void setTasks(List<ProcessContentRepository> tasks) {
 		this.tasks = tasks;
+	}
+
+	// Set<ProcessContentRepository> tem todos os elementos, incluindo BEGIN e END
+	// ModelMapper permite clonar os objetos (preciso gerar 2 dummies para um spem hierarchical element
+	public Set<ProcessContentRepository> getListProcessContentRepository(List<ProcessContentRepository> listOfProcessContentRepository) {
+		if (listOfProcessContentRepository == null) {
+			return null;
+		} else {
+			ModelMapper modelMapper = new ModelMapper();
+			for (ProcessContentRepository pcr : listOfProcessContentRepository) {
+				if (pcr.getType().equals(ProcessContentType.TASK) || pcr.getType().equals(ProcessContentType.MILESTONE)) {
+					listProcessContentRepository.add(pcr);
+				} else{
+ 					ProcessContentRepository begin = new ProcessContentRepository();
+					modelMapper.map(pcr, begin);
+					begin.setName("BEGIN_" + begin.getName());
+					listProcessContentRepository.add(begin);
+					getListProcessContentRepository(pcr.getChildren());
+					ProcessContentRepository end = new ProcessContentRepository();
+					modelMapper.map(pcr, end);
+					end.setName("END_" + end.getName());
+					listProcessContentRepository.add(end);
+				}					
+			}
+			return listProcessContentRepository;
+		}
 	}
 	
 }
