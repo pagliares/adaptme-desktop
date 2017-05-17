@@ -42,6 +42,7 @@ public class Activity extends ActiveState{
 	private String processingQuantity;
 	private double timeBox = 0.0;
 	private String parent = "";
+	private boolean optional =  true;
 
 	private int numberOfEntitiesProduced = 0;
 	private double timeWasStarted = 0.0; 
@@ -216,6 +217,18 @@ public class Activity extends ActiveState{
 				}
 		}
 		
+		// Verify condition for optional WBE
+		boolean conditionSatisfied = true;
+		if (this.optional) {
+			conditionSatisfied = verifyConditionForOptionalWBE();
+			Log.LogMessage("\n\t" + this.name + " Optional WorkBreakdownElement (WBE). Condition satisfied?  " + conditionSatisfied);
+
+		}
+		if (conditionSatisfied == false) {
+		
+			return false;
+		}
+		 
 		// Tenta resolver o estado bloqueado, se for o caso
 		if(blocked){
 			blocked = false;
@@ -383,6 +396,148 @@ public class Activity extends ActiveState{
 		return true;
 	}
 
+	/** If the WBE isOptional attribute is checked. Need do evaluate the condition to start or not the activity
+		simulation_clock, quantity_entities_processed, qunatity_entities_incoming_dead_state (the last two can be different,
+		e.g., when decide to keep current status of intermediary dead states at the end of an iteration (in this case, the counter of
+		number of entities in each activity is set to zero, but intermediary dead states, not.
+		IT DOES NOT WORK WITH LOGICAL OPERATORS && ||. If necessary, verify Wladimir code API (Exprssion and ConstExpression classes)
+		
+		 @return boolean value indicating whether the condition was satisfied or not.
+	*/
+	private boolean verifyConditionForOptionalWBE() {
+	    Expression expression = (Expression)this.conditions_from_v.get(0);
+	    String condition = expression.expression;
+		String variable = null;
+		String operator = null;
+		Double literal = null;
+			 
+		variable = condition.split(" ")[0];
+		operator = condition.split(" ")[1];
+		literal = Double.parseDouble(condition.split(" ")[2]);
+
+			 switch (variable) {
+			 	case "clock":
+			 		double currentClock = s.GetClock();
+			 		switch (operator) {
+			 			case ">":
+			 				if (!(currentClock > literal)) {
+			 					return false;
+			 				}
+			 				break;
+			 			case "<":
+			 				if (!(currentClock < literal)) {
+			 					return false;
+							 }
+					 	break;
+					 	case "=":
+					 		 if (!(currentClock == literal)) {
+								 return false;
+							 }
+					 	break;
+					 	case "!=":
+					 		 if (!(currentClock != literal)) {
+								 return false;
+							 }
+					 	break;
+					 	case ">=":
+					 		 if (!(currentClock >= literal)) {
+								 return false;
+							 }
+					 	break;
+					 	case "<=":
+					 		 if (!(currentClock <= literal)) {
+								 return false;
+							 }
+					 	break;
+					    default:
+					    	return false;
+					 } // operator switch for variable clock
+			 	break;	
+			 	case "quantity_of_entities_processed": 
+			 		int quantityEntitiesProducedByPreviousActivity = getQuantityProcessedEntitiesByPreviousActivity();
+			 		switch (operator) {
+		 			case ">":
+		 				if (!(quantityEntitiesProducedByPreviousActivity > literal)) {
+		 					return false;
+		 				}
+		 				break;
+		 			case "<":
+		 				if (!(quantityEntitiesProducedByPreviousActivity  < literal)) {
+		 					return false;
+						 }
+				 	break;
+				 	case "=":
+				 		 if (!(quantityEntitiesProducedByPreviousActivity  == literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case "!=":
+				 		 if (!(quantityEntitiesProducedByPreviousActivity  != literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case ">=":
+				 		 if (!(quantityEntitiesProducedByPreviousActivity  >= literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case "<=":
+				 		 if (!(quantityEntitiesProducedByPreviousActivity  <= literal)) {
+							 return false;
+						 }
+				    break;
+				    default:
+				    	return false;
+			 		} // operator switch for variable quantity_of_entities_processed
+			 	break;
+			 	case "quantity_of_entities_in_incoming_dead_state": 
+			 		List deadStates = this.getEntities_from_v();
+			 		DeadState ids = (DeadState)deadStates.get(0);
+			 		int quantity = ids.getCount();
+			 		
+ 			 		switch (operator) {
+		 			case ">":
+		 				if (!(quantity > literal)) {
+		 					return false;
+		 				}
+		 				break;
+		 			case "<":
+		 				if (!(quantity < literal)) {
+		 					return false;
+						 }
+				 	break;
+				 	case "=":
+				 		 if (!(quantity == literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case "!=":
+				 		 if (!(quantity != literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case ">=":
+				 		 if (!(quantity >= literal)) {
+							 return false;
+						 }
+				 	break;
+				 	case "<=":
+				 		 if (!(quantity <= literal)) {
+							 return false;
+						 }
+				 	break;
+				    default:
+				    	return false;
+				 } // operator switch for variable quantity_of_entities_in_incoming_dead_state
+ 			 		
+ 			 	break;
+			    default:
+			    	return false;
+			 }	 // variable switch
+			 return true;
+		}
+	
+
 	private boolean verifyIfTimeboxIsNotViolated(float serviceDuration) {
 		
 			double timebox = 0.0;  
@@ -488,6 +643,37 @@ public class Activity extends ActiveState{
 			}
 		}
 		return true;
+	}
+	
+	private int getQuantityProcessedEntitiesByPreviousActivity() {
+ 
+		int esize = dead_states_from_v.size();
+		String previousQueueName = "";
+
+		for (int i = 0; i < esize; i++) {
+			DeadState incomingQueue = (DeadState) this.getEntities_from_v().get(i);
+//			System.out.println("Task: " + name + "   Incoming queue name:  " + incomingQueue.name + "  incoming queue count: "+ incomingQueue.count);
+			previousQueueName = incomingQueue.name;
+		}
+
+		// In order to start an activity with finish-to-start dependency and processing type by class of entities 
+		// we first must verify if the previous activity has already finished (producing the class of entities)
+		// this is done by comparing the counter of entities produced by the previous activity with the number of entities describring
+		// the class of entities. The previous activity is identified when the output Dead State of the previous activity is the 
+		// same the input dead state of the current activity
+		Iterator it =  s.getSimulationManager().GetActiveStatesIterator();
+
+		while (it.hasNext()){
+
+			InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
+			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
+
+			if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { 
+ 				Activity ac = (Activity)internalActivityEntry.getActiveState();
+ 		        return ac.numberOfEntitiesProduced;
+			}
+		}
+		 return 0;
 	}
 	
 	public double geTimeBox() {
@@ -699,5 +885,13 @@ public class Activity extends ActiveState{
 
 	public void setStartedWithExceededTimeBox(boolean startedWithExceededTimeBox) {
 		this.startedWithExceededTimeBox = startedWithExceededTimeBox;
+	}
+
+	public boolean isOptional() {
+		return optional;
+	}
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
 	}	
 }

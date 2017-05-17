@@ -47,6 +47,8 @@ public class Expression
 	 * tabela de vari�veis globais da simula��o.
 	 */
 	public static Variables globals;	
+	
+	public static String expression; // Pagliares code to keep the expression in the normal format ( a < 2 , instead of < a 2 )
 
 	private static void Debug()
 	{
@@ -194,6 +196,7 @@ public class Expression
 	 */
 	protected static synchronized String Parse(String exp, StringBuffer errm)
 	{
+		expression = exp;
 		if(exp == null)
 			return null;
 		errmsg = errm;	// liga ao buffer do objeto 

@@ -41,11 +41,8 @@ public class InternalActiveEntry extends ActiveEntry{
   private String processingQuantity = "";
   private double timeBox = 0.0;
   private String parent = "";
+  private String optional = "";
   
-  
-  
-  //private Vector quantityUsedTemporaryEntities;	// Commented lines to be worked when trying to acquire entities in batch mode
-
   public String toString(){
 	StringBuffer stb = new StringBuffer();
 	stb.append("<InternalActiveEntry router=\""+isRouter+"\">\r\n");
@@ -172,24 +169,28 @@ public class InternalActiveEntry extends ActiveEntry{
 
 		}
 		else{
-			
 			// SPEM attributes
-			Activity a = (Activity)activeState;
-			a.setDependencyType(dependencyType);
-			a.setParent(parent);
-			a.setConditionToProcess(conditionToProcess);
-			a.setProcessingQuantity(processingQuantity);
- 			a.setTimeBox(timeBox);
- 			a.setSpemType(spemType);
-						
+			Activity activity = (Activity)activeState;
+			activity.setDependencyType(dependencyType);
+			activity.setParent(parent);
+			activity.setConditionToProcess(conditionToProcess);
+			activity.setProcessingQuantity(processingQuantity);
+ 			activity.setTimeBox(timeBox);
+ 			activity.setSpemType(spemType);
+ 			if (optional.equalsIgnoreCase("true")) {
+ 				activity.setOptional(true);
+ 			} else {
+ 				activity.setOptional(false);
+ 			}
+ 					
  			switch(servicedist){
 				case NONE: break;
-				case CONST: 	((Activity)activeState).SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
-				case UNIFORM: ((Activity)activeState).SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
-				case NORMAL: 	((Activity)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
-				case NEGEXP: 	((Activity)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
-				case POISSON: ((Activity)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
-				case LOGNORMAL: ((Activity)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
+				case CONST: 	activity.SetServiceTime(new ConstDistribution(m.sample, distp1)); break;
+				case UNIFORM:   activity.SetServiceTime(new Uniform(m.sample, distp1, distp2)); break;
+				case NORMAL: 	activity.SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
+				case NEGEXP: 	activity.SetServiceTime(new NegExp(m.sample, distp1)); break;
+				case POISSON:   activity.SetServiceTime(new Poisson(m.sample, distp1)); break;
+				case LOGNORMAL: activity.SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				default: return false;
 			}
 			 
@@ -209,21 +210,15 @@ public class InternalActiveEntry extends ActiveEntry{
 				// Pagliares: refactored Wladimir code to avoid method chaining
 				DeadState fromDeadState = m.GetQueue((String)fq.get(i)).deadState;
 				DeadState toDeadState = m.GetQueue((String)toq.get(i)).deadState;
-				Activity activity = (Activity) activeState;
-				
-				activity.ConnectQueues(fromDeadState, exp, toDeadState);	// antigo
-				
-				// Commented lines to be worked when trying to acquire entities in batch mode
-				//	Integer quantityEntities = ((Integer)(quantityUsedTemporaryEntities.get(i))).intValue();
-				// Attempt to get more than one entity
-				//	activity.ConnectQueues(fromDeadState,exp, toDeadState,quantityEntities);		 
+				 	
+				activity.ConnectQueues(fromDeadState, exp, toDeadState);	// antigo	 	 
 			}
 			
 			for(int i = 0; i < fr.size(); i++){
 				ResourceQ fromResourceDeadState = m.GetResource((String)fr.get(i)).SimObj;
 				ResourceQ toResourceDeadState = m.GetResource((String)tor.get(i)).SimObj;
 				Integer quantityOfResourcesUsed = ((Integer)quantityUsedResource.get(i)).intValue();
-				Activity activity = (Activity) activeState;
+//				Activity activity = (Activity) activeState;
 				
 				activity.ConnectResources(fromResourceDeadState,toResourceDeadState, quantityOfResourcesUsed);	
 			}
@@ -370,7 +365,16 @@ public class InternalActiveEntry extends ActiveEntry{
   public void setParent(String parent) {
 	this.parent = parent;
   }
-public String getSpemType() {
+  
+  public String getSpemType() {
 	return spemType;
-} 
+  }
+
+  public String getOptional() {
+	return optional;
+  }
+
+  public void setOptional(String optional) {
+	this.optional = optional;
+  } 
 }

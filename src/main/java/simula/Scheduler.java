@@ -391,7 +391,9 @@ public class Scheduler implements Runnable{
 
 				for(short i = 0; i < activestates.size(); i++) {	
 					ActiveState a = (ActiveState)activestates.elementAt(i);
-					executed |= ((ActiveState)activestates.elementAt(i)).CServed();   	
+					
+						 executed |= ((ActiveState)activestates.elementAt(i)).CServed();  
+ 
  				}
 				
 			}while(crescan && executed);	
