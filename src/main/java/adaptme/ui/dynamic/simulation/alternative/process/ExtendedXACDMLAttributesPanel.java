@@ -83,8 +83,9 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		
 		processingQuantityLabel = new JLabel("Processing quantity");
 		processingQuantityComboBox = new JComboBox<>();
-		processingQuantityComboBox.addItem(ProcessingQuantityType.BATCH);
 		processingQuantityComboBox.addItem(ProcessingQuantityType.UNIT);
+		processingQuantityComboBox.addItem(ProcessingQuantityType.BATCH);
+		
 
 		parentLabel = new JLabel("Parent");
 		parentTextField = new JTextField();
@@ -99,15 +100,16 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		
 		dependencyTypeLabel = new JLabel("Dependency type");
 		dependencyTypeComboBox = new JComboBox<>();
-		dependencyTypeComboBox.addItem(DependencyType.FINISH_TO_FINISH);
 		dependencyTypeComboBox.addItem(DependencyType.FINISH_TO_START);
+		dependencyTypeComboBox.addItem(DependencyType.FINISH_TO_FINISH);
 		dependencyTypeComboBox.addItem(DependencyType.START_TO_FINISH);
 		dependencyTypeComboBox.addItem(DependencyType.START_TO_START);
 
 		conditionToProcessLabel = new JLabel("Condition to process");
 		conditionToProcessComboBox = new JComboBox<>();
-		conditionToProcessComboBox.addItem(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
 		conditionToProcessComboBox.addItem(ConditionToProcessType.SINGLE_ENTITY_AVAILABLE);
+		conditionToProcessComboBox.addItem(ConditionToProcessType.ALL_ENTITIES_AVAILABLE);
+		
 		
 		quantityOfResourcesLabel = new JLabel("Quantity of resources needed to perform the task");
 		
