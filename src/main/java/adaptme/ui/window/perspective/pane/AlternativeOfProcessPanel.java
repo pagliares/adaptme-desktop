@@ -265,7 +265,7 @@ public class AlternativeOfProcessPanel {
 		actionNewContentPackage = new NewContentPackageAction("Content Package", methodLibraryWrapper, leftTree);
 		menuItemNewContentPackage.setAction(actionNewContentPackage);
 		renameAction = new RenameAction("Rename", leftTree);
-		openToSimulatorAction = new OpenToSimulatorAction("Open to simulation", this);
+		openToSimulatorAction = new OpenToSimulatorAction("Map SPEM to extended XACDML", this);
 		menuOpenToSimulate.setAction(openToSimulatorAction);
 		menuItemRename.setAction(renameAction);
 	}
