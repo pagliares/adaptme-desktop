@@ -343,7 +343,9 @@ public class SimulationManagerFacade {
   					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
  					sum = sum + matrixWithResults[i][j];
  				}
- 				mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+// 				mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+ 				mean = sum / matrixWithResults.length;
+
   				sum = 0.0;
  				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
  			}}
@@ -370,7 +372,7 @@ public class SimulationManagerFacade {
   					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
  					sum = sum + matrixWithResults[i][j];
  				}
- 				mean = Math.round(sum / matrixWithResults.length) *100.0/100.0;
+ 				mean =  sum / matrixWithResults.length;
   				sum = 0.0;
  				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
  			}}
@@ -717,7 +719,7 @@ public class SimulationManagerFacade {
 			List<ActivityResults> activityResultsList = null;
  
 			if (keys.size() == 0){
-				System.out.println("\n\t\tThere are no SPEM activities in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM activities in the simulated process or the simulation finished before at least one activity finished");
 			} else {
 			    for (String key: keys) {
 			       activityResultsList = mapWithActivityResults.get(key);
@@ -737,7 +739,7 @@ public class SimulationManagerFacade {
 			Set<String> keys = mapWithPhaseResults.keySet();
 			List<PhaseResults> phaseResultsList = null;
 			if (keys.size() == 0){
-				System.out.println("\n\t\tThere are no SPEM phases in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM phases in the simulated process or the simulation finished before at least one phase finished");
 			} else  {
 				 for (String key: keys) {
 					 phaseResultsList = mapWithPhaseResults.get(key);
@@ -758,7 +760,7 @@ public class SimulationManagerFacade {
 			List<MilestoneResults> milestoneResultsList = null;
 			
 			if (keys.size() == 0){
-				System.out.println("\n\t\tThere are no SPEM milestones in the simulated process");
+				System.out.println("\n\t\tThere are no SPEM milestones in the simulated process or the simulation finished before at least one milestone reached");
 			} else  {
 			  for (String key: keys) {
 				milestoneResultsList = mapWithMilestoneResults.get(key);
@@ -779,11 +781,11 @@ public class SimulationManagerFacade {
 			Set<String> keys = mapWithIterationResults.keySet();
 			List<IterationResults> iterationResultsList = null;
 			if (keys.size() == 0){
-				System.out.println("\n\tThere are no SPEM iteration in the simulated process");
+				System.out.println("\n\tThere are no SPEM iteration in the simulated process or the simulation finished before at least one iteration finished");
 			} else  {
 				 for (String key: keys) {
 					 iterationResultsList = mapWithIterationResults.get(key);
-					 System.out.println("\n\t\tThe iteration named \'" +  key.split("_")[1] + " was executed " + iterationResultsList.size()  +  " times");
+					 System.out.println("\n\t\tThe iteration named \'" +  key.split("_")[1] + "\'"+ " was executed " + iterationResultsList.size()  +  " times");
 				 
 			          for (int i = 1; i <=  iterationResultsList.size(); i++) {
 			            	IterationResults ir = iterationResultsList.get(i-1);
