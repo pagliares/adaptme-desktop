@@ -20,10 +20,10 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 	
 		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
-		int quantityOfReplications = 3;
+		int quantityOfReplications = 5;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 		String processToBeSimulated = "AGILE";
-		simulationManagerFacade.execute(28800, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (28800 = 60 days)
+		simulationManagerFacade.execute(138400, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (38400 = 80 days)
 		System.out.println();
 		
 		//System.out.println("\n\n----------------------------------------   RESULTS BY REPLICATION   -------------------------------------------\n");
@@ -85,36 +85,29 @@ public class TestSimulationFromConsole {
 			// matrixWithResults (lines) = number of entities in each queue  matrixWithResults (columns) =  experiments
 			int [][] matrixWithResults = simulationManagerFacade.createMatrixWithResultsOfAllReplications();
 			
-//			String deadStateName = "q4 - input dead state of activity END_iteration";
-			String deadStateName1 = "q5 - input dead state of activity END_Release";
-			String deadStateName2 = "q6 - output dead state of activity END_Release";	
-			
-////			double meanQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateMeanNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
-// 			double sdQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
-//			System.out.println("Mean (sd) number of entities Q4, Q5, Q6 " +   meanQuantityOfEntitiesInQ4Q5Q6 + "(" + sdQuantityOfEntitiesInQ4Q5Q6 + ")");
-		
-			String deadStateName = "q4 - input dead state of activity END_iteration";
-			double meanQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			double sdQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
-								meanQuantityOfEntitiesInQ4 + "(" + sdQuantityOfEntitiesInQ4 + ")");
+ 			
+			double meanQuantityOfEntitiesInQ0 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q0");
+			double meanQuantityOfEntitiesInQ1 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q1");
+			double meanQuantityOfEntitiesInQ2 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q2");
+			double meanQuantityOfEntitiesInQ3 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q3");
+			double meanQuantityOfEntitiesInQ4 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q4");
+			double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
+ 			double meanQuantityOfEntitiesInQ6 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q6");
+ 			double meanQuantityOfEntitiesInQ7 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q7");
+ 			double meanQuantityOfEntitiesInQ8 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q8");
+ 			double meanQuantityOfEntitiesInQ9 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q9");
+ 			double meanQuantityOfEntitiesInQ10 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q10");
+ 			double meanQuantityOfEntitiesInQ11 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q11");
+ 		   
+ 			System.out.println(meanQuantityOfEntitiesInQ6 + meanQuantityOfEntitiesInQ7 + meanQuantityOfEntitiesInQ8 + 
+ 					meanQuantityOfEntitiesInQ9 + meanQuantityOfEntitiesInQ10 + meanQuantityOfEntitiesInQ11);
 
-			deadStateName = "q5 - input dead state of activity END_Release";
-			double meanQuantityOfEntitiesInQ5 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			double sdQuantityOfEntitiesInQ5 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
-					meanQuantityOfEntitiesInQ5 + "(" + sdQuantityOfEntitiesInQ5 + ")");	
-			
-			deadStateName = "q6 - output dead state of activity END_Release";
-			double sdQuantityOfEntitiesInQ6 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			double meanQuantityOfEntitiesInQ6 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
-			System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
-					meanQuantityOfEntitiesInQ6 + "(" + sdQuantityOfEntitiesInQ6 + ")");
-			
-			double meanQuantityOfEntitiesInQ4Q5Q6 = (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6);
-			double sdQuantityOfEntitiesInQ4Q5Q6 = (sdQuantityOfEntitiesInQ4 + sdQuantityOfEntitiesInQ5 + sdQuantityOfEntitiesInQ6); 
-			System.out.println("Mean (sd) number of entities in dead states q4, q5, e q6 " + meanQuantityOfEntitiesInQ4Q5Q6  + 
-					             "  (" + sdQuantityOfEntitiesInQ4Q5Q6 + ")");
+
+			 
+//		   double meanQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateMeanNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
+//		   double sdQuantityOfEntitiesInQ4Q5Q6 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesForMoreThanOneDeadState(matrixWithResults, deadStateName, deadStateName1, deadStateName2);
+//		   System.out.println("aqui Mean (sd) number of entities Q4, Q5, Q6 " +   meanQuantityOfEntitiesInQ4Q5Q6 + "(" + sdQuantityOfEntitiesInQ4Q5Q6 + ")");
+	
 //			1 2 3 = MEDIA 2
 			
 //			2 4 6 = MEDIA 4
@@ -173,6 +166,15 @@ public class TestSimulationFromConsole {
   		
 		//		printStyle11(outputSimulationResultsConsoleAsImplementedByWladimir); 
 		
+	}
+
+	private static double printMeanSDOfEntities(SimulationManagerFacade simulationManagerFacade,
+			int[][] matrixWithResults, String deadStateName) {
+		double meanQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateMeanNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+		double sdQuantityOfEntitiesInQ4 = simulationManagerFacade.calculateStandardDeviationNumberOfEntitiesInADeadState(matrixWithResults, deadStateName);
+		System.out.println("Mean (sd) number of entities in dead state " + deadStateName + "  " +  
+							meanQuantityOfEntitiesInQ4 + "(" + sdQuantityOfEntitiesInQ4 + ")");
+		return meanQuantityOfEntitiesInQ4;
 	}
 	
 	private static void printReportForActivitiesPhasesMilestonesIterations(SimulationManagerFacade simulationManagerFacade) {		
