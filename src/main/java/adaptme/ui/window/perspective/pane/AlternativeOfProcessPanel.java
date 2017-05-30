@@ -592,32 +592,7 @@ public class AlternativeOfProcessPanel {
 		// @TODO  - the method below is not working yet. Side effect when rendering the tree.
 		//	processRepository = persistProcess.buildProcessWithDeliveryProcessAsRoot(process, methodLibraryHash); 
 		
-		// Adicionando as filas nos SPEM containers
- 		
-//        List<ProcessContentRepository> tasks = processRepository.getTasks();
-//        MethodContentRepository workProduct = tasks.get(0).getInputMethodContentsRepository().iterator().next();
-//        
-//		
-//		for (ProcessContentRepository pcr: processRepository.getProcessContents()) {
-//			if (pcr.getType().equals(ProcessContentType.ITERATION)) {
-//				pcr.addInputMethodContent(workProduct);
-//				pcr.addOutputMethodContent(workProduct);				
-//			} else if (pcr.getType().equals(ProcessContentType.ACTIVITY)) {
-//				pcr.addInputMethodContent(workProduct);
-//				pcr.addOutputMethodContent(workProduct);
-//			} if (pcr.getType().equals(ProcessContentType.PHASE)) {
-//				pcr.addInputMethodContent(workProduct);
-//				pcr.addOutputMethodContent(workProduct);
-//			} if (pcr.getType().equals(ProcessContentType.MILESTONE)) {
-//				pcr.addInputMethodContent(workProduct);
-//				pcr.addOutputMethodContent(workProduct);
-//			}
-//		} 
-		 
 		simulationFacade.addProcessAlternative(processRepository);
-		
-		// tentando criar um ProcessRepository apenas com tasks
-//		processRepositoryTask = persistProcess.buildProcessOnlyTasks(process, methodLibraryHash);
 		
 		DefaultMutableTreeNode treeNode = buildTreeNode(processRepository);
 		TreePanel treePanel = new TreePanel(new DefaultTreeModel(treeNode));
@@ -626,44 +601,14 @@ public class AlternativeOfProcessPanel {
 		treePanel.getTree().addTreeSelectionListener(
 				evt -> mainPanel.changePanel((NumberCompontent) evt.getNewLeadSelectionPath().getLastPathComponent()));
 		
- 		List<String> keySet = new ArrayList<>();
-
- 		
- 		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView = persistProcess.buildGUI(processRepository, keySet);
-		 
-		
-		// main panel é o painel do centro (que esta a local view aninhado)
-		for (String key : keySet) {
-			System.out.println(key);
-			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
-//			mainPanel.getListIntegratedLocalAndRepositoryViewPanel().add(hashMapLocalView.get(key));  // teste
-			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);
-			
-
- 		}
-		
-		tabbedPaneActivity3.addTab("3.1. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
-		
-		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
-		
-		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
-		completeListOfProcessContentRepository = processRepository.getProcessContents();
-		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepository(completeListOfProcessContentRepository);
-		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
-
-//			setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
-//        	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
-		
-		workProductResourcesPanel.configuraTableListener();
-		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
-		
 		Set<String> taskList = persistProcess.getTaskList();
 		
-		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
-		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
-		roleResourcePanel.configuraTableListener();
-		tabbedPaneActivity3.addTab("3.3. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
+		RoleResourcesPanel roleResourcePanel = createContentsOfTabMappingRolesToXACDML(persistProcess);
 		
+ 		WorkProductResourcesPanel workProductResourcesPanel = createContentsOfTabMappingWorkProductsToXACDML();
+		
+		createContentsOfTabMappingWBE(persistProcess, mainPanel);
+
 		XACDMLTextAreaPanel defineXACDMLTextAreaPanel = new XACDMLTextAreaPanel(processRepository, mainPanel, this, taskList, workProductResourcesPanel, roleResourcePanel);
 		tabbedPaneActivity3.addTab("3.4. Generate XACDML", defineXACDMLTextAreaPanel.getPanel());
 		
@@ -687,6 +632,52 @@ public class AlternativeOfProcessPanel {
 		tabbedPaneActivity4.addTab("4.3. Showing results of alternatives of process", showResultsPanel);
 		
 		spemDrivenPerspectivePanel.addTab("4. Experimentation of the simulation model", tabbedPaneActivity4);
+	}
+
+	private WorkProductResourcesPanel createContentsOfTabMappingWorkProductsToXACDML() {
+		WorkProductResourcesPanel workProductResourcesPanel = new WorkProductResourcesPanel();
+		
+		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
+		completeListOfProcessContentRepository = processRepository.getProcessContents();
+		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepository(completeListOfProcessContentRepository);
+		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
+
+//			setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
+//        	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
+		
+		workProductResourcesPanel.configuraTableListener();
+		
+		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
+		return workProductResourcesPanel;
+	}
+
+	private RoleResourcesPanel createContentsOfTabMappingRolesToXACDML(PersistProcess persistProcess) {
+		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
+		roleResourcePanel.setComboBoxRole(persistProcess.getRolesList());
+		roleResourcePanel.configuraTableListener();
+		tabbedPaneActivity3.addTab("3.1. Mapping SPEM Roles to XACDML", roleResourcePanel.getTopPanel());
+		return roleResourcePanel;
+	}
+
+	private void createContentsOfTabMappingWBE(PersistProcess persistProcess,
+			MainPanelSimulationOfAlternativeOfProcess mainPanel) {
+		List<String> keySet = new ArrayList<>();
+
+ 		
+ 		HashMap<String, IntegratedLocalAndRepositoryViewPanel> hashMapLocalView = persistProcess.buildGUI(processRepository, keySet);
+		 
+		
+		// main panel é o painel do centro (que esta a local view aninhado)
+		for (String key : keySet) {
+			System.out.println(key);
+			mainPanel.getPanelMainContent().add(hashMapLocalView.get(key));  
+//			mainPanel.getListIntegratedLocalAndRepositoryViewPanel().add(hashMapLocalView.get(key));  // teste
+			mainPanel.addLayoutComponent(hashMapLocalView.get(key), key);
+			
+
+ 		}
+		
+		tabbedPaneActivity3.addTab("3.3. Mapping SPEM work breakdown elements to XACDML", mainPanel.getPanel());
 	}
 
 	private int count = 0;
