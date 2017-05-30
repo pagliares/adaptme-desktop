@@ -300,6 +300,7 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:otherwise>
   <xsl:text>
   iae.addCond("true");</xsl:text>
+  //  <xsl:text>iae.addCond("</xsl:text><xsl:value-of select="@condition"/><xsl:text>"); </xsl:text>
   </xsl:otherwise>
   </xsl:choose>
   <xsl:apply-templates select="entity_class"/>
