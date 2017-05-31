@@ -29,6 +29,7 @@ public class ParametersPanel {
 	private Parameters bestFitDistribution;
 	
 	private JTextField titleText;
+	private JLabel label;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -63,9 +64,9 @@ public class ParametersPanel {
 				constraints.gridx = 0;
 				constraints.gridy = gridy;
 				// constraints.gridwidth = 5;
-				JLabel label = new JLabel(WordUtils.capitalizeFully(labelText.toString()));
-				label.setPreferredSize(new Dimension(115, 24));
-				panel.add(label, constraints);
+				setLabel(new JLabel(WordUtils.capitalizeFully(labelText.toString())));
+				getLabel().setPreferredSize(new Dimension(115, 24));
+				panel.add(getLabel(), constraints);
 				constraints.fill = GridBagConstraints.NONE;
 				constraints.gridx = 5;
 
@@ -152,6 +153,14 @@ public class ParametersPanel {
 
 	public void setTitleText(JTextField titleText) {
 		this.titleText = titleText;
+	}
+
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public void setLabel(JLabel label) {
+		this.label = label;
 	}
 
 

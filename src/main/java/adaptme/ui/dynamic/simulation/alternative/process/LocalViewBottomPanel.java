@@ -81,9 +81,9 @@ public class LocalViewBottomPanel extends JPanel {
 		gbc_activityLabel.gridy = 0;
 		activeObserverTopPanel.add(activityLabel, gbc_activityLabel);
 		
-		activityTextField = new JTextField();
-		activityTextField.setText(processContentRepository.getName());
-		activityTextField.setColumns(10);
+		setActivityTextField(new JTextField());
+		getActivityTextField().setText(processContentRepository.getName());
+		getActivityTextField().setColumns(10);
 		GridBagConstraints gbc_activityTextField = new GridBagConstraints();
 		gbc_activityTextField.anchor = GridBagConstraints.NORTH;
 		gbc_activityTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -91,7 +91,7 @@ public class LocalViewBottomPanel extends JPanel {
 		gbc_activityTextField.gridwidth = 3;
 		gbc_activityTextField.gridx = 1;
 		gbc_activityTextField.gridy = 0;
-		activeObserverTopPanel.add(activityTextField, gbc_activityTextField);
+		activeObserverTopPanel.add(getActivityTextField(), gbc_activityTextField);
 		
 		removeObserverButton = new JButton("Remove observer");
 		removeObserverButton.addActionListener(new ActionListener() {
@@ -163,6 +163,7 @@ public class LocalViewBottomPanel extends JPanel {
 				);
 				setLayout(groupLayout);
 				configuraColunas();
+				
 	}
 	
 	public void configuraColunas() {
@@ -198,5 +199,45 @@ public class LocalViewBottomPanel extends JPanel {
 
 	public void setExtendeXACDMLAttributesPanel(JPanel extendeXACDMLAttributesPanel) {
 		this.extendeXACDMLAttributesPanel = extendeXACDMLAttributesPanel;
+	}
+
+	public JTextField getActivityTextField() {
+		return activityTextField;
+	}
+
+	public void setActivityTextField(JTextField activityTextField) {
+		this.activityTextField = activityTextField;
+	}
+
+	public JLabel getActivityLabel() {
+		return activityLabel;
+	}
+
+	public void setActivityLabel(JLabel activityLabel) {
+		this.activityLabel = activityLabel;
+	}
+
+	public JTable getTableObservers() {
+		return tableObservers;
+	}
+
+	public void setTableObservers(JTable tableObservers) {
+		this.tableObservers = tableObservers;
+	}
+
+	public JButton getAddObserverButton() {
+		return addObserverButton;
+	}
+
+	public void setAddObserverButton(JButton addObserverButton) {
+		this.addObserverButton = addObserverButton;
+	}
+
+	public JButton getRemoveObserverButton() {
+		return removeObserverButton;
+	}
+
+	public void setRemoveObserverButton(JButton removeObserverButton) {
+		this.removeObserverButton = removeObserverButton;
 	}
 }

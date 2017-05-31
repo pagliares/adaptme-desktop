@@ -141,8 +141,15 @@ public class LocalViewPanel implements UpdatePanel {
 						(processContentRepository.getType().equals(ProcessContentType.MILESTONE)))) {
 					distributionJComboBox.setEnabled(false);
 					parametersPanel.getTitleText().setEnabled(false);
-//					panel.setEnabled(false);
-				}
+					parametersPanel.getLabel().setEnabled(false);
+					localViewBottomPanel.getActivityTextField().setEnabled(false);
+					localViewBottomPanel.getActivityLabel().setEnabled(false);
+					localViewBottomPanel.getAddObserverButton().setEnabled(false);
+					localViewBottomPanel.getRemoveObserverButton().setEnabled(false);
+					lblBestFitProbbility.setEnabled(false);
+					lblSession.setEnabled(false);
+					localViewBottomPanel.getTableObservers().setVisible(false);
+ 				}
 	}
 
     public String getDistribution() {
