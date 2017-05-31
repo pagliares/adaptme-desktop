@@ -73,9 +73,8 @@ public class LocalViewBottomPanel extends JPanel {
 		gbl_activeObserverTopPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		activeObserverTopPanel.setLayout(gbl_activeObserverTopPanel);
 		
-		activityLabel = new JLabel("Activity name");
+		activityLabel = new JLabel("WBE");
 		GridBagConstraints gbc_activityLabel = new GridBagConstraints();
-		gbc_activityLabel.anchor = GridBagConstraints.WEST;
 		gbc_activityLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_activityLabel.gridx = 0;
 		gbc_activityLabel.gridy = 0;

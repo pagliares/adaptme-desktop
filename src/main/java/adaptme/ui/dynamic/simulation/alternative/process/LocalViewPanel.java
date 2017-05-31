@@ -63,9 +63,7 @@ public class LocalViewPanel implements UpdatePanel {
 		scrollPaneParameters.setBorder(BorderFactory.createEmptyBorder());
 		scrollPaneParameters.setViewportBorder(null);
 		focusListener = new ProbabilityDistributionPanelListener();
-		//distributionJComboBox.setSelectedIndex(0); // normal select by default
-													// with lines below setting
-													// initial values
+
 		bestFitDistributionParameters = Parameters.createParameter(BestFitDistribution.CONSTANT);
 		parametersPanel = new ParametersPanel(bestFitDistributionParameters, focusListener);
 		focusListener.setParameters(bestFitDistributionParameters);
@@ -137,19 +135,107 @@ public class LocalViewPanel implements UpdatePanel {
 				);
 				panel.setLayout(gl_panel);
 				
-				if ((processContentRepository.getType().equals(ProcessContentType.PHASE) || 
-						(processContentRepository.getType().equals(ProcessContentType.MILESTONE)))) {
-					distributionJComboBox.setEnabled(false);
-					parametersPanel.getTitleText().setEnabled(false);
-					parametersPanel.getLabel().setEnabled(false);
-					localViewBottomPanel.getActivityTextField().setEnabled(false);
-					localViewBottomPanel.getActivityLabel().setEnabled(false);
-					localViewBottomPanel.getAddObserverButton().setEnabled(false);
-					localViewBottomPanel.getRemoveObserverButton().setEnabled(false);
-					lblBestFitProbbility.setEnabled(false);
-					lblSession.setEnabled(false);
-					localViewBottomPanel.getTableObservers().setVisible(false);
- 				}
+				disableLocalViewFormElementsBasedOnSPEMType(processContentRepository);
+	}
+
+	private void disableLocalViewFormElementsBasedOnSPEMType(ProcessContentRepository processContentRepository) {
+		
+		ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel = (ExtendedXACDMLAttributesPanel)localViewBottomPanel.getExtendeXACDMLAttributesPanel();
+		
+		switch (processContentRepository.getType()) { 
+		case PHASE:
+			disableGUIElementsOfNoInterestToPhaseOrMilestone(extendedXACDMLAttributesPanel);
+			break;
+		case MILESTONE:
+			disableGUIElementsOfNoInterestToPhaseOrMilestone(extendedXACDMLAttributesPanel);
+            break;
+ 		case ACTIVITY:
+			disableGUIElementsOfNoInterestToActivity(extendedXACDMLAttributesPanel);
+            break;
+ 		case ITERATION:
+			disableGUIElementsOfNoInterestToIteration(extendedXACDMLAttributesPanel);
+			break;
+ 		case TASK:
+			disableGUIElementsOfNoInterestToTask(extendedXACDMLAttributesPanel);
+			break;		
+		}
+		
+		if (processContentRepository.getPredecessors().size() == 0) {
+			extendedXACDMLAttributesPanel.getDependencyTypeLabel().setEnabled(false);
+			extendedXACDMLAttributesPanel.getDependencyTypeComboBox().setEnabled(false);
+
+		}
+		
+		
+	}
+
+	private void disableGUIElementsOfNoInterestToPhaseOrMilestone(ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel) {
+		distributionJComboBox.setEnabled(false);
+		parametersPanel.getTitleText().setEnabled(false);
+		parametersPanel.getLabel().setEnabled(false);
+		localViewBottomPanel.getActivityTextField().setEnabled(false);
+		localViewBottomPanel.getActivityLabel().setEnabled(false);
+		localViewBottomPanel.getAddObserverButton().setEnabled(false);
+		localViewBottomPanel.getRemoveObserverButton().setEnabled(false);
+		lblBestFitProbbility.setEnabled(false);
+		lblSession.setEnabled(false);
+		localViewBottomPanel.getTableObservers().setVisible(false);
+		
+		extendedXACDMLAttributesPanel.getParentLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getParentTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getSpemTypeLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getSpemTypeTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getTimeboxLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getTimeboxTextField().setEnabled(false);
+	}
+	
+	private void disableGUIElementsOfNoInterestToIteration(ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel) {
+		
+		extendedXACDMLAttributesPanel.getParentLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getParentTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getSpemTypeLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getSpemTypeTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesTextField().setEnabled(false);
+	}
+	
+	private void disableGUIElementsOfNoInterestToActivity(ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel) {
+		
+		extendedXACDMLAttributesPanel.getParentLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getParentTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getSpemTypeLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getSpemTypeTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getQuantityOfResourcesTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().setEnabled(false);		
+	}
+
+	private void disableGUIElementsOfNoInterestToTask(ExtendedXACDMLAttributesPanel extendedXACDMLAttributesPanel) {
+		extendedXACDMLAttributesPanel.getParentLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getParentTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getSpemTypeLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getSpemTypeTextField().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getBehaviourAtTheEndOfIterationComboBox().setEnabled(false);
+		
+		extendedXACDMLAttributesPanel.getTimeboxLabel().setEnabled(false);
+		extendedXACDMLAttributesPanel.getTimeboxTextField().setEnabled(false);
 	}
 
     public String getDistribution() {

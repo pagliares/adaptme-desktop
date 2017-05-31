@@ -10,6 +10,7 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 
 import model.spem.ProcessContentRepository;
+import model.spem.ProcessRepository;
 import model.spem.util.BehaviourAtEndOfIterationType;
 import model.spem.util.ConditionToProcessType;
 import model.spem.util.DependencyType;
@@ -97,6 +98,13 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 		if (workbreakdownElement.getFather() != null) {
 			parentTextField.setEditable(false);
 		}
+		
+		//
+		if (workbreakdownElement.getFather() == null) {
+			parentTextField.setText(workbreakdownElement.getProcessRepository().getName());
+			parentTextField.setEditable(false);
+		}
+		//
 		
 		dependencyTypeLabel = new JLabel("Dependency type");
 		dependencyTypeComboBox = new JComboBox<>();
@@ -317,5 +325,59 @@ public class ExtendedXACDMLAttributesPanel extends JPanel {
 
 	public void setQuantityOfResourcesTextField(JTextField quantityOfResourcesTextField) {
 		this.quantityOfResourcesTextField = quantityOfResourcesTextField;
+	}
+
+
+
+	public JLabel getExtendedXacdmlAttributesLabel() {
+		return extendedXacdmlAttributesLabel;
+	}
+
+
+
+	public JLabel getBehaviourAtTheEndOfIterationLabel() {
+		return behaviourAtTheEndOfIterationLabel;
+	}
+
+
+
+	public JLabel getSpemTypeLabel() {
+		return spemTypeLabel;
+	}
+
+
+
+	public JLabel getTimeboxLabel() {
+		return timeboxLabel;
+	}
+
+
+
+	public JLabel getProcessingQuantityLabel() {
+		return processingQuantityLabel;
+	}
+
+
+
+	public JLabel getParentLabel() {
+		return parentLabel;
+	}
+
+
+
+	public JLabel getDependencyTypeLabel() {
+		return dependencyTypeLabel;
+	}
+
+
+
+	public JLabel getConditionToProcessLabel() {
+		return conditionToProcessLabel;
+	}
+
+
+
+	public JLabel getQuantityOfResourcesLabel() {
+		return quantityOfResourcesLabel;
 	}
 }
