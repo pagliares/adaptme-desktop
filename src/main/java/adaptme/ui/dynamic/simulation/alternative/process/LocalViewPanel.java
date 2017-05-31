@@ -21,6 +21,8 @@ import model.spem.Sample;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.Parameters;
 import model.spem.derived.gui.ParametersPanel;
+import model.spem.util.ProcessContentType;
+
 import javax.swing.border.LineBorder;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -134,6 +136,13 @@ public class LocalViewPanel implements UpdatePanel {
 							.addGap(4))
 				);
 				panel.setLayout(gl_panel);
+				
+				if ((processContentRepository.getType().equals(ProcessContentType.PHASE) || 
+						(processContentRepository.getType().equals(ProcessContentType.MILESTONE)))) {
+					distributionJComboBox.setEnabled(false);
+					parametersPanel.getTitleText().setEnabled(false);
+//					panel.setEnabled(false);
+				}
 	}
 
     public String getDistribution() {

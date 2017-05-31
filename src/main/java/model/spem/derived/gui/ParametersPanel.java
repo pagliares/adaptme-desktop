@@ -27,6 +27,8 @@ import model.spem.derived.UniformParameters;
 public class ParametersPanel {
 	private JPanel panel;
 	private Parameters bestFitDistribution;
+	
+	private JTextField titleText;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -67,22 +69,22 @@ public class ParametersPanel {
 				constraints.fill = GridBagConstraints.NONE;
 				constraints.gridx = 5;
 
-				JTextField titleText = new JTextField("480");   
-				titleText.setName(name);
+				setTitleText(new JTextField("480"));   
+				getTitleText().setName(name);
 				// start
 
 				if (parameters instanceof ConstantParameters) {
 					
 					ConstantParameters constantParameters = (ConstantParameters)parameters;
-					constantParameters.setValue(Double.parseDouble(titleText.getText()));
+					constantParameters.setValue(Double.parseDouble(getTitleText().getText()));
 		 			 
 				} else if (parameters instanceof UniformParameters) {
 					
 					UniformParameters UniformParameters = (UniformParameters)parameters;
-					if (titleText.getName().equals("high")) {
-						UniformParameters.setHigh(Double.parseDouble(titleText.getText()));
+					if (getTitleText().getName().equals("high")) {
+						UniformParameters.setHigh(Double.parseDouble(getTitleText().getText()));
 					} else {
-						UniformParameters.setLow(Double.parseDouble(titleText.getText()));
+						UniformParameters.setLow(Double.parseDouble(getTitleText().getText()));
 					}
 					
 				
@@ -90,43 +92,43 @@ public class ParametersPanel {
 				} else if (parameters instanceof NegativeExponential) {
 					
 					NegativeExponential negativeExponential = (NegativeExponential)parameters;
-					negativeExponential.setAverage(Double.parseDouble(titleText.getText()));
+					negativeExponential.setAverage(Double.parseDouble(getTitleText().getText()));
 					 
 	 	 			
 				} else if (parameters instanceof NormalParameters) {
 					
 					NormalParameters normalParameters = (NormalParameters)parameters;
 					
-					if (titleText.getName().equals("average")) {
-						normalParameters.setMean(Double.parseDouble(titleText.getText()));
+					if (getTitleText().getName().equals("average")) {
+						normalParameters.setMean(Double.parseDouble(getTitleText().getText()));
 					} else {
-						normalParameters.setStandardDeviation(Double.parseDouble(titleText.getText()));
+						normalParameters.setStandardDeviation(Double.parseDouble(getTitleText().getText()));
 					}
 
 
 				} else if (parameters instanceof PoissonParameters) {
 					
 					PoissonParameters poissonParameters = (PoissonParameters)parameters;
-					poissonParameters.setMean(Double.parseDouble(titleText.getText()));
+					poissonParameters.setMean(Double.parseDouble(getTitleText().getText()));
 	 			} 
 				
 				else if (parameters instanceof LogNormalParameters) {
 					
 					LogNormalParameters logNormalParameters = (LogNormalParameters)parameters;
-					if (titleText.getName().equals("scale")) {
-						logNormalParameters.setScale(Double.parseDouble(titleText.getText()));
+					if (getTitleText().getName().equals("scale")) {
+						logNormalParameters.setScale(Double.parseDouble(getTitleText().getText()));
 					} else {
-						logNormalParameters.setShape(Double.parseDouble(titleText.getText()));
+						logNormalParameters.setShape(Double.parseDouble(getTitleText().getText()));
  					}
 	 			}				
 				
 				
-				titleText.addFocusListener(focusListener);
+				getTitleText().addFocusListener(focusListener);
 				
 	
 
-				titleText.setPreferredSize(new Dimension(58, 28));
-				panel.add(titleText, constraints);
+				getTitleText().setPreferredSize(new Dimension(58, 28));
+				panel.add(getTitleText(), constraints);
 				
  
 				gridy += 1;
@@ -142,6 +144,14 @@ public class ParametersPanel {
 	 */
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	public JTextField getTitleText() {
+		return titleText;
+	}
+
+	public void setTitleText(JTextField titleText) {
+		this.titleText = titleText;
 	}
 
 
