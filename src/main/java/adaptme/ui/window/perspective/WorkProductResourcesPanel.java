@@ -116,15 +116,30 @@ public class WorkProductResourcesPanel {
 		Set<MethodContentRepository> setOfInputMethodContentRepository;
 		Set<MethodContentRepository> setOfOutputMethodContentRepository;
 
-		for (ProcessContentRepository pcr : listOfProcessContentRepositoryTasks) {
+		int counterQuantityOfWBEs = 0;
+		String type = "";
+		for (ProcessContentRepository pcr : listOfProcessContentRepositoryTasks) {  
+			if ((pcr.getType().equals(ProcessContentType.MILESTONE))) {
+				System.out.println();
+			}
+			
 			setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
-			setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
+//			setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
 
 			for (MethodContentRepository mcr : setOfInputMethodContentRepository) {
 
+				if ((counterQuantityOfWBEs == 0)) {
+					type = "INPUT";
+				} else if (counterQuantityOfWBEs == listOfProcessContentRepositoryTasks.size()-1) {
+					type = "OUTPUT";
+				} else {
+					type = "OUTPUT/INPUT";
+				}
+	 			
+				
 				WorkProductXACDML workProduct = new WorkProductXACDML();
 				workProduct.setName(mcr.getName());
-				workProduct.setInputOrOutput("INPUT");
+				workProduct.setInputOrOutput(type);
 				workProduct.setTaskName(pcr.getName());
 				workProduct.setQueueName("q" + queueIndex);
 				workProduct.setQueueType(QueueType.QUEUE);
@@ -152,50 +167,52 @@ public class WorkProductResourcesPanel {
 					generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField("q" + queueIndex);
 					listOfGenerateActivityWorkProductResourcesObserversPanel.add(generateActivityWorkProductResourcesObserversPanel);
 					queueIndex++;
+					counterQuantityOfWBEs++;
 //				}
 			}
 			System.out.println("value of i after all input" + i);
+		}
 
-			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
+//			for (MethodContentRepository mcr : setOfOutputMethodContentRepository) {
 
-				WorkProductXACDML workProduct = new WorkProductXACDML();
-				workProduct.setName(mcr.getName());
-				workProduct.setInputOrOutput("OUTPUT");
-				workProduct.setTaskName(pcr.getName());
-				workProduct.setQueueName("q" + queueIndex);
-				workProduct.setQueueType(QueueType.QUEUE);
-				workProduct.setPolicy(Policy.FIFO);
+//				WorkProductXACDML workProduct = new WorkProductXACDML();
+//				workProduct.setName(mcr.getName());
+//				workProduct.setInputOrOutput("OUTPUT");
+//				workProduct.setTaskName(pcr.getName());
+//				workProduct.setQueueName("q" + queueIndex);
+//				workProduct.setQueueType(QueueType.QUEUE);
+//				workProduct.setPolicy(Policy.FIFO);
+//
+//				workProducts.add(workProduct); // colocamos todos produtos de
+//												// trabalho de saida
+//				i++;
 
-				workProducts.add(workProduct); // colocamos todos produtos de
-												// trabalho de saida
-				i++;
+//				generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i,
+//						"Generate activity for demand work product : " + mcr.getName());
+//				generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(
+//						new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
+//				listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
 
-				generateActivityProbabilityDistributionPanel = new GenerateActivityProbabilityDistributionPanel(i,
-						"Generate activity for demand work product : " + mcr.getName());
-				generateActivityProbabilityDistributionPanel.setSelectedDemandWorkProductLabel(
-						new JLabel(mcr.getName() + " " + generateActivityProbabilityDistributionPanel.getName()));
-				listOfGenerateActivityProbabilityDistributionPanels.add(generateActivityProbabilityDistributionPanel);
-
-				queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
-						"q" + queueIndex, "queue observers");
-				
-				queueWorkProductResourcesObserversPanel.setQueueNameTextField("q" + queueIndex);
-				listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
-
-				generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
-						"q" + queueIndex, "generate activity observers");
-				generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField("q" + queueIndex);
-				listOfGenerateActivityWorkProductResourcesObserversPanel
-						.add(generateActivityWorkProductResourcesObserversPanel);
-				queueIndex++;
-			}
-			System.out.println("value of i after all output" + i);			
+//				queueWorkProductResourcesObserversPanel = new WorkProductResourcesQueueObserversPanel(i,
+//						"q" + queueIndex, "queue observers");
+//				
+//				queueWorkProductResourcesObserversPanel.setQueueNameTextField("q" + queueIndex);
+//				listOfQueueWorkProductResourcesObserversPanel.add(queueWorkProductResourcesObserversPanel);
+//
+//				generateActivityWorkProductResourcesObserversPanel = new WorkProductResourcesGenerateActivityObserversPanel(i,
+//						"q" + queueIndex, "generate activity observers");
+//				generateActivityWorkProductResourcesObserversPanel.setQueueNameTextField("q" + queueIndex);
+//				listOfGenerateActivityWorkProductResourcesObserversPanel
+//						.add(generateActivityWorkProductResourcesObserversPanel);
+//				queueIndex++;
+//			}
+//			System.out.println("value of i after all output" + i);			
 			
 //			Collections.sort(workProducts); // ordenando para facilitar a
 											// visualizacao nas tabelas da
 											// atividade 3.1 e 4.1
 
-		}
+		
 		model = new WorkProductTableModel(workProducts, listOfQueueWorkProductResourcesObserversPanel,
 				listOfGenerateActivityWorkProductResourcesObserversPanel);
 		tableWorkProduct.setModel(model);
