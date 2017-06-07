@@ -168,38 +168,6 @@ public class ExperimentationPanel extends JPanel {
 		JLabel lblWorkProductFinishes = new JLabel("No more temporary entity");
 		
 		JComboBox comboBox = new JComboBox();
-		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
-		gl_panel_7.setHorizontalGroup(
-			gl_panel_7.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_7.createSequentialGroup()
-					.addGap(155)
-					.addComponent(lblDurationTime)
-					.addGap(12)
-					.addComponent(simulationDurationTextField, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-					.addGap(253)
-					.addComponent(lblWorkProductFinishes, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
-					.addGap(77))
-		);
-		gl_panel_7.setVerticalGroup(
-			gl_panel_7.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_7.createSequentialGroup()
-					.addGroup(gl_panel_7.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_7.createSequentialGroup()
-							.addGap(19)
-							.addComponent(lblDurationTime))
-						.addGroup(gl_panel_7.createSequentialGroup()
-							.addGap(13)
-							.addComponent(simulationDurationTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_7.createSequentialGroup()
-							.addGap(19)
-							.addGroup(gl_panel_7.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblWorkProductFinishes))))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		panel_7.setLayout(gl_panel_7);
 		
 		comboBoxVariableType.addItem(VariableType.INDEPENDENT);
 		comboBoxVariableType.addItem(VariableType.DEPENDENT);
@@ -241,6 +209,42 @@ public class ExperimentationPanel extends JPanel {
 					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 					.addGap(15))
 		);
+		
+		JLabel lblOr = new JLabel("OR");
+		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
+		gl_panel_7.setHorizontalGroup(
+			gl_panel_7.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(155)
+					.addComponent(lblDurationTime)
+					.addGap(12)
+					.addComponent(simulationDurationTextField, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					.addGap(93)
+					.addComponent(lblOr, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+					.addGap(99)
+					.addComponent(lblWorkProductFinishes, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel_7.setVerticalGroup(
+			gl_panel_7.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblDurationTime))
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(13)
+					.addComponent(simulationDurationTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblOr))
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(23)
+					.addComponent(lblWorkProductFinishes))
+				.addGroup(gl_panel_7.createSequentialGroup()
+					.addGap(19)
+					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		panel_7.setLayout(gl_panel_7);
 		setLayout(groupLayout);
 
 	}
@@ -281,8 +285,4 @@ public class ExperimentationPanel extends JPanel {
 	public Map<String, VariableType> getMapQueueVariableType() {
 		return mapQueueVariableType;
 	}
-	
-
-	
-
 }
