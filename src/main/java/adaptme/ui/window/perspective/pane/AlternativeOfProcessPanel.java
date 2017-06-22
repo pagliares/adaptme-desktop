@@ -640,16 +640,80 @@ public class AlternativeOfProcessPanel {
 		// teste - em vez de pasar uma lista de String com o nome do work product, passar a lista de tarefas para se pegar os de entrada e saida
 		completeListOfProcessContentRepository = processRepository.getProcessContents();
 		listOfProcessContentRepositoryTasks = processRepository.getListProcessContentRepository(completeListOfProcessContentRepository);
-		workProductResourcesPanel.setModelComboBoxWorkProduct(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
-
-//			setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
-//        	workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
+			
+		insertWorkProductIntoMilestone();
+			
+		workProductResourcesPanel.setWorkProductXACDMLTableModel(listOfProcessContentRepositoryTasks);	// configura JTable dentro da aba 3.2
+		
+		//	setModelProcessContentRepository pcr = completeListOfProcessContentRepository.get(0); 
+		//  workProductResourcesPanel.setModelComboBoxWorkProductForExtendedXACDML(pcr);
 		
 		workProductResourcesPanel.configuraTableListener();
 		
 		tabbedPaneActivity3.addTab("3.2. Mapping SPEM work products to XACDML", workProductResourcesPanel.getPanel());
 		return workProductResourcesPanel;
 	}
+
+	/** 
+	 * @author Pagliares
+	 * Method to insert work products into milestones. 
+	 * We use the workproducts of a task as reference, but it would work for other dummy active states
+	 * Repair that if a process has milestone but not task, it would fail miserably
+	 * TODO - In the future, resolve this problems and the case with more than one input/output workproducts
+	 * 1 - Create new input/output work products based on the first task work products found.
+	 * 2 - Add the new work products into the milestone
+	 */
+	private void insertWorkProductIntoMilestone() {
+		
+		MethodContentRepository inputMethodContentRepository = null;
+		MethodContentRepository outputMethodContentRepository = null;
+		
+		// 1 - Create new input/output work products based on the first task work products found.
+		for (ProcessContentRepository pcr : listOfProcessContentRepositoryTasks) {
+			if (pcr.getType().equals(ProcessContentType.TASK)) { 
+				Set<MethodContentRepository>setOfInputMethodContentRepository = pcr.getInputMethodContentsRepository();
+				for (MethodContentRepository mcrInput :setOfInputMethodContentRepository ) {
+					inputMethodContentRepository = new MethodContentRepository();
+					inputMethodContentRepository.setId(mcrInput.getId());
+					inputMethodContentRepository.setName(mcrInput.getName());
+ 					inputMethodContentRepository.setType(mcrInput.getType());	
+				}
+				
+				Set<MethodContentRepository>setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
+				for (MethodContentRepository mcrOutput :setOfOutputMethodContentRepository ) {
+					outputMethodContentRepository = new MethodContentRepository();
+					outputMethodContentRepository.setId(mcrOutput.getId());
+					outputMethodContentRepository.setName(mcrOutput.getName());
+					outputMethodContentRepository.setProcessContentRepository(pcr);
+					outputMethodContentRepository.setType(mcrOutput.getType());	
+				}
+				break;
+			}
+		}
+		
+		// 2 - Add the new work products into the milestone
+		for (ProcessContentRepository pcr: listOfProcessContentRepositoryTasks) {
+			if ((pcr.getType().equals(ProcessContentType.MILESTONE))) {
+				inputMethodContentRepository.setProcessContentRepository(pcr);
+				outputMethodContentRepository.setProcessContentRepository(pcr);
+				pcr.getInputMethodContentsRepository().add(inputMethodContentRepository);			
+				pcr.getOutputMethodContentsRepository().add(outputMethodContentRepository);
+			}
+			
+			// Printing to console for debugging purposes. Remove after more detailed tests
+//			System.out.println("PCR name, input work product name, output work product name, type, task associated with the input and output work product");
+//			System.out.println(pcr);
+//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getName());
+//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getName());
+//
+//			
+//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getType());
+//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getType());
+//
+//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
+//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
+		}	
+ 	}
 
 	private RoleResourcesPanel createContentsOfTabMappingRolesToXACDML(PersistProcess persistProcess) {
 		RoleResourcesPanel roleResourcePanel = new RoleResourcesPanel();
