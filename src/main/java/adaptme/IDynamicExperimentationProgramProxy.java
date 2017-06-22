@@ -13,7 +13,5 @@ public interface IDynamicExperimentationProgramProxy {
 	float getSimulationDuration();
 		 
 	SimulationManager getSimulationManager();
-		 
-	
-
+		
 }
