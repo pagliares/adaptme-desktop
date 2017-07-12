@@ -7,6 +7,8 @@ package simula;
 import java.sql.Time;
 import java.util.*;
 
+import simula.manager.ActiveEntry;
+import simula.manager.ExternalActiveEntry;
 import simula.manager.InternalActiveEntry;
 import simula.manager.SimulationManager;
 
@@ -628,6 +630,11 @@ public class Activity extends ActiveState{
 
 		while (it.hasNext()){
 
+			ActiveEntry ae = (ActiveEntry)it.next();
+			if ((ae instanceof ExternalActiveEntry)) {
+				return false;
+			}
+			
 			InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
 			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
 
