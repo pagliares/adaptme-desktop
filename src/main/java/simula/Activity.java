@@ -709,7 +709,12 @@ public class Activity extends ActiveState{
 	private double getParentTimebox(String parent) {
 		Vector activities  = s.getActivestates();
 		Activity activeState;
+		ActiveState ae;
 		for (int i =0; i < activities.size(); i++) {
+			ae = (ActiveState)activities.get(i);
+			if (ae instanceof Generate) {
+				break;
+			}
 			activeState = (Activity)activities.get(i);
 			if (activeState.name.equalsIgnoreCase(parent)) {
 				return activeState.timeBox;
@@ -721,7 +726,12 @@ public class Activity extends ActiveState{
 	private double getTimeParentStarted(String parent) {
 		Vector activities  = s.getActivestates();
 		Activity activeState;
+		ActiveState ae;
 		for (int i =0; i < activities.size(); i++) {
+			 ae = (ActiveState)activities.get(i);
+			if (ae instanceof Generate) {
+				break;
+			}
 			activeState = (Activity)activities.get(i);
 			if (activeState.name.equalsIgnoreCase(parent)) {
 				return activeState.timeWasStarted;
