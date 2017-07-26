@@ -677,7 +677,7 @@ public class AlternativeOfProcessPanel {
 					inputMethodContentRepository.setId(mcrInput.getId());
 					inputMethodContentRepository.setName(mcrInput.getName());
  					inputMethodContentRepository.setType(mcrInput.getType());	
-				}
+ 				}
 				
 				Set<MethodContentRepository>setOfOutputMethodContentRepository = pcr.getOutputMethodContentsRepository();
 				for (MethodContentRepository mcrOutput :setOfOutputMethodContentRepository ) {
@@ -686,7 +686,7 @@ public class AlternativeOfProcessPanel {
 					outputMethodContentRepository.setName(mcrOutput.getName());
 					outputMethodContentRepository.setProcessContentRepository(pcr);
 					outputMethodContentRepository.setType(mcrOutput.getType());	
-				}
+ 				}
 				break;
 			}
 		}
@@ -701,17 +701,17 @@ public class AlternativeOfProcessPanel {
 			}
 			
 			// Printing to console for debugging purposes. Remove after more detailed tests
-//			System.out.println("PCR name, input work product name, output work product name, type, task associated with the input and output work product");
-//			System.out.println(pcr);
-//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getName());
-//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getName());
-//
-//			
-//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getType());
-//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getType());
-//
-//			System.out.println(pcr.getInputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
-//			System.out.println(pcr.getOutputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
+			System.out.println("PCR name, \tinput work product name, \toutput work product name, \tinput work product type, \toutput work product type, \ttask associated with the input and output work product");
+			System.out.print(pcr);
+			System.out.print(" " + pcr.getInputMethodContentsRepository().iterator().next().getName());
+			System.out.print("                         " + pcr.getOutputMethodContentsRepository().iterator().next().getName());
+
+			
+			System.out.print(" " +pcr.getInputMethodContentsRepository().iterator().next().getType());
+			System.out.print(" " +pcr.getOutputMethodContentsRepository().iterator().next().getType());
+
+			System.out.print(" " +pcr.getInputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
+			System.out.print(" " +pcr.getOutputMethodContentsRepository().iterator().next().getProcessElementRepository().getName());
 		}	
  	}
 
