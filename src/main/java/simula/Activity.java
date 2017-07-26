@@ -629,24 +629,26 @@ public class Activity extends ActiveState{
 		Iterator it =  s.getSimulationManager().GetActiveStatesIterator();
 
 		while (it.hasNext()){
-
-			InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
-			String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
-
-			if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { 
-				System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
-				System.out.println("Number of entities in class...(SimulationManger.quantity)" + SimulationManager.quantityOfEntitiesInClass);
-
-				Activity ac = (Activity)internalActivityEntry.getActiveState();
-				System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
-		     
-			    if (ac.numberOfEntitiesProduced != SimulationManager.quantityOfEntitiesInClass) {
-			    	System.out.println("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");
-
-			    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");
-			    	return false;
-			    }
-			}
+			ActiveEntry ae = (ActiveEntry)it.next();
+			if (!(ae instanceof ExternalActiveEntry)) {
+				InternalActiveEntry internalActivityEntry = (InternalActiveEntry)it.next();
+				String outcomeQueueNamePreviousActivity = (String)internalActivityEntry.getToQueue().get(0);
+	
+				if (previousQueueName.equals(outcomeQueueNamePreviousActivity)) { 
+					System.out.println("Outcome queue of previous activity " + outcomeQueueNamePreviousActivity);
+					System.out.println("Number of entities in class...(SimulationManger.quantity)" + SimulationManager.quantityOfEntitiesInClass);
+	
+					Activity ac = (Activity)internalActivityEntry.getActiveState();
+					System.out.println("Contador da atividade previa..: " + ac.numberOfEntitiesProduced);
+			     
+				    if (ac.numberOfEntitiesProduced != SimulationManager.quantityOfEntitiesInClass) {
+				    	System.out.println("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");
+	
+				    	Log.LogMessage("\t" + name + ": it was not possible to start " + name + " this time, since previous activity did not finish processing all class of entities \n");
+				    	return false;
+				    }
+				}
+		  }
 		}
 		return true;
 	}
