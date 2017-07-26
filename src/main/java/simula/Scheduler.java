@@ -350,6 +350,8 @@ public class Scheduler implements Runnable{
 						// System.out.println("\nsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
 						Log.LogMessage("\n\tsize of entity class before moving..: " + SimulationManager.quantityOfEntitiesInClass);
 					
+						// TODO Need to grab from XSLT, the attributes for iteration_behaviour. The below method must be called for 
+						// the SPEM-TO-XACDML process, but not called for the approach paper example (product development)
 						moveEntitiesBackToInitialState(act);
 						
 						// System.out.println("\nSnapshot after moving the entities");
@@ -372,7 +374,10 @@ public class Scheduler implements Runnable{
 							previousBeginIteration.setNumberOfEntitiesProduced(SimulationManager.quantityOfEntitiesInClass);	  
 						}
 					}
-				}
+				} 
+//				else if (activeState instanceof Generate) {
+//					SimulationManager.quantityOfEntitiesInClass++;
+//				}
 				
 			}while(calendar.RemoveNext());  
  

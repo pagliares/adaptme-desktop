@@ -20,10 +20,10 @@ public class TestSimulationFromConsole {
 	public static void main(String[] args) {
 	
 		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
-		int quantityOfReplications = 5;
+		int quantityOfReplications = 1;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
 		String processToBeSimulated = "AGILE";
-		simulationManagerFacade.execute(138400, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (38400 = 80 days)
+		simulationManagerFacade.execute(144000, quantityOfReplications, true); // AGILE, PROBLEM REPORT, PAINTING/COATING  (144000 = 300 days)
 		System.out.println();
 		
 		//System.out.println("\n\n----------------------------------------   RESULTS BY REPLICATION   -------------------------------------------\n");
