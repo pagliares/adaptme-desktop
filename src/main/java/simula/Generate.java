@@ -4,6 +4,8 @@
 
 package simula;
 
+import simula.manager.SimulationManager;
+
 /**
  * Classe que implementa um Generate
  */
@@ -96,6 +98,11 @@ public class Generate extends ActiveState
 	 * implementa protocolo.
 	 */
 	public boolean BServed(float time){
+		
+		if (Activity.isBeginOfSimulation) { // pagliares 
+			Activity.isBeginOfSimulation = false; // pagliares
+			return true; // pagliares
+		}
 		
 		/*  TODO CT00 - MINIMAL PROCESS WITH ONLY GENERATE ACTIVITY
 			FIRST HIT IN THE BREAKPOINT 
@@ -210,6 +217,9 @@ public class Generate extends ActiveState
 		
 		
 		Generated++;					// mais uma entidade gerada
+		
+		SimulationManager.quantityOfEntitiesInClass++;
+		System.out.println("quantity " + SimulationManager.quantityOfEntitiesInClass);
 
 		inservice = false;				// libera a gera��o de novas entidades
 		if(obs != null)
