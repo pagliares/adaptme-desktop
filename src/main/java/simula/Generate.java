@@ -101,6 +101,7 @@ public class Generate extends ActiveState
 		
 		if (Activity.isBeginOfSimulation) { // pagliares 
 			Activity.isBeginOfSimulation = false; // pagliares
+			inservice = false;
 			return true; // pagliares
 		}
 		
