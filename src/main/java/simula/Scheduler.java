@@ -352,7 +352,7 @@ public class Scheduler implements Runnable{
 					
 						// TODO Need to grab from XSLT, the attributes for iteration_behaviour. The below method must be called for 
 						// the SPEM-TO-XACDML process, but not called for the approach paper example (product development)
-						moveEntitiesBackToInitialState(act);
+//						moveEntitiesBackToInitialState(act);
 						
 						// System.out.println("\nSnapshot after moving the entities");
 						//	printNumberOfEntitiesInEachDeadState();
