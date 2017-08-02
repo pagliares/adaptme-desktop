@@ -777,10 +777,12 @@ public class Activity extends ActiveState{
 		Vector activities  = s.getActivestates();
 		Activity activeState;
 		for (int i =0; i < activities.size(); i++) {
-			activeState = (Activity)activities.get(i);
-			beginIterationOrReleaseSufix = activeState.name.substring(6);
-			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
-				return activeState.timeBox;
+			if (!(activities.get(i) instanceof Generate)) {
+				activeState = (Activity)activities.get(i);
+				beginIterationOrReleaseSufix = activeState.name.substring(6);
+				if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
+					return activeState.timeBox;
+				}
 			}
 		}
 		return 0;
@@ -792,10 +794,12 @@ public class Activity extends ActiveState{
 		Vector activities  = s.getActivestates();
 		Activity activeState;
 		for (int i =0; i < activities.size(); i++) {
-			activeState = (Activity)activities.get(i);
-			beginIterationOrReleaseSufix = activeState.name.substring(6);
-			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
-				return activeState.timeWasStarted;
+			if (!(activities.get(i) instanceof Generate)) {
+				activeState = (Activity)activities.get(i);
+				beginIterationOrReleaseSufix = activeState.name.substring(6);
+				if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
+					return activeState.timeWasStarted;
+				}
 			}
 		}
 		return 0;
@@ -807,10 +811,12 @@ public class Activity extends ActiveState{
 		Vector activities  = s.getActivestates();
 		Activity activeState;
 		for (int i =0; i < activities.size(); i++) {
-			activeState = (Activity)activities.get(i);
-			beginIterationOrReleaseSufix = activeState.name.substring(6);
-			if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
-				return activeState;
+			if (!(activities.get(i) instanceof Generate)) {
+				activeState = (Activity)activities.get(i);
+				beginIterationOrReleaseSufix = activeState.name.substring(6);
+				if ((activeState.name.startsWith("BEGIN_")) && (endIterationOrReleaseSufix.equalsIgnoreCase(beginIterationOrReleaseSufix))){
+					return activeState;
+				}
 			}
 		}
 		return null;
