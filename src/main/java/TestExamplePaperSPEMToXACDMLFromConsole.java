@@ -15,7 +15,7 @@ import adaptme.ui.window.perspective.VariableType;
 import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 
-public class TestSimulationFromConsole {
+public class TestExamplePaperSPEMToXACDMLFromConsole {
 
 	public static void main(String[] args) {
 	
