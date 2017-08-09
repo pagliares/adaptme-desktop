@@ -33,6 +33,7 @@ public abstract class ActiveEntry extends Entry{
   public static final short LOGNORMAL = 6;  // Criado por Pagliares
   public static final short WEIBULL = 7;  // Criado por Pagliares
   public static final short GAMMA = 8;  // Criado por Pagliares
+  public static final short EXPONENTIAL = 9;  // Criado por Pagliares
   
   /**
    * tipo de distribui��o de servi�o
@@ -92,6 +93,10 @@ public abstract class ActiveEntry extends Entry{
 	else if(servicedist == GAMMA)
 	{
 		return "GAMMA";
+	}
+	else if(servicedist == EXPONENTIAL)
+	{
+		return "EXPONENTIAL";
 	}
 	return "SERVICEDIST???";
   }

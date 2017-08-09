@@ -86,6 +86,10 @@ public class ExternalActiveEntry extends ActiveEntry{
 				case NORMAL: 	((Generate)activeState).SetServiceTime(new Normal(m.sample, distp1, distp2)); break;
 				case NEGEXP: 	((Generate)activeState).SetServiceTime(new NegExp(m.sample, distp1)); break;
 				case POISSON: ((Generate)activeState).SetServiceTime(new Poisson(m.sample, distp1)); break;
+				case LOGNORMAL: ((Generate)activeState).SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
+				case WEIBULL: 	((Generate)activeState).SetServiceTime(new Weibull(m.sample, distp1, distp2)); break;
+				case GAMMA: 	((Generate)activeState).SetServiceTime(new Gamma(m.sample, distp1, distp2)); break;
+				case EXPONENTIAL: 	((Generate)activeState).SetServiceTime(new Exponential(m.sample, distp1)); break;
 				default: return false;
 			}
 			

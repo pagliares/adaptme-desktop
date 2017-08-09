@@ -142,6 +142,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case LOGNORMAL: ((Router)activeState).setServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				case WEIBULL: ((Router)activeState).setServiceTime(new Weibull(m.sample, distp1, distp2)); break;
 				case GAMMA: ((Router)activeState).setServiceTime(new Gamma(m.sample, distp1, distp2)); break;
+				case EXPONENTIAL: ((Router)activeState).setServiceTime(new Exponential(m.sample, distp1)); break;
 				default: return false;
 			}
 			
@@ -195,6 +196,7 @@ public class InternalActiveEntry extends ActiveEntry{
 				case LOGNORMAL: activity.SetServiceTime(new LogNormal(m.sample, distp1, distp2)); break;
 				case WEIBULL: 	activity.SetServiceTime(new Weibull(m.sample, distp1, distp2)); break;
 				case GAMMA: 	activity.SetServiceTime(new Gamma(m.sample, distp1, distp2)); break;
+				case EXPONENTIAL: 	activity.SetServiceTime(new Exponential(m.sample, distp1)); break;
 				default: return false;
 			}
 			 
