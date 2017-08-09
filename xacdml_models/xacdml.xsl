@@ -443,13 +443,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:text>);// mapped by stat type</xsl:text>
   <xsl:if test="@parm1">
   <xsl:text>
-  iae.setDistP1((int)</xsl:text>
+  iae.setDistP1(</xsl:text>
   <xsl:value-of select="@parm1"/>
   <xsl:text>);// mapped by parm1</xsl:text>
   </xsl:if>
   <xsl:if test="@parm2">
   <xsl:text>
-  iae.setDistP2((int)</xsl:text>
+  iae.setDistP2(</xsl:text>
   <xsl:value-of select="@parm2"/>
   <xsl:text>); //mapped by parm2</xsl:text>
   </xsl:if>
@@ -460,13 +460,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:text>);// mapped by stat type</xsl:text>
   <xsl:if test="@parm1">
   <xsl:text>
-  eae.setDistP1((int)</xsl:text>
+  eae.setDistP1(</xsl:text>
   <xsl:value-of select="@parm1"/>
   <xsl:text>);// mapped by parm1</xsl:text>
   </xsl:if>
   <xsl:if test="@parm2">
   <xsl:text>
-  eae.setDistP2((int)</xsl:text>
+  eae.setDistP2(</xsl:text>
   <xsl:value-of select="@parm2"/>
   <xsl:text>); //mapped by parm2</xsl:text>
   </xsl:if>
@@ -477,13 +477,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   <xsl:text>);// mapped by stat type</xsl:text>
   <xsl:if test="stat/@parm1">
   <xsl:text>
-  intae.setDistP1((int)</xsl:text>
+  intae.setDistP1(</xsl:text>
   <xsl:value-of select="stat/@parm1"/>
   <xsl:text>);// mapped by parm1</xsl:text>
   </xsl:if>
   <xsl:if test="stat/@parm2">
   <xsl:text>
-  intae.setDistP2((int)</xsl:text>
+  intae.setDistP2(</xsl:text>
   <xsl:value-of select="stat/@parm2"/>
   <xsl:text>); //mapped by parm2</xsl:text>
   </xsl:if>
