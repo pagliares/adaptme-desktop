@@ -31,6 +31,8 @@ public abstract class ActiveEntry extends Entry{
   public static final short NEGEXP  = 4; 
   public static final short POISSON = 5;
   public static final short LOGNORMAL = 6;  // Criado por Pagliares
+  public static final short WEIBULL = 7;  // Criado por Pagliares
+  public static final short GAMMA = 8;  // Criado por Pagliares
   
   /**
    * tipo de distribui��o de servi�o
@@ -42,7 +44,7 @@ public abstract class ActiveEntry extends Entry{
    * t�m significados diferentes 
    * de acordo com a distribui��o
    */
-  protected float distp1, distp2;
+  protected double distp1, distp2;   // Pagliares - I refactored from float to double in order to generate DynamicExperimentationProgramProxy without casting to int
 
   public String toString(){
 	StringBuffer stb = new StringBuffer();
@@ -82,6 +84,14 @@ public abstract class ActiveEntry extends Entry{
 	else if(servicedist == LOGNORMAL)
 	{
 		return "LOGNORMAL";
+	}
+	else if(servicedist == WEIBULL)
+	{
+		return "WEIBULL";
+	}
+	else if(servicedist == GAMMA)
+	{
+		return "GAMMA";
 	}
 	return "SERVICEDIST???";
   }
@@ -145,15 +155,34 @@ public abstract class ActiveEntry extends Entry{
 		hasSerialized = true;
 	}
 	
-	public short getServiceDist(){	return servicedist;	}
-	public void setServiceDist(short v_sServiceDist){	servicedist = v_sServiceDist;	}
-	public float getDistP1(){	return distp1;	}
-	public float getDistP2(){	return distp2;	}
-	public void setDistP1(float v_fDistP1){	distp1 = v_fDistP1;	}
-	public void setDistP2(float v_fDistP2){	distp2 = v_fDistP2;	}
+	public short getServiceDist(){	
+		return servicedist;	
+	}
+	
+	public void setServiceDist(short v_sServiceDist){	
+		servicedist = v_sServiceDist;	
+	}
+	
+	public double getDistP1(){	
+		return distp1;	
+	}
+	
+	public double getDistP2(){	
+		return distp2;	
+	}
+	
+	public void setDistP1(double v_fDistP1){	
+		distp1 = v_fDistP1;	
+	}
+	
+	public void setDistP2(double v_fDistP2){	
+		distp2 = v_fDistP2;	
+	}
+	
 	public simula.ActiveState getActiveState() {
 		return activeState;
 	}
+	
 	public void setActiveState(simula.ActiveState activeState) {
 		this.activeState = activeState;
 	}
