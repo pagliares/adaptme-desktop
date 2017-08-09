@@ -19,6 +19,7 @@ public class TestExamplePaperAdaptMEFromConsole {
 
 	public static void main(String[] args) {
 	
+		String lifecycle = "waterfall";
 		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
 		int quantityOfReplications = 10;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
@@ -59,9 +60,12 @@ public class TestExamplePaperAdaptMEFromConsole {
 		 			
 					 
 					double meanQuantityOfEntitiesInQ4 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q4");
-					double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
-					double meanQuantityOfEntitiesInQ6 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q6");
-					System.out.println("ljfdlskfjlkf   "  + (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6));
+					
+					if (lifecycle.equalsIgnoreCase("iterative")) {
+						double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
+						double meanQuantityOfEntitiesInQ6 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q6");
+					System.out.println("iterative   "  + (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6));
+					}
 					
 					 
 		 		   
