@@ -15,15 +15,18 @@ import adaptme.ui.window.perspective.VariableType;
 import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 
-public class TestCaseStudyBaselineAndAlternativesProcesses {
+public class TestIterativeProcess {
 
 	public static void main(String[] args) {
 	
+		String lifecycle = "iterative";
+		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
 		int quantityOfReplications = 1;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
- 		simulationManagerFacade.execute(1306, quantityOfReplications, true); //  (626880 = 1306 business days - See Table 5 in the paper)
+ 		simulationManagerFacade.execute(86400, quantityOfReplications, true); //  (86400 = 180 business days)
 		System.out.println();
 		
+		//System.out.println("\n\n----------------------------------------   RESULTS BY REPLICATION   -------------------------------------------\n");
 
 		Map<String, IDynamicExperimentationProgramProxy> results  = simulationManagerFacade.getResultsSimulationMap();
 		
@@ -36,9 +39,7 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
 			SimulationManager simulationManager = (SimulationManager) dynamicExperimentationProgramProxy.getSimulationManager();
 			
 			HashMap queues = simulationManager.getQueues();
-//			double projectDuration = Math.round(simulationManager.getScheduler().getClockOnEnding()/480) * 10.0/10.0;
-			double projectDuration = simulationManager.getScheduler().getClockOnEnding();
-
+			double projectDuration = Math.round(simulationManager.getScheduler().getClockOnEnding()/480) * 10.0/10.0;
  			System.out.println("\t[Project duration]  " + (projectDuration) + " days");
 			System.out.println();
 			simulationManagerFacade.printNumberOfEntitiesInEachDeadState(queues);
@@ -48,7 +49,7 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
 		
 		double meanNumberOfDays = simulationManagerFacade.calculateMeanNumberOfDays();
 		double sdNumberOfDays = simulationManagerFacade.calculateStandardDeviationNumberOfDays();
-		System.out.println("Mean (sd) number of days..." + meanNumberOfDays * 480 + "(" + sdNumberOfDays * 480 + ")");
+		System.out.println("Mean (sd) number of days..." + meanNumberOfDays + "(" + sdNumberOfDays + ")");
 			
 		// Calculating the mean(sd) number of user stories produced. Notice that a produced user story may be in more than one dead state
 					// (i.e. it can be on q4 - input dead state of activity END_iteration, q5 - input dead state of activity END_Release
@@ -60,10 +61,11 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
 					 
 					double meanQuantityOfEntitiesInQ4 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q4");
 					
- 						double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
+					if (lifecycle.equalsIgnoreCase("iterative")) {
+						double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
 						double meanQuantityOfEntitiesInQ6 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q6");
 					System.out.println("iterative   "  + (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6));
-				 
+					}
 					
 					 
 		 		   

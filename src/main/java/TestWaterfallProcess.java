@@ -15,13 +15,13 @@ import adaptme.ui.window.perspective.VariableType;
 import simula.manager.QueueEntry;
 import simula.manager.SimulationManager;
 
-public class TestExamplePaperAdaptMEFromConsole {
+public class TestWaterfallProcess {
 
 	public static void main(String[] args) {
 	
 		String lifecycle = "waterfall";
 		// System.out.println("\n\n---------------------------------   EXECUTING N REPLICATIONS OF THE SIMULATIONS   ---------------------------------\n");
-		int quantityOfReplications = 10;
+		int quantityOfReplications = 1;
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
  		simulationManagerFacade.execute(86400, quantityOfReplications, true); //  (86400 = 180 business days)
 		System.out.println();
