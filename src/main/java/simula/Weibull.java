@@ -7,9 +7,8 @@ public class Weibull extends Distribution {
 	private double scale, shape;
 	private  AbstractRealDistribution weibull;
 	
-	public Weibull(double alpha, double beta) {
-		super(null);
-		
+	public Weibull(Sample s, double alpha, double beta) {
+		super(s);
 		this.setScale(alpha);
 		this.setShape(beta);
 		this.weibull = new WeibullDistribution(alpha, beta);
@@ -37,7 +36,7 @@ public class Weibull extends Distribution {
 	}
 	
 	public static void main(String[] args) {
-		Weibull wb = new Weibull(0.22, 0.36);
+		Weibull wb = new Weibull(null, 0.22, 0.36);
 		for (int i = 1; i <=100; i++)
 			System.out.println(wb.Draw());
 	}
