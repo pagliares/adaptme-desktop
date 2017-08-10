@@ -17,12 +17,15 @@ import javax.swing.JTextField;
 import org.apache.commons.lang3.text.WordUtils;
 
 import model.spem.derived.ConstantParameters;
+import model.spem.derived.ExponentialParameters;
+import model.spem.derived.GammaParameters;
 import model.spem.derived.LogNormalParameters;
-import model.spem.derived.NegativeExponential;
+import model.spem.derived.NegativeExponentialParameters;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
+import model.spem.derived.WeibullParameters;
 
 public class ParametersPanel {
 	private JPanel panel;
@@ -88,14 +91,11 @@ public class ParametersPanel {
 						UniformParameters.setLow(Double.parseDouble(getTitleText().getText()));
 					}
 					
-				
-
-				} else if (parameters instanceof NegativeExponential) {
+				} else if (parameters instanceof NegativeExponentialParameters) {
 					
-					NegativeExponential negativeExponential = (NegativeExponential)parameters;
+					NegativeExponentialParameters negativeExponential = (NegativeExponentialParameters)parameters;
 					negativeExponential.setAverage(Double.parseDouble(getTitleText().getText()));
 					 
-	 	 			
 				} else if (parameters instanceof NormalParameters) {
 					
 					NormalParameters normalParameters = (NormalParameters)parameters;
@@ -105,7 +105,6 @@ public class ParametersPanel {
 					} else {
 						normalParameters.setStandardDeviation(Double.parseDouble(getTitleText().getText()));
 					}
-
 
 				} else if (parameters instanceof PoissonParameters) {
 					
@@ -121,17 +120,36 @@ public class ParametersPanel {
 					} else {
 						logNormalParameters.setShape(Double.parseDouble(getTitleText().getText()));
  					}
-	 			}				
+	 			}	
 				
+				else if (parameters instanceof WeibullParameters) {	
+					WeibullParameters weibullParameters = (WeibullParameters)parameters;
+					if (getTitleText().getName().equals("scale")) {
+						weibullParameters.setScale(Double.parseDouble(getTitleText().getText()));
+					} else {
+						weibullParameters.setShape(Double.parseDouble(getTitleText().getText()));
+ 					}
+	 			}
+				
+				else if (parameters instanceof GammaParameters) {	
+					GammaParameters gammaParameters = (GammaParameters)parameters;
+					if (getTitleText().getName().equals("scale")) {
+						gammaParameters.setScale(Double.parseDouble(getTitleText().getText()));
+					} else {
+						gammaParameters.setShape(Double.parseDouble(getTitleText().getText()));
+ 					}
+	 			}
+				
+				else if (parameters instanceof ExponentialParameters) {	
+					ExponentialParameters exponentialParameters = (ExponentialParameters)parameters;
+						exponentialParameters.setMean(Double.parseDouble(getTitleText().getText()));
+	 			}
 				
 				getTitleText().addFocusListener(focusListener);
 				
-	
-
 				getTitleText().setPreferredSize(new Dimension(58, 28));
 				panel.add(getTitleText(), constraints);
 				
- 
 				gridy += 1;
 				weightx = 0.8;
 				weighty = 0.8;

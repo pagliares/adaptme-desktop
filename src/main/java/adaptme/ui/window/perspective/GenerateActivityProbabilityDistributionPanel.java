@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import adaptme.ui.listener.ProbabilityDistributionPanelListener;
 import model.spem.derived.BestFitDistribution;
 import model.spem.derived.ConstantParameters;
-import model.spem.derived.NegativeExponential;
+import model.spem.derived.NegativeExponentialParameters;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;

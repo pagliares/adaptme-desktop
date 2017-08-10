@@ -31,12 +31,15 @@ import model.spem.MethodContentRepository;
 import model.spem.ProcessContentRepository;
 import model.spem.ProcessRepository;
 import model.spem.derived.ConstantParameters;
+import model.spem.derived.ExponentialParameters;
+import model.spem.derived.GammaParameters;
 import model.spem.derived.LogNormalParameters;
-import model.spem.derived.NegativeExponential;
+import model.spem.derived.NegativeExponentialParameters;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;
 import model.spem.derived.UniformParameters;
+import model.spem.derived.WeibullParameters;
 import model.spem.util.BehaviourAtEndOfIterationType;
 import model.spem.util.ConditionToProcessType;
 import model.spem.util.DependencyType;
@@ -93,10 +96,13 @@ public class XACDMLBuilderFacade {
 	
 	private ConstantParameters constantParameters;
 	private UniformParameters uniformParameters;
-	private NegativeExponential negativeExponential;
+	private NegativeExponentialParameters negativeExponential;
 	private NormalParameters normalParameters;
 	private PoissonParameters poissonParameters;
 	private LogNormalParameters logNormalParameters;
+	private WeibullParameters weibullParameters;
+	private GammaParameters gammaParameters;
+	private ExponentialParameters exponentialParameters;
 	
 	private ProcessRepository calibratedProcessRepository;
 	private List<ProcessContentRepository> completeListOfProcessContentRepository;
@@ -250,8 +256,8 @@ public class XACDMLBuilderFacade {
 					distribution.setParm1(Double.toString(uniformParameters.getLow()));
 					distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-				} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-					negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+				} else if (parametersDistributionRegularActivity instanceof NegativeExponentialParameters) {
+					negativeExponential = (NegativeExponentialParameters) parametersDistributionRegularActivity;
 					distribution = factory.createStat();
 					distribution.setType("NEGEXP");
 					distribution.setParm1(Double.toString(negativeExponential.getAverage()));
@@ -274,6 +280,26 @@ public class XACDMLBuilderFacade {
 					distribution.setType("LOGNORMAL");
 					distribution.setParm1(Double.toString(logNormalParameters.getScale()));
 					distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof WeibullParameters) {
+					weibullParameters = (WeibullParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("WEIBULL");
+					distribution.setParm1(Double.toString(weibullParameters.getScale()));
+					distribution.setParm2(Double.toString(weibullParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof GammaParameters) {
+					gammaParameters = (GammaParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("GAMMA");
+					distribution.setParm1(Double.toString(gammaParameters.getScale()));
+					distribution.setParm2(Double.toString(gammaParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof ExponentialParameters) {
+					exponentialParameters = (ExponentialParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("EXPONENTIAL");
+					distribution.setParm1(Double.toString(exponentialParameters.getMean()));
 				}
 				regularActivity.setStat(distribution);
 				
@@ -338,8 +364,8 @@ public class XACDMLBuilderFacade {
 							distribution.setParm1(Double.toString(uniformParameters.getLow()));
 							distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-						} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-							negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+						} else if (parametersDistributionRegularActivity instanceof NegativeExponentialParameters) {
+							negativeExponential = (NegativeExponentialParameters) parametersDistributionRegularActivity;
 							distribution = factory.createStat();
 							distribution.setType("NEGEXP");
 							distribution.setParm1(Double.toString(negativeExponential.getAverage()));
@@ -362,6 +388,26 @@ public class XACDMLBuilderFacade {
 							distribution.setType("LOGNORMAL");
 							distribution.setParm1(Double.toString(logNormalParameters.getScale()));
 							distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+						}
+						else if (parametersDistributionRegularActivity instanceof WeibullParameters) {
+							weibullParameters = (WeibullParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("WEIBULL");
+							distribution.setParm1(Double.toString(weibullParameters.getScale()));
+							distribution.setParm2(Double.toString(weibullParameters.getShape()));
+						}
+						else if (parametersDistributionRegularActivity instanceof GammaParameters) {
+							gammaParameters = (GammaParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("GAMMA");
+							distribution.setParm1(Double.toString(gammaParameters.getScale()));
+							distribution.setParm2(Double.toString(gammaParameters.getShape()));
+						}
+						else if (parametersDistributionRegularActivity instanceof ExponentialParameters) {
+							exponentialParameters = (ExponentialParameters) parametersDistributionRegularActivity;
+							distribution = factory.createStat();
+							distribution.setType("EXPONENTIAL");
+							distribution.setParm1(Double.toString(exponentialParameters.getMean()));
 						}
 						regularActivity.setStat(distribution);
 						regularActivity.getEntityClass().add(entityClass);
@@ -601,8 +647,8 @@ public class XACDMLBuilderFacade {
 				distribution.setParm1(Double.toString(uniformParameters.getLow()));
 				distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-			} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-				negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+			} else if (parametersDistributionRegularActivity instanceof NegativeExponentialParameters) {
+				negativeExponential = (NegativeExponentialParameters) parametersDistributionRegularActivity;
 				distribution = factory.createStat();
 				distribution.setType("NEGEXP");
 				distribution.setParm1(Double.toString(negativeExponential.getAverage()));
@@ -625,6 +671,26 @@ public class XACDMLBuilderFacade {
 				distribution.setType("LOGNORMAL");
 				distribution.setParm1(Double.toString(logNormalParameters.getScale()));
 				distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof WeibullParameters) {
+				weibullParameters = (WeibullParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("WEIBULL");
+				distribution.setParm1(Double.toString(weibullParameters.getScale()));
+				distribution.setParm2(Double.toString(weibullParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof GammaParameters) {
+				gammaParameters = (GammaParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("GAMMA");
+				distribution.setParm1(Double.toString(gammaParameters.getScale()));
+				distribution.setParm2(Double.toString(gammaParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof ExponentialParameters) {
+				exponentialParameters = (ExponentialParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("EXPONENTIAL");
+				distribution.setParm1(Double.toString(exponentialParameters.getMean()));
 			}
 			regularActivity.setStat(distribution);
 			
@@ -826,8 +892,8 @@ public class XACDMLBuilderFacade {
 				distribution.setParm1(Double.toString(uniformParameters.getLow()));
 				distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-			} else if (parametersDistributionRegularActivity instanceof NegativeExponential) {
-				negativeExponential = (NegativeExponential) parametersDistributionRegularActivity;
+			} else if (parametersDistributionRegularActivity instanceof NegativeExponentialParameters) {
+				negativeExponential = (NegativeExponentialParameters) parametersDistributionRegularActivity;
 				distribution = factory.createStat();
 				distribution.setType("NEGEXP");
 				distribution.setParm1(Double.toString(negativeExponential.getAverage()));
@@ -850,6 +916,26 @@ public class XACDMLBuilderFacade {
 				distribution.setType("LOGNORMAL");
 				distribution.setParm1(Double.toString(logNormalParameters.getScale()));
 				distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof WeibullParameters) {
+				weibullParameters = (WeibullParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("WEIBULL");
+				distribution.setParm1(Double.toString(weibullParameters.getScale()));
+				distribution.setParm2(Double.toString(weibullParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof GammaParameters) {
+				gammaParameters = (GammaParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("GAMMA");
+				distribution.setParm1(Double.toString(gammaParameters.getScale()));
+				distribution.setParm2(Double.toString(gammaParameters.getShape()));
+			}
+			else if (parametersDistributionRegularActivity instanceof ExponentialParameters) {
+				exponentialParameters = (ExponentialParameters) parametersDistributionRegularActivity;
+				distribution = factory.createStat();
+				distribution.setType("EXPONENTIAL");
+				distribution.setParm1(Double.toString(exponentialParameters.getMean()));
 			}
 			regularActivity.setStat(distribution);
 			
@@ -1283,8 +1369,8 @@ public class XACDMLBuilderFacade {
 					distribution.setParm1(Double.toString(uniformParameters.getLow()));
 					distribution.setParm2(Double.toString(uniformParameters.getHigh()));
 
-				} else if (parametersDistributionGenerateActivity instanceof NegativeExponential) {
-					negativeExponential = (NegativeExponential) parametersDistributionGenerateActivity;
+				} else if (parametersDistributionGenerateActivity instanceof NegativeExponentialParameters) {
+					negativeExponential = (NegativeExponentialParameters) parametersDistributionGenerateActivity;
 					distribution = factory.createStat();
 					distribution.setType("NEGEXP");
 					distribution.setParm1(Double.toString(negativeExponential.getAverage()));
@@ -1307,6 +1393,26 @@ public class XACDMLBuilderFacade {
 					distribution.setType("LOGNORMAL");
 					distribution.setParm1(Double.toString(logNormalParameters.getScale()));
 					distribution.setParm2(Double.toString(logNormalParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof WeibullParameters) {
+					weibullParameters = (WeibullParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("WEIBULL");
+					distribution.setParm1(Double.toString(weibullParameters.getScale()));
+					distribution.setParm2(Double.toString(weibullParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof GammaParameters) {
+					gammaParameters = (GammaParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("GAMMA");
+					distribution.setParm1(Double.toString(gammaParameters.getScale()));
+					distribution.setParm2(Double.toString(gammaParameters.getShape()));
+				}
+				else if (parametersDistributionRegularActivity instanceof ExponentialParameters) {
+					exponentialParameters = (ExponentialParameters) parametersDistributionRegularActivity;
+					distribution = factory.createStat();
+					distribution.setType("EXPONENTIAL");
+					distribution.setParm1(Double.toString(exponentialParameters.getMean()));
 				}
 
 				// configura a generate activity com a distribuicao apropriada
