@@ -4,13 +4,14 @@ import org.apache.commons.math3.distribution.*;
 
 public class Gamma extends Distribution {
 
-	private double shape, scale;
+	private double scale, shape;
 	private  AbstractRealDistribution gamma;
 	
-	public Gamma(Sample s, double shape, double scale) {
+	public Gamma(Sample s, double scale, double shape) {
 		super(s);
-		this.shape = shape;
 		this.scale = scale;
+		this.shape = shape;
+		
 		this.gamma = new GammaDistribution(shape, scale);
 	}
 
