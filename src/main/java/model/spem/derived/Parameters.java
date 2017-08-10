@@ -15,13 +15,19 @@ public abstract class Parameters {
 		case UNIFORM:
 			return new UniformParameters();
 		case NEGATIVE_EXPONENTIAL:
-			return new NegativeExponential();
+			return new NegativeExponentialParameters();
 		case NORMAL:
 			return new NormalParameters();
 		case POISSON:
 			return new PoissonParameters();
 		case LOGNORMAL:
 			return new LogNormalParameters();
+		case WEIBULL:
+			return new WeibullParameters();
+		case GAMMA:
+			return new GammaParameters();
+		case EXPONENTIAL:
+			return new ExponentialParameters();
 		default:
 			return null;
 		}

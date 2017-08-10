@@ -1,6 +1,7 @@
 package model.spem.derived;
 
-public class LogNormalParameters extends Parameters {
+public class WeibullParameters extends Parameters {
+	
     private double scale;
     private double shape;
 

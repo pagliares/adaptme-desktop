@@ -1,6 +1,6 @@
 package model.spem.derived;
 
-public class NegativeExponential extends Parameters {
+public class NegativeExponentialParameters extends Parameters {
 	private double average;
 
 	public double getAverage() {
