@@ -56,6 +56,9 @@ public class LocalViewPanel implements UpdatePanel {
 		distributionJComboBox.addItem(BestFitDistribution.POISSON);
 		distributionJComboBox.addItem(BestFitDistribution.UNIFORM);
 		distributionJComboBox.addItem(BestFitDistribution.LOGNORMAL);
+		distributionJComboBox.addItem(BestFitDistribution.WEIBULL);
+		distributionJComboBox.addItem(BestFitDistribution.GAMMA);
+		distributionJComboBox.addItem(BestFitDistribution.EXPONENTIAL);
 
 		Sample sample = new Sample();
 		processContentRepository.setSample(sample);

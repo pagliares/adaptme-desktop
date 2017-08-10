@@ -8,7 +8,8 @@ import javax.xml.bind.annotation.XmlEnum;
 @XmlEnum
 public enum BestFitDistribution {
 	
-	CONSTANT("Constant"), UNIFORM("Uniform"), NORMAL("Normal"), NEGATIVE_EXPONENTIAL("Negative exponential"), POISSON("Poisson"), LOGNORMAL("Lognormal");
+	CONSTANT("Constant"), UNIFORM("Uniform"), NORMAL("Normal"), NEGATIVE_EXPONENTIAL("Negative exponential"), POISSON("Poisson"), LOGNORMAL("Lognormal"),
+	WEIBULL("Weibull"), GAMMA("Gamma"), EXPONENTIAL("Exponential");
 
 	private String name;
 
@@ -16,7 +17,6 @@ public enum BestFitDistribution {
 		this.name = name;
 	}
 
-	
 	public String getName() {
 		return name;
 	}
