@@ -9,7 +9,7 @@ import adaptme.ui.window.perspective.SPEMDrivenPerspectivePanel;
 import model.spem.ProcessRepository;
 import model.spem.derived.ConstantParameters;
 import model.spem.derived.LogNormalParameters;
-import model.spem.derived.NegativeExponential;
+import model.spem.derived.NegativeExponentialParameters;
 import model.spem.derived.NormalParameters;
 import model.spem.derived.Parameters;
 import model.spem.derived.PoissonParameters;
@@ -39,9 +39,9 @@ public class ProbabilityDistributionPanelListener implements FocusListener {
 					
 				
 
-				} else if (distributionParameters instanceof NegativeExponential) {
+				} else if (distributionParameters instanceof NegativeExponentialParameters) {
 					
-					NegativeExponential negativeExponential = (NegativeExponential)distributionParameters;
+					NegativeExponentialParameters negativeExponential = (NegativeExponentialParameters)distributionParameters;
 					negativeExponential.setAverage(Double.parseDouble(textField.getText()));
 					 
 	 	 			
