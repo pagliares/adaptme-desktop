@@ -220,7 +220,7 @@ public class Generate extends ActiveState
 		Generated++;					// mais uma entidade gerada
 		
 		SimulationManager.quantityOfEntitiesInClass++;
-		System.out.println("quantity " + SimulationManager.quantityOfEntitiesInClass);
+//		System.out.println("quantity " + SimulationManager.quantityOfEntitiesInClass);
 
 		inservice = false;				// libera a gera��o de novas entidades
 		if(obs != null)
