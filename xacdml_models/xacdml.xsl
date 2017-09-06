@@ -196,13 +196,13 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   qe.initialQuantity = <xsl:value-of select="type/@init"/>;
   qe.setMax((short)<xsl:value-of select="type/@size"/><xsl:text>);
   </xsl:text>
-   
   <xsl:apply-templates select="observer"/>
   <xsl:text>man.AddQueue(qe);
   </xsl:text>
   </xsl:if>
-  <xsl:if test="type/@size = type/@init" >
+  <xsl:if test="type/@size = type/@init" > 
   <xsl:text>
+
   re = new ResourceEntry();
   re.SetId("</xsl:text>
   <xsl:value-of select="@id"/>
@@ -210,7 +210,6 @@ public class DynamicExperimentationProgramProxy implements IDynamicExperimentati
   re.setInit((short) </xsl:text>
   <xsl:value-of select="type/@init"/>
   <xsl:text>);
-  
   </xsl:text>
   <xsl:apply-templates select="observer"/>
   <xsl:text>man.AddResource(re);</xsl:text>
