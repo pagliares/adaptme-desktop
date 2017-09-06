@@ -1,5 +1,6 @@
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +20,20 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
 
 	public static void main(String[] args) {
 	
-		int quantityOfReplications = 1;
+		int quantityOfReplications = 500;
+		
 		SimulationManagerFacade simulationManagerFacade = SimulationManagerFacade.getSimulationManagerFacade();
- 		simulationManagerFacade.execute(1306, quantityOfReplications, true); //  (626880 = 1306 business days - See Table 5 in the paper)
+		System.out.println("It takes about 50 seconds to finish 50 replications of the simulation experiment");
+
+		// Process alternative  A : 30 days with samples of size (50 -> 2 wps, 335 -> x wps, 
+ 		simulationManagerFacade.execute(30, quantityOfReplications, true);  
 		System.out.println();
 		
-
 		Map<String, IDynamicExperimentationProgramProxy> results  = simulationManagerFacade.getResultsSimulationMap();
-		
 		Set<String> set = results.keySet();
+		
+		List<Integer> l = new ArrayList<>();
+		
 		
 		for (String replication: set){
 			System.out.println(replication);
@@ -42,7 +48,17 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
  			System.out.println("\t[Project duration]  " + (projectDuration) + " days");
 			System.out.println();
 			simulationManagerFacade.printNumberOfEntitiesInEachDeadState(queues);
+			
+			
+			l.add(simulationManagerFacade.getQuantityOfEntitiesInFinalDeadStateForPaper(queues));
+			
+			
  		}
+		
+		System.out.println("Printing 50 quantities for this replication");
+		for (Integer i: l)
+			System.out.println(i);
+		System.out.println("Finished Printing 50 quantities for this replication");
 		
 		System.out.println("\n\n----------------------------------------   GLOBAL RESULTS   -------------------------------------------\n");
 		
@@ -50,23 +66,11 @@ public class TestCaseStudyBaselineAndAlternativesProcesses {
 		double sdNumberOfDays = simulationManagerFacade.calculateStandardDeviationNumberOfDays();
 		System.out.println("Mean (sd) number of days..." + meanNumberOfDays * 480 + "(" + sdNumberOfDays * 480 + ")");
 			
-		// Calculating the mean(sd) number of user stories produced. Notice that a produced user story may be in more than one dead state
-					// (i.e. it can be on q4 - input dead state of activity END_iteration, q5 - input dead state of activity END_Release
-					// q6 - output dead state of activity END_Release)
-					// matrixWithResults (lines) = number of entities in each queue  matrixWithResults (columns) =  experiments
-					int [][] matrixWithResults = simulationManagerFacade.createMatrixWithResultsOfAllReplications();
-					
-		 			
-					 
-					double meanQuantityOfEntitiesInQ4 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q4");
-					
- 						double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");
-						double meanQuantityOfEntitiesInQ6 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q6");
-					System.out.println("iterative   "  + (meanQuantityOfEntitiesInQ4 + meanQuantityOfEntitiesInQ5 + meanQuantityOfEntitiesInQ6));
-				 
-					
-					 
-		 		   
+		// Calculating the mean(sd) number of work products produced. 
+		// matrixWithResults (lines) = number of entities in each queue  matrixWithResults (columns) =  experiments
+		int [][] matrixWithResults = simulationManagerFacade.createMatrixWithResultsOfAllReplications();
+								 			
+ 		double meanQuantityOfEntitiesInQ5 = printMeanSDOfEntities(simulationManagerFacade, matrixWithResults,"q5");				 		 		   
  	}
 	
 	private static double printMeanSDOfEntities(SimulationManagerFacade simulationManagerFacade,

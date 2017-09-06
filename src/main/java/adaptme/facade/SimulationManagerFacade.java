@@ -203,6 +203,20 @@ public class SimulationManagerFacade {
 		}
 	}
 	
+	public int getQuantityOfEntitiesInFinalDeadStateForPaper(HashMap queues) {
+  		int quantity = 0;
+		Set keys = queues.keySet();
+
+		for (Object queueName : keys) {
+			if (queueName.equals("q5")) {
+				QueueEntry qe = (QueueEntry) queues.get(queueName);
+				// Both below outputs return the count variable
+				return qe.deadState.getCount();
+			}
+		}
+		return quantity;
+	}
+	
 	
 	public void printOneObserver() {
 		Iterator it;
@@ -400,7 +414,8 @@ public class SimulationManagerFacade {
   					quantyOfEntitiesPerDeadState[i] = matrixWithResults[i][j];
  					sum = sum + matrixWithResults[i][j];
  				}
-  				 standardDeviation =  Math.round(sd.evaluate(quantyOfEntitiesPerDeadState)) * 100.00/100.00;
+//  				 standardDeviation =  Math.round(sd.evaluate(quantyOfEntitiesPerDeadState)) * 100.00/100.00;
+  				 standardDeviation =  sd.evaluate(quantyOfEntitiesPerDeadState);
  				sum = 0.0;
  				quantyOfEntitiesPerDeadState = new double[matrixWithResults.length];
  			}}
